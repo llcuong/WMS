@@ -1,0 +1,778 @@
+{% extends 'wh_former/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Hand Former - Former Batch History" %} {% endblock %}
+
+{% block content %}
+    <div class="container-fluid no-copy">
+        {% trans "Batch Action History" as page_title %}
+        {% include 'wh_former/components/page_title.html' with title=page_title icon="fa-history" %}
+
+        <div class="row p-3 main-body">
+            <div class="col-12">
+                <div class="card search-card">
+                    <div class="card-body">
+                        <form method="GET" class="search-form" id="searchForm">
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="batch_no" class="form-label">
+                                            <i class="fas fa-barcode me-1"></i>
+                                            {% trans "Batch Number" %}:
+                                        </label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="batch_no"
+                                               name="batch_no"
+                                               value="{{ search_batch_no }}"
+                                               placeholder="{% trans 'Enter batch number to view complete history...' %}"
+                                               autocomplete="off"
+                                               required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="button-group">
+                                        <button type="submit" class="btn btn-primary btn-custom" id="searchBtn">
+                                            <i class="fas fa-search"></i>
+                                            {% trans "Search" %}
+                                        </button>
+                                        <a href="{% url 'batch_action_history' %}" class="btn btn-secondary btn-custom">
+                                            <i class="fas fa-times"></i>
+                                            {% trans "Clear" %}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                {% if search_batch_no %}
+                    <div class="card mt-3" style="border: none !important;">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0">
+                                <i class="fas fa-info-circle me-2 text-primary"></i>
+                                {% trans "Search Results for" %}: <strong>{{ search_batch_no }}</strong>
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            {% if all_logs_with_related %}
+                                <div class="alert alert-success">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    {% trans "Found" %} {{ total_records }} {% trans "total records" %}
+                                    {% if total_records > 1 %}({% trans "including related merge/split batches" %}){% endif %}
+                                </div>
+
+                                <div class="timeline-container">
+                                    <div class="timeline-line"></div>
+
+                                    {% for log_data in all_logs_with_related %}
+                                        {% with log=log_data.log %}
+                                            <div class="timeline-item {{ log.batch_action_name|lower }}">
+                                                <div class="timeline-marker {{ log.batch_action_name|lower }}">
+                                                    {% if log.batch_action_name == 'STIN' %}
+                                                        <i class="fas fa-arrow-down"></i>
+                                                    {% elif log.batch_action_name == 'STOU' %}
+                                                        <i class="fas fa-arrow-up"></i>
+                                                    {% else %}
+                                                        <i class="fas fa-circle"></i>
+                                                    {% endif %}
+                                                </div>
+
+                                                <div class="timeline-content">
+                                                    <div class="timeline-header">
+                                                        <div class="timeline-badges">
+                                                            <span class="badge-timeline badge-primary-timeline">
+                                                                <i class="fas fa-tag me-1"></i>{{ log.batch_action_name }}
+                                                            </span>
+                                                            {% if log.batch_sub_action_name %}
+                                                                <span class="badge-timeline {% if log.batch_sub_action_name == 'MERGE' %}badge-merge{% else %}badge-split{% endif %}">
+                                                                    <i class="fas fa-code-branch me-1"></i>{{ log.batch_sub_action_name }}
+                                                                </span>
+                                                            {% endif %}
+                                                            {% if log.batch_sub_action_key %}
+                                                                <span class="badge bg-info" style="color:white">
+                                                                    <i class="fas fa-key me-1"></i>{{ log.batch_sub_action_key }}
+                                                                </span>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="timeline-date">
+                                                            <i class="fas fa-calendar me-1"></i>
+                                                            {{ log.batch_change_day|date:"d/m/Y" }}
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="qty-grid">
+                                                        <div class="qty-card">
+                                                            <div class="qty-label">{% trans "Qty Before" %}</div>
+                                                            <div class="qty-value">{{ log.batch_qty_before }}</div>
+                                                        </div>
+                                                        <div class="qty-card">
+                                                            <div class="qty-label">{% trans "Qty After" %}</div>
+                                                            <div class="qty-value">{{ log.batch_qty_after }}</div>
+                                                        </div>
+                                                        <div class="qty-card">
+                                                            <div class="qty-label">{% trans "Change" %}</div>
+                                                            <div class="qty-value {% if log.batch_qty_change > 0 %}positive{% elif log.batch_qty_change < 0 %}negative{% endif %}">
+                                                                {{ log.batch_qty_change|floatformat:0 }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="qty-card">
+                                                            <div class="qty-label">{% trans "Used Day" %}</div>
+                                                            <div class="qty-value">{{ log.batch_used_day }}</div>
+                                                        </div>
+                                                    </div>
+
+                                                    {% if log.batch_action_area %}
+                                                        <div class="mt-2">
+                                                            <small class="text-muted">
+                                                                <i class="fas fa-map-marker-alt me-1"></i>
+                                                                <strong>{% trans "Area" %}:</strong> {{ log.batch_action_area }}
+                                                            </small>
+                                                        </div>
+                                                    {% endif %}
+
+                                                    {% if log_data.related_batches %}
+                                                        <div class="related-section">
+                                                            <div class="related-header">
+                                                                <h6 class="mb-0">
+                                                                    <i class="fas fa-project-diagram me-2"></i>
+                                                                    {% trans "Related Batches in this Operation" %}
+                                                                </h6>
+                                                                <span class="badge bg-success">
+                                                                    {{ log_data.related_batches|length }} batch{{ log_data.related_batches|length|pluralize:"es" }}
+                                                                </span>
+                                                            </div>
+                                                            <div class="row">
+                                                                {% for related_log in log_data.related_batches %}
+                                                                    <div class="col-md-6">
+                                                                         <div class="related-batch">
+                                                                            <div class="batch-info">
+                                                                                <div>
+                                                                                    <span class="batch-name">{{ related_log.batch_no }}</span>
+                                                                                    <span class="badge-timeline ms-2 {% if related_log.batch_sub_action_name == 'MERGE' %}badge-merge{% else %}badge-split{% endif %}">
+                                                                                        {{ related_log.batch_sub_action_name }}
+                                                                                    </span>
+                                                                                </div>
+                                                                                <span class="qty-change-badge">
+                                                                                    {{ related_log.batch_qty_before }} → {{ related_log.batch_qty_after }}
+                                                                                </span>
+                                                                            </div>
+                                                                            <div class="batch-details">
+                                                                                <i class="fas fa-exchange-alt me-1"></i>{% trans "Change" %}: {{ related_log.batch_qty_change }} |
+                                                                                <i class="fas fa-clock me-1"></i>{% trans "Used Day" %}: {{ related_log.batch_used_day }} |
+                                                                                <i class="fas fa-calendar me-1"></i>{{ related_log.batch_change_day|date:"d/m/Y" }}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        {% endwith %}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    {% trans "No history records found for batch number" %}: <strong>{{ search_batch_no }}</strong>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).ready(function() {
+        $('#batch_no').focus();
+
+        $('#searchForm').on('submit', function() {
+            const searchBtn = $('#searchBtn');
+            searchBtn.addClass('loading');
+            searchBtn.prop('disabled', true);
+
+            setTimeout(function() {
+                searchBtn.removeClass('loading');
+                searchBtn.prop('disabled', false);
+            }, 5000);
+        });
+
+        $('#batch_no').on('keypress', function(e) {
+            if (e.which === 13) {
+                $('#searchForm').submit();
+            }
+        });
+
+        $('#batch_no').on('keydown', function(e) {
+            if (e.which === 27) { // Escape key
+                $(this).val('');
+            }
+        });
+
+        $('#batch_no').on('input', function() {
+            const value = $(this).val().trim();
+            const searchBtn = $('#searchBtn');
+
+            if (value.length > 0) {
+                searchBtn.prop('disabled', false);
+                $(this).removeClass('is-invalid');
+            } else {
+                searchBtn.prop('disabled', true);
+            }
+        });
+
+        const initialValue = $('#batch_no').val().trim();
+        if (initialValue.length === 0) {
+            $('#searchBtn').prop('disabled', true);
+        }
+
+        $('.timeline-item').each(function(index) {
+            $(this).css('animation-delay', (index * 0.05) + 's');
+        });
+    });
+</script>
+{% endblock %}
+{% block local_css %}
+    <style>
+        .search-card {
+            margin: 20px 0 30px;
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            background: white;
+            overflow: hidden;
+        }
+
+        .search-card .card-header {
+            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+            border: none;
+            padding: 20px 25px;
+        }
+
+        .search-card .card-body {
+            padding: 25px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #fff;
+        }
+
+        .form-control:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.15);
+            transform: translateY(-1px);
+            background: #fff;
+        }
+
+        .form-control::placeholder {
+            color: #adb5bd;
+            font-style: italic;
+        }
+
+        .btn-custom {
+            border-radius: 10px;
+            padding: 14px 28px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-custom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-custom:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary.btn-custom {
+            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);
+        }
+
+        .btn-primary.btn-custom:hover {
+            background: linear-gradient(135deg, #0052a3 0%, #003d7a 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+        }
+
+        .btn-secondary.btn-custom {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-secondary.btn-custom:hover {
+            background: linear-gradient(135deg, #545b62 0%, #383d41 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        }
+
+        .btn-custom:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-custom i {
+            margin-right: 8px;
+            font-size: 0.9rem;
+        }
+
+        .search-form {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 12px;
+            padding: 0;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #0066cc, #17a2b8, #0066cc);
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(0, 102, 204, 0.3);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-left: 60px;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #f1f3f4;
+            animation: slideInUp 0.6s ease forwards;
+        }
+
+        .timeline-item:hover {
+            transform: translateY(-3px) translateX(3px);
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.12);
+        }
+
+        /* Timeline color borders - STIN green */
+        .timeline-item.stin {
+            border-left: 4px solid #28a745;
+        }
+
+        .timeline-item.stin .timeline-content {
+            border-left: 4px solid #28a745;
+            background: linear-gradient(90deg, rgba(40, 167, 69, 0.03) 0%, white 20%);
+        }
+
+        /* Timeline color borders - STOU yellow */
+        .timeline-item.stou {
+            border-left: 4px solid #ffc107;
+        }
+
+        .timeline-item.stou .timeline-content {
+            border-left: 4px solid #ffc107;
+            background: linear-gradient(90deg, rgba(255, 193, 7, 0.03) 0%, white 20%);
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: -45px;
+            top: 20px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #0066cc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0, 102, 204, 0.25);
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-marker.stin {
+            border-color: #28a745;
+        }
+
+        .timeline-marker.stou {
+            border-color: #ffc107;
+        }
+
+        .timeline-marker i {
+            font-size: 12px;
+            color: #0066cc;
+        }
+
+        .timeline-marker.stin i {
+            color: #28a745;
+        }
+
+        .timeline-marker.stou i {
+            color: #ffc107;
+        }
+
+        .timeline-item:hover .timeline-marker {
+            transform: scale(1.15);
+            box-shadow: 0 3px 12px rgba(0, 102, 204, 0.35);
+        }
+
+        .timeline-content {
+            padding: 18px;
+            margin: 0; /* Đảm bảo không có margin */
+            border-radius: 0 12px 12px 0; /* Bo góc phù hợp với item */
+        }
+
+        .timeline-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .timeline-badges {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .timeline-date {
+            font-size: 14px;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .badge-timeline {
+            padding: 5px 10px;
+            border-radius: 18px;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .badge-primary-timeline {
+            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+            color: white;
+        }
+
+        .badge-merge {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            color: white;
+        }
+
+        .badge-split {
+            background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+            color: white;
+        }
+
+        .qty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .qty-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            padding: 10px 8px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .qty-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 102, 204, 0.08), transparent);
+            transition: left 0.5s;
+        }
+
+        .qty-card:hover {
+            border-color: #0066cc;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0, 102, 204, 0.08);
+        }
+
+        .qty-card:hover::before {
+            left: 100%;
+        }
+
+        .qty-label {
+            font-size: 14px;
+            color: #6c757d;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            margin-bottom: 4px;
+        }
+
+        .qty-value {
+            font-size: 17px;
+            font-weight: 700;
+            color: #343a40;
+        }
+
+        .qty-value.positive {
+            color: #28a745;
+        }
+
+        .qty-value.negative {
+            color: #dc3545;
+        }
+
+        .related-section {
+            background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
+            border: 2px solid #28a745;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .related-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(40, 167, 69, 0.08) 0%, transparent 70%);
+        }
+
+        .related-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .related-batch {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 8px 0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .related-batch::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #28a745, #20c997);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .related-batch:hover {
+            border-color: #28a745;
+            transform: translateX(6px);
+            box-shadow: 0 3px 12px rgba(40, 167, 69, 0.12);
+        }
+
+        .related-batch:hover::before {
+            transform: scaleY(1);
+        }
+
+        .batch-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .batch-name {
+            font-weight: 700;
+            color: #343a40;
+            font-size: 0.9rem;
+        }
+
+        .qty-change-badge {
+            background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .batch-details {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .timeline-item:nth-child(1) { animation-delay: 0.05s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.1s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.15s; }
+        .timeline-item:nth-child(4) { animation-delay: 0.2s; }
+        .timeline-item:nth-child(5) { animation-delay: 0.25s; }
+
+        @media (max-width: 768px) {
+            .search-card {
+                margin: 10px 0 20px;
+                border-radius: 12px;
+            }
+
+            .search-card .card-body {
+                padding: 20px;
+                border: none;
+            }
+
+            .btn-custom {
+                padding: 12px 20px;
+                font-size: 0.85rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                margin-top: 15px;
+            }
+
+            .form-control {
+                padding: 12px 14px;
+            }
+
+            .timeline-line {
+                left: 20px;
+            }
+
+            .timeline-item {
+                margin-left: 40px;
+            }
+
+            .timeline-marker {
+                left: -30px;
+                width: 18px;
+                height: 18px;
+            }
+
+            .timeline-marker i {
+                font-size: 7px;
+            }
+
+            .qty-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .timeline-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .timeline-content {
+                padding: 15px;
+            }
+        }
+
+        .btn-custom.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .btn-custom.loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            top: 50%;
+            left: 50%;
+            margin-left: -8px;
+            margin-top: -8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+    </style>
+{% endblock %}

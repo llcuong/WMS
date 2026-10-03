@@ -1,0 +1,403 @@
+{% load i18n %}
+{% load user_groups %}
+
+<style>
+    .result-table-body {
+        overflow-y: auto;
+        overflow-x: auto;
+        width: 100%;
+        scrollbar-gutter: stable both-edges;
+        scrollbar-width: thin; /* Firefox */
+        max-height: 70vh; /* Add max height to enable vertical scroll */
+    }
+
+    .result-table-body-content{
+        width: 100%;
+        overflow: visible;
+    }
+
+    .result-table {
+        table-layout: fixed;
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 16px;
+    }
+
+    /* Fully responsive - no media queries needed */
+
+    .result-table tbody tr {
+        display: flex;
+        margin: 8px auto;
+        border-radius: 8px;
+        background-color: inherit;
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .result-table tbody td {
+        padding: 8px;
+        box-sizing: border-box;
+        height: 48px;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.1em;
+        flex-shrink: 0;
+        flex-grow: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .result-table tbody tr:nth-child(odd) {
+        background-color: white;
+        border-radius: 10px;
+    }
+
+    .result-table tbody tr:nth-child(even) {
+        background-color: #f5f7fd;
+    }
+
+    .table-data-cell {
+        padding: 8px;
+        box-sizing: border-box;
+        height: 48px;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.1em;
+        font-family: 'Inter', sans-serif;
+        flex-shrink: 0;
+        flex-grow: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .strikethrough {
+        text-decoration: line-through;
+    }
+
+    .expand-data-cell {
+        width: 42px;
+        flex: 0 0 42px;
+        text-align: center;
+        padding: 8px;
+        box-sizing: border-box;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .expand-data-cell button {
+        border: none;
+        background: none;
+        outline: none;
+        width: 42px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.2s ease;
+    }
+
+    .expand-data-cell button:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .expand-data-cell button i {
+        font-size: 14px;
+        color: #666;
+    }
+
+    .expand-data-cell button:disabled {
+        cursor: not-allowed;
+        opacity: 0.3;
+    }
+
+    .expand-data-cell button:disabled:hover {
+        background-color: transparent;
+    }
+
+    .edit-data-cell {
+        width: 42px;
+        flex: 0 0 42px;
+        text-align: center;
+        padding: 8px;
+        box-sizing: border-box;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .edit-data-cell button {
+        border: none;
+        background: none;
+        outline: none;
+        width: 42px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.2s ease;
+    }
+
+    .edit-data-cell button:hover {
+        background-color: rgba(40, 167, 69, 0.1);
+    }
+
+    .edit-data-cell button i {
+        font-size: 14px;
+        color: #28a745;
+    }
+
+    .edit-data-cell button:disabled {
+        cursor: not-allowed;
+        opacity: 0.3;
+    }
+
+    .edit-data-cell button:disabled:hover {
+        background-color: transparent;
+    }
+
+    .checkbox-data-cell {
+        width: 50px;
+        flex: 0 0 50px;
+        text-align: center;
+        padding: 8px;
+        box-sizing: border-box;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .row-checkbox {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+    }
+
+    .no-result-cell {
+        flex: 1 1 100%;
+        padding: 20px;
+        text-align: center;
+    }
+
+    /* Ensure consistent scrollbar behavior */
+    .result-table-body::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+    }
+
+    .result-table-body::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 6px;
+    }
+
+    .result-table-body::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 6px;
+    }
+
+    .result-table-body::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+
+    /* Prevent content from shifting when scrollbar appears */
+    .result-table-body {
+        box-sizing: border-box;
+    }
+
+    .result-table-body-content {
+        box-sizing: border-box;
+        position: relative;
+    }
+
+    /* Fix expand detail row height */
+    .expand-detail-row td {
+        height: auto !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        background: #fff;
+        box-shadow: none;
+    }
+
+    /* Style for expanded detail table */
+    .expand-detail-row table {
+        border-radius: 10px;
+        box-shadow: 0 2px 12px rgba(34, 114, 244, 0.12);
+        background: #f8faff;
+        margin: 12px 0;
+        width: 98%;
+        border: none;
+        border-collapse: separate;
+        overflow: hidden;
+    }
+    .expand-detail-row table tr {
+        transition: background 0.2s;
+    }
+    .expand-detail-row table tr:hover {
+        background: #eaf1ff;
+    }
+    .expand-detail-row table td {
+        padding: 10px 12px;
+        border: 1px solid #e0e6f7;
+        font-size: 15px;
+        color: #222;
+        background: #fff;
+    }
+    .expand-detail-row table td:first-child {
+        border-left: none;
+    }
+    .expand-detail-row table td:last-child {
+        border-right: none;
+    }
+    .expand-detail-row table tr:first-child td {
+        background: #2272f4;
+        color: #fff;
+        font-weight: 500;
+        border-top: none;
+    }
+
+    .text-muted {
+        color: #a1a7ac !important;
+    }
+
+    .text-secondary {
+        color: #a1a7ac !important;
+    }
+</style>
+
+<div class="result-table-body">
+    <div class="result-table-body-content">
+        <table class="result-table">
+            <tbody id="table-body">
+                {% if results %}
+                    {% for row, is_active in results %}
+                        {% with status=row.0.12 %}
+                        <tr data-batch-no="{{ row.1.0 }}">
+                            <!-- Checkbox column -->
+                            <td class="checkbox-data-cell">
+                                <input type="checkbox" class="row-checkbox" data-batch-no="{{ row.1.0 }}">
+                            </td>
+                            {% for name, width, align in row %}
+                                {% if forloop.last and expand %}
+                                    <td class="edit-data-cell">
+                                        {% if status != 2 %}
+                                            {% if user|has_any_group:"wh_former_admin, developer" %}
+                                                <button class="edit-btn" data-batch-no="{{ row.1.0 }}" data-bs-toggle="modal" data-bs-target="#editBatchModal">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                            {% endif %}
+                                        {% else %}
+                                            <button disabled></button>
+                                        {% endif %}
+                                    </td>
+                                {% else %}
+                                    <td style="user-select: text !important;" class="table-data-cell{% if status == 0 %} text-muted{% endif %}{% if status == 2 %} text-muted strikethrough{% endif %}"
+                                       data-width="{{ width }}" data-align="{{ align }}">
+                                        {{ name }}
+                                    </td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                        {% endwith %}
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td class="no-result-cell text-center text-muted" colspan="100%">{% trans "No result found!" %}</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function adjustResultTableBodyHeight() {
+        const body = document.querySelector('.result-table-body');
+        if (!body) return;
+
+        const rect = body.getBoundingClientRect();
+        const newHeight = window.innerHeight - rect.top - 16 - 44 - 6;
+
+        body.style.height = newHeight + 'px';
+        body.style.overflowY = 'auto';
+    }
+
+    function adjustTableResponsive() {
+        const bodyCells = document.querySelectorAll('.result-table-body .table-data-cell[data-width]');
+        const rows = document.querySelectorAll('.result-table-body tbody tr');
+        const table = document.querySelector('.result-table-body .result-table');
+
+        if (bodyCells.length === 0) return;
+
+        let totalWidth = 0;
+        const firstRow = rows[0];
+        if (firstRow) {
+            const cellsInRow = firstRow.querySelectorAll('.table-data-cell[data-width]');
+            cellsInRow.forEach(cell => {
+                totalWidth += parseInt(cell.dataset.width);
+            });
+        }
+
+        if (totalWidth === 0) return;
+
+        if (table) {
+            table.style.minWidth = (totalWidth + 50) + 'px'; // Add 50px for checkbox column
+        }
+
+        bodyCells.forEach(cell => {
+            const width = parseInt(cell.dataset.width);
+            const align = cell.dataset.align;
+            const percentage = (width / totalWidth) * 100;
+
+            cell.style.flexBasis = percentage + '%';
+            cell.style.textAlign = align;
+        });
+
+        rows.forEach(row => {
+            row.style.width = '100%';
+            row.style.minWidth = (totalWidth + 50) + 'px'; // Add 50px for checkbox column
+        });
+    }
+
+    window.addEventListener('load', function() {
+        adjustResultTableBodyHeight();
+        adjustTableResponsive();
+
+        const header = document.querySelector('.result-table-header');
+        const body = document.querySelector('.result-table-body');
+
+        if (body && header) {
+            body.addEventListener('scroll', function() {
+                header.scrollLeft = body.scrollLeft;
+            });
+        }
+
+        // Handle individual checkbox changes
+        const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+        const selectAllCheckbox = document.getElementById('select-all-checkbox');
+
+        rowCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                // Update select all checkbox state
+                if (selectAllCheckbox) {
+                    const checkedCount = document.querySelectorAll('.row-checkbox:checked').length;
+                    const totalCount = rowCheckboxes.length;
+                    selectAllCheckbox.checked = checkedCount === totalCount;
+                    selectAllCheckbox.indeterminate = checkedCount > 0 && checkedCount < totalCount;
+                }
+            });
+        });
+    });
+
+    window.addEventListener('resize', function() {
+        adjustResultTableBodyHeight();
+        adjustTableResponsive();
+    });
+</script>

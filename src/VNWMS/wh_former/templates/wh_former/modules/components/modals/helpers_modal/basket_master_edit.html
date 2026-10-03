@@ -1,0 +1,78 @@
+{% load i18n %}
+<div class="modal fade" id="basketEditModal" tabindex="-1" aria-labelledby="basketEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form method="post" id="basketEditForm">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="basketEditModalLabel">{% trans "Edit Basket Information" %}</h5>
+                    <button type="button" class="fas fa-close" data-bs-dismiss="modal" aria-label="Close"
+                            style="background-color: white; border: none"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="edit_basket_no" id="edit_basket_no">
+                    <input type="hidden" name="edit_saved_value" id="edit_saved_value">
+                    <input type="hidden" name="edit_purchase_order" id="edit_purchase_order">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="edit_basket_receive_date" class="form-label">{% trans "Receive Date" %}</label>
+                                <input type="date" class="form-control" name="edit_basket_receive_date" id="edit_basket_receive_date">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                {% include 'wh_former/modules/components/forms/fields/forms_length_field.html' with length_value=edit_basket_length add=False %}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="edit_basket_purchase_order" class="form-label">{% trans "Purchase Order" %}</label>
+                                <input type="text" class="form-control" name="edit_basket_purchase_order" id="edit_basket_purchase_order">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                {% include 'wh_former/modules/components/forms/fields/forms_brand_field.html' with former_vendor=edit_basket_length add=False %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="edit_basket_description" class="form-label">{% trans "Description" %}</label>
+                        <textarea class="form-control" name="edit_basket_description" id="edit_basket_description" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    {% if basket_state < 2 %}
+                        <button type="button" class="delete-button-2" onclick="deleteBasketGroup()">
+                            {% include 'wh_former/modules/components/buttons/delete-button-2.html' %}
+                        </button>
+                    {% endif %}
+                    <button type="button" class="cancel-button-2" data-bs-dismiss="modal">
+                        {% include 'wh_former/modules/components/buttons/cancel-button-2.html' %}
+                    </button>
+                    <button type="button" class="update-button-2" onclick="updateBasket()">
+                        {% include 'wh_former/modules/components/buttons/update-button-2.html' %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const dateInput = document.getElementById("edit_basket_receive_date");
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const day = String(today.getDate()).padStart(2, "0");
+        dateInput.max = `${year}-${month}-${day}`;
+    });
+</script>

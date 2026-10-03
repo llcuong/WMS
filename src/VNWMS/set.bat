@@ -1,0 +1,1 @@
+set DJANGO_SETTINGS_MODULE=PMS.settings.test-ray

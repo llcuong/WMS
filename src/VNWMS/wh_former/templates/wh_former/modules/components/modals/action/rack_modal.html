@@ -1,0 +1,77 @@
+{% load i18n %}
+
+<div class="modal fade" id="rackModal" tabindex="-1" aria-labelledby="rackModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="border-radius: 0.5rem;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rackModalLabel">
+                    <i class="fas fa-list"></i> {% trans "Rack scanned Information" %}
+                </h5>
+            </div>
+            <div class="modal-body">
+                <div id="rackModalContent">
+                    <div class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">{% trans "Loading..." %}</span>
+                        </div>
+                        <p class="mt-2">{% trans "Loading rack data..." %}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="cancel-button-2" data-bs-dismiss="modal">
+                    {% include 'wh_former/modules/components/buttons/cancel-button-2.html' %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    (function () {
+      const el = document.getElementById('rackModal');
+      if (!el || !window.bootstrap) return;
+
+      // Nếu trang có thể include partial nhiều lần → dispose trước rồi tạo lại
+      bootstrap.Modal.getInstance(el)?.dispose();
+
+      const modal = bootstrap.Modal.getOrCreateInstance(el, {
+        backdrop: true,
+        focus: true,
+        keyboard: true
+      });
+
+      // Expose hàm để gọi ở bất kỳ đâu
+      window.openRackModal  = () => modal.show();
+      window.closeRackModal = () => modal.hide();
+
+      // Khi modal ẩn xong → quét backdrop thừa & class treo
+      el.addEventListener('hidden.bs.modal', () => {
+        // Nếu không còn modal nào đang mở thì dọn
+        if (!document.querySelector('.modal.show')) {
+          document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+          document.body.classList.remove('modal-open');
+          document.body.style.removeProperty('overflow');
+          document.body.style.removeProperty('padding-right');
+        }
+      });
+
+      // Chặn việc sinh nhiều backdrop nếu trang lỡ tạo 2 instance
+      document.addEventListener('show.bs.modal', () => {
+        // defer 1 tick cho backdrop render rồi mới lọc
+        setTimeout(() => {
+          const backs = document.querySelectorAll('.modal-backdrop');
+          if (backs.length > 1) backs.forEach((b, i) => { if (i > 0) b.remove(); });
+        }, 0);
+      });
+
+      // Nếu muốn bắt nút đóng trong footer hoạt động bằng JS luôn:
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('[data-bs-dismiss="modal"]')) {
+          e.preventDefault(); // optional
+          modal.hide();
+        }
+      });
+    })();
+</script>

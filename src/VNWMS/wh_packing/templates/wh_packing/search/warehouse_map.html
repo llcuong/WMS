@@ -1,0 +1,255 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Packing Warehouse Map" %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        .warehouse_map {
+            display: block;
+            background-image: url('{{ bg }}');
+            background-repeat: no-repeat;
+            background-position: left;
+            width: 70%;
+            {#width: 1024px;#}
+        {% if warehouse.wh_code == 'NBRPKG1' %}
+            height: 1700px;
+            {% else %}
+            height: 1005px;
+        {% endif %}
+            position: absolute;
+
+            top: 100px;
+            left: 100px;
+            background-size: 100%;
+        }
+
+        html, body {
+            position: absolute;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container p-0">
+            <div style="
+                background-image: url('/static/base/ruler.jpg');
+                background-repeat: no-repeat;
+                background-position: left;
+                width: 1424px;
+                height: 1000px;
+            " class="col-5">
+
+                <div class="warehouse_map"></div>
+            </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        function sendValue(value) {
+            if (window.opener) {
+                window.opener.postMessage(value, window.location.origin); // 傳值給母視窗
+                window.close();
+            }
+        }
+
+
+        // Hàm lấy dữ liệu từ API và hiển thị các rectangle
+        async function loadAreas() {
+            const response = await fetch('{% url 'get_all_areas_api' %}'); // Lấy dữ liệu từ API
+            const areas = await response.json();
+
+            const warehouseMap = document.querySelector(".warehouse_map"); // Lấy div chứa ảnh nền
+
+            // Duyệt qua từng khu vực và tạo các div.rectangle
+            areas.forEach(area => {
+                const rect = document.createElement("div");
+                rect.classList.add("rectangle"); // Thêm lớp rectangle cho div
+
+                // Css for rectangle class
+                rect.style.top = area.pos_y + (-103) + "px";
+                rect.style.left = area.pos_x + (-100) + "px";
+                rect.style.width = area.area_w + "px";
+                rect.style.height = area.area_l + "px";
+
+                rect.style.backgroundColor = "rgba(255, 165, 0, 0.6)";
+                rect.style.border = "2px solid rgba(255, 165, 0, 0.8)";
+                rect.style.position = "absolute";
+                rect.style.display = "flex";
+                rect.style.alignItems = "center";
+                rect.style.justifyContent = "center";
+
+                // Thiết lập phong cách nổi bật cho tên của các zone
+                rect.style.color = "#FFFF00";  // Màu chữ vàng nổi bật
+                rect.style.fontSize = "15px";  // Kích thước chữ lớn, dễ đọc
+                rect.style.fontWeight = "bold";  // Làm đậm chữ để nổi bật
+                rect.style.fontFamily = "'Arial', sans-serif";  // Sử dụng font Arial
+                rect.style.textShadow = "2px 2px 8px rgba(0, 0, 0, 0.7)";  // Tạo bóng chữ để nổi bật hơn trên nền tối
+                rect.style.cursor = "pointer";
+
+                rect.textContent = area.area_name;
+
+
+                // Set data-zone với tên khu vực
+                rect.setAttribute("data-zone", area.area_id);
+                rect.setAttribute("data-layer", area.layer);
+
+
+                // Thêm div.rectangle vào trong warehouse_map
+                warehouseMap.appendChild(rect);
+            });
+
+
+            // Gọi hàm xử lý sự kiện click sau khi tất cả các div.rectangle đã được tạo
+            addClickEventToAreas();
+        }
+
+
+        // Hàm xử lý sự kiện click vào các div.rectangle
+        function addClickEventToAreas() {
+            document.querySelectorAll(".rectangle").forEach(rect => {
+                rect.addEventListener("click", async function () {
+                    let area_id = this.getAttribute("data-zone"); // Lấy giá trị data-zone
+                    let area_layer = this.getAttribute("data-layer");
+                    console.log("Selected Area ID:", area_id);
+
+                    try {
+                        const response = await fetch(`/wh_packing/check_bin_exists/?area=${area_id}`);
+                        const bins = await response.json();
+
+                        console.log("Received data:", bins);
+
+                        if (bins.error) {
+                            alert(`Lỗi: ${bins.error}`);
+                            return;
+                        }
+
+                        // Xóa các bins cũ trước khi thêm mới
+                        // Xóa các bins cũ trước khi thêm mới
+                        document.querySelectorAll(".bin_container").forEach(container => container.remove());
+
+                        const warehouseMap = document.querySelector(".warehouse_map");
+
+                        // Tạo div chứa toàn bộ nhóm bin
+                        const binContainer = document.createElement("div");
+                        binContainer.classList.add("bin_container");
+                        binContainer.style.position = "absolute";
+                        binContainer.style.top = "50px";
+                        binContainer.style.left = "1218px";
+                        binContainer.style.transform = "translateX(-50%)";
+                        binContainer.style.display = "flex";
+                        binContainer.style.alignItems = "flex-start";
+                        warehouseMap.appendChild(binContainer);
+
+                        let binGroup = document.createElement("div");
+                        binGroup.classList.add("bin_group");
+                        binGroup.style.display = "flex";
+                        binGroup.style.flexDirection = "column";
+                        binGroup.style.justifyContent = "center";
+                        binGroup.style.marginBottom = "10px";
+
+                        binContainer.appendChild(binGroup);
+
+                        bins.forEach((bin, index) => {
+                            if (area_layer === '3' && index % 9 === 0 && index !== 0) {
+                                // Khi đủ 9 phần tử, tạo nhóm mới
+                                binGroup = document.createElement("div");
+                                binGroup.classList.add("bin_group");
+                                binGroup.style.display = "flex";
+                                binGroup.style.flexDirection = "column";
+                                binGroup.style.justifyContent = "center";
+                                binGroup.style.marginBottom = "10px";
+                                binContainer.appendChild(binGroup);
+                            } else if ((area_layer === '2' || area_layer =='4') && index % 12 === 0 && index !== 0) {
+                                binGroup = document.createElement("div");
+                                binGroup.classList.add("bin_group");
+                                binGroup.style.display = "flex";
+                                binGroup.style.flexDirection = "column";
+                                binGroup.style.justifyContent = "center";
+                                binGroup.style.marginBottom = "10px";
+                                binContainer.appendChild(binGroup);
+                            } else if (area_layer === '5' && index % 10 === 0 && index !== 0) {
+                                binGroup = document.createElement("div");
+                                binGroup.classList.add("bin_group");
+                                binGroup.style.display = "flex";
+                                binGroup.style.flexDirection = "column";
+                                binGroup.style.justifyContent = "center";
+                                binGroup.style.marginBottom = "10px";
+                                binContainer.appendChild(binGroup);
+                                if (bins.length > 50) {
+                                        binContainer.style.left = "1250px";
+                                }
+                            } else if (area_layer === '6' && index % 6 === 0 && index !== 0) {
+                                binGroup = document.createElement("div");
+                                binGroup.classList.add("bin_group");
+                                binGroup.style.display = "flex";
+                                binGroup.style.flexDirection = "column";
+                                binGroup.style.justifyContent = "center";
+                                binGroup.style.marginBottom = "10px";
+                                binContainer.appendChild(binGroup);
+                                if (bins.length > 30) {
+                                        binContainer.style.left = "1250px";
+                                }
+                            }
+
+                            const binDiv = document.createElement("div");
+                            binDiv.classList.add("bin");
+
+                            // Set CSS
+                            binDiv.style.width = "90px";
+                            binDiv.style.height = "50px";
+                            binDiv.style.margin = "5px";
+                            binDiv.style.display = "flex";
+                            binDiv.style.alignItems = "center";
+                            binDiv.style.justifyContent = "center";
+                            binDiv.style.cursor = "pointer";
+                            binDiv.style.backgroundColor = bin.status === "red" ? "rgba(255, 0, 0, 0.5)" : "rgba(0, 255, 0, 0.5)";
+                            binDiv.style.border = bin.status === "red" ? "2px solid red" : "2px solid green";
+
+                            binDiv.textContent = bin.bin_name;
+                            binDiv.setAttribute("data-zone", bin.bin_id);
+                            binDiv.setAttribute("data-zone2", bin.bin_id);
+
+                            binGroup.appendChild(binDiv);
+                        });
+
+                        addClickEventToBins();
+
+
+
+                    } catch (error) {
+                        console.error("Error fetching data:", error);
+                    }
+                });
+            });
+        }
+
+
+
+        // Hàm xử lý sự kiện click vào các div.rectangle
+        function addClickEventToBins() {
+            document.querySelectorAll(".bin").forEach(b => {
+                b.addEventListener("click", async function () {
+
+                    const binId = this.getAttribute("data-zone");
+                    const binName = this.getAttribute("data-zone2");
+                    sendValue({bin_id: binId, bin_name: binName});
+
+                });
+            });
+        }
+
+        // Gọi hàm loadAreas khi trang được tải
+        window.onload = loadAreas;
+
+
+    </script>
+
+</body>
+</html>

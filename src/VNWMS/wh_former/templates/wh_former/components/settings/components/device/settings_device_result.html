@@ -1,0 +1,59 @@
+{% load i18n %}
+<div class="col-12">
+    <table class="table table-sm" style="border-collapse: separate; border-spacing: 0 12px;">
+        <thead class="table-light">
+            <tr>
+                <th>{% trans "Client IP" %}</th>
+                <th>{% trans "Gate" %}</th>
+                <th>{% trans "Controller IP" %}</th>
+                <th>{% trans "Port" %}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in settings_list %}
+                <tr>
+                    <td style="border: none; padding: 0;"><div style="color: #404040; border: 2px solid #007bff; border-top-left-radius: 8px; border-bottom-left-radius: 8px; padding: 2px; height: 31px; text-align: center;">{{ s.client_device_ip }}</div></td>
+                    <td style="border: none; padding: 0;"><div style="color: #404040; border: 2px solid #007bff; border-left: none; padding: 2px; height: 31px; text-align: center;">{{ s.location_name }}</div></td>
+                    <td style="border: none; padding: 0;"><div style="color: #404040; border: 2px solid #007bff; border-left: none; padding: 2px; height: 31px; text-align: center;">{{ s.rfid_reader_ip }}</div></td>
+                    <td style="border: none; padding: 0;"><div style="color: #404040; border: 2px solid #007bff; border-left: none; border-top-right-radius: 8px; border-bottom-right-radius: 8px; padding: 2px; height: 31px; text-align: center;">{{ s.rfid_reader_port }}</div></td>
+                    <td style="border: none; padding-top: 0px !important;">
+                        <a href="{% url 'manage_wh_former_edit_client' s.id %}" class="btn btn-sm btn-outline-primary" style="width: 33px;"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'manage_wh_former_delete_client' s.id %}" class="btn btn-sm btn-outline-danger" style="width: 33px;"><i class="fas fa-times"></i></a>
+                        <a href="{% url 'manage_wh_former_connection_test_client' s.id %}" class="btn btn-sm btn-outline-warning test-connection" style="width: 33px;"><i class="fas fa-sync"></i></a>
+                        {% with active=s.rfif_setting_active_id %}
+                            <form method="post" action="{% url 'manage_wh_former_power_client' s.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit"
+                                    class="btn btn-sm {% if s.rfid_reader_status %}btn-success{% else %}btn-danger{% endif %}" style="width: 33px;">
+                                    <i class="fas fa-power-off"></i>
+                                </button>
+                            </form>
+{#                                                    <form method="post" action="{% url 'manage_rfid_power_read' s.id 'read' %}" style="display:inline;">#}
+{#                                                        {% csrf_token %}#}
+{#                                                        <buttons type="submit"#}
+{#                                                            class="btn btn-sm {% if s.rfif_setting_active_id.rfid_read_mode %}btn-success{% else %}btn-danger{% endif %}">#}
+{#                                                            {% if s.rfif_setting_active_id.rfid_read_mode %}Stop&nbsp;{% else %}Read{% endif %}#}
+{#                                                        </buttons>#}
+{#                                                    </form>#}
+{#                                                    <form method="post" action="{% url 'user_rfid_start_button' s.id %}" style="display:inline;">#}
+{#                                                        {% csrf_token %}#}
+{#                                                        <buttons id="start-btn-{{ s.id }}" type="submit"#}
+{#                                                            class="btn btn-sm {% if s.rfif_setting_active_id.rfid_read_mode %}btn-success{% else %}btn-outline-success{% endif %}">Start</buttons>#}
+{#                                                    </form>#}
+{#                                                    <form method="post" action="{% url 'user_rfid_stop_button' s.id %}" style="display:inline;">#}
+{#                                                        {% csrf_token %}#}
+{#                                                        <buttons id="stop-btn-{{ s.id }}" type="submit"#}
+{#                                                            class="btn btn-sm {% if s.rfif_setting_active_id.rfid_read_mode %}btn-danger{% else %}btn-outline-danger{% endif %}">Stop</buttons>#}
+{#                                                    </form>#}
+                        {% endwith %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">{% trans "No records yet." %}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,40 @@
+{% load i18n %}
+
+<label for="length_value_input" class="form-label">{% if name %}{{ name }}{% else %}{% trans "Length" %}{% endif %}{% if is_required %}<span class="">*</span>{% endif %}</label>
+
+<div class="custom-select-wrapper position-relative">
+    <input type="text" id="length_value_input" name="length_value" class="select-input form-control"
+       placeholder="{% trans 'Select or Typing' %}..." autocomplete="off"
+       value="{{ length_value|default:'' }}"
+       {% if is_required %}required{% endif %}>
+
+    <span class="x-button position-absolute" style="right:{% if add and is_wh_former_admin %}35{% else %}10{% endif %}px"
+          onclick="document.getElementById('length_value_input').value = '';">
+        &times;
+    </span>
+
+    {% if add and is_wh_former_admin %}
+        <span class="x-button position-absolute end-0 me-2"
+              onclick="$('#lengthModal').modal('show')">
+            <i class="fa-solid fa-circle-plus fa-sm me-1"></i>
+        </span>
+    {% endif %}
+
+    <div id="length_dropdown" class="select-dropdown"></div>
+</div>
+
+{% for error in form.length_value.errors %}
+    <div class="text-danger">{{ error }}</div>
+{% endfor %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const lengthOptions = [
+            {% for name in form.params_length_list %}
+                "{{ name|escapejs }}"{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        ];
+        initDropdown("length_value_input", "length_dropdown", lengthOptions);
+        window.lengthOptions = lengthOptions;
+    });
+</script>

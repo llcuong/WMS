@@ -1,0 +1,500 @@
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Noah</title>
+    <link rel="stylesheet" href="{% static 'jquery-ui\jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap-4.1.3\css\bootstrap.min.css' %}">
+    <script src="{% static 'base\js\umd\popper.js' %}"></script>
+    <script src="{% static 'jquery\jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'jquery-ui\jquery-ui.min.js' %}"></script>
+    <script src="{% static 'bootstrap-4.1.3\js\bootstrap.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'fontawesome-5.4.2\css\all.css' %}">
+    <!--Custom styles-->
+    <link rel="stylesheet" type="text/css" href="{% static 'base\css\login.css' %}">
+    <style type="text/css">
+        input:required {
+            background: #ffffe7;
+        }
+
+        select:required {
+            background: #ffffe7;
+        }
+
+        img{
+            max-width:100%;
+        }
+        th{
+            font-family:arial,sans-serif,Meiryo,Microsoft JhengHei;
+        }
+        td{
+            font-family:arial,sans-serif,Meiryo,Microsoft JhengHei;
+        }
+        option{
+            font-family:arial,sans-serif,Meiryo,Microsoft JhengHei;
+        }
+        a{
+            font-family:arial,sans-serif,Meiryo,Microsoft JhengHei;
+        }
+        div{
+            font-family:arial,sans-serif,Meiryo,Microsoft JhengHei;
+        }
+        html, body {
+          height: 100vh;
+          max-height: 100vh; 
+          overflow: hidden;
+          margin: 0;
+          padding: 0;
+        }
+
+        .main-container {
+            height: 100vh; 
+            max-height: 100vh; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .main-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            height: 100vh; 
+            max-height: 100vh; 
+            overflow: hidden; 
+        }
+
+        .time-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            max-height: 100vh; 
+            text-align: center;
+            padding-right: 30px;
+            overflow: hidden;
+        }
+
+        .login-section {
+            height: 100vh;
+            max-height: 100vh;
+            overflow: hidden; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(10px);
+            border: 2px solid white;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            max-height: 85vh;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-card .card-body {
+            background: transparent;
+            padding: 1.5rem; 
+            overflow: hidden;
+        }
+
+        .login-card .card-header {
+            background: rgba(2, 74, 84, 0.8) !important;
+            border-bottom: 2px solid white;
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem; 
+        }
+
+        .login-card .card-footer {
+            background: rgba(2, 74, 84, 0.8) !important;
+            border-top: 2px solid white !important;
+            padding: 1rem; 
+        }
+
+        .form-group .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group-text {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            outline: 2px solid white;
+            color: #fff;
+            border-radius: 8px 0 0 8px;
+            transition: all 0.3s ease;
+            width: 50px; 
+            min-width: 50px;
+            height: 38px; 
+            min-height: 38px; 
+            display: flex; 
+            align-items: center;
+            justify-content: center; 
+            flex-shrink: 0;
+        }
+
+        .input-group-text i {
+            font-size: 16px;
+            width: 16px;
+            text-align: center; 
+        }
+
+        .input-group-text:hover {
+            outline-color: white !important; 
+        }
+
+        .input-group:hover .input-group-text {
+            outline-color: white !important;
+        }
+
+        .form-control {
+            background: white !important;
+            border: none; 
+            outline: 2px solid white;
+            color: #333 !important;
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s ease;
+            box-sizing: border-box; 
+            height: 38px; 
+        }
+
+        .form-control:focus {
+            outline: 2px solid white;
+            border-color: #FFC312; 
+            box-shadow: 0 0 10px #FFC312; 
+            background: white; 
+            color: #333; 
+        }
+
+        /* Input group hover effect */
+        .input-group:hover .input-group-text {
+            outline-color: #007bff;
+        }
+
+        .form-control::placeholder {
+            color: #999;
+        }
+
+        .form-control[type="checkbox"] {
+            background: white !important;
+            border: 2px solid #ddd; 
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            outline: none;
+            align-self: center; 
+        }
+
+        .checkbox-input-group .form-control[type="checkbox"] {
+            align-self: center;
+            margin-top: 0; 
+            margin-bottom: 0;
+        }
+
+        .checkbox-input-group span {
+            align-self: center; 
+        }
+
+        .form-group select {
+            background: white !important;
+            border: none;
+            outline: 2px solid white;
+            color: #333 !important;
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group select option {
+            background: white;
+            color: #333;
+        }
+
+        .login_btn {
+            background: linear-gradient(45deg, #FFD452, #FFC312);
+            border: 2px solid white; 
+            border-radius: 8px;
+            padding: 12px 30px;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(255, 195, 18, 0.6); 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center;
+            min-width: 140px;
+            width: auto;
+            line-height: 1;
+            height: 51px;
+        }
+
+        .login_btn:hover {
+            background: #007bff; 
+            border-color: #007bff; 
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.6);
+            color: white;
+        }
+
+        .login_btn:focus {
+            outline: none; 
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.6);
+        }
+
+        input:required {
+            background: white !important;
+        }
+
+        select:required {
+            background: white !important;
+        }
+
+        .messages {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .messages li {
+            background: rgba(220, 53, 69, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            backdrop-filter: blur(5px);
+        }
+
+        .login-card span {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .time-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            padding-right: 30px; 
+        }
+        
+        #show_time {
+            font-size: 8em;
+            color: white;
+        }
+
+        #show_date {
+            font-size: 3em;
+            color: white;
+            margin-top: 20px;
+        }
+        
+        @media (min-width: 992px) {
+            .time-section {
+                display: flex;
+            }
+            .login-section {
+                padding-left: 30px;
+            }
+            .main-content {
+                max-width: 1000px; 
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .time-section {
+                display: none !important;
+            }
+            
+            .login-section {
+                width: 100% !important;
+                padding: 20px;
+                box-sizing: border-box;
+            }
+            
+            .login-card {
+                margin: 0;
+                max-height: 90vh; 
+            }
+
+            #show_time {
+                font-size: 6em;
+            }
+            #show_date {
+                font-size: 2em; 
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 991px) {
+            #show_time {
+                font-size: 6em;
+            }
+            #show_date {
+                font-size: 2em;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .login-card {
+                max-height: 95vh;
+            }
+            
+            .login-card .card-body {
+                padding: 1rem;
+            }
+            
+            .form-group .input-group {
+                margin-bottom: 0.8rem;
+            }
+        }
+    </style>
+
+    <script language="JavaScript">
+        $(document).ready(function() {
+               {% block ready %}
+               {% endblock ready %}
+        });
+
+        function submit(form_div){
+            $('#'+form_div).submit();
+        }
+
+        $(function(){
+            ShowDate();
+            ShowTime();
+        });
+
+        function ShowDate(){
+          var weekday = new Array(7);
+          weekday[0] = "{% trans 'Sunday' %}";
+          weekday[1] = "{% trans 'Monday' %}";
+          weekday[2] = "{% trans 'Tuesday' %}";
+          weekday[3] = "{% trans 'Wednesday' %}";
+          weekday[4] = "{% trans 'Thursday' %}";
+          weekday[5] = "{% trans 'Friday' %}";
+          weekday[6] = "{% trans 'Saturday' %}";
+          var TimeNow=new Date();
+          var yyyy = TimeNow.getFullYear();
+          var MM = (TimeNow.getMonth()+1<10 ? '0' : '')+(TimeNow.getMonth()+1);
+          var dd = (TimeNow.getDate()<10 ? '0' : '')+TimeNow.getDate();
+          var n = weekday[TimeNow.getDay()];
+          $('#show_date').html(yyyy+'/'+MM+'/'+dd+' '+n);
+        }
+
+        function ShowTime(){
+            var TimeNow=new Date();
+            var h = (TimeNow.getHours()<10 ? '0' : '')+TimeNow.getHours();
+            var m = (TimeNow.getMinutes()<10 ? '0' : '')+TimeNow.getMinutes();
+            var s = (TimeNow.getSeconds()<10 ? '0' : '')+TimeNow.getSeconds(); 　
+
+            $('#show_time').html(h+':'+m);
+            setTimeout('ShowTime()',1000);
+        }
+
+        function refreshAndSubmit(formId) {
+            fetch(window.location.href, { method: 'GET', credentials: 'same-origin' })
+                .then(res => res.text())
+                .then(html => {
+                    let parser = new DOMParser();
+                    let doc = parser.parseFromString(html, 'text/html');
+                    let newToken = doc.querySelector('[name=csrfmiddlewaretoken]').value;
+                    document.querySelector(`#${formId} [name=csrfmiddlewaretoken]`).value = newToken;
+                    document.getElementById(formId).submit();
+                });
+        }
+
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Enter"){
+                document.getElementById("btn_login").click();
+            }
+        })
+
+    </script>
+</head>
+<body>
+<div class="container-fluid main-container">
+    <div class="row w-100 h-100 main-content">
+
+        <div class="col-lg-7 d-none d-lg-flex">
+            <div class="time-section">
+                <div id="show_time"></div>
+                <div id="show_date"></div>
+            </div>
+        </div>
+        
+        <div class="col-lg-5 col-12 d-flex justify-content-center align-items-center login-section">
+            <div class="card w-100 login-card" style="max-width: 400px;">
+                <div class="card-header">
+                    <div class="p-2" style="text-align: center">
+                        <img src="{% static '/base/logo.svg' %}" style="width:100%" />
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="login_form" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        <input type="text" name="emp_no" class="form-control" placeholder="{% trans 'emp_no' %}" value="{{ cookies_username }}">
+                    </div>
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input type="password" name="password" class="form-control" placeholder="{%trans "Password" %}" value="{{ cookies_password }}">
+                    </div>
+                    
+                    <div class="form-group" style="text-align: right; margin-bottom: 1rem;">
+                        <label style="font-size: 0.95em; color: rgba(255, 255, 255, 0.8); cursor: pointer; display: flex; align-items: center; justify-content: flex-end;">
+                            <input type="checkbox" name="remember" value="on" checked 
+                                   style="margin-right: 8px; width: 20px; height: 20px; accent-color: #007bff; transform: scale(1.2);">
+                            {% trans "Remember Password" %}
+                        </label>
+                    </div>
+                    
+                        <input type="hidden" name="next" value="{{ next }}" />
+                    </form>
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-globe-asia"></i></span>
+                        </div>
+                        {% include 'bases/lang.html' %}
+                    </div>
+                    <div class="form-group text-center pt-3">
+                        <input type="button" value="{% trans "Submit" %}" id="btn_login" class="btn login_btn" onclick="refreshAndSubmit('login_form');">
+                    </div>
+                </div>
+                <div class="card-footer">
+                    {% if messages %}
+                        <div class="float-left">
+                            <ul class="messages">
+                                {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

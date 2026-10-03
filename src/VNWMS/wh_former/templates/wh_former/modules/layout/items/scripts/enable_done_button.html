@@ -1,0 +1,17 @@
+<script>
+    function enableDoneButton() {
+        const doneButton = document.getElementById('doneButton');
+        const rackScannedValue = document.getElementById('rackScannedValue');
+        if (!doneButton) return;
+
+        const rackValueValid = rackScannedValue ? Number(rackScannedValue.textContent.trim()) : 0;
+
+        if (checkAllFieldsFilled() && rackValueValid > 0) {
+            doneButton.disabled = false;
+            doneButton.classList.remove('btn-disabled');
+        } else {
+            doneButton.disabled = true;
+            doneButton.classList.add('btn-disabled');
+        }
+    }
+</script>

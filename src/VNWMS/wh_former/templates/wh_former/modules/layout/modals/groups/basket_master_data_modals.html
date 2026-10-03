@@ -1,0 +1,9 @@
+{% include 'wh_former/modules/components/modals/action/success_modal.html' %}
+{% include 'wh_former/modules/components/modals/action/error_modal.html' %}
+{% include 'wh_former/modules/components/modals/action/loading_modal.html' %}
+
+{% url 'basket_insert' as url %}{% include 'wh_former/modules/components/modals/action/cancel_modal.html' with url=url %}
+{% include 'wh_former/modules/components/modals/params/length_modal.html' %}
+{% include 'wh_former/modules/components/modals/params/vendor_modal.html' %}
+
+{% include 'wh_former/modules/components/modals/helpers_modal/basket_master_data_confirm.html' %}

@@ -1,0 +1,475 @@
+<script>
+    window.allEpcs = window.allEpcs || [];
+    window.alertShown = window.alertShown || {};
+    window.globalEpcCache = window.globalEpcCache || new Set(); // Global cache for all EPCs across the page
+
+    function rebuildInfoTable() {
+        const infoTable = document.getElementById("stock-new-info-table");
+        if (!infoTable) return;
+        infoTable.innerHTML = "";
+
+        const groups = {};
+        window.allEpcs.forEach(item => {
+            const b = item.batch_no;
+            if (!groups[b]) groups[b] = [];
+            groups[b].push(item);
+        });
+
+        let html = "";
+        Object.values(groups).forEach(items => {
+            const [batchNo, aql, formerType, vendorName, usedDay, size, surface] = items[0].batch_no;
+            const totalBasket = items.length;
+            const totalFormer = items.reduce((sum, it) => sum + (parseInt(it.epc_qty, 10) || 0), 0);
+
+            html += `
+                <tr id="batch-${batchNo.replace(/\W/g, '_')}" style="border-bottom:1px solid #ddd;font-size:15px;font-weight:bold;height:38px;">
+                  <td style="width:30%;">${batchNo}</td>
+                  <td style="width:25%;">${surface}</td>
+                  <td style="width:11%;">${size}</td>
+                  <td style="width:12%;">${usedDay}</td>
+                  <td style="width:12%;">${totalBasket}</td>
+                  <td style="width:13%;">${totalFormer}</td>
+                </tr>`;
+        });
+        infoTable.innerHTML = html;
+
+
+        if (typeof window.mode !== 'undefined' && window.mode === 'clean' && firstBatchNo) {
+            const stockoutInput = document.getElementById('id_stockout_form');
+            if (stockoutInput) {
+                stockoutInput.value = '';
+                stockoutInput.value = firstBatchNo;
+            }
+        }
+    }
+
+    function loadRFIDtable(pid, columnWidth, columnAlign, manual, action_name, bin_selection) {
+        window.lastEPCSeen = window.lastEPCSeen || {};
+        window.epcCache = window.epcCache || {};
+        window.rowIndexMap = window.rowIndexMap || {};
+        lastEPCSeen[pid] = null;
+        epcCache[pid] = new Set();
+        rowIndexMap[pid] = rowIndexMap[pid] || 1;
+
+        function loadLatestEPCs() {
+            const tbody = document.querySelector(`#epc-table-body-${pid}`);
+            const container = document.getElementById(`epc-table-wrapper-${pid}`);
+            const startBtn = document.getElementById(`start-btn-${pid}`);
+            if (!container || !startBtn.classList.contains('active')) return;
+
+            const machineSelect = document.getElementById('machine-select');
+            const plantSelect = document.getElementById('plant-select');
+            const selectedMachine = machineSelect ? machineSelect.value : '';
+            const selectedPlant = plantSelect ? plantSelect.value : '';
+
+            let bin_code;
+
+            {% if type == "empty" %}
+                bin_code = 'X';
+            {% else %}
+                bin_code = document.getElementById('bin_code')?.value || '';
+            {% endif %}
+
+            // Sử dụng bin đã lấy từ API trước đó thay vì lấy từ form
+            const stockformBin = window.stockformBin || '';
+
+            fetch("{% url 'get_rfid_epc_api' %}?pid=" + pid
+                + "&action=" + action_name
+                + "&selected_machine=" + encodeURIComponent(selectedMachine || 'NOT')
+                + "&stock_form=" + encodeURIComponent(
+                    document.getElementById('stock_form_input')?.value || ''
+                )
+                + "&stockform_bin=" + encodeURIComponent(stockformBin)  // Truyền bin thay vì stockform
+                + "&bin_code=" + encodeURIComponent(bin_code || "")
+            )
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.epcs?.length) return;
+
+                    let newRowsHtml = "";
+                    const cache = epcCache[pid];
+
+                    data.epcs.forEach(item => {
+                        if (cache.has(item.epc_raw) || window.globalEpcCache.has(item.epc_raw)) return;
+                        cache.add(item.epc_raw);
+                        window.globalEpcCache.add(item.epc_raw);
+
+                        window.allEpcs.push(item);
+
+                        let bin = 'X';
+                        {% if type != "empty" %}
+                            bin = item.bin;
+                        {% endif %}
+
+                        const stt = rowIndexMap[pid]++;
+                        const values = [stt, item.epc_raw, item.epc_vendor, item.epc_qty, bin];
+                        const htmlRow = values.map((v, i) => {
+                            const align = columnAlign[i] || 'center';
+                            const width = columnWidth[i] || 20;
+                            if (!manual && i === 3) {
+                                return `<td class="result-manual-table-td" style="width:${width}px;text-align:${align};padding:2px;">
+                                            <div style="display:flex;align-items:center;justify-content:center;gap:4px;">
+                                                <button type="button" class="qty-btn active btn-primary" data-value="1"
+                                                    style="width:32px;height:32px;border-radius:6px;border:none;background:#0d6efd;color:white;">1</button>
+                                                <button type="button" class="qty-btn" data-value="2"
+                                                    style="width:32px;height:32px;border-radius:6px;border:1px solid #ccc;background:#f5f5f5;">2</button>
+                                                <button type="button" class="qty-btn" data-value="3"
+                                                    style="width:32px;height:32px;border-radius:6px;border:1px solid #ccc;background:#f5f5f5;">3</button>
+                                                <button type="button" class="qty-btn" data-value="4"
+                                                    style="width:32px;height:32px;border-radius:6px;border:1px solid #ccc;background:#f5f5f5;">4</button>
+                                                <input type="hidden" class="stepper-input" value="1" />
+                                            </div>
+                                        </td>`;
+                            }
+
+                            if (action_name !== 'stockout' && bin_selection && i === 4) {
+                                return `<td class="result-table-td" style="width:${width}px;text-align:${align};padding:2px!important;" data-original-value="${item.bin}">
+                                            <div style="display:inline-block;height:44px;width:80px;vertical-align:middle;">
+                                                <span class="selected-area-name" style="line-height:44px;" data-epc="${item.epc_raw}"></span>
+                                            </div>
+                                            <button type="button" class="btn btn-primary open-custom-modal"
+                                                style="width:44px;height:44px;padding:0;" data-epc="${item.epc_raw}">
+                                                <i class="fas fa-location"></i>
+                                            </button>
+                                        </td>`;
+                            }
+                            return `<td class="result-table-td" style="width:${width}px;text-align:${align};padding:2px!important;" data-original-value="${v}">${v}</td>`;
+                        }).join("");
+
+                        newRowsHtml += `<tr data-epc="${item.epc_raw}" data-batch="${item.batch_no}"
+                            class="table-success ${manual ? 'result-table-tr' : 'result-manual-table-tr'}">
+                                ${htmlRow}
+                         </tr>`;
+                    });
+
+                    if (newRowsHtml) {
+                        tbody.insertAdjacentHTML('beforeend', newRowsHtml);
+
+                        if (window.updateSubmitButtons) {
+                            setTimeout(window.updateSubmitButtons, 100);
+                        }
+                    }
+
+                    setTimeout(() => {
+                        if (machineSelect && selectedMachine) {
+                            machineSelect.value = selectedMachine;
+                        }
+                        if (plantSelect && selectedPlant) {
+                            plantSelect.value = selectedPlant;
+                        }
+
+                        data.epcs.forEach(item => {
+                            const r = tbody.querySelector(`tr[data-epc="${item.epc_raw}"]`);
+                            if (r) r.classList.remove('table-success');
+                        });
+
+                        if (window.shouldShowAlert && !window.alertShown[pid]) {
+                            const totalFormer = parseInt(document.getElementById(`total-count-${pid}`)?.innerText || '0', 10);
+                            const totalFormerNeeded = window.selectedTotalFormer || 0;
+
+                            const missingValue = totalFormerNeeded - totalFormer;
+                            const missingSpan = document.getElementById('missing-value');
+                            if (missingSpan) {
+                                missingSpan.textContent = missingValue;
+                            }
+
+                            window.alertShown[pid] = true;
+                            window.shouldShowAlert = false;
+                        }
+                    }, 100);
+
+                    while (tbody.rows.length > 500) {
+                        const old = tbody.lastChild;
+                        epcCache[pid].delete(old.dataset.epc);
+                        window.globalEpcCache.delete(old.dataset.epc);
+                        old.remove();
+                    }
+
+                    rebuildInfoTable();
+
+                    document.getElementById(`epc-count-${pid}`).innerText = tbody.rows.length;
+                })
+                .catch(error => {
+                    setTimeout(() => {
+                        if (machineSelect && selectedMachine) {
+                            machineSelect.value = selectedMachine;
+                        }
+                        if (plantSelect && selectedPlant) {
+                            plantSelect.value = selectedPlant;
+                        }
+                    }, 100);
+                });
+        }
+
+        setInterval(loadLatestEPCs, 1000);
+
+        const tbody = document.querySelector(`#epc-table-body-${pid}`);
+        tbody.addEventListener('click', e => {
+            const btn = e.target;
+
+            // Handle quantity button clicks
+            if (btn.matches('.qty-btn')) {
+                const row = btn.closest('tr');
+                const hiddenInput = row.querySelector('.stepper-input');
+                const allQtyBtns = row.querySelectorAll('.qty-btn');
+
+                // Remove active class from all buttons in this row
+                allQtyBtns.forEach(b => {
+                    b.classList.remove('active', 'btn-primary');
+                    b.style.background = '#f5f5f5';
+                    b.style.color = 'black';
+                    b.style.border = '1px solid #ccc';
+                });
+
+                // Add active class to clicked button
+                btn.classList.add('active', 'btn-primary');
+                btn.style.background = '#0d6efd';
+                btn.style.color = 'white';
+                btn.style.border = 'none';
+
+                // Update hidden input value
+                const selectedValue = btn.dataset.value;
+                hiddenInput.value = selectedValue;
+
+                // Update batch summary
+                updateBatchSummary(row.dataset.batch);
+
+                if (window.updateSubmitButtons) {
+                    setTimeout(window.updateSubmitButtons, 50);
+                }
+            }
+
+            if (btn.matches('.open-custom-modal') || btn.closest('.open-custom-modal')) {
+                const button = btn.closest('.open-custom-modal') || btn;
+                const epcRaw = button.dataset.epc;
+                window.currentEpcForBinSelection = epcRaw;
+                window.currentBinButton = button;
+            }
+        });
+
+        function updateBatchSummary(batchNo) {
+            const batchRows = document.querySelectorAll(`tr[data-batch="${batchNo}"]`);
+            const totalFormer = Array.from(batchRows)
+                .reduce((sum, row) => sum + (parseInt(row.querySelector('.stepper-input')?.value, 10) || 1), 0);
+            const infoRow = document.getElementById(`batch-${batchNo.replace(/\W/g, '_')}`);
+            if (infoRow) {
+                infoRow.children[5].textContent = totalFormer;
+            }
+        }
+    }
+
+    window.updateBinSelection = function (epcRaw, binName) {
+        const spans = document.querySelectorAll(`.selected-area-name[data-epc="${epcRaw}"]`);
+        spans.forEach(span => {
+            span.textContent = binName;
+        });
+
+        if (window.updateSubmitButtons) {
+            setTimeout(window.updateSubmitButtons, 50);
+        }
+    };
+</script>
+
+<script>
+    // Cờ để không bật modal liên tục cho cùng một pid TRONG 1 PHIÊN QUÉT
+    window.binAlertShown = window.binAlertShown || {};
+
+    // THÊM BIẾN GLOBAL ĐỂ THEO DÕI TRẠNG THÁI BIN
+    window.hasBinConflict = false;
+
+    function normalizeBin(bin) {
+        if (!bin) return null;
+        const s = String(bin).trim();
+        if (!s || s === '-' || s.toUpperCase() === 'UNKNOWN') return null;
+        return s;
+    }
+
+    // Lấy BIN từ 1 <tr>: ưu tiên span.selected-area-name; fallback vào cột BIN (td index 4)
+    function extractBinFromRow(tr) {
+        // Trường hợp có chọn BIN trong UI
+        const span = tr.querySelector('.selected-area-name');
+        if (span) {
+            const b = normalizeBin(span.textContent);
+            if (b) return b;
+        }
+        // Fallback: cột thứ 5 (index 4) – theo layout bảng đang dùng
+        const tds = tr.querySelectorAll('td.result-table-td, td.result-manual-table-td');
+        const binTd = tds[4];
+        if (binTd) {
+            const raw = binTd.getAttribute('data-original-value') || binTd.textContent;
+            const b = normalizeBin(raw);
+            if (b) return b;
+        }
+        return null;
+    }
+
+    // Gom distinct BIN từ tbody theo pid
+    function collectDistinctBins(pid) {
+        const tbody = document.getElementById(`epc-table-body-${pid}`);
+        const bins = new Set();
+        if (!tbody) return bins;
+        for (const tr of tbody.rows) {
+            const b = extractBinFromRow(tr);
+            if (b) bins.add(b);
+        }
+        return bins;
+    }
+
+    function showBinConflictModal(bins, pid, conflictType = 'multiple') {
+        // Đóng loading overlay ngay lập tức
+        const overlay = document.getElementById(`rfid-table-loading-overlay-${pid}`);
+        if (overlay) {
+            overlay.style.display = 'none';
+        }
+
+        // Click stop button để ngừng quét RFID
+        const stopBtn = document.getElementById(`stop-btn-${pid}`);
+        if (stopBtn && !stopBtn.disabled) {
+            stopBtn.click();
+        }
+
+        // CẬP NHẬT BIẾN GLOBAL KHI CÓ CONFLICT
+        window.hasBinConflict = true;
+
+        // Hiển thị modal cảnh báo với message khác nhau tùy loại conflict
+        const msgEl = document.getElementById('bin-conflict-message');
+        if (msgEl) {
+            if (conflictType === 'khac_bin_cu') {
+                msgEl.textContent = `Phát hiện BIN "KHÁC BIN CŨ"! Việc quét đã được tạm dừng. Vui lòng kiểm tra lại.`;
+            } else if (conflictType === 'different_from_stockform') {
+                const expectedBin = window.stockformBin || 'stockform bin';
+                msgEl.textContent = `Phát hiện BIN khác với BIN trong stockform! BIN trong bảng: ${Array.from(bins).join(', ')}, BIN mong đợi: ${expectedBin}. Việc quét đã được tạm dừng.`;
+            } else {
+                msgEl.textContent = `Phát hiện nhiều BIN khác nhau trong bảng: ${Array.from(bins).join(', ')}. Việc quét đã được tạm dừng. Vui lòng thống nhất 1 BIN trước khi tiếp tục.`;
+            }
+        }
+
+        const modalEl = document.getElementById('binConflictModal');
+        if (modalEl && window.bootstrap?.Modal) {
+            new bootstrap.Modal(modalEl).show();
+        } else {
+            if (conflictType === 'khac_bin_cu') {
+                alert('Phát hiện BIN "KHÁC BIN CŨ"! Việc quét đã được tạm dừng.');
+            } else if (conflictType === 'different_from_stockform') {
+                alert('Phát hiện BIN khác với BIN trong stockform! Việc quét đã được tạm dừng.');
+            } else {
+                alert('Phát hiện nhiều BIN khác nhau! Việc quét đã được tạm dừng.');
+            }
+        }
+
+        // SET FLAG CHỈ CHO PHIÊN QUÉT HIỆN TẠI
+        window.binAlertShown[pid] = true;
+    }
+
+    function checkDistinctBinsAndAlert(pid) {
+        // ALWAYS PASS - Luôn cho phép, không check bin conflict
+        window.hasBinConflict = false;
+
+        /* ========== COMMENTED OUT - BIN CONFLICT CHECKING LOGIC ==========
+        const bins = collectDistinctBins(pid);
+        const expectedBin = normalizeBin(window.stockformBin);
+
+        // Reset conflict status
+        window.hasBinConflict = false;
+
+        // Case 1: Nhiều BIN khác nhau trong bảng - ĐIỀU KIỆN MỚI
+        if (bins.size > 1) {
+            const binsArray = Array.from(bins);
+
+            // Đếm số BIN KHÔNG có chữ Z
+            const binsWithoutZ = binsArray.filter(bin => !bin.toUpperCase().includes('Z'));
+
+            // Nếu có 2 BIN trở lên KHÔNG có chữ Z → show conflict
+            if (binsWithoutZ.length >= 2) {
+                window.hasBinConflict = true;
+                if (!window.binAlertShown[pid]) {
+                    showBinConflictModal(bins, pid, 'multiple');
+                }
+                return;
+            }
+
+            // Nếu chỉ có 1 BIN không có Z và các BIN còn lại có Z → OK, không conflict
+            // Tiếp tục check các case khác
+        }
+
+        // Case 2: Có BIN với text "KHÁC BIN CŨ"
+        const binsArray = Array.from(bins);
+        if (binsArray.some(bin => bin === "KHÁC BIN CŨ")) {
+            window.hasBinConflict = true;
+            if (!window.binAlertShown[pid]) {
+                showBinConflictModal(bins, pid, 'khac_bin_cu');
+            }
+            return;
+        }
+
+        // Case 3: Có 1 BIN nhưng khác với BIN từ stockform
+        // CHỈ CHECK KHI expectedBin KHÔNG PHẢI LÀ NONE VÀ KHÔNG CHỨA CHỮ Z
+        if (bins.size === 1 && expectedBin &&
+            expectedBin.toUpperCase() !== 'NONE' &&
+            !expectedBin.toUpperCase().includes('Z')) {
+
+            const currentBin = binsArray[0];
+            // Cũng bỏ qua check nếu currentBin có chứa chữ Z
+            if (!currentBin.toUpperCase().includes('Z') && currentBin !== expectedBin) {
+                window.hasBinConflict = true;
+                if (!window.binAlertShown[pid]) {
+                    showBinConflictModal(bins, pid, 'different_from_stockform');
+                }
+                return;
+            }
+        }
+
+        // Case 4: Không có conflict
+        window.hasBinConflict = false;
+        ========== END COMMENTED OUT ========== */
+    }
+
+    // HÀM RESET KHI BẮT ĐẦU QUÉT MỚI
+    function resetBinConflictForNewScan(pid) {
+        // Reset flag cho phép show modal lại khi start mới
+        window.binAlertShown[pid] = false;
+        // Reset conflict status
+        window.hasBinConflict = false;
+    }
+
+    function updateSaveButtonIfExists() {
+        if (typeof window.ftoenableSaveButton === 'function') {
+            const mode = document.querySelector('form') ?
+                (document.querySelector('form').dataset.mode ||
+                    document.querySelector('input[name="mode"]')?.value || '') : null;
+            window.ftoenableSaveButton(mode);
+        }
+    }
+
+    // Khởi tạo observer theo đúng tbody đang render trong file table (id: epc-table-body-{{ pid }})
+    document.addEventListener('DOMContentLoaded', function () {
+        const tbody = document.getElementById('epc-table-body-3');
+        if (!tbody) return;
+
+        // Initial check
+        checkDistinctBinsAndAlert(3);
+
+        // Quan sát thay đổi hàng (thêm/xoá)
+        const obs = new MutationObserver(() => checkDistinctBinsAndAlert(3));
+        obs.observe(tbody, {childList: true});
+
+        // Check lại khi resize
+        window.addEventListener('resize', () => checkDistinctBinsAndAlert(3));
+    });
+
+    // Gọi sau MỖI LẦN check BIN xong
+    const _orig_checkDistinct = window.checkDistinctBinsAndAlert;
+    window.checkDistinctBinsAndAlert = function (pid) {
+        const r = _orig_checkDistinct(pid);
+        updateSaveButtonIfExists();
+        return r;
+    };
+
+    // Nếu anh có hàm updateBinSelection, thêm gọi lại:
+    const _orig_updateBinSel = window.updateBinSelection;
+    window.updateBinSelection = function (epcRaw, binName) {
+        if (typeof _orig_updateBinSel === 'function') _orig_updateBinSel(epcRaw, binName);
+        // Cập nhật lại Save sau khi user chọn BIN
+        updateSaveButtonIfExists();
+    };
+</script>

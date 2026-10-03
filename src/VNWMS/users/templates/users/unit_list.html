@@ -1,0 +1,72 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block title %}
+    使用者列表
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'base\js\jquery.redirect.js' %}"></script>
+<script>
+    var member = {
+      'info': function(member_id) {
+          $.redirect('{% url 'user_detail' %}', {'pk': member_id, 'csrfmiddlewaretoken': '{{csrf_token}}'});
+      }
+    };
+</script>
+{% endblock js %}
+
+{% block sub_container %}
+<form method="POST" action="{% url 'unit_sync' %}">
+    <div class="input-group" style="margin-bottom: 20px;margin-top: 20px;">
+        {% csrf_token %}
+        <div class="input-group-append">
+            <button class="btn btn-success" type="submit" id="search">
+                <i class="fas fa-sync">同步BPM組織</i>
+            </button>
+        </div>
+    </div>
+</form>
+<div id="member_data" class="table-responsive" style="height:600px; overflow:auto;">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr class="text-center table-active">
+                <th scope="col" class="text-center text-nowrap">序列</th>
+                <th scope="col" class="text-center text-nowrap" style="" data-column="unit.orgId" data-order="desc">組織</th>
+                <th scope="col" class="text-center text-nowrap" style="width: 15%;" data-column="unit.unitId" data-order="desc">部門編號</th>
+                <th scope="col" class="text-center text-nowrap" style="width: 15%;" data-column="unit.unitName" data-order="desc">部門名稱</th>
+                <th scope="col" class="text-center text-nowrap" style="width: 15%;" data-column="unit.unitName" data-order="desc">部門主管</th>
+                <th scope="col" class="text-center text-nowrap" style="" data-column="unit.isValid" data-order="">有效</th>
+                <th scope="col" class="text-center text-nowrap" style="width: 17%;" data-column="unit.cost_center" data-order="desc">成本中心</th>
+                <th scope="col" class="text-center text-nowrap" style="width: 17%;" data-column="unit.update_at" data-order="desc">最後更新日期</th>
+                <th scope="col" class="text-center text-nowrap" style="width: 17%;" data-column="unit.update_by" data-order="desc">更新人員</th>
+            </tr>
+        </thead>
+        <tbody>
+            <style>
+                /* 會員清單的標題列要可以點擊排序 */
+                /* #member_data > table > thead > tr > th:not(:nth-child(1)) { */
+                #member_data > table > thead > tr > th {
+                    cursor: pointer;
+                }
+
+                .data-row {
+                    cursor: pointer;
+                }
+            </style>
+            {% for unit in units %}
+            <tr class="data-row" onclick="member.info('{{ unit.pk }}');">
+                <th scope="row" class="text-center" style="vertical-align: middle;">{{ forloop.counter }}</th>
+                <td class="text-center text-nowrap">{{ unit.orgId }}</td>
+                <td class="text-center text-nowrap">{{ unit.unitId }}</td>
+                <td class="text-center text-nowrap">{{ unit.unitName }}</td>
+                <td class="text-center text-nowrap">{{ unit.manager.username }}</td>
+                <td class="text-center text-nowrap">{{ unit.isValid }}</td>
+                <td class="text-center text-nowrap">{{ unit.cost_center|default:'' }}</td>
+                <td class="text-center text-nowrap">{{ unit.update_at }}</td>
+                <td class="text-center text-nowrap">{{ unit.update_by }}</td>
+            </tr>
+            {% endfor %}
+    </table>
+</div>
+
+{% endblock sub_container %}

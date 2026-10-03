@@ -1,0 +1,43 @@
+{% extends 'wh_packing/bases/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "SAP Inventory Import" %} {% endblock %}
+{% block js %}{% endblock %}
+
+{% block content %}
+    {% if messages %}
+      <script>
+        {% for message in messages %}
+          alert("{{ message|escapejs }}");
+        {% endfor %}
+      </script>
+    {% endif %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+
+                <div class="card shadow-lg border-secondary">
+                    <div class="card-header bg-secondary text-white text-center">
+                        <h3 class="mb-0">{% trans "SAP Inventory Import" %}</h3>
+                    </div>
+
+                    <div class="card-body bg-light">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% crispy form %}
+                            <div class="d-flex justify-content-center">
+                                <button class="btn btn-success" type="submit">{% trans "Upload" %}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <a href="{% static 'excel/sap_inventory_import.xlsx' %}" download>
+              <i class="btn btn-outline-success fa-solid fa-file-excel"></i>
+            </a>
+        </div>
+    </div>
+
+{% endblock %}

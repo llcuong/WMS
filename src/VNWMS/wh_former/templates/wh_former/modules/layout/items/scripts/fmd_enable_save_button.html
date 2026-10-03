@@ -1,0 +1,13 @@
+<script>
+    function enableSaveButton() {
+        const saveButton = document.getElementById('saveButton');
+        if (!saveButton) return;
+        if (checkAllFieldsFilled() && checkAllBinSelected()) {
+            saveButton.disabled = false;
+            saveButton.classList.remove('btn-disabled');
+        } else {
+            saveButton.disabled = true;
+            saveButton.classList.add('btn-disabled');
+        }
+    }
+</script>

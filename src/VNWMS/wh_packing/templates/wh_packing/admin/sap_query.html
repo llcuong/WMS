@@ -1,0 +1,337 @@
+{% extends 'wh_packing/bases/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Open Data Importing" %} {% endblock %}
+{% block js %}{% endblock %}
+{% block jquery %}{% endblock %}
+{% block css %}
+    {{ block.super }}
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-family: 'Times New Roman' !important;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            font-size: 12px;
+            font-family: 'Times New Roman' !important;
+        }
+        th {
+            background-color: #f2f2f2;
+            position: sticky;
+            top: 0;
+        }
+        .double-header th, .double-header2 th{
+            white-space: nowrap;
+            background-color: #fce4d6;
+        }
+        #download {
+            width: 48px;
+            margin: 2px;
+        }
+    </style>
+
+{% endblock %}
+{% block content %}
+    <div class="container mt-5 d-flex justify-content-center">
+        <form method="post" enctype="multipart/form-data">
+            <div class="form">
+                {% csrf_token %}
+                {% crispy form %}
+
+{#                -- Checkbox --#}
+                <div class="form-check m-2">
+                  <input class="form-check-input" type="checkbox" id="toggleLotColumn">
+                  <label class="form-check-label" for="toggleLotColumn">
+                    Lot 批次號
+                  </label>
+                </div>
+                <div class="form-check m-2">
+                  <input class="form-check-input" type="checkbox" id="toggleLoColumn">
+                  <label class="form-check-label" for="toggleLoColumn">
+                    Lô 批號
+                  </label>
+                </div>
+                <div class="form-check m-2">
+                    <input class="form-check-input" type="checkbox" id="togglePOColumn">
+                    <label class="form-check-label" for="togglePOColumn">
+                        PO 採購單数量
+                    </label>
+                </div>
+                <div class="form-check m-2">
+                    <input class="form-check-input" type="checkbox" id="toggleDateColumn">
+                    <label class="form-check-label" for="toggleDateColumn">
+                        Date 收貨日期
+                    </label>
+                </div>
+
+                <hr>
+                <div>
+                    <button class="btn btn-secondary m-1" id="queryButton" type="button">{% trans "Query" %}</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <hr>
+<div class="row d-flex justify-content-end" style="margin: 0">
+    <a id="download" onclick="downloadTableAsExcel('dataTable', 'data-table.xlsx')" class="btn btn-sm btn-success d-flex align-items-center justify-content-center" type="button">
+        <i class="fa fa-download"></i>
+    </a>
+    </div>
+    <div style="overflow-x: auto;" id="table-container">
+        <table id="dataTable">
+
+        </table>
+    </div>
+
+{% endblock %}
+
+
+{% block javascript %}
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+    <script>
+        // Function to fetch data from API and populate table
+        async function fetchDataAndPopulateTable() {
+            const plant = document.getElementById('id_plant').value;
+            const month = document.getElementById('id_month').value;
+            if (!plant) {
+                alert("'{{ _('Plant') }}' {{ _('cannot_be_null') }}");
+                return;
+            }
+            if (!month) {
+                alert("'{{ _('Month') }}' {{ _('cannot_be_null') }}");
+                return;
+            }
+            try {
+                // Replace with your actual API endpoint
+                const url = `{% url 'sap_query_api' %}?month=${month}&plant=${plant}`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                populateTable(data);
+
+                // ✅ Gán thông tin tháng vào infoTh2
+                if (Array.isArray(data) && data.length > 0 && data[0].month) {
+                    const [year, monthNum] = data[0].month.split('-');
+                    const formattedMonth = parseInt(monthNum);
+
+                    const infoTh2 = document.getElementById('infoTh2');
+                    if (infoTh2) {
+                        infoTh2.innerHTML = `<span>THÁNG 月</span> ${formattedMonth} &nbsp; <span>NĂM 年</span> ${year}`;
+                    } else {
+                        console.warn('Không tìm thấy phần tử infoTh2 trong DOM');
+                    }
+                } else {
+                    console.warn('Không có dữ liệu hợp lệ để hiển thị tháng/năm');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                alert(error);
+                document.getElementById('dataTable').innerHTML =
+                    '<tr><td colspan="16">Error loading data. Please try again later.</td></tr>';
+            }
+        }
+
+        // Function to create table structure and populate data
+        function populateTable(data) {
+            const table = document.getElementById('dataTable');
+            table.innerHTML = '';
+
+            // --- Tiêu đề bảng: DÒNG 1 ---
+            const titleRow1 = document.createElement('tr');
+            const titleTh1 = document.createElement('th');
+            titleTh1.colSpan = 19; // Số cột thực tế ở bảng bạn
+            titleTh1.className = 'title-main';
+            titleTh1.innerHTML = 'BÁO CÁO KIỂM KÊ TỒN KHO THÙNG HỘP<br>内盒外箱 - 盤點報告';
+            titleTh1.style.fontSize = '18px';
+            titleTh1.style.color = '#fe0000';
+            titleTh1.style.fontWeight = 'normal';
+            titleRow1.appendChild(titleTh1);
+            table.appendChild(titleRow1);
+
+
+            // --- Dòng thông tin THÁNG - NĂM ---
+            const infoRow = document.createElement('tr');
+
+            const infoTh1 = document.createElement('th');
+            infoTh1.colSpan = 5;
+            infoTh1.textContent = 'XƯỞNG 倉別 :';
+            infoTh1.style.fontSize = '15px';
+            infoTh1.style.color = '#fe0000';
+            infoTh1.style.fontWeight = 'normal';
+            infoRow.appendChild(infoTh1);
+
+            const infoTh2 = document.createElement('th');
+            infoTh2.id = "infoTh2";
+            infoTh2.colSpan = 14;
+            {#infoTh2.innerHTML = '<span>THÁNG 月</span> 4 &nbsp; <span>NĂM 年</span> 2025';#}
+            infoTh2.style.fontSize = '15px';
+            infoTh2.style.color = '#fe0000';
+            infoTh2.style.fontWeight = 'normal';
+
+            let temp = "";
+            const monthPicker = document.getElementById("id_month");
+            monthPicker.addEventListener("change", function () {
+                const selectedValue = this.value; // Ví dụ: "2025-04"
+                if (selectedValue) {
+                    const [year, month] = selectedValue.split("-");
+                    const formattedMonth = parseInt(month); // "04" → 4
+
+                    temp = infoTh2.innerHTML = `<span>THÁNG 月</span> ${formattedMonth} &nbsp; <span>NĂM 年</span> ${year}`;
+                }
+            });
+            infoTh2.innerHTML = temp;
+            infoRow.appendChild(infoTh2);
+            table.appendChild(infoRow);
+
+            // Create table headers
+            const headerRow1 = document.createElement('tr');
+            headerRow1.className = 'double-header';
+
+
+            //SHOW LOT
+            const showLot = document.getElementById('toggleLotColumn')?.checked;
+            const showLo = document.getElementById('toggleLoColumn')?.checked;
+            const showPO = document.getElementById('togglePOColumn')?.checked;
+            const showDate = document.getElementById('toggleDateColumn')?.checked;
+
+            const headers = [
+                {text: '<span>STT</span><br><span>顺序</span>', rowspan: 2},
+                {text: 'ĐƠN HÀNG<br>訂單號', rowspan: 2},
+                {text: 'TÊN KHÁCH HÀNG<br>客户', rowspan: 2},
+                {text: 'BẢN IN<br>版本號', rowspan: 2},
+
+                ...(showLot ? [{text: 'LOT<br>批次號', rowspan: 2}] : []),
+
+                ...(showLo ? [{text: 'LÔ<br>批號', colspan: 2}] : []),
+                {text: 'SIZE<br>尺寸', rowspan: 2},
+
+                ...(showPO ? [{text: 'SỐ LƯỢNG PO<br>採購單数量', colspan: 2}] : []),
+                {text: 'TỒN KHO THỰC TẾ-A<br>實際數量', colspan: 2},
+                {text: 'TỒN HỆ THỐNG-B<br>系统数量', colspan: 2},
+                {text: 'CHÊNH LỆCH<br>(C=B-A)<br>系统差異', colspan: 2},
+
+                ...(showDate ? [{text: 'NGÀY NHẬN HÀNG<br>收貨日期', colspan: 2}] : []),
+                {#{text: 'NGÀY NHẬN HÀNG<br>收貨日期', colspan: 2},#}
+                {text: 'GHI CHÚ<br>備註', rowspan: 2},
+            ];
+
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.innerHTML = header.text;
+
+                if (header.rowspan) th.rowSpan = header.rowspan;
+                if (header.colspan) th.colSpan = header.colspan;
+
+                headerRow1.appendChild(th);
+            });
+            table.appendChild(headerRow1);
+
+            // Second header row
+            const headerRow2 = document.createElement('tr');
+            headerRow2.className = 'double-header2';
+            const subHeaders = [
+                'Thùng<br>外箱', 'Hộp<br>内盒',
+                'Thùng<br>外箱', 'Hộp<br>内盒',
+                'Thùng<br>外箱', 'Hộp<br>内盒',
+                'Thùng<br>外箱', 'Hộp<br>内盒',
+                'Thùng<br>外箱', 'Hộp<br>内盒',
+                'Thùng<br>外箱', 'Hộp<br>内盒',
+            ];
+
+            if (!showLo){
+                subHeaders.splice(1, 2);
+            }
+            if (!showPO){
+                subHeaders.splice(2, 2);
+            }
+            if (!showDate){
+                subHeaders.splice(6, 2);
+            }
+
+            subHeaders.forEach(header => {
+                const th = document.createElement('th');
+                th.innerHTML = header;
+                headerRow2.appendChild(th);
+            });
+            table.appendChild(headerRow2);
+
+            // Populate data rows
+            data.forEach((item, index) => {
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${item.product_order || '-'}</td>
+                    <td>${item.customer_no || '-'}</td>
+                    <td>${item.version_no || '-'}</td>
+{#                    <td>${item.lot_no || '-'}</td>#}
+
+                    ${showLot ? `<td>${item.lot_no || '-'}</td>` : ``}
+
+                    ${showLo ? `<td>${item.outer_lot || '-'}</td>` : ``}
+                    ${showLo ? `<td>${item.inner_lot || '-'}</td>` : ``}
+
+                    <td>${item.size || '-'}</td>
+
+                    ${showPO ? `<td>${item.outer_po || '-'}</td>` : ``}
+                    ${showPO ? `<td>${item.inner_po || '-'}</td>` : ``}
+                    <td>${item.outer_inv || '-'}</td>
+                    <td>${item.inner_inv || '-'}</td>
+                    <td>${item.outer_sap || '-'}</td>
+                    <td>${item.inner_sap || '-'}</td>
+                    <td>${item.outer_diff || '-'}</td>
+                    <td>${item.inner_diff || '-'}</td>
+
+                    ${showDate ? `<td>${item.outer_date || '-'}</td>` : ``}
+                    ${showDate ? `<td>${item.inner_date || '-'}</td>` : ``}
+                    {#<td>${item.outer_date || '-'}</td>#}
+                    {#<td>${item.inner_date || '-'}</td>#}
+                    <td>${item.note || '-'}</td>
+                `;
+
+                table.appendChild(row);
+            });
+        }
+
+
+        function downloadTableAsExcel(tableId, filename = 'data.xlsx') {
+            let table = document.querySelector('#table-container table');
+
+            if (!table) {
+                alert("Cannot find the Id: " + tableId);
+                return;
+            }
+
+            // Tạo workbook từ bảng
+            let wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+
+            // Ghi ra file Excel
+            XLSX.writeFile(wb, filename);
+        }
+
+
+        // Initialize table when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const sampleData = [
+                {
+
+                },
+                // Add other sample data items here...
+            ];
+
+            populateTable(sampleData);
+            document.getElementById('queryButton').addEventListener('click', fetchDataAndPopulateTable);
+
+        });
+    </script>
+
+{% endblock %}

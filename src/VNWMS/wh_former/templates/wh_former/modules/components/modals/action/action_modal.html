@@ -1,0 +1,127 @@
+{% load i18n %}
+{% load user_groups %}
+
+<div class="modal fade no-copy" id="basketModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="border-radius: 20px;">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-info-circle" style="color: #207244"></i>
+                    {% trans "Basket Detail" %}
+                </h5>
+                <button type="button" class="btn p-0 border-0 bg-transparent" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="basket-modal-content"></div>
+            <div class="d-flex justify-content-center py-1 pb-5" style="gap: 20px;">
+                {% if user|has_any_group:"wh_former_admin, developer" %}
+                    <button type="button" class="scrap-button-2">
+                        {% include 'wh_former/modules/components/buttons/scrap-button-2.html' %}
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openBasketModal(basket_no, vendor_name, received_date, basket_capacity, former_length, print_times, print_time, description) {
+        const content = `
+        <table class="table table-borderless align-middle mb-3">
+            <tbody>
+                <tr>
+                    <th style="width: 40%; color: #555;">Basket No</th>
+                    <td>${basket_no}</td>
+                </tr>
+                <tr>
+                    <th style="color: #555;">Brand</th>
+                    <td>${vendor_name}</td>
+                </tr>
+                <tr>
+                    <th style="color: #555;">Stock-in Date</th>
+                    <td>${received_date}</td>
+                </tr>
+                <tr>
+                    <th style="color: #555;">Basket Capacity</th>
+                    <td>${basket_capacity}</td>
+                </tr>
+                <tr>
+                    <th style="color: #555;">Former Length</th>
+                    <td>${former_length}</td>
+                </tr>
+                <tr>
+                    <th style="color: #555;">Is printed</th>
+                    <td>${print_times}</td>
+                </tr>
+                <tr>
+                    <th style="color: #555;">Print Time</th>
+                    <td>${print_time}</td>
+                </tr>
+            </tbody>
+        </table>
+        `;
+        document.getElementById("basket-modal-content").innerHTML = content;
+        setTimeout(() => {
+            document.querySelector('.scrap-button-2').onclick = function() {
+                fetch('{% url "basket_disable_button_api" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify({basket_no})
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Đã disable basket!');
+                        bootstrap.Modal.getInstance(document.getElementById("basketModal")).hide();
+                        location.reload();
+                    } else {
+                        alert('Có lỗi xảy ra!');
+                    }
+                });
+            }
+        }, 50);
+
+        const modal = new bootstrap.Modal(document.getElementById("basketModal"));
+        modal.show();
+    }
+
+    document.querySelector('.btn-success').addEventListener('click', async () => {
+        const basket_no = document.querySelector("#basket-modal-content tr:nth-child(1) td").textContent.trim();
+
+        if (!basket_no) {
+            return alert("Không có dữ liệu để in.");
+        }
+
+        try {
+            const resp = await fetch("{% url 'rfid_print_api' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({epc_list: [basket_no]})
+            });
+            const data = await resp.json();
+            if (resp.ok && data.status === 'ok') {
+                alert(`✅ Đã in & ghi EPC cho ${data.printed} mục thành công.`);
+            } else {
+                throw new Error(data.message || 'Lỗi không xác định');
+            }
+        } catch (err) {
+            alert("❌ In/Ghi EPC thất bại: " + err.message);
+        }
+    });
+
+    function getCookie(name) {
+        let value = null;
+        document.cookie.split(';').forEach(c => {
+            const [k, v] = c.trim().split('=');
+            if (k === name) value = decodeURIComponent(v);
+        });
+        return value;
+    }
+</script>

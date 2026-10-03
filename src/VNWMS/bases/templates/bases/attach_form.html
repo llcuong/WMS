@@ -1,0 +1,36 @@
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+<form action="" method="post" class="form-group font-weight-bold align-middle" id="request_form" enctype="multipart/form-data">
+  <div class="card-body">
+    {% csrf_token %}
+    {% crispy form %}
+      <hr />
+      <div>{% trans "attachment" %}</div>
+      <div class="row">
+            <div id="div_id_files" class="form-group col-2">
+                <label for="id_files" class="form-control-label">{% trans "file" %} 1</label>
+                <input name="files1" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+text/plain, application/pdf, image/*" class="clearablefileinput" id="id_files" type="file">
+            </div>
+            <div id="div_id_description" class="form-group col-10">
+                <label for="id_description" class="form-control-label ">{% trans "desc" %}：</label>
+                <input name="description1" maxlength="50" class="textinput textInput form-control" id="id_description" type="text">
+            </div>
+        </div>
+      <div class="row">
+            <div id="div_id_files" class="form-group col-2">
+                <label for="id_files" class="form-control-label">{% trans "file" %} 2</label>
+                <input name="files2" accept=".pdf" class="clearablefileinput" id="id_files" type="file">
+            </div>
+            <div id="div_id_description" class="form-group col-10">
+                <label for="id_description" class="form-control-label ">{% trans "desc" %}：</label>
+                <input name="description2" maxlength="50" class="textInput form-control" id="id_description" type="text">
+            </div>
+        </div>
+  </div>
+  <div class="card-footer text-center">
+    <button type="submit" class="btn btn-primary" id="send">{% trans "save" %}</button>
+    <input type=button class="btn btn-primary" value="Cancel" onClick="javascript:history.go(-1);">
+  </div>
+</form>

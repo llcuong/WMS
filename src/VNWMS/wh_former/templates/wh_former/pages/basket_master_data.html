@@ -1,0 +1,310 @@
+{% extends 'wh_former/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Former - Add Basket" %} {% endblock %}
+{% block local_css %}
+    <style>
+        .result-table-body{
+            min-height: 240px !important;
+        }
+        
+        .barcode-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding-top: 0;
+          width: 100%;
+          line-height: 0;
+        }
+
+        .barcode-container svg,
+        .barcode-image {
+          display: block;
+          vertical-align: top;
+        }
+
+        .barcode-container svg {
+            width: 300px !important;
+            max-width: none !important;
+        }
+        
+        .barcode-image {
+            width: 300px !important;
+            height: 80px !important;
+            max-width: none !important;
+        }
+        
+        .barcode-error {
+            text-align: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        
+        .basket-number {
+            display: block;
+            text-align: center;
+            font-size: 25px;
+            color: #666;
+        }
+        
+        .epc-tag-preview {
+            min-width: 350px;
+        }
+        
+        .epc-preview-container {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="container-fluid no-copy">
+        {% trans "Add Basket" as page_title %}
+        {% include 'wh_former/components/page_title.html' with title=page_title icon="fa-keyboard" %}
+
+        <div class="row p-3 main-body">
+            <div class="col-1"></div>
+            <div class="col-10 pt-3">
+                <div class="light-effect light-effect-padded" id="basketMasterForm">
+                    <form method="post" onsubmit="return handleFormSubmit(event);" id="basketMasterFormElement">
+                        <input type="hidden" name="form_type" value="former">
+                        {% include 'wh_former/modules/components/forms/basket_master_data_form.html' %}
+
+                        <div class="d-flex justify-content-center mt-2" style="gap: 20px;">
+                            <div id="save-button-container" style="">
+                                {% include 'wh_former/modules/components/buttons/save_button.html' with basket=True %}
+                            </div>
+
+                            <div id="cancel-button-container" style="display: none;">
+                                {% include 'wh_former/modules/components/buttons/cancel-button-3.html' %}
+                            </div>
+
+
+                            <div id="exit-button-container" style="display: none;">
+                                {% include 'wh_former/modules/components/buttons/exit_button.html' %}
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-12">
+                {% include 'wh_former/modules/components/tables/basket/basket_result_table.html' with columns=columns results=results basket_master_data=True print_rfid=True %}
+            </div>
+        </div>
+    </div>
+    {% include 'wh_former/modules/layout/modals/groups/basket_master_data_modals.html' %}
+{% endblock %}
+
+{% block js %}
+    {% include 'wh_former/modules/layout/modals/handle_loading_modal.html' %}
+    {% include 'wh_former/user_guide/light_box_guide.html' %}
+    {% include 'wh_former/user_guide/step_by_guide.html' %}
+    {% include 'wh_former/user_guide/basket_master_data/basket_master_data_guide.html' %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const saveButton = document.getElementById('saveButton');
+            const confirmSaveBtn = document.getElementById('confirmSave');
+            const form = document.getElementById('basketMasterFormElement');
+
+            function checkExitButtonDisplay() {
+                const tableRows = document.querySelectorAll('.result-table-body tr');
+                const printButton = document.getElementById('rfid-print-btn');
+                const exitButtonContainer = document.getElementById('exit-button-container');
+                const cancelButtonContainer = document.getElementById('cancel-button-container');
+                const saveButtonContainer = document.getElementById('save-button-container');
+
+                if (tableRows.length > 0 && printButton) {
+                    exitButtonContainer.style.display = 'block';
+                    cancelButtonContainer.style.display = 'block';
+
+                    saveButtonContainer.style.display = 'none';
+                } else {
+                    exitButtonContainer.style.display = 'none';
+                    cancelButtonContainer.style.display = 'none';
+
+                    saveButtonContainer.style.display = 'block';
+                }
+            }
+            checkExitButtonDisplay();
+
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'childList') {
+                        checkExitButtonDisplay();
+                    }
+                });
+            });
+
+             const tableContainer = document.querySelector('.col-12');
+            if (tableContainer) {
+                observer.observe(tableContainer, {
+                    childList: true,
+                    subtree: true
+                });
+            }
+
+            if (saveButton) {
+                saveButton.addEventListener('click', function() {
+                    // Use the guide's save handler if available
+                    if (window.handleSaveButtonClick && window.handleSaveButtonClick() === false) {
+                        return; // Validation failed
+                    }
+
+                    // Original validation logic (backup)
+                    if (!form.checkValidity()) {
+                        form.reportValidity();
+                        return;
+                    }
+
+                    $('#confirmationModal').modal('show');
+                    loadFormPreview();
+                });
+            }
+
+            if (confirmSaveBtn) {
+                confirmSaveBtn.addEventListener('click', function() {
+                    $('#confirmationModal').modal('hide');
+
+                    setTimeout(() => {
+                        showLoadingModal();
+
+                        setTimeout(() => {
+                            if (form) {
+                                form.submit();
+                            }
+                        }, 100);
+                    }, 300);
+                });
+            }
+
+            function loadFormPreview() {
+                const formData = new FormData(form);
+                const confirmButton = document.getElementById('confirmSave');
+                const contentDiv = document.getElementById('confirmationContent');
+
+                confirmButton.disabled = true;
+                contentDiv.innerHTML = `
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <p class="mt-2">{% trans "Loading form data..." %}</p>
+                    </div>
+                `;
+
+                fetch('{% url "basket_master_data_preview" %}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayFormData(data.data);
+                        confirmButton.disabled = false;
+                    } else {
+                        displayError(data.data || 'Form validation failed');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    displayError('Failed to load form data');
+                });
+            }
+
+            function displayFormData(data) {
+                const contentDiv = document.getElementById('confirmationContent');
+                
+                // Create barcode display HTML
+                let barcodeHtml = '';
+                if (data.barcode_svg_inline) {
+                    // Use inline SVG for better rendering
+                    barcodeHtml = `<div class="barcode-container">${data.barcode_svg_inline}</div>`;
+                } else if (data.barcode_svg_data_uri) {
+                    // Fallback to data URI
+                    barcodeHtml = `<img src="${data.barcode_svg_data_uri}" alt="Barcode" class="barcode-image">`;
+                } else if (data.barcode_error) {
+                    // Show error if barcode generation failed
+                    barcodeHtml = `<div class="barcode-error text-danger">Barcode Error: ${data.barcode_error}</div>`;
+                } else {
+                    // Fallback to text display
+                    barcodeHtml = `<div class="epc-code">${data.basket_no || data.preview_basket_no}</div>`;
+                }
+                
+                contentDiv.innerHTML = `
+                    <div class="mb-3">
+                        <div class="epc-preview-container mb-2">
+                            <div class="epc-tag-preview">
+                                ${barcodeHtml}
+                                <div class="epc-details">
+                                    <span class="basket-number">${data.basket_no || data.preview_basket_no}</span>
+                                    {#<span class="epc-vendor">${data.basket_vendor}</span>#}
+                                </div>
+                            </div>
+                        </div>
+
+                        <table class="param-table table table-bordered table-sm">
+                            <tbody>
+                                <tr>
+                                    <th>{% trans "Plant code" %}</th>
+                                    <td>${data.fact_code}</td>
+                                </tr>
+                                <tr>
+                                    <th>{% trans "Brand" %}</th>
+                                    <td>${data.basket_vendor}</td>
+                                </tr>
+                                <tr>
+                                    <th>{% trans "Capacity/1 Basket" %}</th>
+                                    <td>${data.basket_capacity}</td>
+                                </tr>
+                                <tr>
+                                    <th>{% trans "Receive Qty" %}</th>
+                                    <td>${data.basket_receive_qty}</td>
+                                </tr>
+                                <tr>
+                                    <th>{% trans "Length" %} (mm)</th>
+                                    <td>${data.basket_length}</td>
+                                </tr>
+                                <tr>
+                                    <th>{% trans "Receive Date" %}</th>
+                                    <td>${data.basket_receive_date}</td>
+                                </tr>
+                                <tr>
+                                    <th>{% trans "Purchase Order" %}</th>
+                                    <td>${data.basket_purchase_order}</td>
+                                </tr>
+                                <tr>
+                                    <th>{% trans "Note" %}</th>
+                                    <td>${data.basket_description}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            function displayError(errors) {
+                const contentDiv = document.getElementById('confirmationContent');
+                let errorHtml = '<div class="alert alert-danger"><h6>{% trans "Form Validation Errors:" %}</h6><ul>';
+
+                if (typeof errors === 'object') {
+                    for (let field in errors) {
+                        errorHtml += `<li><strong>${field}:</strong> ${errors[field]}</li>`;
+                    }
+                } else {
+                    errorHtml += `<li>${errors}</li>`;
+                }
+
+                errorHtml += '</ul></div>';
+                contentDiv.innerHTML = errorHtml;
+            }
+        });
+    </script>
+{% endblock %}

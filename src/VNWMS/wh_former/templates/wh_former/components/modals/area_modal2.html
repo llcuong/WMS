@@ -1,0 +1,373 @@
+{% load i18n %}
+
+<div class="modal fade custom-modal no-copy" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="customModalLabel">{% trans "Thông tin chi tiết" %}</h5>
+                <button type="button" class="btn p-0 border-0 bg-transparent button-no-outline" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+            <div class="modal-body d-flex flex-column justify-content-center align-items-center" style="height: 90vh; min-height: 600px;">
+                <div class="map-container position-relative" style="width: 100%; height: 40vh; overflow: auto; background-color: #f8f9fa;"></div>
+                <div class="area-container d-flex flex-row" style="width: 100%; height: 50vh; overflow: auto; background-color: #ffffff;">
+                    <div class="area-name" style="width: 15%; height: 100%; overflow: auto; background-color: #ffffff;"></div>
+                    <div class="area-zoom" style="width: 60%; height: 100%; overflow: auto; background-color: #ffffff; padding-top: 16px;"></div>
+                    <div class="bin-zoom" style="width: 25%; height: 100%; overflow: auto; background-color: #ffffff;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let areaData = [];
+    function fetchAndRenderAreaData() {
+        fetch("{% url 'get_area_data_api' %}")
+            .then(res => res.json())
+            .then(data => {
+                areaData = data.area_data;
+                renderAreaDivs();
+            });
+        }
+
+    let is_m_code = {% if m_code %}true{% else %}false{% endif %};
+    let stock_mode = "in";
+    {% if stock_mode %}
+        stock_mode = "{{ stock_mode }}";
+    {% endif %}
+
+    function renderAreaDivs() {
+        const container = document.querySelector(".map-container");
+        if (!container) return;
+        container.innerHTML = '';
+
+        const fillColor = '#ffc107';
+        let maxX = 0, maxY = 0;
+
+        areaData.forEach((area) => {
+            const block = document.createElement("div");
+            block.className = "area-block position-absolute text-white";
+            block.style.left = `${area.x}px`;
+            block.style.top = `${area.y}px`;
+            block.style.width = `${area.w}px`;
+            block.style.height = `${area.l}px`;
+            block.style.backgroundColor = fillColor;
+            block.style.borderRadius = "4px";
+            block.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+            block.style.fontFamily = "sans-serif";
+
+            const centerLabel = document.createElement("div");
+            centerLabel.textContent = area.id;
+            centerLabel.style.position = "absolute";
+            centerLabel.style.top = "50%";
+            centerLabel.style.left = "50%";
+            centerLabel.style.transform = "translate(-50%, -50%)";
+            centerLabel.style.fontSize = "28px";
+            centerLabel.style.fontWeight = "bold";
+            centerLabel.style.color = "#fff";
+            block.appendChild(centerLabel);
+
+            block.addEventListener("click", () => {
+                renderZoomedArea(area);
+            });
+
+            container.appendChild(block);
+            maxX = Math.max(maxX, area.x + area.w);
+            maxY = Math.max(maxY, area.y + area.l);
+        });
+
+        container.style.width = `${maxX + 20}px`;
+        container.style.height = `${maxY + 20}px`;
+    }
+
+    function renderZoomedArea(area) {
+        const zoom = document.querySelector(".area-zoom");
+        if (!zoom) return;
+
+        const nameBox = document.querySelector(".area-name");
+        if (nameBox) {
+            nameBox.textContent = area.id;
+            nameBox.style.fontSize = "32px";
+            nameBox.style.fontWeight = "bold";
+            nameBox.style.display = "flex";
+            nameBox.style.justifyContent = "center";
+            nameBox.style.alignItems = "center";
+            nameBox.style.color = "#000";
+        }
+
+        zoom.innerHTML = '';
+        const wrapper = document.createElement("div");
+        wrapper.style.position = "relative";
+        wrapper.style.width = `${area.w + 60}px`;
+        wrapper.style.height = `${area.l + 40}px`;
+        wrapper.style.margin = "0 auto";
+
+        const zoomBox = document.createElement("div");
+        zoomBox.style.position = "absolute";
+        zoomBox.style.left = "30px"; // leave space for row labels
+        zoomBox.style.top = "30px";  // leave space for col labels
+        zoomBox.style.width = `${area.w}px`;
+        zoomBox.style.height = `${area.l}px`;
+        zoomBox.style.backgroundColor = "#f8f9fa";
+        zoomBox.style.borderRadius = "4px";
+        zoomBox.style.fontFamily = "sans-serif";
+
+        const binGroupMap = {};
+        if (typeof area.bins === 'object') {
+            for (const rowKey in area.bins) {
+                const cols = area.bins[rowKey];
+                for (const colKey in cols) {
+                    const binList = cols[colKey];
+                    binList.forEach((bin) => {
+                        const key = `${bin.x}_${bin.y}`;
+                        if (!binGroupMap[key]) binGroupMap[key] = [];
+                        binGroupMap[key].push(bin);
+                    });
+                }
+            }
+        }
+
+        const colX = new Set();
+        const rowY = new Set();
+        Object.values(binGroupMap).forEach(binList => {
+            binList.forEach(b => {
+                colX.add(b.x);
+                rowY.add(b.y);
+            });
+        });
+
+        const sortedCols = Array.from(colX).sort((a, b) => a - b);
+        const sortedRows = Array.from(rowY).sort((a, b) => a - b);
+
+        sortedCols.forEach((x, i) => {
+            const colLabel = document.createElement("div");
+            colLabel.textContent = String.fromCharCode(65 + i);
+            colLabel.style.position = "absolute";
+            colLabel.style.left = `${x + 30}px`;
+            colLabel.style.top = "0px";
+            colLabel.style.width = "30px";
+            colLabel.style.height = "30px";
+            colLabel.style.display = "flex";
+            colLabel.style.justifyContent = "center";
+            colLabel.style.alignItems = "center";
+            colLabel.style.fontSize = "13px";
+            colLabel.style.color = "#000";
+            wrapper.appendChild(colLabel);
+
+            const colLine = document.createElement("div");
+            colLine.style.position = "absolute";
+            colLine.style.left = `${x}px`;
+            colLine.style.top = "0";
+            colLine.style.height = "100%";
+            colLine.style.width = "1px";
+            colLine.style.borderLeft = "1px dashed rgba(0,0,0,0.3)";
+            zoomBox.appendChild(colLine);
+        });
+
+        sortedRows.forEach((y, i) => {
+            const rowLabel = document.createElement("div");
+            rowLabel.textContent = i + 1;
+            rowLabel.style.position = "absolute";
+            rowLabel.style.left = "0px";
+            rowLabel.style.top = `${y + 30}px`;
+            rowLabel.style.width = "30px";
+            rowLabel.style.height = "30px";
+            rowLabel.style.display = "flex";
+            rowLabel.style.alignItems = "center";
+            rowLabel.style.justifyContent = "flex-end";
+            rowLabel.style.fontSize = "13px";
+            rowLabel.style.color = "#000";
+            rowLabel.style.paddingRight = "4px";
+            wrapper.appendChild(rowLabel);
+
+            const rowLine = document.createElement("div");
+            rowLine.style.position = "absolute";
+            rowLine.style.top = `${y}px`;
+            rowLine.style.left = "0";
+            rowLine.style.width = "100%";
+            rowLine.style.height = "1px";
+            zoomBox.appendChild(rowLine);
+        });
+
+        // Bin boxes
+        Object.values(binGroupMap).forEach((binList) => {
+            const bin = binList[0];
+            const binBox = document.createElement("div");
+            binBox.className = "bin-box position-absolute";
+            binBox.style.left = `${bin.x}px`;
+            binBox.style.top = `${bin.y}px`;
+            binBox.style.width = `${bin.w}px`;
+            binBox.style.height = `${bin.l}px`;
+            binBox.style.border = "1px dashed white";
+            binBox.style.boxSizing = "border-box";
+            binBox.style.fontSize = "10px";
+            binBox.style.textAlign = "center";
+            binBox.style.lineHeight = `${bin.l}px`;
+            binBox.style.cursor = "pointer";
+            binBox.title = binList.map(b => b.bin_id).join(', ');
+
+            const total = binList.length;
+            const filled = binList.filter(b => b.batch === 1 || b.batch_no === 1).length;
+            if (filled === 0) {
+                binBox.style.backgroundColor = "#5CB85C";
+            } else if (filled === total) {
+                binBox.style.backgroundColor = "#6B757D";
+            } else {
+                binBox.style.backgroundColor = "#FFC232";
+            }
+
+            binBox.addEventListener("click", () => {
+                renderBinFloors(bin.bin_id, binList);
+            });
+
+            zoomBox.appendChild(binBox);
+        });
+
+        wrapper.appendChild(zoomBox);
+        zoom.appendChild(wrapper);
+    }
+
+
+    function renderBinFloors(binKey, floorList) {
+        const binZoom = document.querySelector(".bin-zoom");
+        if (!binZoom) return;
+
+        binZoom.innerHTML = '';
+        binZoom.style.display = "flex";
+        binZoom.style.flexDirection = "column";
+        binZoom.style.justifyContent = "center";
+        binZoom.style.alignItems = "left";
+
+        const container = document.createElement("div");
+        container.style.display = "flex";
+        container.style.flexDirection = "column-reverse";
+        container.style.gap = "6px";
+
+        // Tìm trạng thái floor 1 và floor 2
+        const floor1 = floorList.find(f => f.level === 1);
+        const floor2 = floorList.find(f => f.level === 2);
+        const floor1Empty = floor1 && floor1.batch !== 1 && floor1.batch_no !== 1;
+        const floor2HasStock = floor2 && (floor2.batch === 1 || floor2.batch_no === 1);
+
+        floorList.sort((a, b) => a.level - b.level).forEach(floor => {
+            const row = document.createElement("div");
+            row.style.display = "flex";
+            row.style.alignItems = "center";
+
+            const box = document.createElement("div");
+            box.className = "floor-box";
+            box.style.width = "30px";
+            box.style.height = "30px";
+            box.style.borderRadius = "4px";
+            box.style.boxSizing = "border-box";
+            box.style.textAlign = "center";
+            box.style.lineHeight = "30px";
+            box.title = floor.bin_id;
+
+            let disabled = false;
+            // Logic bắt buộc chọn floor 1 trước khi in, floor 2 trước khi out
+            if (stock_mode === "in" && floor1Empty) {
+                if (floor.level !== 1) disabled = true;
+            }
+            if (stock_mode === "out" && floor2HasStock) {
+                if (floor.level !== 2) disabled = true;
+            }
+
+            if (floor.batch === 1) {
+                box.style.backgroundColor = "#D9534F";
+                box.style.cursor = "not-allowed";
+                box.style.opacity = "0.6";
+                box.style.pointerEvents = "none";
+            } else if (disabled) {
+                box.style.backgroundColor = "#cccccc";
+                box.style.cursor = "not-allowed";
+                box.style.opacity = "0.5";
+                box.style.pointerEvents = "none";
+            } else {
+                box.style.backgroundColor = "#5CB85C";
+                box.style.cursor = "pointer";
+                box.addEventListener("click", () => {
+                    sendFloorSelection(floor.bin_id);
+                });
+            }
+
+            const label = document.createElement("div");
+            label.textContent = floor.bin_id;
+            label.style.marginLeft = "10px";
+            label.style.fontWeight = "bold";
+            label.style.fontSize = "13px";
+
+            row.appendChild(box);
+            row.appendChild(label);
+            container.appendChild(row);
+        });
+
+        binZoom.appendChild(container);
+    }
+
+    function sendFloorSelection(bin_id) {
+        // Check if this is being called from former search page bin update
+        if (typeof onBinSelected === 'function') {
+            onBinSelected(bin_id);
+            return;
+        }
+
+        // Original logic for other pages
+        const activeBtn = document.querySelector('.open-custom-modal[data-showing="1"]');
+        if (activeBtn) {
+            const section = document.querySelector('.table-section-wrapper');
+            if (section) {
+                section.querySelectorAll('.selected-area-name')
+                       .forEach(span => span.textContent = bin_id);
+            }
+            activeBtn.removeAttribute("data-showing");
+        }
+
+        fetch("{% url 'bin_selection_api' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({ bin_id })
+        })
+        .then(res => res.json())
+        .then(data => {
+            const modalEl = document.querySelector('.custom-modal');
+            if (modalEl) {
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                if (modal) modal.hide();
+            }
+        });
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.slice(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.open-custom-modal');
+        const modalEl = document.querySelector('.custom-modal');
+
+        if (btn && modalEl) {
+            btn.setAttribute("data-showing", "1");
+            const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.show();
+            setTimeout(fetchAndRenderAreaData, 150);
+        }
+    });
+</script>

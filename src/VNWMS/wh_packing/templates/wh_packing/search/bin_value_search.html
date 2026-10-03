@@ -1,0 +1,313 @@
+{% extends 'wh_packing/bases/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Inventory Sheet" %} {% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
+
+    <style>
+        .jsgrid-grid-body::-webkit-scrollbar {
+            height: 16px !important;
+        }
+
+        .jsgrid-cell {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .jsgrid-cell.expanded {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            word-wrap: break-word;
+            max-width: none;
+        }
+
+        .jsgrid-cell, .jsgrid-header-cell {
+            padding: 12px 14px;
+        }
+
+        .jsgrid-pager {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        #Search {
+            font-weight: bold;
+            border-radius: 5px 27px 27px 5px;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h3 class="text-center">{% trans "Inventory Sheet" %}</h3>
+
+    <form id="searchForm" class="mt-4">
+        <div class="row g-2">
+            <div class="col-12 col-md-2">
+                <label for="warehouse">{% trans "Warehouse" %}</label>
+                <select id="warehouse" name="warehouse" class="form-control">
+                    <option value="">{% trans "Choose Warehouse" %}</option>
+                    {% for wh in warehouses %}
+                    <option value="{{ wh.wh_code }}">{{ wh.wh_plant }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-12 col-md-2">
+                <label for="{{ form.area.id_for_label }}">{% trans "Area" %}</label>
+                {{ form.area }}
+            </div>
+            <div class="col-12 col-md-2">
+                <label for="{{ form.bin.id_for_label }}">{% trans "Location" %}</label>
+                {{ form.bin }}
+            </div>
+            <div class="col-12 col-md-2">
+                <label for="id_po" class="form-label">{% trans "Product Order" %}</label>
+                {{ form.po }}
+            </div>
+            <div class="col-12 col-md-2 d-flex align-items-end">
+                <button type="button" class="btn btn-primary" id="Search">
+                    &nbsp;<i class="fas fa-search"></i>&nbsp;&nbsp;&nbsp;
+                </button>
+            </div>
+            <div class="col-12 col-md-2 d-flex align-items-end justify-content-end">
+                <button id="exportExcel" type="button" class="btn btn-outline-success" aria-label="Template">
+                    <i class="fas fa-download"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <div id="jsGrid" class="mt-3"></div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(document).ready(function () {
+
+            $("#jsGrid").on("click", ".jsgrid-cell", function() {
+                $(this).toggleClass("expanded");
+            });
+
+            $("#warehouse").change(function () {
+                var warehouseId = $(this).val();
+                $("#id_area").prop("disabled", true).html('<option value="">{% trans "Choose Area" %}</option>');
+                $("#id_bin").prop("disabled", true).html('<option value="">{% trans "Choose Location" %}</option>');
+                if (warehouseId) {
+                    $.getJSON("{% url 'get_areas' %}", { warehouse: warehouseId }, function (data) {
+                        $.each(data, function (index, obj) {
+                            $("#id_area").append('<option value="' + obj.area_id + '">' + obj.area_name + '</option>');
+                        });
+                        $("#id_area").prop("disabled", false);
+                    });
+                }
+            });
+
+
+            $("#id_area").change(function () {
+                var areaId = $(this).val();
+                $("#id_bin").prop("disabled", true).html('<option value="">{% trans "Choose Location" %}</option>');
+                if (areaId) {
+                    $.getJSON("{% url 'get_bins' %}", { area: areaId }, function (data) {
+                        $.each(data, function (index, obj) {
+                            $("#id_bin").append('<option value="' + obj.bin_id + '">' + obj.bin_name + '</option>');
+                        });
+                        $("#id_bin").prop("disabled", false);
+                    });
+                }
+            });
+
+            $("#id_po").on("keyup", function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    let warehouse = $("#warehouse").val().trim();
+                    let id_area = $("#id_area").val().trim();
+                    let id_bin = $("#id_bin").val().trim();
+                    let id_po = $("#id_po").val().trim();
+
+                    if (warehouse || id_area || id_bin || id_po) {
+                        $.getJSON("{% url 'get_bin_data' %}",
+                        {
+                            warehouse: warehouse,
+                            area: id_area,
+                            bin: id_bin,
+                            po: id_po
+                        }).done(function (response) {
+                            $("#jsGrid").jsGrid("option", "data", response);
+                            $("#jsGrid").jsGrid("option", "pageIndex", 1);
+                            $("#jsGrid").jsGrid("refresh");
+                        }).fail(function (jqXHR, textStatus, errorThrown) {
+                            console.log('Error: ' + errorThrown);
+                        });
+                    }
+                }
+            });
+
+
+            $("#searchForm").on("submit", function (e) {
+               e.preventDefault();
+            });
+
+
+            $("#Search").click(function () {
+                let warehouseId = $("#warehouse").val();
+                let areaId = $("#id_area").val();
+                let binId = $("#id_bin").val();
+                let poId = $("#id_po").val().trim();
+                const CURRENT_ROUTE = "{{ request.resolver_match.url_name }}";
+
+                if (warehouseId || areaId || binId || poId) {
+                    $.getJSON("{% url 'get_bin_data' %}",
+                        {
+                            warehouse: warehouseId,
+                            area: areaId,
+                            bin: binId,
+                            po: poId,
+                            route_name: CURRENT_ROUTE
+                        }, function (data) {
+                            console.log("Dữ liệu nhận về:", data); // Debug xem dữ liệu đúng chưa
+
+                            $("#jsGrid").jsGrid("option", "data", data);
+                            $("#jsGrid").jsGrid("option", "pageIndex", 1);
+                            $("#jsGrid").jsGrid("refresh");
+                    });
+                }
+
+            });
+
+            const translations = {
+                notFound: "{% trans 'Not found' %}",
+                plant: "{% trans 'Plant' %}",
+                warehouse: "{% trans 'Warehouse' %}",
+                product_order: "{% trans 'Product Order' %}",
+                purchase_order: "{% trans 'Purchase Order' %}",
+                version_no: "{% trans 'Version No' %}",
+                version_seq: "{% trans 'Version Seq' %}",
+                size: "{% trans 'Size' %}",
+                location: "{% trans 'Location' %}",
+                qty: "{% trans 'Qty' %}",
+                unit: "{% trans 'Unit' %}",
+                item_type: "{% trans 'Item Type' %}",
+                post_date: "{% trans 'Post Date' %}",
+                supplier: "{% trans 'Supplier' %}",
+                customer_no: "{% trans 'Customer' %}",
+                sap_mtr_no: "{% trans 'Mtr No' %}",
+                lot_no: "{% trans 'Lot No' %}",
+                desc: "{% trans 'Comment' %}"
+
+            };
+
+            {# Main jsGrid #}
+            $("#jsGrid").jsGrid({
+                width: "100%",
+                height: "68vh",
+                sorting: true,
+                paging: true,
+                noDataContent: translations.notFound,
+                pageSize: 20,
+                pageButtonCount: 5,
+                editing: false,
+                pagerFormat: "{first} {prev} {pages} {next} {last} \u00A0  |\u00A0\u00A0 {pageIndex} of {pageCount}",
+                pagePrevText: "<i class='fas fa-chevron-left'></i>",
+                pageNextText: "<i class='fas fa-chevron-right'></i>",
+                pageFirstText: "<i class='fas fa-angle-double-left'></i>",
+                pageLastText: "<i class='fas fa-angle-double-right'></i>",
+                data: [],
+                fields: [
+                    { name: "wh_plant", title: translations.plant, type: "text", width: 100, css: "text-center"},
+                    {#{ name: "wh_name", title: translations.warehouse, type: "text", width: 130, css: "text-center"},#}
+                    { name: "product_order", title: translations.product_order, type: "text", width: 120, css: "text-center"},
+                    { name: "customer_no", title: translations.customer_no, type: "text", width: 130, css: "text-center"},
+                    { name: "version_no", title: translations.version_no, type: "text", width: 120, css: "text-center"},
+                    { name: "lot_no", title: translations.lot_no, type: "text", width: 120, css: "text-center"},
+                    { name: "size", title: translations.size, type: "text", width: 60, css: "text-center"},
+                    {
+                        name: "qty",
+                        title: translations.qty,
+                        type: "number",
+                        width: 120,
+                        itemTemplate: function(value) {
+                            return value.toLocaleString();
+                        }
+                    },
+                    { name: "item_type", title: translations.item_type, type: "text", width: 130, css: "text-center"},
+                    { name: "bin_name", title: translations.location, type: "text", width: 80, css: "text-center"},
+                    { name: "supplier", title: translations.supplier, type: "text", width: 130, css: "text-center"},
+                    { name: "post_date", title: translations.post_date, type: "date", width: 120, css: "text-center"},
+                    { name: "purchase_no", title: translations.purchase_order, type: "text", width: 120, css: "text-center"},
+                    { name: "sap_mtr_no", title: translations.sap_mtr_no, type: "text", width: 120, css: "text-center"},
+                    { name: "version_seq", title: translations.version_seq, type: "text", width: 70, css: "text-center"},
+                    { name: "desc", title: translations.desc, type: "text", width: 130, css: "text-center"},
+                ]
+            });
+
+
+            $("#exportExcel").click(function () {
+                let gridData = $("#jsGrid").jsGrid("option", "data");
+
+                const fields = [
+                    { name: "wh_plant", title: translations.plant, type: "text", width: 100, css: "text-center"},
+                    {#{ name: "wh_name", title: translations.warehouse, type: "text", width: 120, css: "text-center"},#}
+                    { name: "product_order", title: translations.product_order, type: "text", width: 120, css: "text-center"},
+                    { name: "customer_no", title: translations.customer_no, type: "text", width: 150, css: "text-center"},
+                    { name: "version_no", title: translations.version_no, type: "text", width: 120, css: "text-center"},
+                    { name: "lot_no", title: translations.lot_no, type: "text", width: 120, css: "text-center"},
+                    { name: "size", title: translations.size, type: "text", width: 60, css: "text-center"},
+                    { name: "qty", title: translations.qty, type: "number", width: 180},
+                    { name: "item_type", title: translations.item_type, type: "text", width: 200, css: "text-center"},
+                    { name: "bin_name", title: translations.location, type: "text", width: 80, css: "text-center"},
+                    { name: "supplier", title: translations.supplier, type: "text", width: 150, css: "text-center"},
+                    { name: "post_date", title: translations.post_date, type: "date", width: 200, css: "text-center"},
+                    { name: "purchase_no", title: translations.purchase_order, type: "text", width: 120, css: "text-center"},
+                    { name: "sap_mtr_no", title: translations.sap_mtr_no, type: "text", width: 120, css: "text-center"},
+                    { name: "version_seq", title: translations.version_seq, type: "text", width: 70, css: "text-center"},
+                    { name: "desc", title: translations.desc, type: "text", width: 150, css: "text-center"},
+                ];
+
+                gridData.sort((a, b) => {
+                    if (a.bin_id < b.bin_id) return -1;
+                    if (a.bin_id > b.bin_id) return 1;
+                    return 0;
+                });
+
+                // Tạo dữ liệu chuyển đổi
+                const transformedData = gridData.map(function (item) {
+                    let transformedItem = {};
+                    fields.forEach(function (field) {
+                        let value = item[field.name] || "";
+                        if (field.type === "number") {
+                            value = Number(value) || 0; // Ép kiểu số để Excel nhận dạng đúng
+                        }
+                        transformedItem[field.title] = value;
+                    });
+                    return transformedItem;
+                });
+
+                // Chuyển đổi dữ liệu thành định dạng SheetJS với `raw: true`
+                let ws = XLSX.utils.json_to_sheet(transformedData, { raw: true });
+
+                // Đặt độ rộng cho các cột
+                ws["!cols"] = fields.map(field => ({ wpx: field.width }));
+
+                // Tạo workbook và thêm sheet vào
+                let wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Data");
+
+                // Xuất file Excel
+                XLSX.writeFile(wb, "Inventory Sheet.xlsx");
+            });
+        });
+    </script>
+{% endblock %}

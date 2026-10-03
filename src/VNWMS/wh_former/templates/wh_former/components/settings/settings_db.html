@@ -1,0 +1,83 @@
+{% load i18n %}
+{% load crispy_forms_tags %}
+<style>
+    .setting-table-content{
+        height: 100%;
+        overflow-x: hidden;
+    }
+
+    .setting-table-menu{
+        border-right: 1px solid #ddd;
+        padding: 12px 8px !important;
+    }
+
+    .setting-table-menu-content{
+        padding: 12px;
+    }
+</style>
+<style>
+    .list-group-item {
+        border: none;
+        font-weight: 500;
+        border-radius: 0;
+        background-color: transparent;
+        outline: none !important;
+    }
+    .list-group-item.active {
+        background-color: #f0f0f0;
+        font-weight: bold;
+        color: #000;
+    }
+    .db-section {
+        min-height: 100%;
+    }
+</style>
+
+<div class="col-12 setting-table-content">
+    <div class="row" style="height: 100%">
+        <div class="col-md-2 setting-table-menu">
+            <div class="list-group" id="db-menu">
+                <button class="list-group-item list-group-item-action active" onclick="showDBSection('vendor', this)">
+                    <i class="fa-solid fa-database me-1"></i> Vendor Master Data
+                </button>
+                <button class="list-group-item list-group-item-action" onclick="showDBSection('params', this)">
+                    <i class="fa-solid fa-border-all me-1"></i> Parameters
+                </button>
+                <button class="list-group-item list-group-item-action" onclick="showDBSection('apps', this)">
+                    <i class="fas fa-industry me-1"></i> Machines
+                </button>
+                <button class="list-group-item list-group-item-action" onclick="showDBSection('billing', this)">
+                    <i class="fas fa-credit-card me-1"></i> Billing
+                </button>
+            </div>
+        </div>
+        <div class="col-md-10 setting-table-menu-content">
+            <div id="db-section-vendor" class="db-section col-md-12">
+                {% include 'wh_former/components/settings/settings_db_vendor.html' %}
+            </div>
+            <div id="db-section-params" class="db-section col-md-12 d-none">
+                {% include 'wh_former/components/settings/settings_db_params.html' %}
+            </div>
+            <div id="db-section-apps" class="db-section col-md-12 d-none">
+                {% include 'wh_former/components/settings/settings_db_machines.html' %}
+            </div>
+            <div id="db-section-billing" class="db-section col-md-12 d-none">
+                <h5>Billing</h5>
+                <p>View and manage billing information...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showDBSection(id, btn) {
+        document.querySelectorAll('.db-section').forEach(sec => {
+            sec.classList.add('d-none');
+        });
+        document.getElementById(`db-section-${id}`).classList.remove('d-none');
+
+        document.querySelectorAll('#db-menu .list-group-item').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+</script>
+

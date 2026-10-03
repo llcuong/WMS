@@ -1,0 +1,59 @@
+<script>
+    function checkAllFieldsFilled() {
+        const isFormRestored = {{ is_form_restored|yesno:"true,false" }};
+
+        const requiredFields = [
+            'former_receive_form',
+            'params_size',
+            'vendor_name',
+            'batch_data_date',
+            'params_surface',
+            'length_value',
+            'params_type',
+            'former_purchase_order',
+            'former_used_day',
+            'item_no',
+            'batch_no'
+        ];
+
+        return requiredFields.every(field => {
+            let el = document.getElementById(field) || document.querySelector(`[name="${field}"]`);
+            let fieldValue = '';
+
+            // Kiểm tra field thông thường (không disabled) và field readonly luôn được kiểm tra
+            if (el && !el.disabled) {
+                fieldValue = el.value ? el.value.trim() : '';
+            } else if (isFormRestored) {
+                // Kiểm tra hidden input
+                let hiddenEl = document.querySelector(`input[type="hidden"][name="${field}"]`);
+                if (hiddenEl) {
+                    fieldValue = hiddenEl.value ? hiddenEl.value.trim() : '';
+                } else if (el) {
+                    fieldValue = el.value ? el.value.trim() : '';
+                }
+
+                if (!fieldValue) {
+                    const fieldMappings = {
+                        'params_size': ['size'],
+                        'vendor_name': ['vendor'],
+                        'length_value': ['length'],
+                        'params_surface': ['surface'],
+                        'params_type': ['form_type'],
+                        'item_no': ['item']
+                    };
+
+                    if (fieldMappings[field]) {
+                        for (let altName of fieldMappings[field]) {
+                            let altEl = document.querySelector(`input[name="${altName}"]`);
+                            if (altEl && altEl.value) {
+                                fieldValue = altEl.value.trim();
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return fieldValue !== '';
+        });
+    }
+</script>

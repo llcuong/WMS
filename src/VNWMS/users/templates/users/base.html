@@ -1,0 +1,39 @@
+{# users/mbase.html #}
+{% extends "bases/base.html" %} {% load static %}
+{% load i18n %}
+{% load user_groups %}
+{% block title %} {{ block.super}} {% endblock title %}
+
+{% block css %}
+
+{% endblock css %}
+
+{% block container %}
+<div class="card-header">
+    <div class="row">
+        <div class="col">
+            {% if user|has_any_group:"developer,wh_packing_admin" %}
+            <button type="button" class="btn btn-success" onclick="location.href='{% url 'user_create' %}'">{% trans "Add User" %}</button>
+            {% endif %}
+
+            {% if user|has_any_group:"developer,wh_packing_admin,wh_packing_manager" %}
+            <button type="button" class="btn btn-success" onclick="location.href='{% url 'user_list' %}'">{% trans "User List" %}</button>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-1"></div>
+    <div class="col-10">
+        {% block sub_container %}
+        {% endblock %}
+    </div>
+    <div class="col-1"></div>
+</div>
+
+{% endblock container %}
+
+{% block js %}
+
+{% endblock js %}

@@ -1,0 +1,313 @@
+{% extends 'wh_packing/bases/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block title %} {% trans "Transaction History" %} {% endblock %}
+{% block css %}
+    {{ block.super }}
+    <style>
+
+        .jsgrid-cell {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+         .jsgrid-header-cell {
+             max-width: 150px;
+         }
+
+        .jsgrid-cell.expanded {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            word-wrap: break-word;
+            max-width: none;
+        }
+
+        .jsgrid-pager {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .jsgrid-grid-body::-webkit-scrollbar {
+            height: 16px !important;
+        }
+
+        #searchBtn {
+            font-size: 0.875rem;
+            border-radius: 5px 27px 27px 5px;
+        }
+
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container mt-3">
+    <h3 class="mt-4 text-center">{% trans "Transaction History" %}</h3>
+    <div class="row d-flex justify-content-center p-0 mt-4">
+        <div class="row d-flex justify-content-center p-0 m-0" style="width: 100%">
+            <div class="d-flex justify-content-start flex-grow-1">
+                <div class="col-md pl-0" style="flex: 0 0 12.5%; max-width: 12.5%;">
+                    <label for="plant" class="mr-2">{% trans "Plant" %}</label>
+                    <select id="plant" class="form-control">
+                      <option value="">---</option>
+                        {% for plant in plants %}
+                      <option value="{{ plant.plant_code }}">{{ plant.plant_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md ml-0" style="flex: 0 0 13.333%; max-width: 13.333%;">
+                    <label for="productOrder" class="mr-2">{% trans "Product Order" %}</label>
+                    <input type="text" id="productOrder" class="form-control">
+                </div>
+                <div class="col-md ml-0" style="flex: 0 0 12.5%; max-width: 12.5%;">
+                    <label for="bin" class="mr-2">{% trans "Location" %}</label>
+                    <input type="text" id="bin" class="form-control">
+                </div>
+                <div class="col-md ml-0" style="flex: 0 0 12.5%; max-width: 12.5%;">
+                    <label for="size" class="mr-2">{% trans "Size" %}</label>
+                    <input type="text" id="size" class="form-control">
+                </div>
+                <div class="col-md-2 ml-0">
+                    <label for="comment" class="mr-2">{% trans "Comment" %}</label>
+                    <input type="text" id="comment" class="form-control">
+                </div>
+                <div class="col-2 d-flex align-items-end">
+                    <button id="searchBtn" class="btn btn-primary btn-lg"><i class="fas fa-search">&nbsp;&nbsp;</i></button>
+                </div>
+
+
+                <div class="download ml-auto d-flex flex-column justify-content-end">
+                    <a class="download">
+                        <button id="exportExcel" type="button" class="btn btn-outline-success" aria-label="template">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="mt-2" id="jsGrid"></div>
+    </div>
+    </div>
+{% endblock%}
+
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(document).ready(function() {
+
+            $("#jsGrid").on("click", ".jsgrid-cell", function() {
+                $(this).toggleClass("expanded");
+            });
+
+            const translations = {
+                notFound: "{% trans 'Not found' %}",
+                batchNum: "{% trans 'Batch No' %}",
+                plant: "{% trans 'Plant' %}",
+                productOrder: "{% trans 'Product Order' %}",
+                purchaseOrder: "{% trans 'Purchase Order' %}",
+                versionNo: "{% trans 'Version No' %}",
+                versionSeq: "{% trans 'Version Seq' %}",
+                item_type: "{% trans 'Item Type' %}",
+                size: "{% trans 'Size' %}",
+                comment: "{% trans 'Comment' %}",
+                bin: "{% trans 'Bin' %}",
+                mvt: "{% trans 'Mvt' %}",
+                minusQty: "-",
+                plusQty: "+",
+                qty: "{% trans 'Qty' %}",
+                createAt: "{% trans 'Create at' %}",
+                createBy: "{% trans 'Create by' %}"
+            };
+
+            $("#jsGrid").jsGrid({
+                width: "100%",
+                height: "69vh",
+                noDataContent: translations.notFound,
+                inserting: false,
+                editing: false,
+                sorting: true,
+                paging: true,
+                pageSize: 20,
+                pageButtonCount: 5,
+                headerRowClass: "table-bordered",
+                pagerFormat: "{first} {prev} {pages} {next} {last} \u00A0  |\u00A0\u00A0 {pageIndex} of {pageCount}",
+                pagePrevText: "<i class='fas fa-chevron-left'></i>",
+                pageNextText: "<i class='fas fa-chevron-right'></i>",
+                pageFirstText: "<i class='fas fa-angle-double-left'></i>",
+                pageLastText: "<i class='fas fa-angle-double-right'></i>",
+                fields: [
+                    { name: "batch_no", title: translations.batchNum, type: "text", width: 130, css: "text-center"},
+                    { name: "product_order", title: translations.productOrder, type: "text", width: 120, css: "text-center"},
+                    { name: "purchase_no", title: translations.purchaseOrder, type: "text", width: 120, css: "text-center"},
+                    { name: "version_no", title: translations.versionNo, type: "text", width: 130, css: "text-center"},
+                    { name: "version_seq", title: translations.versionSeq, type: "text", width: 70, css: "text-center"},
+                    { name: "item_type", title: translations.item_type, type: "text", width: 100, css: "text-center"},
+                    { name: "size", title: translations.size, type: "text", width: 60, css: "text-center"},
+                    { name: "comment", title: translations.comment, type: "text", width: 100, css: "text-center"},
+                    { name: "warehouse_name", title: translations.plant, type: "text", width: 120, css: "text-center"},
+                    { name: "bin_id", title: translations.bin, type: "text", width: 70, css: "text-center"},
+                    { name: "mvt_id", title: translations.mvt, type: "text", width: 80, css: "text-center"},
+                    {
+                        name: "minus_qty",
+                        title: "-",
+                        type: "number",
+                        width: 100,
+                        itemTemplate: function (value) {
+                            return value.toLocaleString();
+                        },
+                    },
+                    {
+                        name: "plus_qty",
+                        title: "+",
+                        type: "number",
+                        width: 100,
+                        itemTemplate: function (value) {
+                            return value.toLocaleString();
+                        },
+                    },
+                    {
+                        name: "remain_qty",
+                        title: translations.qty,
+                        type: "number",
+                        width: 100,
+                        itemTemplate: function (value) {
+                            return value.toLocaleString();
+                        },
+                    },
+                    { name: "create_at", title: translations.createAt, type: "date", width: 150, css: "text-center"},
+                    { name: "create_by__username", title: translations.createBy, type: "text", width: 150, css: "text-center"},
+                ]
+            });
+
+            $("#plant, #productOrder, #bin, #size, #comment").on("keyup", function (e) {
+                const plant = $("#plant").val();
+                const product_order = $("#productOrder").val().trim();
+                const bin = $("#bin").val().trim();
+                const size = $("#size").val().trim();
+                const comment = $("#comment").val().trim();
+
+                if (plant == '') {
+                    event.preventDefault(); // Ngăn gửi request lên server
+                    alert("({% trans 'Plant' %}) {% trans 'cannot all be null' %}!");
+                    return;
+                }
+                else if (e.key === 'Enter' && (plant||product_order||bin||size||comment)){
+                    $.getJSON('{% url "product_order_hist_data" %}',
+                        {
+                            plant: plant,
+                            product_order: product_order,
+                            bin_id: bin,
+                            size: size,
+                            comment: comment
+                        }).done(function (response) {
+                            $("#jsGrid").jsGrid("option", "data", response);
+                            $("#jsGrid").jsGrid("option", "pageIndex", 1);
+                            $("#jsGrid").jsGrid("refresh");
+                        }).fail(function (jqXHR, textStatus, errorThrown) {
+                            console.log('Error: ' + errorThrown);
+                    })
+                }
+            });
+
+
+            $("#searchBtn").on("click", function() {
+                const plant = $("#plant").val();
+                const product_order = $("#productOrder").val().trim();
+                const bin = $("#bin").val().trim();
+                const size = $("#size").val().trim();
+                const comment = $("#comment").val().trim();
+
+                if (plant == '') {
+                    event.preventDefault();
+                    alert("({% trans 'Plant' %}) {% trans 'cannot all be null' %}!");
+                    return;
+                } else if (product_order == ''){
+                    event.preventDefault();
+                    alert("({% trans 'Product Order' %}) {% trans 'cannot all be null' %}!");
+                    return;
+                }
+
+
+                $.getJSON('{% url "product_order_hist_data" %}',
+                    {
+                        plant: plant,
+                        product_order: product_order,
+                        bin_id: bin,
+                        size: size,
+                        comment: comment
+                    }).done(function (response) {
+                        $("#jsGrid").jsGrid("option", "data", response);
+                        $("#jsGrid").jsGrid("option", "pageIndex", 1);       // Quay về trang đầu
+                        $("#jsGrid").jsGrid("refresh");
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        console.log('Error: ' + errorThrown);
+                })
+
+            });
+
+
+            $("#exportExcel").click(function () {
+                let gridData = $("#jsGrid").jsGrid("option", "data");
+
+                const fields = [
+                    { name: "product_order", title: translations.productOrder, type: "text", width: 100 },
+                    { name: "purchase_no", title: translations.purchaseOrder, type: "text", width: 100 },
+                    { name: "version_no", title: translations.versionNo, type: "text", width: 130 },
+                    { name: "version_seq", title: translations.versionSeq, type: "text", width: 80 },
+                    { name: "item_type", title: translations.item_type, type: "text", width: 100 },
+                    { name: "size", title: translations.size, type: "text", width: 45 },
+                    { name: "comment", title: translations.comment, type: "text", width: 200 },
+                    { name: "warehouse_name", title: translations.bin, type: "text", width: 55 },
+                    { name: "bin_id", title: translations.bin, type: "text", width: 55 },
+                    { name: "mvt_id", title: translations.mvt, type: "text", width: 55 },
+                    { name: "minus_qty", title: "-", type: "number", width: 55 },
+                    { name: "plus_qty", title: "+", type: "number", width: 55 },
+                    { name: "remain_qty", title: translations.qty, type: "number", width: 55 },
+                    { name: "create_at", title: translations.createAt, type: "date", width: 200 },
+                    { name: "create_by__username", title: translations.createBy, type: "text", width: 70 },
+                ];
+
+                // Tạo dữ liệu chuyển đổi
+                const transformedData = gridData.map(function (item) {
+                    let transformedItem = {};
+                    fields.forEach(function (field) {
+                        let value = item[field.name] || "";
+                        if (field.type === "number") {
+                            value = Number(value) || 0; // Ép kiểu số để Excel nhận dạng đúng
+                        }
+                        transformedItem[field.title] = value;
+                    });
+                    return transformedItem;
+                });
+
+                // Chuyển đổi dữ liệu thành định dạng SheetJS với `raw: true`
+                let ws = XLSX.utils.json_to_sheet(transformedData, { raw: true });
+
+                // Đặt độ rộng cho các cột
+                ws["!cols"] = fields.map(field => ({ wpx: field.width }));
+
+                // Tạo workbook và thêm sheet vào
+                let wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Data");
+
+                // Xuất file Excel
+                XLSX.writeFile(wb, "Transaction_History.xlsx");
+            });
+
+        });
+
+    </script>
+{% endblock %}

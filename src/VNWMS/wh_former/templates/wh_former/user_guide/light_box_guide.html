@@ -1,0 +1,395 @@
+<style>
+    .light-effect {
+        position: relative;
+        border-radius: 15px;
+        background: white;
+        transition: all 0.3s ease;
+    }
+
+    .light-effect::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: white;
+        background-size: 200% 200%;
+        border-radius: 17px;
+        z-index: -1;
+        display: none; /* Ẩn cho form chính */
+    }
+
+    /* THÊM CSS ĐỂ LOẠI BỎ EFFECT CHO BUTTON */
+    button.light-effect,
+    input[type="button"].light-effect,
+    input[type="submit"].light-effect,
+    .btn.light-effect {
+    }
+
+    button.light-effect::before,
+    input[type="button"].light-effect::before,
+    input[type="submit"].light-effect::before,
+    .btn.light-effect::before {
+        display: none !important;
+        animation: none !important;
+        background: none !important;
+    }
+
+    button.light-effect-pulse,
+    input[type="button"].light-effect-pulse,
+    input[type="submit"].light-effect-pulse,
+    .btn.light-effect-pulse {
+        animation: none !important;
+        transform: none !important;
+    }
+
+    /* LOẠI BỎ TẤT CẢ LIGHT EFFECTS CHO BUTTON */
+    button.light-effect-green,
+    button.light-effect-orange,
+    button.light-effect-red,
+    button.light-effect-small,
+    .btn.light-effect-green,
+    .btn.light-effect-orange,
+    .btn.light-effect-red,
+    .btn.light-effect-small {
+        box-shadow: none !important;
+    }
+
+    button.light-effect-green::before,
+    button.light-effect-orange::before,
+    button.light-effect-red::before,
+    button.light-effect-small::before,
+    .btn.light-effect-green::before,
+    .btn.light-effect-orange::before,
+    .btn.light-effect-red::before,
+    .btn.light-effect-small::before {
+        display: none !important;
+        animation: none !important;
+    }
+
+    @keyframes glowing {
+        0% {
+            background-position: 0% 50%;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.4);
+        }
+        50% {
+            background-position: 100% 50%;
+            box-shadow: 0 0 40px rgba(0, 123, 255, 0.6);
+        }
+        100% {
+            background-position: 0% 50%;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.4);
+        }
+    }
+
+    .light-effect-green {
+        box-shadow:
+            0 0 30px rgba(40, 167, 69, 0.3),
+            0 0 60px rgba(40, 167, 69, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .light-effect-green::before {
+        background: linear-gradient(45deg,
+            #28a745, #1e7e34, #28a745, #1e7e34, #28a745);
+        display: block;
+        animation: glowing 3s ease-in-out infinite;
+    }
+
+    .light-effect-orange {
+        box-shadow:
+            0 0 30px rgba(253, 126, 20, 0.3),
+            0 0 60px rgba(253, 126, 20, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .light-effect-orange::before {
+        background: linear-gradient(45deg,
+            #fd7e14, #e55a00, #fd7e14, #e55a00, #fd7e14);
+        display: block;
+        animation: glowing 3s ease-in-out infinite;
+    }
+
+    .light-effect-red {
+        box-shadow:
+            0 0 30px rgba(220, 53, 69, 0.3),
+            0 0 60px rgba(220, 53, 69, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .light-effect-red::before {
+        background: linear-gradient(45deg,
+            #dc3545, #bd2130, #dc3545, #bd2130, #dc3545);
+        display: block;
+        animation: glowing 3s ease-in-out infinite;
+    }
+
+    .light-effect-small {
+        border-radius: 8px;
+        box-shadow:
+            0 0 15px rgba(0, 123, 255, 0.2),
+            0 0 30px rgba(0, 123, 255, 0.05),
+            inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    }
+
+    .light-effect-small::before {
+        border-radius: 10px;
+        display: block;
+        animation: glowing-small 2s ease-in-out infinite;
+    }
+
+    @keyframes glowing-small {
+        0% {
+            background-position: 0% 50%;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+        }
+        50% {
+            background-position: 100% 50%;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
+        }
+        100% {
+            background-position: 0% 50%;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+        }
+    }
+
+    .light-effect-padded {
+        padding: 20px;
+    }
+
+    .light-effect-padded-small {
+        padding: 10px;
+    }
+
+    .light-effect-pulse {
+        animation: pulse-light 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-light {
+        0% {
+            transform: scale(1);
+            box-shadow:
+                0 0 30px rgba(0, 123, 255, 0.3),
+                0 0 60px rgba(0, 123, 255, 0.1);
+        }
+        50% {
+            transform: scale(1.02);
+            box-shadow:
+                0 0 40px rgba(0, 123, 255, 0.5),
+                0 0 80px rgba(0, 123, 255, 0.2);
+        }
+        100% {
+            transform: scale(1);
+            box-shadow:
+                0 0 30px rgba(0, 123, 255, 0.3),
+                0 0 60px rgba(0, 123, 255, 0.1);
+        }
+    }
+
+    .light-effect-pulse::before {
+        display: block;
+        animation: glowing 3s ease-in-out infinite;
+    }
+
+    .light-effect-disabled {
+        opacity: 0.6;
+        box-shadow:
+            0 0 15px rgba(108, 117, 125, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .light-effect-disabled::before {
+        background: linear-gradient(45deg,
+            #6c757d, #495057, #6c757d, #495057, #6c757d);
+        animation: none;
+        display: block;
+    }
+
+    /* Field highlight - CHỈ GIỮ LẠI CÁI NÀY */
+    .field-highlight {
+        position: relative;
+    }
+
+    .field-highlight::before {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        border: 2px solid #007bff;
+        border-radius: 8px;
+        opacity: 0;
+        animation: fieldGlow 1.5s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    @keyframes fieldGlow {
+        0%, 100% {
+            opacity: 0;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.8;
+            transform: scale(1.01);
+        }
+    }
+
+    /* Field completed - Hiệu ứng khi field đã điền xong */
+    .field-completed {
+        position: relative;
+    }
+
+    .field-completed::after {
+        content: '✓';
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        width: 20px;
+        height: 20px;
+        background: #28a745;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: bold;
+        z-index: 2;
+        animation: completedBounce 0.6s ease-out;
+    }
+
+    @keyframes completedBounce {
+        0% {
+            transform: scale(0);
+            opacity: 0;
+        }
+        50% {
+            transform: scale(1.2);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+</style>
+
+<script>
+    window.LightEffect = {
+        add: function(element, type = 'default') {
+            if (typeof element === 'string') {
+                element = document.querySelector(element);
+            }
+
+            if (element) {
+                element.classList.add('light-effect');
+
+                switch(type) {
+                    case 'green':
+                        element.classList.add('light-effect-green');
+                        break;
+                    case 'orange':
+                        element.classList.add('light-effect-orange');
+                        break;
+                    case 'red':
+                        element.classList.add('light-effect-red');
+                        break;
+                    case 'small':
+                        element.classList.add('light-effect-small');
+                        break;
+                    case 'pulse':
+                        element.classList.add('light-effect-pulse');
+                        break;
+                }
+            }
+        },
+
+        remove: function(element) {
+            if (typeof element === 'string') {
+                element = document.querySelector(element);
+            }
+
+            if (element) {
+                element.classList.remove(
+                    'light-effect',
+                    'light-effect-green',
+                    'light-effect-orange',
+                    'light-effect-red',
+                    'light-effect-small',
+                    'light-effect-pulse'
+                );
+            }
+        },
+
+        toggle: function(element, type = 'default') {
+            if (typeof element === 'string') {
+                element = document.querySelector(element);
+            }
+
+            if (element) {
+                if (element.classList.contains('light-effect')) {
+                    this.remove(element);
+                } else {
+                    this.add(element, type);
+                }
+            }
+        },
+
+        disable: function(element) {
+            if (typeof element === 'string') {
+                element = document.querySelector(element);
+            }
+
+            if (element) {
+                element.classList.add('light-effect-disabled');
+            }
+        },
+
+        enable: function(element) {
+            if (typeof element === 'string') {
+                element = document.querySelector(element);
+            }
+
+            if (element) {
+                element.classList.remove('light-effect-disabled');
+            }
+        },
+
+        // Thêm functions cho field indicators
+        highlightField: function(selector) {
+            const element = document.querySelector(selector);
+            if (element) {
+                const container = element.closest('.col-12, .col-md-6, .col-lg-3, .col-md-4, .col-lg-2, .col-md-8, .col-lg-4') || element.parentElement;
+                container.classList.add('field-highlight');
+            }
+        },
+
+        removeHighlight: function(selector) {
+            const element = document.querySelector(selector);
+            if (element) {
+                const container = element.closest('.col-12, .col-md-6, .col-lg-3, .col-md-4, .col-lg-2, .col-md-8, .col-lg-4') || element.parentElement;
+                container.classList.remove('field-highlight');
+            }
+        },
+
+        markCompleted: function(selector) {
+            const element = document.querySelector(selector);
+            if (element) {
+                const container = element.closest('.col-12, .col-md-6, .col-lg-3, .col-md-4, .col-lg-2, .col-md-8, .col-lg-4') || element.parentElement;
+                container.classList.remove('field-highlight');
+                {#container.classList.add('field-completed');#}
+            }
+        },
+
+        removeCompleted: function(selector) {
+            const element = document.querySelector(selector);
+            if (element) {
+                const container = element.closest('.col-12, .col-md-6, .col-lg-3, .col-md-4, .col-lg-2, .col-md-8, .col-lg-4') || element.parentElement;
+                {#container.classList.remove('field-completed');#}
+            }
+        }
+    };
+</script>

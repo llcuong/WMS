@@ -1,0 +1,52 @@
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+<div class="col-12 pt-3 px-4">
+    <div class="row no-padding-bottom">
+        <div class="col-12">
+            {{ form.media }}
+            {{ form.non_field_errors }}
+            <div class="row">
+                <div class="col-xl-2 col-md-4 order-md-1">
+                    {% include "wh_former/modules/components/forms/fields/forms_brand_field.html" with is_required=False %}
+                </div>
+
+                <div class="col-xl-2 col-md-3 order-md-2">
+                    {% include "wh_former/modules/components/forms/fields/forms_item_field.html" with is_required=False %}
+                </div>
+
+                <div class="col-xl-3 col-md-4 order-md-3">
+                    {{ form.former_receive_form|as_crispy_field }}
+                </div>
+
+                <div class="col-xl-2 col-md-3 order-md-4">
+                    {% include "wh_former/modules/components/forms/fields/form_type_field.html" with is_required=False %}
+                </div>
+
+                <div class="col-xl-2 col-md-4 order-md-5">
+                    {% include "wh_former/modules/components/forms/fields/forms_size_field.html" with is_required=False %}
+                </div>
+
+                <div class="col-xl-1 col-md-1 order-md-last">
+                    {% include 'wh_former/modules/components/buttons/search_button.html' with submit=True %}
+                </div>
+
+                <div class="col-xl-2 col-md-4 order-md-6">
+                    {% include "wh_former/modules/components/forms/fields/forms_length_field.html" with is_required=False %}
+                </div>
+
+                <div class="col-xl-2 col-md-3 order-md-7">
+                    {{ form.former_used_day|as_crispy_field }}
+                </div>
+
+                <div class="col-xl-3 col-md-4 order-md-6">
+                    {{ form.batch_no|as_crispy_field }}
+                </div>
+
+                <div class="col-xl-3 col-md-3 order-md-8">
+                    {% include "wh_former/modules/components/forms/fields/former_surface_field.html" with is_required=False %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

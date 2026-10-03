@@ -1,0 +1,1071 @@
+{% extends 'wh_former/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% load dict_extras %}
+
+{% block title %} {% trans "Former - Transaction" %} {% endblock %}
+
+{% block local_css %}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .report-container {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        background: #f8f9fa;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .report-card {
+        max-width: 100%;
+        margin: 0 auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+        animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .report-header {
+        background: #495057;
+        color: white;
+        padding: 24px;
+        text-align: center;
+    }
+
+    .report-header h1 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .report-header p {
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    .report-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 24px;
+        background: #fff;
+        border-bottom: 1px solid #e9ecef;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .search-section {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .form-control {
+        padding: 8px 16px;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border-color 0.2s ease;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #495057;
+        box-shadow: 0 0 0 2px rgba(73, 80, 87, 0.1);
+    }
+
+    .btn {
+        padding: 8px 16px;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .btn-outline-primary {
+        color: #495057;
+        border-color: #495057;
+        background: white;
+    }
+
+    .btn-outline-primary:hover {
+        background: #495057;
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-outline-success {
+        color: #198754;
+        border-color: #198754;
+        background: white;
+    }
+
+    .btn-outline-success:hover {
+        background: #198754;
+        color: white;
+        text-decoration: none;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+        max-height: 65vh;
+        position: relative;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        min-width: 1400px;
+    }
+
+    .data-table thead {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    /* Main header row */
+    .data-table .main-header th {
+        background: #495057;
+        color: white;
+        padding: 12px 8px;
+        text-align: center;
+        font-weight: 600;
+        border: 1px solid #343a40;
+        font-size: 12px;
+        white-space: nowrap;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+
+    /* Sub header row */
+    .data-table .sub-header th {
+        background: #6c757d;
+        color: white;
+        padding: 10px 6px;
+        text-align: center;
+        font-weight: 500;
+        border: 1px solid #495057;
+        font-size: 11px;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    .data-table .sub-header th:hover {
+        background: #5a6268;
+    }
+
+    .data-table .sub-header th.sortable::after, .data-table .main-header th.sortable::after {
+        content: '\f0dc';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        margin-left: 4px;
+        opacity: 0.6;
+        font-size: 10px;
+    }
+
+    .data-table .sub-header th.sort-asc::after, .data-table .main-header th.sort-asc::after {
+        content: '\f0de';
+        opacity: 1;
+    }
+
+    .data-table .sub-header th.sort-desc::after, .data-table .main-header th.sort-desc::after {
+        content: '\f0dd';
+        opacity: 1;
+    }
+
+    /* Group headers */
+    .group-former {
+        background: #6f42c1 !important;
+        border-color: #5a32a3 !important;
+    }
+
+    .group-basket {
+        background: #20c997 !important;
+        border-color: #1aa179 !important;
+    }
+
+    .data-table td {
+        padding: 10px 6px;
+        text-align: center;
+        border: 1px solid #e9ecef;
+        font-size: 12px;
+        background: white;
+    }
+
+    .data-table tbody tr:hover {
+        background: #f8f9fa !important;
+    }
+
+    .editable-field {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 4px;
+        padding: 4px 6px;
+        width: 70px;
+        text-align: center;
+        font-size: 12px;
+        transition: all 0.2s ease;
+    }
+
+    .editable-field:focus {
+        outline: none;
+        border-color: #495057;
+        background: white;
+        box-shadow: 0 0 0 2px rgba(73, 80, 87, 0.1);
+    }
+
+    .editable-field.changed {
+        background: #d4edda;
+        border-color: #c3e6cb;
+        font-weight: 500;
+    }
+
+    .pagination-container {
+        padding: 20px 24px;
+        background: #f8f9fa;
+        border-top: 1px solid #e9ecef;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .pagination {
+        display: flex;
+        list-style: none;
+        gap: 2px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .pagination .page-item {
+        margin: 0;
+    }
+
+    .pagination .page-link {
+        display: block;
+        padding: 6px 12px;
+        text-decoration: none;
+        color: #495057;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        font-size: 14px;
+    }
+
+    .pagination .page-link:hover {
+        background: #e9ecef;
+        color: #495057;
+    }
+
+    .pagination .page-item.active .page-link {
+        background: #495057;
+        border-color: #495057;
+        color: white;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        color: #6c757d;
+        background: white;
+        border-color: #dee2e6;
+        cursor: not-allowed;
+    }
+
+    .pagination-info {
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 40px;
+        color: #6c757d;
+    }
+
+    .no-data i {
+        font-size: 48px;
+        color: #dee2e6;
+        margin-bottom: 15px;
+    }
+
+    @media (max-width: 768px) {
+        .report-controls {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .search-section {
+            width: 100%;
+            justify-content: center;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-control {
+            width: 100%;
+        }
+
+        .pagination-container {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .data-table {
+            font-size: 11px;
+        }
+
+        .data-table .main-header th,
+        .data-table .sub-header th {
+            padding: 8px 4px;
+        }
+
+        .data-table td {
+            padding: 8px 4px;
+        }
+
+        .searching::after {
+            content: "Searching...";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #6c757d;
+            font-size: 14px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- Loading modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center p-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-3">正在生成Excel文件，請稍候...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="report-container">
+        <div class="report-card">
+            <div class="report-header">
+                <h1>報廢報表 (Scrap Report)</h1>
+                <p>Manufacturing Waste Management System</p>
+            </div>
+
+            <div class="report-controls">
+                <div class="search-section">
+                    <input type="text" id="searchInput" class="form-control" placeholder="搜尋資料..."
+                           style="width: 200px;"/>
+                    <form method="GET" style="display: inline-flex; gap: 8px;">
+                        {% if request.GET.page %}
+                            <input type="hidden" name="page" value="{{ request.GET.page }}">
+                        {% endif %}
+
+                        <!-- Year Selector -->
+                        <select name="year" class="form-control" style="width: fit-content"
+                                onchange="this.form.submit()">
+                            <option value="">全部年份</option>
+                            {% with current_year=now.year start_year=2025 %}
+                                {% for year in start_year|range_to:current_year %}
+                                    <option value="{{ year }}"
+                                            {% if request.GET.year == year|stringformat:"s" %}selected{% endif %}>
+                                        {{ year }}年
+                                    </option>
+                                {% endfor %}
+                            {% endwith %}
+                        </select>
+
+                        <!-- Month Selector -->
+                        <select name="month" class="form-control" style="width: fit-content"
+                                onchange="this.form.submit()">
+                            <option value="">全部月份</option>
+                            {% for i in "123456789ABC" %}
+                                {% if forloop.counter <= 12 %}
+                                    <option value="{{ forloop.counter }}"
+                                            {% if request.GET.month == forloop.counter|stringformat:"s" %}selected{% endif %}>
+                                        {{ forloop.counter }}月
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </form>
+                    <button class="btn btn-outline-primary" onclick="searchTable()">
+                        <i class="fas fa-search"></i> 搜尋
+                    </button>
+                </div>
+                <button class="btn btn-outline-success" onclick="exportToExcel()">
+                    <i class="fas fa-file-excel"></i> 匯出Excel
+                </button>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="data-table" id="reportTable">
+                    <thead>
+                    <!-- Main header row with grouped columns -->
+                    <tr class="main-header">
+                        <th rowspan="2" class="sortable" data-column="0">出庫單號<br>Stock Out</th>
+                        <th rowspan="2" class="sortable" data-column="1">機台<br>Machine</th>
+                        <th rowspan="2" class="sortable" data-column="2">線別<br>Line</th>
+                        <th rowspan="2" class="sortable" data-column="3">手模批號<br>Batch No</th>
+                        <th rowspan="2" class="sortable" data-column="4">手模料號<br>Item No</th>
+                        <th rowspan="2" class="sortable" data-column="5">廠商<br>Brand</th>
+                        <th rowspan="2" class="sortable" data-column="6">手模長度<br>Former Length</th>
+                        <th rowspan="2" class="sortable" data-column="7">手模尺寸<br>Former Size</th>
+                        <th colspan="4" class="group-former">手模(Former)</th>
+                        <th colspan="4" class="group-basket">籃筐(Basket)</th>
+                    </tr>
+                    <!-- Sub header row -->
+                    <tr class="sub-header">
+                        <th class="sortable group-former" data-column="8">出庫數量<br>Stock Out Amount</th>
+                        <th class="sortable group-former" data-column="9">入庫數量<br>Stock In Amount</th>
+                        <th class="sortable group-former" data-column="10">入庫缺少數量<br>Lack Amount</th>
+                        <th class="group-former">實際缺少數量<br>Confirmed Lack Amount</th>
+                        <th class="sortable group-basket" data-column="12">出庫數量<br>Stock Out Amount</th>
+                        <th class="sortable group-basket" data-column="13">入庫數量<br>Stock In Amount</th>
+                        <th class="sortable group-basket" data-column="14">入庫缺少數量<br>Lack Amount</th>
+                        <th class="group-basket">實際缺少數量<br>Confirmed Lack Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    {% if data %}
+                        {% for row in data %}
+                            <tr data-row-index="{{ forloop.counter0 }}">
+                                <td>{{ row.Stock_Out|default:"" }}</td>
+                                <td>{{ row.Machine|default:"" }}</td>
+                                <td>{{ row.Line|default:"" }}</td>
+                                <td>{{ row.Batch_No|default:"" }}</td>
+                                <td>{{ row.Item_No|default:"" }}</td>
+                                <td>{{ row.Brand|default:"" }}</td>
+                                <td>{{ row.Former_Length|default:"" }}</td>
+                                <td>{{ row.Former_Size|default:"" }}</td>
+                                <td>{{ row.Former_Stock_Out_Amount|default:0|floatformat:0 }}</td>
+                                <td>{{ row.Former_Stock_In_Amount|default:0|floatformat:0 }}</td>
+                                <td>{{ row.Former_Lack_Amount|default:0|floatformat:0 }}</td>
+                                <td>
+                                    <input type="number"
+                                           class="editable-field"
+                                           value="{{ row.Former_Confirmed_Lack_Amount|default:0|floatformat:0 }}"
+                                           data-original="{{ row.Former_Confirmed_Lack_Amount|default:0|floatformat:0 }}"
+                                           data-type="former"
+                                           data-date="{{ row.Date }}"
+                                           data-row="{{ forloop.counter0 }}"
+                                           min="0"
+                                           step="1"/>
+                                </td>
+                                <td>{{ row.Basket_Stock_Out_Amount|default:0|floatformat:0 }}</td>
+                                <td>{{ row.Basket_Stock_In_Amount|default:0|floatformat:0 }}</td>
+                                <td>{{ row.Basket_Lack_Amount|default:0|floatformat:0 }}</td>
+                                <td>
+                                    <input type="number"
+                                           class="editable-field"
+                                           value="{{ row.Basket_Confirmed_Lack_Amount|default:0|floatformat:0 }}"
+                                           data-original="{{ row.Basket_Confirmed_Lack_Amount|default:0|floatformat:0 }}"
+                                           data-type="basket"
+                                           data-date="{{ row.Date }}"
+                                           data-row="{{ forloop.counter0 }}"
+                                           min="0"
+                                           step="1"/>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="16" class="no-data">
+                                <i class="fas fa-inbox"></i>
+                                <p>目前沒有資料<br>There is no data</p>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            {% if data %}
+                <div class="pagination-container">
+                    <div class="pagination-info">
+                        顯示 {{ page_obj.start_index|default:1 }} 到 {{ page_obj.end_index|default:data|length }}
+                        筆，共 {{ paginator.count|default:data|length }} 筆資料
+                    </div>
+
+                    {% if is_paginated %}
+                        <nav aria-label="頁面導航">
+                            <ul class="pagination">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           href="?{% if request.GET.month %}month={{ request.GET.month }}&{% endif %}page=1">
+                                            <i class="fas fa-angle-double-left"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           href="?{% if request.GET.month %}month={{ request.GET.month }}&{% endif %}page={{ page_obj.previous_page_number }}">
+                                            <i class="fas fa-angle-left"></i>
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <span class="page-link"><i class="fas fa-angle-double-left"></i></span>
+                                    </li>
+                                    <li class="page-item disabled">
+                                        <span class="page-link"><i class="fas fa-angle-left"></i></span>
+                                    </li>
+                                {% endif %}
+
+                                {% for num in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == num %}
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ num }}</span>
+                                        </li>
+                                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               href="?{% if request.GET.month %}month={{ request.GET.month }}&{% endif %}page={{ num }}">{{ num }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           href="?{% if request.GET.month %}month={{ request.GET.month }}&{% endif %}page={{ page_obj.next_page_number }}">
+                                            <i class="fas fa-angle-right"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           href="?{% if request.GET.month %}month={{ request.GET.month }}&{% endif %}page={{ page_obj.paginator.num_pages }}">
+                                            <i class="fas fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <span class="page-link"><i class="fas fa-angle-right"></i></span>
+                                    </li>
+                                    <li class="page-item disabled">
+                                        <span class="page-link"><i class="fas fa-angle-double-right"></i></span>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+
+                    <button type="button" class="btn btn-primary" id="saveBtn" style="margin-left: auto;">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    {% include 'wh_former/modules/layout/modals/handle_loading_modal.html' %}
+    <!-- Load xlsx-js-style from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let currentSort = {column: null, direction: 'asc'};
+
+            // Search functionality with debounce
+            function debounce(func, wait) {
+                let timeout;
+                return function () {
+                    const context = this;
+                    const args = arguments;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        func.apply(context, args);
+                    }, wait);
+                };
+            }
+
+            function searchTable() {
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                const rows = document.querySelectorAll('#tableBody tr[data-row-index]');
+
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+
+            // Real-time search with debounce
+            document.getElementById('searchInput').addEventListener('keyup', function () {
+                const debouncedSearch = debounce(searchTable, 300);
+                debouncedSearch();
+            });
+
+            // Add loading indicator during search
+            document.getElementById('searchInput').addEventListener('input', function () {
+                document.getElementById('tableBody').classList.add('searching');
+            });
+
+            // Sort functionality
+            function sortTable(columnIndex) {
+                const tbody = document.getElementById('tableBody');
+                const rows = Array.from(tbody.querySelectorAll('tr[data-row-index]'));
+
+                // Remove previous sort classes
+                document.querySelectorAll('.sortable').forEach(th => {
+                    th.classList.remove('sort-asc', 'sort-desc');
+                });
+
+                // Determine sort direction
+                if (currentSort.column === columnIndex) {
+                    currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+                } else {
+                    currentSort.column = columnIndex;
+                    currentSort.direction = 'asc';
+                }
+
+                // Add sort class to current column
+                const currentHeader = document.querySelector(`[data-column="${columnIndex}"]`);
+                currentHeader.classList.add(currentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+
+                // Sort rows
+                rows.sort((a, b) => {
+                    let aVal = a.children[columnIndex].textContent.trim();
+                    let bVal = b.children[columnIndex].textContent.trim();
+
+                    // Try to parse as numbers
+                    const aNum = parseFloat(aVal.replace(/,/g, ''));
+                    const bNum = parseFloat(bVal.replace(/,/g, ''));
+
+                    if (!isNaN(aNum) && !isNaN(bNum)) {
+                        return currentSort.direction === 'asc' ? aNum - bNum : bNum - aNum;
+                    } else {
+                        // String comparison
+                        return currentSort.direction === 'asc'
+                            ? aVal.localeCompare(bVal)
+                            : bVal.localeCompare(aVal);
+                    }
+                });
+
+                // Re-append sorted rows
+                rows.forEach(row => tbody.appendChild(row));
+            }
+
+            // Add click listeners to sortable headers
+            document.querySelectorAll('.sortable').forEach(header => {
+                header.addEventListener('click', function () {
+                    const columnIndex = parseInt(this.getAttribute('data-column'));
+                    sortTable(columnIndex);
+                });
+            });
+
+            // Handle editable field changes
+            document.querySelectorAll('.editable-field').forEach(input => {
+                input.addEventListener('change', function () {
+                    const original = parseInt(this.dataset.original);
+                    const current = parseInt(this.value) || 0;
+
+                    if (current !== original) {
+                        this.classList.add('changed');
+                    } else {
+                        this.classList.remove('changed');
+                    }
+                });
+
+                input.addEventListener('focus', function () {
+                    this.style.transform = 'scale(1.02)';
+                });
+
+                input.addEventListener('blur', function () {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+
+            // Export to Excel function
+            window.exportToExcel = async function () {
+                try {
+                    // Show loading indicator
+                    var loadingModalEl = document.getElementById('loadingModal');
+                    var loadingModal = bootstrap.Modal.getInstance(loadingModalEl)
+                        || new bootstrap.Modal(loadingModalEl);
+                    loadingModal.show();
+
+                    // Get current filter parameters
+                    const params = new URLSearchParams(window.location.search);
+                    const exportUrl = `{% url 'former_scrap_excel' %}?${params.toString()}`;
+
+                    // Fetch data from backend
+                    const response = await fetch(exportUrl);
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    const data = await response.json();
+
+                    // Create workbook with a blank worksheet
+                    const wb = XLSX.utils.book_new();
+                    const ws = XLSX.utils.aoa_to_sheet([[]]); // Start with empty sheet
+
+                    // Add title rows first
+                    const today = new Date();
+                    const dateStr = today.getFullYear() + '-' +
+                        String(today.getMonth() + 1).padStart(2, '0') + '-' +
+                        String(today.getDate()).padStart(2, '0');
+
+                    // Add title and header rows
+                    XLSX.utils.sheet_add_aoa(ws, [
+                        ["報廢報表 (Scrap Report)"],
+                        ["Manufacturing Waste Management System"],
+                        ["Generated on: " + dateStr],
+                        [""], // Empty row
+                        // Main header row
+                        [
+                            "出庫單號\nStock Out",
+                            "機台\nMachine",
+                            "線別\nLine",
+                            "手模批號\nBatch No",
+                            "手模料號\nItem No",
+                            "廠商\nBrand",
+                            "手模長度\nFormer Length",
+                            "手模尺寸\nFormer Size",
+                            "手模\n(Former)", "", "", "",
+                            "籃筐\n(Basket)", "", "", ""
+                        ],
+                        // Sub header row
+                        [
+                            "", "", "", "", "", "", "", "",
+                            "出庫數量\nStock Out Amount",
+                            "入庫數量\nStock In Amount",
+                            "入庫缺少數量\nLack Amount",
+                            "實際缺少數量\nConfirmed Lack Amount",
+                            "出庫數量\nStock Out Amount",
+                            "入庫數量\nStock In Amount",
+                            "入庫缺少數量\nLack Amount",
+                            "實際缺少數量\nConfirmed Lack Amount"
+                        ]
+                    ], {origin: "A1"});
+
+                    // Add data rows
+                    const dataStartRow = 7; // After headers
+                    data.forEach((row, rowIndex) => {
+                        XLSX.utils.sheet_add_aoa(ws, [
+                            [
+                                row["Stock Out"],
+                                row["Machine"],
+                                row["Line"],
+                                row["Batch No"],
+                                row["Item No"],
+                                row["Brand"],
+                                row["Former Length"],
+                                row["Former Size"],
+                                row["Former Stock Out Amount"],
+                                row["Former Stock IN Amount"],
+                                row["Former Lack Amount"],
+                                row["Former Confirmed Lack Amount"],
+                                row["Basket Stock Out Amount"],
+                                row["Basket Stock IN Amount"],
+                                row["Basket Lack Amount"],
+                                row["Basket Confirmed Lack Amount"]
+                            ]
+                        ], {origin: `A${dataStartRow + rowIndex}`});
+                    });
+
+                    // Set worksheet range
+                    const endRow = dataStartRow + data.length - 1;
+                    ws['!ref'] = `A1:P${endRow}`;
+
+                    // Column widths
+                    ws['!cols'] = [
+                        {wch: 15},  // Stock Out
+                        {wch: 10},  // Machine
+                        {wch: 8},   // Line
+                        {wch: 16},  // Batch No
+                        {wch: 12},  // Item No
+                        {wch: 12},  // Brand
+                        {wch: 12},  // Former Length
+                        {wch: 12},  // Former Size
+                        {wch: 12},  // Former Stock Out Amount
+                        {wch: 12},  // Former Stock IN Amount
+                        {wch: 12},  // Former Lack Amount
+                        {wch: 12},  // Former Confirmed Lack Amount
+                        {wch: 12},  // Basket Stock Out Amount
+                        {wch: 12},  // Basket Stock IN Amount
+                        {wch: 12},  // Basket Lack Amount
+                        {wch: 12}   // Basket Confirmed Lack Amount
+                    ];
+
+                    // Merge cells for grouped headers
+                    ws['!merges'] = [
+                        // Title merges
+                        {s: {r: 0, c: 0}, e: {r: 0, c: 15}},
+                        {s: {r: 1, c: 0}, e: {r: 1, c: 15}},
+                        {s: {r: 2, c: 0}, e: {r: 2, c: 15}},
+
+                        // Main header merges (row 4)
+                        {s: {r: 4, c: 0}, e: {r: 5, c: 0}}, // Stock Out
+                        {s: {r: 4, c: 1}, e: {r: 5, c: 1}}, // Machine
+                        {s: {r: 4, c: 2}, e: {r: 5, c: 2}}, // Line
+                        {s: {r: 4, c: 3}, e: {r: 5, c: 3}}, // Batch No
+                        {s: {r: 4, c: 4}, e: {r: 5, c: 4}}, // Item No
+                        {s: {r: 4, c: 5}, e: {r: 5, c: 5}}, // Brand
+                        {s: {r: 4, c: 6}, e: {r: 5, c: 6}}, // Former Length
+                        {s: {r: 4, c: 7}, e: {r: 5, c: 7}}, // Former Size
+                        {s: {r: 4, c: 8}, e: {r: 4, c: 11}}, // Former group
+                        {s: {r: 4, c: 12}, e: {r: 4, c: 15}} // Basket group
+                    ];
+
+                    // Define color styles
+                    const styles = {
+                        mainHeader: {
+                            font: {bold: true, color: {rgb: "FFFFFF"}, sz: 12},
+                            fill: {fgColor: {rgb: "495057"}},
+                            alignment: {horizontal: "center", vertical: "center", wrapText: true},
+                            border: {
+                                top: {style: "thin", color: {rgb: "343A40"}},
+                                bottom: {style: "thin", color: {rgb: "343A40"}},
+                                left: {style: "thin", color: {rgb: "343A40"}},
+                                right: {style: "thin", color: {rgb: "343A40"}}
+                            }
+                        },
+                        formerHeader: {
+                            font: {bold: true, color: {rgb: "FFFFFF"}, sz: 12},
+                            fill: {fgColor: {rgb: "6F42C1"}},
+                            alignment: {horizontal: "center", vertical: "center", wrapText: true},
+                            border: {
+                                top: {style: "thin", color: {rgb: "5A32A3"}},
+                                bottom: {style: "thin", color: {rgb: "5A32A3"}},
+                                left: {style: "thin", color: {rgb: "5A32A3"}},
+                                right: {style: "thin", color: {rgb: "5A32A3"}}
+                            }
+                        },
+                        basketHeader: {
+                            font: {bold: true, color: {rgb: "FFFFFF"}, sz: 12},
+                            fill: {fgColor: {rgb: "20C997"}},
+                            alignment: {horizontal: "center", vertical: "center", wrapText: true},
+                            border: {
+                                top: {style: "thin", color: {rgb: "1AA179"}},
+                                bottom: {style: "thin", color: {rgb: "1AA179"}},
+                                left: {style: "thin", color: {rgb: "1AA179"}},
+                                right: {style: "thin", color: {rgb: "1AA179"}}
+                            }
+                        },
+                        subHeader: {
+                            font: {bold: true, color: {rgb: "FFFFFF"}, sz: 11},
+                            fill: {fgColor: {rgb: "6C757D"}},
+                            alignment: {horizontal: "center", vertical: "center", wrapText: true},
+                            border: {
+                                top: {style: "thin", color: {rgb: "495057"}},
+                                bottom: {style: "thin", color: {rgb: "495057"}},
+                                left: {style: "thin", color: {rgb: "495057"}},
+                                right: {style: "thin", color: {rgb: "495057"}}
+                            }
+                        },
+                        formerSubHeader: {
+                            font: {bold: true, color: {rgb: "FFFFFF"}, sz: 11},
+                            fill: {fgColor: {rgb: "6F42C1"}},
+                            alignment: {horizontal: "center", vertical: "center", wrapText: true},
+                            border: {
+                                top: {style: "thin", color: {rgb: "5A32A3"}},
+                                bottom: {style: "thin", color: {rgb: "5A32A3"}},
+                                left: {style: "thin", color: {rgb: "5A32A3"}},
+                                right: {style: "thin", color: {rgb: "5A32A3"}}
+                            }
+                        },
+                        basketSubHeader: {
+                            font: {bold: true, color: {rgb: "FFFFFF"}, sz: 11},
+                            fill: {fgColor: {rgb: "20C997"}},
+                            alignment: {horizontal: "center", vertical: "center", wrapText: true},
+                            border: {
+                                top: {style: "thin", color: {rgb: "1AA179"}},
+                                bottom: {style: "thin", color: {rgb: "1AA179"}},
+                                left: {style: "thin", color: {rgb: "1AA179"}},
+                                right: {style: "thin", color: {rgb: "1AA179"}}
+                            }
+                        },
+                        dataCell: {
+                            font: {color: {rgb: "212529"}, sz: 11},
+                            alignment: {horizontal: "center", vertical: "center"},
+                            border: {
+                                top: {style: "thin", color: {rgb: "E9ECEF"}},
+                                bottom: {style: "thin", color: {rgb: "E9ECEF"}},
+                                left: {style: "thin", color: {rgb: "E9ECEF"}},
+                                right: {style: "thin", color: {rgb: "E9ECEF"}}
+                            }
+                        },
+                        titleStyle: {
+                            font: {bold: true, color: {rgb: "495057"}, sz: 16},
+                            alignment: {horizontal: "center", vertical: "center"}
+                        },
+                        subtitleStyle: {
+                            font: {color: {rgb: "6C757D"}, sz: 12},
+                            alignment: {horizontal: "center", vertical: "center"}
+                        },
+                        dateStyle: {
+                            font: {color: {rgb: "6C757D"}, sz: 10, italic: true},
+                            alignment: {horizontal: "right", vertical: "center"}
+                        }
+                    };
+
+                    // Apply styles to all cells
+                    for (let R = 0; R <= endRow; R++) {
+                        for (let C = 0; C < 16; C++) {
+                            const cellAddress = XLSX.utils.encode_cell({r: R, c: C});
+
+                            // Title rows (0-2)
+                            if (R === 0) {
+                                ws[cellAddress] = {...ws[cellAddress], s: styles.titleStyle};
+                            } else if (R === 1) {
+                                ws[cellAddress] = {...ws[cellAddress], s: styles.subtitleStyle};
+                            } else if (R === 2) {
+                                ws[cellAddress] = {...ws[cellAddress], s: styles.dateStyle};
+                            }
+                            // Main header row (4)
+                            else if (R === 4) {
+                                if (C >= 8 && C <= 11) {
+                                    ws[cellAddress] = {...ws[cellAddress], s: styles.formerHeader};
+                                } else if (C >= 12 && C <= 15) {
+                                    ws[cellAddress] = {...ws[cellAddress], s: styles.basketHeader};
+                                } else {
+                                    ws[cellAddress] = {...ws[cellAddress], s: styles.mainHeader};
+                                }
+                            }
+                            // Sub header row (5)
+                            else if (R === 5) {
+                                if (C >= 8 && C <= 11) {
+                                    ws[cellAddress] = {...ws[cellAddress], s: styles.formerSubHeader};
+                                } else if (C >= 12 && C <= 15) {
+                                    ws[cellAddress] = {...ws[cellAddress], s: styles.basketSubHeader};
+                                } else {
+                                    ws[cellAddress] = {...ws[cellAddress], s: styles.subHeader};
+                                }
+                            }
+                            // Data rows (6+)
+                            else if (R >= 6) {
+                                const fillColor = R % 2 === 0 ? "F8F9FA" : "FFFFFF";
+                                ws[cellAddress] = {
+                                    ...ws[cellAddress],
+                                    s: {
+                                        ...styles.dataCell,
+                                        fill: {fgColor: {rgb: fillColor}}
+                                    }
+                                };
+                            }
+                        }
+                    }
+
+                    // Freeze headers
+                    ws['!freeze'] = {x: 0, y: 6}; // Freeze first 6 rows (title + headers)
+
+                    // Add worksheet to workbook
+                    XLSX.utils.book_append_sheet(wb, ws, "Scrap Report");
+
+                    // Generate and download file
+                    XLSX.writeFile(wb, `報廢報表_${dateStr}.xlsx`);
+
+
+                } catch (error) {
+                    console.error('Export error:', error);
+                    alert('匯出Excel時發生錯誤: ' + error.message);
+                } finally {
+                    setTimeout(function () {
+                        loadingModal.hide()
+                    }, 1000)
+                }
+
+
+            };
+
+            // Make search function global
+            window.searchTable = searchTable;
+
+            document.getElementById('saveBtn').addEventListener('click', function () {
+                const changedRows = {};
+
+                // Group all changes by row index
+                document.querySelectorAll('.editable-field.changed').forEach(input => {
+                    const rowIndex = input.dataset.row;
+                    if (!changedRows[rowIndex]) {
+                        const row = document.querySelector(`tr[data-row-index="${rowIndex}"`);
+                        changedRows[rowIndex] = {
+                            stockout_form: row.querySelector('td:nth-child(1)').textContent.trim(),
+                            batch_no: row.querySelector('td:nth-child(4)').textContent.trim(),
+                            date: row.querySelector('td:nth-child(1)').dataset.date,
+                            former_confirmed: row.querySelector('input[data-type="former"]').value,
+                            basket_confirmed: row.querySelector('input[data-type="basket"]').value
+                        };
+                    }
+                });
+
+                if (Object.keys(changedRows).length === 0) {
+                    alert('沒有需要保存的變更');
+                    return;
+                }
+
+                // Convert to array of row data
+                const rowsToSave = Object.values(changedRows);
+
+                fetch(window.location.href, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        action: 'save_confirmed_amounts',
+                        data: rowsToSave
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('保存成功');
+                            // Remove changed class after successful save
+                            document.querySelectorAll('.editable-field.changed').forEach(el => {
+                                el.classList.remove('changed');
+                                el.dataset.original = el.value;
+                            });
+                        } else {
+                            alert('保存失敗: ' + (data.message || '未知錯誤'));
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('保存時發生錯誤');
+                    });
+            });
+        });
+    </script>
+{% endblock %}

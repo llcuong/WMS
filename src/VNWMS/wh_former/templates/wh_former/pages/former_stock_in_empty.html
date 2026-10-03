@@ -1,0 +1,474 @@
+{% extends 'wh_former/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Hand Former - Former Stock In" %} {% endblock %}
+{% block local_css %}
+    <style>
+        .rfid-table-result-body {
+        {% if "linux" in request.META.HTTP_USER_AGENT|lower %}
+            min-height: 320px !important;
+        {% endif %}
+        }
+
+        #stock-new-info-body {
+        {% if "linux" in request.META.HTTP_USER_AGENT|lower %}
+            height: 180px !important;
+        {% else %}
+            height: 122px !important;
+        {% endif %}
+        }
+
+        #stock-new-info-body {
+        {% if "linux" in request.META.HTTP_USER_AGENT|lower %}
+            height: 180px !important;
+        {% else %}
+            height: 122px !important;
+        {% endif %}
+        }
+
+        .rfid-table-loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            margin-top: 12px;
+            color: #007bff;
+            font-weight: 500;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="container-fluid no-copy">
+        {% trans "Former Stock In Empty" as page_title %}
+        <form method="post" id="formerStockInForm" onsubmit="return handleFormSubmit(event);">
+            {% include 'wh_former/components/page_title.html' with title=page_title icon="fa-sign-in" stockin=True old=True %}
+            <div class="row p-3 main-body">
+                <div class="col-12">
+                    <div style="display: none">
+                        {% csrf_token %}
+                    </div>
+                    <div class="row align-items-center">
+
+                        <div class="col-auto d-flex align-items-center" style="gap: 15px;">
+                            <div class="scan-counter-display d-flex align-items-center" style="gap: 10px;">
+                                <div class="counter-item d-flex align-items-center"
+                                     style="background: white; padding: 8px 12px; border-radius: 0; color: black; font-weight: 600;">
+                                    <span style="font-size: 15px;">{% trans "Baskets" %}: <span
+                                            id="totalBasketValue">{{ total_basket }}</span></span>
+                                </div>
+                                <div class="counter-item d-flex align-items-center"
+                                     style="background: white; padding: 8px 12px; border-radius: 0; color: black; font-weight: 600;">
+                                    <span style="font-size: 15px;">{% trans "Formers" %}: <span
+                                            id="totalFormerValue">{{ total_former }}</span></span>
+                                </div>
+                            </div>
+                            {% include 'wh_former/modules/components/buttons/rack_button.html' %}
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div id="locked-section" class="position-relative">
+                            <div class="col-12">
+                                <div class="table-section-wrapper">
+                                    <div id="rfid-table-wrapper-7" style="display: block;">
+                                        {% include 'wh_former/modules/components/tables/former/table_rfid_5.html' with pid=7 columns=columns epcs=epcs rfid_read_mode=rfid_read_mode rfid_setting_id=rfid_setting_id action_name="stockin" former=0 type="empty"%}
+                                    </div>
+                                </div>
+                            </div>
+{#                            <div id="lock-overlay" style="display: none !important;"#}
+{#                                 class="lock-overlay d-flex flex-column justify-content-center align-items-center">#}
+{#                                <div>#}
+{#                                    <i class="fas fa-lock fa-3x"></i>#}
+{#                                </div>#}
+{#                                <div>#}
+{#                                    <h5 style="color: white">#}
+{#                                        <strong>#}
+{#                                            {% trans "Hãy điền thông tin trước ..." %}#}
+{#                                        </strong>#}
+{#                                    </h5>#}
+{#                                </div>#}
+{#                            </div>#}
+                        </div>
+                    </div>
+
+                    <div>
+                        <input type="hidden" name="batch_data" id="batch-data-input">
+                        <input type="hidden" name="nobatch_data" id="nobatch-data-input">
+                        <input type="hidden" name="table_data" id="table-data-input">
+                        <div class="d-flex justify-content-center mt-2" style="gap: 20px;">
+                            {% include 'wh_former/modules/components/buttons/save_button.html' with type='empty'%}
+                            {% include 'wh_former/modules/components/buttons/done_button.html' %}
+                            {% include 'wh_former/modules/components/buttons/cancel_button.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% include 'wh_former/modules/components/modals/action/save_confirm_modal.html' %}
+            {% include 'wh_former/modules/components/modals/action/cancel_confirm_modal.html' %}
+        </form>
+    </div>
+    {% include 'wh_former/modules/layout/modals/groups/former_stock_in_modals.html' %}
+{% endblock %}
+{% block js %}
+
+    {% include 'wh_former/modules/layout/items/scripts/rack_modal_logic.html' %}
+
+    {% include 'wh_former/modules/layout/items/scripts/check_bin_selected.html' %}
+
+    {% include 'wh_former/modules/layout/items/scripts/fti_check_all_fields.html' with type="empty" %}
+
+    {% include 'wh_former/modules/layout/items/scripts/fti_enable_save_button.html' with type="empty" %}
+
+    {% include 'wh_former/modules/layout/items/scripts/done_button_state.html' %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.start-button').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const pid = this.closest('.rfid-table-controller').dataset.pid;
+                    const overlay = document.getElementById(`rfid-table-loading-overlay-${pid}`);
+                    if (overlay) {
+                        overlay.style.display = 'flex';
+
+                        startAllCountdowns();
+
+                        setTimeout(() => {
+                            overlay.style.display = 'none';
+                            const stopBtn = document.getElementById(`stop-btn-${pid}`);
+                            if (stopBtn && !stopBtn.disabled) {
+                                stopBtn.click();
+                            }
+                        }, 20000);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const rackButton = document.getElementById('rackButton');
+            if (rackButton) {
+                rackButton.addEventListener('click', function () {
+                    const rfidReaderIp = this.getAttribute('data-rfid-reader-ip') || '{{ rfid_reader_ip|default:"" }}';
+                    const batchNo = this.getAttribute('data-batch-no') || document.getElementById('batch_no')?.value || '{{ batch_no|default:"" }}';
+                    const action = this.getAttribute('data-action') || '{{ action|default:"CRTE" }}';
+
+                    const modal = new bootstrap.Modal(document.getElementById('rackModal'));
+                    modal.show();
+
+                    const modalContent = document.getElementById('rackModalContent');
+                    modalContent.innerHTML = `
+                        <div class="text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">{% trans "Loading..." %}</span>
+                            </div>
+                            <p class="mt-2">{% trans "Loading rack data..." %}</p>
+                        </div>
+                    `;
+
+                    if (!rfidReaderIp || !action) {
+                        modalContent.innerHTML = `
+                            <div class="alert alert-warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                {% trans "Missing required parameters. Please check RFID Reader IP and Action." %}
+                                <br><small>RFID IP: ${rfidReaderIp || 'Not found'} | Action: ${action || 'Not found'}</small>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    let url = `{% url 'get_rack_bin_temp' %}?rfid_reader_ip=${encodeURIComponent(rfidReaderIp)}&action=${encodeURIComponent(action)}`;
+                    if (batchNo) {
+                        url += `&batch_no=${encodeURIComponent(batchNo)}`;
+                    }
+
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                modalContent.innerHTML = `
+                                    <div class="alert alert-danger">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {% trans "Error" %}: ${data.error}
+                                    </div>
+                                `;
+                            } else {
+                                modalContent.innerHTML = data.html;
+                            }
+                        })
+                        .catch(error => {
+                            modalContent.innerHTML = `
+                                <div class="alert alert-danger">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    {% trans "Failed to load rack data. Please try again." %}
+                                </div>
+                            `;
+                        });
+                });
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.rack-delete-btn')) {
+                const btn = e.target.closest('.rack-delete-btn');
+                const rackTempId = btn.dataset.rackTempId;
+                fetch("{% url 'delete_rack_temp' %}", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: `rack_temp_id=${encodeURIComponent(rackTempId)}`
+                })
+                    .then(res => {
+                        return res.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            btn.closest('tr').remove();
+                            fetch("{% url 'get_rack_stats' %}?rfid_reader_ip={{ rfid_reader_ip }}&action={{ action }}")
+                                .then(res => res.json())
+                                .then(stats => {
+                                    document.getElementById('rackScannedValue').textContent = stats.rack_scanned;
+                                    document.getElementById('totalBasketValue').textContent = stats.total_basket;
+                                    document.getElementById('totalFormerValue').textContent = stats.total_former;
+                                });
+                        } else {
+                            alert(data.error || 'Xóa thất bại!');
+                        }
+                    })
+                    .catch((err) => {
+                        console.error('Fetch error:', err);
+                        alert('Lỗi kết nối!');
+                    });
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function updateDoneButton() {
+                const doneButton = document.getElementById('doneButton');
+                const rackScanned = Number('{{ rack_scanned|default:"0" }}');
+                if (doneButton) {
+                    if (rackScanned > 0) {
+                        doneButton.disabled = false;
+                        doneButton.classList.remove('btn-disabled');
+                    } else {
+                        doneButton.disabled = true;
+                        doneButton.classList.add('btn-disabled');
+                    }
+                }
+            }
+
+            updateDoneButton();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (performance.navigation.type === 1 && (isSuccess || isError)) {
+                setTimeout(function () {
+                    window.location.href = "{% url 'former_in' %}";
+                }, 3000);
+            }
+        });
+    </script>
+
+    <script>
+        function showDoneConfirmModal() {
+            $('#doneConfirmModal').modal('show');
+        }
+
+        function showCancelConfirmModal() {
+            $('#cancelConfirmModal').modal('show');
+        }
+
+        let isFormSubmitting = false;
+        let isReloading = false;
+        let pendingNavigation = null;
+        let beforeUnloadHandler = null;
+
+        function hasUnsavedData() {
+            let rackScanned = 0;
+            const rackElement = document.getElementById('rackScannedValue');
+            if (rackElement) {
+                rackScanned = parseInt(rackElement.textContent) || 0;
+            }
+
+            return rackScanned > 0;
+        }
+
+        function showLeaveConfirmModal() {
+            try {
+                $('#confirmLeaveModal').modal('show');
+            } catch (e) {
+                const modal = new bootstrap.Modal(document.getElementById('confirmLeaveModal'));
+                modal.show();
+            }
+        }
+
+        function removeBeforeUnloadHandler() {
+            if (beforeUnloadHandler) {
+                window.removeEventListener('beforeunload', beforeUnloadHandler);
+                beforeUnloadHandler = null;
+            }
+        }
+
+        // Event handler cho nút confirmLeaveBtn
+        document.addEventListener('DOMContentLoaded', function () {
+            const confirmLeaveBtn = document.getElementById('confirmLeaveBtn');
+            if (confirmLeaveBtn) {
+                confirmLeaveBtn.addEventListener('click', function () {
+                    isFormSubmitting = true;
+                    removeBeforeUnloadHandler();
+
+                    if (pendingNavigation && pendingNavigation.target) {
+                        window.location.href = pendingNavigation.target.href;
+                    } else {
+                        window.location.href = "{% url 'former_in' %}";
+                    }
+                });
+            }
+        });
+
+        function handleFormSubmit(event) {
+            // Xử lý khi ấn nút Done confirm
+            if (event.submitter && event.submitter.id === 'confirmDoneBtn') {
+                isFormSubmitting = true;
+                collectTableData([5], [6, 7]);
+                collectBatchData();
+                collectNoBatchData();
+                return true;
+            }
+
+            // Xử lý khi ấn nút Cancel confirm
+            if (event.submitter && event.submitter.id === 'confirmCancelBtn') {
+                isFormSubmitting = true;
+                return true;
+            }
+
+            // Xử lý khi ấn nút Done - hiển thị modal xác nhận
+            if (event.submitter &&
+                (event.submitter.classList.contains('done-button') ||
+                    (event.submitter.name === 'form_type' && event.submitter.value === 'done'))) {
+                event.preventDefault();
+                showDoneConfirmModal();
+                return false;
+            }
+
+            // Xử lý khi ấn nút Cancel - hiển thị modal xác nhận
+            if (event.submitter &&
+                (event.submitter.classList.contains('cancel-button') ||
+                    (event.submitter.name === 'form_type' && event.submitter.value === 'cancel'))) {
+                event.preventDefault();
+                showCancelConfirmModal();
+                return false;
+            }
+
+            // Xử lý submit form bình thường (Save button)
+            isFormSubmitting = true;
+            collectTableData([5], [6, 7]);
+            collectBatchData();
+            collectNoBatchData();
+            return true;
+        }
+
+        beforeUnloadHandler = function (event) {
+            if (isFormSubmitting || isReloading) {
+                return;
+            }
+
+            if (hasUnsavedData()) {
+                event.preventDefault();
+                event.returnValue = '';
+
+                pendingNavigation = event;
+
+                setTimeout(() => {
+                    showLeaveConfirmModal();
+                }, 100);
+
+                return '';
+            }
+        };
+
+        window.addEventListener('beforeunload', beforeUnloadHandler);
+
+        document.addEventListener('click', function (event) {
+            const target = event.target.closest('a[href]');
+
+            if (target && hasUnsavedData() && !isFormSubmitting) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                pendingNavigation = {target: target};
+                showLeaveConfirmModal();
+                return false;
+            }
+        });
+
+        window.addEventListener('unload', function () {
+            removeBeforeUnloadHandler();
+        });
+
+        window.addEventListener('pagehide', function () {
+            removeBeforeUnloadHandler();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const confirmLeaveBtn = document.getElementById('confirmLeaveBtn');
+            if (confirmLeaveBtn) {
+                confirmLeaveBtn.addEventListener('click', function () {
+                    isFormSubmitting = true;
+                    removeBeforeUnloadHandler();
+
+                    if (pendingNavigation && pendingNavigation.target) {
+                        window.location.href = pendingNavigation.target.href;
+                    } else {
+                        window.location.href = "{% url 'former_in' %}";
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}
+
+
+
+
+

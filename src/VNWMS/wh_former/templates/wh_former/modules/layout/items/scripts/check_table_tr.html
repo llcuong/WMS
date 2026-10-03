@@ -1,0 +1,31 @@
+<script>
+    function checkAllTablesEmpty() {
+            const rfidTableBodies = document.querySelectorAll('.rfid-table-result-body');
+            const allTables = [];
+
+            rfidTableBodies.forEach(container => {
+                const tablesInContainer = container.querySelectorAll('table');
+                allTables.push(...tablesInContainer);
+            });
+
+            let hasAnyTableData = false;
+
+            allTables.forEach((table, index) => {
+                const tbody = table.querySelector('tbody');
+                if (tbody) {
+                    const rows = tbody.querySelectorAll('tr');
+                    const visibleRows = Array.from(rows).filter(row => {
+                        return row.style.display !== 'none' &&
+                               row.offsetHeight > 0 &&
+                               row.cells.length > 0 &&
+                               row.textContent.trim() !== '';
+                    });
+
+                    if (visibleRows.length > 0) {
+                        hasAnyTableData = true;
+                    }
+                }
+            });
+            return hasAnyTableData;
+        }
+</script>

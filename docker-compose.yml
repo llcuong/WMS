@@ -1,0 +1,21 @@
+version: '3'
+services:
+  django_web:
+    build: .
+    image: "pms_gunicorn"
+    container_name: django_web
+    command: bash -c "sh ../../config/app/django_init.sh && gunicorn -w 4 -b 0:9000 PMS.wsgi"
+    restart: always
+    expose:
+      - "9000"
+    environment:
+      - "DJANGO_SETTINGS_MODULE=PMS.settings.test-box-local"
+  django_nginx:
+    image: "nginx:1.15-alpine"
+    container_name: django_nginx
+    ports:
+      - "8080:8080"
+    volumes:
+      - /data/config/nginx:/etc/nginx/conf.d
+    depends_on:
+      - django_web

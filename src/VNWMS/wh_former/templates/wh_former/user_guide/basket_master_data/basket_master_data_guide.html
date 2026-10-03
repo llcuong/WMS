@@ -1,0 +1,1421 @@
+{% load i18n %}
+
+<script>
+    // Basket Master Data Field Guide - CHỈ QUẢN LÝ FIELD HIGHLIGHT
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if table footer exists and has results
+        function hasTableFooter() {
+            const tableFooter = document.querySelector('.result-table-footer');
+            const hasResults = tableFooter && tableFooter.querySelector('.result-table-footer-btn');
+            return hasResults;
+        }
+
+        // Initialize field step guide only if no table footer
+        let fieldGuide = null;
+        
+        // Cần thêm đoạn này để khởi tạo fieldGuide
+        function initializeFieldGuide() {
+            if (hasTableFooter()) return;
+            
+            fieldGuide = new FieldStepGuide({
+                fieldMapping: {
+                    1: '[name="basket_purchase_order"]',
+                    2: '#vendor_name_input', 
+                    3: '[name="basket_receive_qty"]',
+                    4: '#length_value_input',
+                    5: '[name="basket_receive_date"]',
+                    6: '#plant_code_input',
+                    7: '[name="basket_description"]'
+                },
+                autoProgress: true,
+                // Override validation function cho field guide
+                isFieldValid: function(field) {
+                    return isFieldValid(field);
+                },
+                onFieldComplete: function(selector, stepNumber) {
+                    if (stepNumber >= 7) {
+                        setTimeout(() => {
+                            checkAndHighlightSaveButton();
+                        }, 500);
+                    }
+                },
+                onFieldIncomplete: function(selector, stepNumber) {
+                    if (stepNumber <= 7) {
+                        removeSaveButtonEffects();
+                    }
+                }
+            });
+            
+            // Set validation function after creation
+            if (fieldGuide) {
+                fieldGuide.isFieldValid = isFieldValid;
+            }
+        }
+        
+        // Function to disable/enable form fields based on purchase order
+        function manageFieldStates() {
+            if (hasTableFooter()) return;
+            
+            const purchaseOrderField = document.querySelector('[name="basket_purchase_order"]');
+            const otherFields = [
+                '#vendor_name_input',
+                '[name="basket_receive_qty"]', 
+                '#length_value_input',
+                '[name="basket_receive_date"]',
+                '[name="basket_capacity"]',
+                '#plant_code_input',
+                '[name="basket_description"]'
+            ];
+            
+            // Set capacity to 5 and make it read-only
+            const capacityField = document.querySelector('[name="basket_capacity"]');
+            if (capacityField) {
+                capacityField.value = '5';
+                capacityField.readOnly = true;
+                capacityField.style.backgroundColor = '#f8f9fa';
+                capacityField.style.cursor = 'not-allowed';
+                capacityField.title = 'Capacity is fixed at 5';
+            }
+            
+            // Check if purchase order is valid
+            const isPurchaseOrderValid = purchaseOrderField && 
+                purchaseOrderField.value && 
+                purchaseOrderField.value.trim() !== '' &&
+                purchaseOrderField.value.trim().length >= 10;
+            
+            if (isPurchaseOrderValid) {
+                // Call API to check if PO exists
+                checkPurchaseOrderFromBackend(purchaseOrderField.value.trim())
+                    .then(response => {
+                        if (response && response.success && response.data) {
+                            // Purchase Order found - auto-fill fields with data
+                            fillFieldsFromBackendData(response.data);
+                            
+                            // Enable all fields
+                            enableFieldsWithData(otherFields, true);
+                        } else {
+                            // No data found - enable fields for manual input
+                            enableFieldsForManualInput(otherFields);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error checking Purchase Order:', error);
+                        // On error, enable fields for manual input
+                        enableFieldsForManualInput(otherFields);
+                    });
+            } else {
+                // Purchase order invalid - disable all other fields
+                disableOtherFields(otherFields);
+            }
+            
+            // Update save button state
+            setTimeout(checkAndHighlightSaveButton, 100);
+        }
+        
+        // API call to backend to check Purchase Order
+        async function checkPurchaseOrderFromBackend(purchaseOrder) {
+            try {
+                // Use Django's built-in CSRF token
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+                const response = await fetch('{% url "check_purchase_order_data" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken ? csrfToken.value : ''
+                    },
+                    body: JSON.stringify({
+                        purchase_order: purchaseOrder
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('API call failed:', error);
+                return { success: false, error: error.message };
+            }
+        }
+        
+        // Fill fields with data from backend
+        function fillFieldsFromBackendData(data) {
+            const fieldMapping = {
+                'basket_vendor': '#vendor_name_input',
+                'basket_receive_qty': '[name="basket_receive_qty"]',
+                'basket_length': '#length_value_input',
+                'basket_receive_date': '[name="basket_receive_date"]',
+                'plant_code': '#plant_code_input'
+            };
+            
+            const readOnlyFields = [
+                '#vendor_name_input',
+                '#length_value_input', 
+                '[name="basket_receive_date"]',
+                '#plant_code_input'
+            ];
+            
+            Object.keys(fieldMapping).forEach(key => {
+                if (data[key] !== undefined && data[key] !== null) {
+                    const field = document.querySelector(fieldMapping[key]);
+                    if (field) {
+                        field.value = data[key];
+                        
+                        // SET MAX QUANTITY CHO RECEIVE QTY FIELD KHI CÓ AUTO-FILL
+                        if (key === 'basket_receive_qty') {
+                            const maxQty = parseFloat(data[key]);
+                            field.setAttribute('max', maxQty);
+                            field.setAttribute('min', '1');
+                            field.title = `Maximum quantity available: ${maxQty}. You can edit but cannot exceed this amount.`;
+                            
+                            // Remove border left styling
+                        }
+                        
+                        // Make auto-filled fields read-only except receive_qty
+                        if (readOnlyFields.includes(fieldMapping[key])) {
+                            field.readOnly = true;
+                            field.style.backgroundColor = '#f8f9fa';
+                            field.style.cursor = 'not-allowed';
+                            field.title = 'This field is auto-filled from system and cannot be edited';
+                        }
+                        
+                        // Trigger change event for any listeners
+                        field.dispatchEvent(new Event('change', { bubbles: true }));
+                        field.dispatchEvent(new Event('input', { bubbles: true }));
+                        
+                        // Mark field as completed in field guide
+                        if (fieldGuide) {
+                            setTimeout(() => {
+                                fieldGuide.markFieldAsCompleted(fieldMapping[key]);
+                            }, 100);
+                        }
+                    }
+                }
+            });
+            
+            // Show subtle notification
+            showNotification('Purchase Order found! Fields auto-filled from system.', 'success');
+        }
+        
+        // Enable fields with auto-filled data
+        function enableFieldsWithData(otherFields, isAutoFilled = false) {
+            otherFields.forEach(selector => {
+                const field = document.querySelector(selector);
+                if (field) {
+                    // Don't enable capacity field - it's always read-only
+                    if (selector === '[name="basket_capacity"]') {
+                        field.value = '5';
+                        field.readOnly = true;
+                        field.style.backgroundColor = '#f8f9fa';
+                        field.style.cursor = 'not-allowed';
+                        field.title = 'Capacity is fixed at 5';
+                        return;
+                    }
+                    
+                    field.disabled = false;
+                    field.style.opacity = '1';
+                    field.style.cursor = 'auto';
+                    field.removeAttribute('title');
+                    
+                    // Remove disabled field effects
+                    if (typeof LightEffect !== 'undefined') {
+                        LightEffect.removeCompleted(selector);
+                        LightEffect.removeHighlight(selector);
+                        LightEffect.remove(selector);
+                    }
+                }
+            });
+        }
+        
+        // Enable fields for manual input
+        function enableFieldsForManualInput(otherFields) {
+            otherFields.forEach(selector => {
+                const field = document.querySelector(selector);
+                if (field) {
+                    // Don't enable capacity field - it's always read-only
+                    if (selector === '[name="basket_capacity"]') {
+                        field.value = '5';
+                        field.readOnly = true;
+                        field.style.backgroundColor = '#f8f9fa';
+                        field.style.cursor = 'not-allowed';
+                        field.title = 'Capacity is fixed at 5';
+                        return;
+                    }
+                    
+                    field.disabled = false;
+                    field.style.opacity = '1';
+                    field.style.cursor = 'auto';
+                    field.removeAttribute('title');
+                    
+                    // REMOVE MAX QTY RESTRICTION CHO RECEIVE QTY KHI MANUAL INPUT
+                    if (selector === '[name="basket_receive_qty"]') {
+                        field.removeAttribute('max');
+                        field.removeAttribute('min');
+                        field.title = 'Enter receive quantity (must be greater than 0)';
+                        // Remove border styling
+                    }
+                    
+                    // Remove read-only state for manual input
+                    field.readOnly = false;
+                    field.style.backgroundColor = '';
+                    
+                    // Set default date to today for receive_date field if empty
+                    if (selector === '[name="basket_receive_date"]' && (!field.value || field.value.trim() === '')) {
+                        const today = new Date();
+                        const todayString = today.getFullYear() + '-' + 
+                                          String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+                                          String(today.getDate()).padStart(2, '0');
+                        field.value = todayString;
+                        
+                        // Trigger change event to update field guide
+                        field.dispatchEvent(new Event('change', { bubbles: true }));
+                        field.dispatchEvent(new Event('input', { bubbles: true }));
+                        
+                        // Mark field as completed in field guide if available
+                        if (fieldGuide) {
+                            setTimeout(() => {
+                                fieldGuide.markFieldAsCompleted(selector);
+                            }, 100);
+                        }
+                    }
+                    
+                    // Remove disabled field effects
+                    if (typeof LightEffect !== 'undefined') {
+                        LightEffect.removeCompleted(selector);
+                        LightEffect.removeHighlight(selector);
+                        LightEffect.remove(selector);
+                    }
+                }
+            });
+        }
+        
+        // Disable other fields
+        function disableOtherFields(otherFields) {
+            otherFields.forEach(selector => {
+                const field = document.querySelector(selector);
+                if (field) {
+                    // Special handling for capacity field
+                    if (selector === '[name="basket_capacity"]') {
+                        field.value = '5';
+                        field.readOnly = true;
+                        field.style.backgroundColor = '#f8f9fa';
+                        field.style.cursor = 'not-allowed';
+                        field.title = 'Capacity is fixed at 5';
+                        return;
+                    }
+                    
+                    field.disabled = true;
+                    field.style.opacity = '0.5';
+                    field.style.cursor = 'not-allowed';
+                    field.title = 'Please enter Purchase Order first (minimum 10 characters)';
+                    field.value = ''; // Clear value when disabled (including date)
+                    
+                    // REMOVE MAX QTY RESTRICTION KHI DISABLE
+                    if (selector === '[name="basket_receive_qty"]') {
+                        field.removeAttribute('max');
+                        field.removeAttribute('min');
+                        // Remove border styling
+                    }
+                    
+                    // Remove read-only state when disabled
+                    field.readOnly = false;
+                    field.style.backgroundColor = '';
+                    
+                    // Remove any highlights or effects from disabled fields
+                    if (typeof LightEffect !== 'undefined') {
+                        LightEffect.removeCompleted(selector);
+                        LightEffect.removeHighlight(selector);
+                        LightEffect.remove(selector);
+                    }
+                }
+            });
+            
+            // Update field guide state
+            if (fieldGuide) {
+                // Reset field guide to start from purchase order
+                const otherSelectors = Object.values(fieldGuide.fieldMapping).slice(1); // Skip purchase order
+                otherSelectors.forEach(selector => {
+                    fieldGuide.completedFields.delete(selector);
+                    if (typeof LightEffect !== 'undefined') {
+                        LightEffect.removeCompleted(selector);
+                        LightEffect.removeHighlight(selector);
+                        LightEffect.remove(selector);
+                    }
+                });
+                
+                // Set current field to purchase order if not completed
+                if (!fieldGuide.completedFields.has('[name="basket_purchase_order"]')) {
+                    fieldGuide.currentFieldIndex = 0;
+                    fieldGuide.showCurrentFieldIndicator();
+                }
+            }
+        }
+
+        // Show notification to user (simplified)
+        function showNotification(message, type = 'info') {
+            // Remove existing notification
+            const existingNotification = document.querySelector('.po-notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `po-notification alert alert-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                min-width: 300px;
+                max-width: 500px;
+                padding: 12px 15px;
+                border-radius: 5px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                animation: slideInRight 0.3s ease-out;
+                font-size: 14px;
+            `;
+
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center;">
+                        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"
+                           style="margin-right: 8px; font-size: 16px;"></i>
+                        <span>${message}</span>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" style="margin-left: 10px; font-size: 12px;" onclick="this.parentElement.parentElement.remove()">×</button>
+                </div>
+            `;
+
+            // Add animation CSS if not exists
+            if (!document.querySelector('#notificationAnimationStyle')) {
+                const animationStyle = document.createElement('style');
+                animationStyle.id = 'notificationAnimationStyle';
+                animationStyle.textContent = `
+                    @keyframes slideInRight {
+                        from {
+                            transform: translateX(100%);
+                            opacity: 0;
+                        }
+                        to {
+                            transform: translateX(0);
+                            opacity: 1;
+                        }
+                    }
+                `;
+                document.head.appendChild(animationStyle);
+            }
+
+            document.body.appendChild(notification);
+
+            // Auto remove after 4 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.style.animation = 'slideInRight 0.3s ease-out reverse';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, 4000);
+        }
+
+        // Debounced version of manageFieldStates for performance
+        const debouncedManageFieldStates = debounce(manageFieldStates, 300);
+        
+        // Listen for field changes để check save button highlight và field guide state
+        function watchFieldChanges() {
+            if (hasTableFooter()) return;
+            
+            const watchedFields = [
+                '#vendor_name_input',
+                '[name="basket_capacity"]',
+                '[name="basket_receive_qty"]',
+                '[name="basket_receive_date"]',
+                '[name="basket_purchase_order"]',
+                '#length_value_input',
+                '#plant_code_input',
+                '[name="basket_description"]'
+            ];
+            
+            watchedFields.forEach(selector => {
+                const field = document.querySelector(selector);
+                if (field) {
+                    // Thêm event listener cho input để validate max quantity
+                    if (selector === '[name="basket_receive_qty"]') {
+                        field.addEventListener('input', (e) => {
+                            const maxQty = field.getAttribute('max');
+                            const currentValue = parseFloat(field.value);
+                            
+                            if (maxQty && currentValue > parseFloat(maxQty)) {
+                                // Prevent exceeding max quantity
+                                field.value = maxQty;
+                                showNotification(`Maximum quantity is ${maxQty}. Value has been adjusted.`, 'warning');
+                            }
+                            
+                            if (currentValue < 0) {
+                                field.value = '1';
+                                showNotification('Quantity must be greater than 0.', 'warning');
+                            }
+                        });
+                        
+                        field.addEventListener('keydown', (e) => {
+                            // Allow navigation keys và numbers
+                            const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'Tab', '.'];
+                            const isNumber = !isNaN(e.key) && e.key !== ' ';
+                            
+                            if (!allowedKeys.includes(e.key) && !isNumber && !e.ctrlKey) {
+                                e.preventDefault();
+                            }
+                        });
+                    }
+                    
+                    field.addEventListener('input', debounce(() => {
+                        // Special handling for purchase order field
+                        if (selector === '[name="basket_purchase_order"]') {
+                            // Use debounced version to avoid too frequent calls
+                            debouncedManageFieldStates();
+                        }
+                        
+                        // Handle field guide logic if available
+                        if (fieldGuide) {
+                            // Check if field becomes empty and was previously completed
+                            const isEmpty = !field.value || field.value.trim() === '';
+                            const isValid = isEmpty ? false : isFieldValid(field);
+                            const fieldIndex = Object.values(fieldGuide.fieldMapping).indexOf(selector);
+                            const stepNumber = Object.keys(fieldGuide.fieldMapping)[fieldIndex];
+                            
+                            if (!isValid && fieldGuide.completedFields.has(selector)) {
+                                // Field was completed but now invalid/empty - mark as incomplete
+                                fieldGuide.completedFields.delete(selector);
+                                if (typeof LightEffect !== 'undefined') {
+                                    LightEffect.removeCompleted(selector);
+                                }
+                                
+                                // Remove auto-filled styling
+                                field.classList.remove('auto-filled-field');
+                                
+                                // Show field indicator again
+                                if (fieldGuide.currentFieldIndex >= parseInt(stepNumber) - 1) {
+                                    fieldGuide.currentFieldIndex = parseInt(stepNumber) - 1;
+                                    fieldGuide.showCurrentFieldIndicator();
+                                }
+                                
+                                // Call onFieldIncomplete if defined
+                                if (fieldGuide.onFieldIncomplete) {
+                                    fieldGuide.onFieldIncomplete(selector, parseInt(stepNumber));
+                                }
+                            } else if (isValid && !fieldGuide.completedFields.has(selector)) {
+                                // Field is valid and not completed yet - check for completion
+                                fieldGuide.checkFieldCompletion(field);
+                            }
+                        }
+                        
+                        // Always check save button state
+                        setTimeout(checkAndHighlightSaveButton, 300);
+                    }, 300));
+                    
+                    field.addEventListener('change', () => {
+                        if (selector === '[name="basket_purchase_order"]') {
+                            // Immediate call for change event (user finished typing)
+                            manageFieldStates();
+                        }
+                        // Always check save button state
+                        setTimeout(checkAndHighlightSaveButton, 300);
+                    });
+                }
+            });
+        }
+        
+        // Debounce function
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // Initialize field management
+        function initializeFieldManagement() {
+            if (hasTableFooter()) return;
+            
+            // Set capacity field to 5 immediately on page load
+            const capacityField = document.querySelector('[name="basket_capacity"]');
+            if (capacityField) {
+                capacityField.value = '5';
+                capacityField.readOnly = true;
+                capacityField.style.backgroundColor = '#f8f9fa';
+                capacityField.style.cursor = 'not-allowed';
+                capacityField.title = 'Capacity is fixed at 5';
+            }
+            
+            // Set default date to today if field is empty
+            const dateField = document.querySelector('[name="basket_receive_date"]');
+            if (dateField && (!dateField.value || dateField.value.trim() === '')) {
+                const today = new Date();
+                const todayString = today.getFullYear() + '-' + 
+                                  String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+                                  String(today.getDate()).padStart(2, '0');
+                dateField.value = todayString;
+                
+                // Trigger change event to update field guide
+                dateField.dispatchEvent(new Event('change', { bubbles: true }));
+                dateField.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            
+            // Initial field state management
+            setTimeout(() => {
+                manageFieldStates();
+            }, 500);
+            
+            // Set up field watchers
+            watchFieldChanges();
+        }
+        
+        // Gọi initialize trong DOMContentLoaded
+        function initializeAll() {
+            if (hasTableFooter()) return;
+            
+            // Initialize field guide
+            initializeFieldGuide();
+            
+            // Initialize field management
+            setTimeout(() => {
+                manageFieldStates();
+            }, 500);
+            
+            // Set up field watchers
+            watchFieldChanges();
+        }
+        
+        // Call initialize
+        initializeAll();
+        
+        // Debug functions
+        window.debugBasketPO = {
+            manageFields: () => manageFieldStates(),
+            isPurchaseOrderValid: () => {
+                const field = document.querySelector('[name="basket_purchase_order"]');
+                return field && field.value && field.value.trim().length >= 10;
+            },
+            getPOValue: () => {
+                const field = document.querySelector('[name="basket_purchase_order"]');
+                return field ? field.value : null;
+            },
+            testPOValidation: () => {
+                const field = document.querySelector('[name="basket_purchase_order"]');
+                if (field) {
+                    return {
+                        value: field.value,
+                        length: field.value.length,
+                        isValid: isFieldValid(field),
+                        completedFields: fieldGuide ? Array.from(fieldGuide.completedFields) : 'No field guide'
+                    };
+                }
+            },
+            checkFieldGuideValidation: () => {
+                if (fieldGuide && fieldGuide.isFieldValid) {
+                    const field = document.querySelector('[name="basket_purchase_order"]');
+                    return fieldGuide.isFieldValid(field);
+                } else {
+                    return 'Field guide or validation not available';
+                }
+            },
+            enableAllFields: () => {
+                const otherFields = [
+                    '#vendor_name_input',
+                    '[name="basket_receive_qty"]', 
+                    '#length_value_input',
+                    '[name="basket_receive_date"]',
+                    '[name="basket_capacity"]',
+                    '#plant_code_input',
+                    '[name="basket_description"]'
+                ];
+                enableFieldsForManualInput(otherFields);
+            },
+            disableAllFields: () => {
+                const otherFields = [
+                    '#vendor_name_input',
+                    '[name="basket_receive_qty"]', 
+                    '#length_value_input',
+                    '[name="basket_receive_date"]',
+                    '[name="basket_capacity"]',
+                    '#plant_code_input',
+                    '[name="basket_description"]'
+                ];
+                disableOtherFields(otherFields);
+            },
+            // Add save button debug functions
+            addSaveEffects: () => addSaveButtonEffects(),
+            removeSaveEffects: () => removeSaveButtonEffects(),
+            checkSaveButton: () => checkAndHighlightSaveButton(),
+            getProgress: () => fieldGuide ? fieldGuide.getProgress() : null,
+            isGuideActive: () => !!fieldGuide,
+            // Add date utility functions
+            setTodayDate: () => setTodayDate(),
+            getTodayString: () => {
+                const today = new Date();
+                return today.getFullYear() + '-' + 
+                       String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+                       String(today.getDate()).padStart(2, '0');
+            },
+            getDateValue: () => {
+                const field = document.querySelector('[name="basket_receive_date"]');
+                return field ? field.value : null;
+            },
+            // Thêm debug function để test validation
+            getReceiveQtyMax: () => {
+                const field = document.querySelector('[name="basket_receive_qty"]');
+                return field ? field.getAttribute('max') : null;
+            },
+            setReceiveQtyMax: (maxQty) => {
+                const field = document.querySelector('[name="basket_receive_qty"]');
+                if (field) {
+                    if (maxQty) {
+                        field.setAttribute('max', maxQty);
+                        field.setAttribute('min', '1');
+                        field.title = `Maximum quantity available: ${maxQty}. You can edit but cannot exceed this amount.`;
+                        // Remove border styling
+                    } else {
+                        field.removeAttribute('max');
+                        field.removeAttribute('min');
+                        field.title = 'Enter receive quantity (must be greater than 0)';
+                        // Remove border styling
+                    }
+                }
+            },
+            removeReceiveQtyMax: () => {
+                const field = document.querySelector('[name="basket_receive_qty"]');
+                if (field) {
+                    field.removeAttribute('max');
+                    field.removeAttribute('min');
+                    field.title = 'Enter receive quantity (must be greater than 0)';
+                    // Remove border styling
+                }
+            },
+            testReceiveQtyValidation: () => {
+                const field = document.querySelector('[name="basket_receive_qty"]');
+                if (field) {
+                    return {
+                        value: field.value,
+                        max: field.getAttribute('max'),
+                        min: field.getAttribute('min'),
+                        isValid: isFieldValid(field)
+                    };
+                }
+            },
+        };
+        
+        // Function để thêm save button effects với zoom và shining
+        function addSaveButtonEffects() {
+            const saveButton = document.getElementById('saveButton');
+            if (!saveButton) return;
+            
+            // Add CSS classes for effects
+            if (!document.querySelector('#saveButtonEffectsStyle')) {
+                const style = document.createElement('style');
+                style.id = 'saveButtonEffectsStyle';
+                style.textContent = `
+                    .save-button-ready {
+                        position: relative;
+                        overflow: hidden;
+                        animation: saveButtonGlow 2s ease-in-out infinite alternate, saveButtonZoom 3s ease-in-out infinite !important;
+                        box-shadow: 0 0 20px rgba(40, 167, 69, 0.5) !important;
+                    }
+                    
+                    .save-button-ready::before {
+                        content: '';
+                        position: absolute;
+                        top: -50%;
+                        left: -50%;
+                        width: 200%;
+                        height: 200%;
+                        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+                        transform: rotate(45deg);
+                        animation: saveButtonShine 3s infinite;
+                    }
+                    
+                    .save-button-ready:hover {
+                        animation-play-state: paused !important;
+                        transform: scale(1.05) !important;
+                        box-shadow: 0 0 30px rgba(40, 167, 69, 0.8) !important;
+                    }
+                    
+                    @keyframes saveButtonGlow {
+                        from {
+                            box-shadow: 0 0 20px rgba(40, 167, 69, 0.5);
+                        }
+                        to {
+                            box-shadow: 0 0 25px rgba(40, 167, 69, 0.8), 0 0 35px rgba(40, 167, 69, 0.3);
+                        }
+                    }
+                    
+                    @keyframes saveButtonShine {
+                        0% {
+                            transform: translateX(-100%) translateY(-100%) rotate(45deg);
+                        }
+                        50% {
+                            transform: translateX(100%) translateY(100%) rotate(45deg);
+                        }
+                        100% {
+                            transform: translateX(-100%) translateY(-100%) rotate(45deg);
+                        }
+                    }
+                    
+                    @keyframes saveButtonZoom {
+                        0% {
+                            transform: scale(1);
+                        }
+                        25% {
+                            transform: scale(1.03);
+                        }
+                        50% {
+                            transform: scale(1);
+                        }
+                        75% {
+                            transform: scale(0.98);
+                        }
+                        100% {
+                            transform: scale(1);
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Add the effect class
+            saveButton.classList.add('save-button-ready');
+            
+            // Also add field highlight for compatibility
+            if (typeof LightEffect !== 'undefined') {
+                LightEffect.highlightField('#saveButton');
+            }
+        }
+        
+        // Function để remove save button effects
+        function removeSaveButtonEffects() {
+            const saveButton = document.getElementById('saveButton');
+            if (!saveButton) return;
+            
+            saveButton.classList.remove('save-button-ready');
+            if (typeof LightEffect !== 'undefined') {
+                LightEffect.removeHighlight('#saveButton');
+                LightEffect.remove('#saveButton');
+            }
+        }
+        
+        // Function để check và highlight save button với effects
+        function checkAndHighlightSaveButton() {
+            if (!fieldGuide || hasTableFooter()) return;
+            
+            const progress = fieldGuide.getProgress();
+            const totalRequiredFields = 6; // 7 fields required
+            const requiredFieldsCompleted = progress.completed >= totalRequiredFields;
+            
+            if (requiredFieldsCompleted) {
+                addSaveButtonEffects();
+            } else {
+                removeSaveButtonEffects();
+            }
+        }
+        
+        // Override validation cho từng field
+        function isFieldValid(field) {
+            if (!field.value || field.value.trim() === '') {
+                return false;
+            }
+            
+            const fieldId = field.id || field.name;
+            const fieldValue = field.value.trim();
+            
+            // Validation cho từng field cụ thể
+            switch(fieldId) {
+                case 'vendor_name_input':
+                    return !window.vendorOptions || window.vendorOptions.includes(fieldValue);
+                    
+                case 'basket_capacity':
+                case 'basket_receive_qty':
+                    const numValue = parseFloat(fieldValue);
+                    const isPositive = numValue > 0;
+                    
+                    // Kiểm tra max quantity nếu có
+                    if (fieldId === 'basket_receive_qty') {
+                        const maxQty = field.getAttribute('max');
+                        if (maxQty) {
+                            const maxValue = parseFloat(maxQty);
+                            return isPositive && numValue <= maxValue;
+                        }
+                    }
+                    
+                    return isPositive;
+                    
+                case 'basket_receive_date':
+                    return fieldValue !== '';
+                    
+                case 'basket_purchase_order':
+                    const isValid = fieldValue.length >= 10;
+                    return isValid;
+                    
+                case 'length_value_input':
+                    return !window.lengthOptions || window.lengthOptions.includes(fieldValue);
+                    
+                case 'plant_code_input':
+                case 'plant_code':
+                    return !window.plantOptions || window.plantOptions.includes(fieldValue);
+                    
+                case 'basket_description':
+                    return true; // Optional field
+                    
+                default:
+                    return true;
+            }
+        }
+
+        if (fieldGuide) {
+            fieldGuide.isFieldValid = isFieldValid;
+        }
+        
+        // Enhanced form validation with field guide
+        window.handleSaveButtonClick = function() {
+            const saveButton = document.getElementById('saveButton');
+            if (!saveButton) return true;
+            
+            // Remove save button effects khi click
+            removeSaveButtonEffects();
+            
+            const fields = [
+                { selector: '#vendor_name_input', name: 'Brand', required: true },
+                { selector: '[name="basket_capacity"]', name: 'Capacity', required: true },
+                { selector: '[name="basket_receive_qty"]', name: 'Receive Quantity', required: true },
+                { selector: '[name="basket_receive_date"]', name: 'Receive Date', required: true },
+                { selector: '[name="basket_purchase_order"]', name: 'Purchase Order', required: true },
+                { selector: '#length_value_input', name: 'Length', required: true },
+                { selector: '#plant_code_input', name: 'Plant Code', required: true },
+                { selector: '[name="basket_description"]', name: 'Description', required: false }
+            ];
+            
+            let firstInvalidField = null;
+            
+            // Kiểm tra từng field
+            for (const fieldConfig of fields) {
+                const field = document.querySelector(fieldConfig.selector);
+                if (!field) continue;
+                
+                const isValid = isFieldValid(field);
+                const isEmpty = !field.value || field.value.trim() === '';
+                
+                if (fieldConfig.required && (isEmpty || !isValid)) {
+                    if (!firstInvalidField) {
+                        firstInvalidField = fieldConfig;
+                    }
+                    
+                    // Remove completed mark and add error effect
+                    if (typeof LightEffect !== 'undefined') {
+                        LightEffect.removeCompleted(fieldConfig.selector);
+                        LightEffect.add(fieldConfig.selector, 'red');
+                        
+                        // Remove error effect after 3 seconds
+                        setTimeout(() => {
+                            LightEffect.remove(fieldConfig.selector);
+                        }, 3000);
+                    }
+                }
+            }
+            
+            // Nếu có field không hợp lệ, focus vào field đầu tiên
+            if (firstInvalidField) {
+                const field = document.querySelector(firstInvalidField.selector);
+                if (field) {
+                    field.focus();
+                    if (typeof LightEffect !== 'undefined') {
+                        LightEffect.highlightField(firstInvalidField.selector);
+                    }
+                }
+                
+                // Show error effect cho save button
+                setTimeout(() => {
+                    if (typeof LightEffect !== 'undefined') {
+                        LightEffect.add('#saveButton', 'red');
+                        setTimeout(() => {
+                            LightEffect.remove('#saveButton');
+                            checkAndHighlightSaveButton(); // Restore effects if form is complete
+                        }, 2000);
+                    }
+                }, 500);
+                
+                return false;
+            }
+            
+            // Nếu validation thành công, thêm success effect cho save button
+            if (typeof LightEffect !== 'undefined') {
+                LightEffect.add('#saveButton', 'green');
+            }
+            
+            return true;
+        };
+        
+        // Add form enhancements
+        function enhanceFormFields() {
+            if (hasTableFooter()) return;
+            
+            const formFields = document.querySelectorAll('input, select, textarea, button');
+            formFields.forEach(field => {
+                field.addEventListener('focus', function() {
+                    this.style.transition = 'all 0.3s ease';
+                    this.style.transform = 'scale(1.01)';
+                    this.style.boxShadow = '0 0 8px rgba(0, 123, 255, 0.15)';
+                });
+                
+                field.addEventListener('blur', function() {
+                    this.style.transform = 'scale(1)';
+                    this.style.boxShadow = '';
+                });
+            });
+            
+            // Đặc biệt cho save button (chỉ khi không có effects)
+            const saveButton = document.getElementById('saveButton');
+            if (saveButton) {
+                saveButton.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('save-button-ready') && !this.classList.contains('field-highlight')) {
+                        this.style.transform = 'scale(1.05)';
+                        this.style.boxShadow = '0 0 15px rgba(0, 123, 255, 0.3)';
+                    }
+                });
+                
+                saveButton.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('save-button-ready') && !this.classList.contains('field-highlight')) {
+                        this.style.transform = 'scale(1)';
+                        this.style.boxShadow = '';
+                    }
+                });
+            }
+        }
+        
+        // Update field guide initialization để có proper validation
+        function initializeFieldGuide() {
+            if (hasTableFooter()) return;
+            
+            fieldGuide = new FieldStepGuide({
+                fieldMapping: {
+                    1: '[name="basket_purchase_order"]',
+                    2: '#vendor_name_input', 
+                    3: '[name="basket_receive_qty"]',
+                    4: '#length_value_input',
+                    5: '[name="basket_receive_date"]',
+                    6: '#plant_code_input',
+                    7: '[name="basket_description"]'
+                },
+                autoProgress: true,
+                // Override validation function cho field guide
+                isFieldValid: function(field) {
+                    return isFieldValid(field);
+                },
+                onFieldComplete: function(selector, stepNumber) {
+                    if (stepNumber >= 7) {
+                        setTimeout(() => {
+                            checkAndHighlightSaveButton();
+                        }, 500);
+                    }
+                },
+                onFieldIncomplete: function(selector, stepNumber) {
+                    if (stepNumber <= 7) {
+                        removeSaveButtonEffects();
+                    }
+                }
+            });
+            
+            // Set validation function after creation
+            if (fieldGuide) {
+                fieldGuide.isFieldValid = isFieldValid;
+            }
+        }
+        
+        // Update watchFieldChanges để sử dụng validation đúng
+        function watchFieldChanges() {
+            if (hasTableFooter()) return;
+            
+            const watchedFields = [
+                '#vendor_name_input',
+                '[name="basket_capacity"]',
+                '[name="basket_receive_qty"]',
+                '[name="basket_receive_date"]',
+                '[name="basket_purchase_order"]',
+                '#length_value_input',
+                '#plant_code_input',
+                '[name="basket_description"]'
+            ];
+            
+            watchedFields.forEach(selector => {
+                const field = document.querySelector(selector);
+                if (field) {
+                    // Thêm event listener cho input để validate max quantity
+                    if (selector === '[name="basket_receive_qty"]') {
+                        field.addEventListener('input', (e) => {
+                            const maxQty = field.getAttribute('max');
+                            const currentValue = parseFloat(field.value);
+                            
+                            if (maxQty && currentValue > parseFloat(maxQty)) {
+                                // Prevent exceeding max quantity
+                                field.value = maxQty;
+                                showNotification(`Maximum quantity is ${maxQty}. Value has been adjusted.`, 'warning');
+                            }
+                            
+                            if (currentValue < 0) {
+                                field.value = '1';
+                                showNotification('Quantity must be greater than 0.', 'warning');
+                            }
+                        });
+                        
+                        field.addEventListener('keydown', (e) => {
+                            // Allow navigation keys và numbers
+                            const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'Tab', '.'];
+                            const isNumber = !isNaN(e.key) && e.key !== ' ';
+                            
+                            if (!allowedKeys.includes(e.key) && !isNumber && !e.ctrlKey) {
+                                e.preventDefault();
+                            }
+                        });
+                    }
+                    
+                    field.addEventListener('input', debounce(() => {
+                        // Special handling for purchase order field
+                        if (selector === '[name="basket_purchase_order"]') {
+                            // Use debounced version to avoid too frequent calls
+                            debouncedManageFieldStates();
+                        }
+                        
+                        // Handle field guide logic if available
+                        if (fieldGuide) {
+                            // Check if field becomes empty and was previously completed
+                            const isEmpty = !field.value || field.value.trim() === '';
+                            const isValid = isEmpty ? false : isFieldValid(field);
+                            const fieldIndex = Object.values(fieldGuide.fieldMapping).indexOf(selector);
+                            const stepNumber = Object.keys(fieldGuide.fieldMapping)[fieldIndex];
+                            
+                            if (!isValid && fieldGuide.completedFields.has(selector)) {
+                                // Field was completed but now invalid/empty - mark as incomplete
+                                fieldGuide.completedFields.delete(selector);
+                                if (typeof LightEffect !== 'undefined') {
+                                    LightEffect.removeCompleted(selector);
+                                }
+                                
+                                // Remove auto-filled styling
+                                field.classList.remove('auto-filled-field');
+                                
+                                // Show field indicator again
+                                if (fieldGuide.currentFieldIndex >= parseInt(stepNumber) - 1) {
+                                    fieldGuide.currentFieldIndex = parseInt(stepNumber) - 1;
+                                    fieldGuide.showCurrentFieldIndicator();
+                                }
+                                
+                                // Call onFieldIncomplete if defined
+                                if (fieldGuide.onFieldIncomplete) {
+                                    fieldGuide.onFieldIncomplete(selector, parseInt(stepNumber));
+                                }
+                            } else if (isValid && !fieldGuide.completedFields.has(selector)) {
+                                // Field is valid and not completed yet - check for completion
+                                fieldGuide.checkFieldCompletion(field);
+                            }
+                        }
+                        
+                        // Always check save button state
+                        setTimeout(checkAndHighlightSaveButton, 300);
+                    }, 300));
+                    
+                    field.addEventListener('change', () => {
+                        if (selector === '[name="basket_purchase_order"]') {
+                            // Immediate call for change event (user finished typing)
+                            manageFieldStates();
+                        }
+                        // Always check save button state
+                        setTimeout(checkAndHighlightSaveButton, 300);
+                    });
+                }
+            });
+        }
+        
+        // Update isFieldValid để log debug cho purchase order
+        function isFieldValid(field) {
+            if (!field.value || field.value.trim() === '') {
+                return false;
+            }
+            
+            const fieldId = field.id || field.name;
+            const fieldValue = field.value.trim();
+            
+            // Validation cho từng field cụ thể
+            switch(fieldId) {
+                case 'vendor_name_input':
+                    return !window.vendorOptions || window.vendorOptions.includes(fieldValue);
+                    
+                case 'basket_capacity':
+                case 'basket_receive_qty':
+                    const numValue = parseFloat(fieldValue);
+                    const isPositive = numValue > 0;
+                    
+                    // Kiểm tra max quantity nếu có
+                    if (fieldId === 'basket_receive_qty') {
+                        const maxQty = field.getAttribute('max');
+                        if (maxQty) {
+                            const maxValue = parseFloat(maxQty);
+                            return isPositive && numValue <= maxValue;
+                        }
+                    }
+                    
+                    return isPositive;
+                    
+                case 'basket_receive_date':
+                    return fieldValue !== '';
+                    
+                case 'basket_purchase_order':
+                    const isValid = fieldValue.length >= 10;
+                    return isValid;
+                    
+                case 'length_value_input':
+                    return !window.lengthOptions || window.lengthOptions.includes(fieldValue);
+                    
+                case 'plant_code_input':
+                case 'plant_code':
+                    return !window.plantOptions || window.plantOptions.includes(fieldValue);
+                    
+                case 'basket_description':
+                    return true; // Optional field
+                    
+                default:
+                    return true;
+            }
+        }
+        
+        // Add debug function để test validation
+        window.debugBasketPO = {
+            manageFields: () => manageFieldStates(),
+            isPurchaseOrderValid: () => {
+                const field = document.querySelector('[name="basket_purchase_order"]');
+                return field && field.value && field.value.trim().length >= 10;
+            },
+            getPOValue: () => {
+                const field = document.querySelector('[name="basket_purchase_order"]');
+                return field ? field.value : null;
+            },
+            testPOValidation: () => {
+                const field = document.querySelector('[name="basket_purchase_order"]');
+                if (field) {
+                    return {
+                        value: field.value,
+                        length: field.value.length,
+                        isValid: isFieldValid(field),
+                        completedFields: fieldGuide ? Array.from(fieldGuide.completedFields) : 'No field guide'
+                    };
+                }
+            },
+            checkFieldGuideValidation: () => {
+                if (fieldGuide && fieldGuide.isFieldValid) {
+                    const field = document.querySelector('[name="basket_purchase_order"]');
+                    return fieldGuide.isFieldValid(field);
+                } else {
+                    return 'Field guide or validation not available';
+                }
+            },
+            enableAllFields: () => {
+                const otherFields = [
+                    '#vendor_name_input',
+                    '[name="basket_receive_qty"]', 
+                    '#length_value_input',
+                    '[name="basket_receive_date"]',
+                    '[name="basket_capacity"]',
+                    '#plant_code_input',
+                    '[name="basket_description"]'
+                ];
+                enableFieldsForManualInput(otherFields);
+            },
+            disableAllFields: () => {
+                const otherFields = [
+                    '#vendor_name_input',
+                    '[name="basket_receive_qty"]', 
+                    '#length_value_input',
+                    '[name="basket_receive_date"]',
+                    '[name="basket_capacity"]',
+                    '#plant_code_input',
+                    '[name="basket_description"]'
+                ];
+                disableOtherFields(otherFields);
+            },
+            // Add save button debug functions
+            addSaveEffects: () => addSaveButtonEffects(),
+            removeSaveEffects: () => removeSaveButtonEffects(),
+            checkSaveButton: () => checkAndHighlightSaveButton(),
+            getProgress: () => fieldGuide ? fieldGuide.getProgress() : null,
+            isGuideActive: () => !!fieldGuide,
+            // Add date utility functions
+            setTodayDate: () => setTodayDate(),
+            getTodayString: () => {
+                const today = new Date();
+                return today.getFullYear() + '-' + 
+                       String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+                       String(today.getDate()).padStart(2, '0');
+            },
+            getDateValue: () => {
+                const field = document.querySelector('[name="basket_receive_date"]');
+                return field ? field.value : null;
+            },
+            // Thêm debug function để test validation
+            getReceiveQtyMax: () => {
+                const field = document.querySelector('[name="basket_receive_qty"]');
+                return field ? field.getAttribute('max') : null;
+            },
+            setReceiveQtyMax: (maxQty) => {
+                const field = document.querySelector('[name="basket_receive_qty"]');
+                if (field) {
+                    if (maxQty) {
+                        field.setAttribute('max', maxQty);
+                        field.setAttribute('min', '1');
+                        field.title = `Maximum quantity available: ${maxQty}. You can edit but cannot exceed this amount.`;
+                        // Remove border styling
+                    } else {
+                        field.removeAttribute('max');
+                        field.removeAttribute('min');
+                        field.title = 'Enter receive quantity (must be greater than 0)';
+                        // Remove border styling
+                    }
+                }
+            },
+            removeReceiveQtyMax: () => {
+                const field = document.querySelector('[name="basket_receive_qty"]');
+                if (field) {
+                    field.removeAttribute('max');
+                    field.removeAttribute('min');
+                    field.title = 'Enter receive quantity (must be greater than 0)';
+                    // Remove border styling
+                }
+            },
+            testReceiveQtyValidation: () => {
+                const field = document.querySelector('[name="basket_receive_qty"]');
+                if (field) {
+                    return {
+                        value: field.value,
+                        max: field.getAttribute('max'),
+                        min: field.getAttribute('min'),
+                        isValid: isFieldValid(field)
+                    };
+                }
+            },
+        };
+        
+        // Function để thêm save button effects với zoom và shining
+        function addSaveButtonEffects() {
+            const saveButton = document.getElementById('saveButton');
+            if (!saveButton) return;
+            
+            // Add CSS classes for effects
+            if (!document.querySelector('#saveButtonEffectsStyle')) {
+                const style = document.createElement('style');
+                style.id = 'saveButtonEffectsStyle';
+                style.textContent = `
+                    .save-button-ready {
+                        position: relative;
+                        overflow: hidden;
+                        animation: saveButtonGlow 2s ease-in-out infinite alternate, saveButtonZoom 3s ease-in-out infinite !important;
+                        box-shadow: 0 0 20px rgba(40, 167, 69, 0.5) !important;
+                    }
+                    
+                    .save-button-ready::before {
+                        content: '';
+                        position: absolute;
+                        top: -50%;
+                        left: -50%;
+                        width: 200%;
+                        height: 200%;
+                        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+                        transform: rotate(45deg);
+                        animation: saveButtonShine 3s infinite;
+                    }
+                    
+                    .save-button-ready:hover {
+                        animation-play-state: paused !important;
+                        transform: scale(1.05) !important;
+                        box-shadow: 0 0 30px rgba(40, 167, 69, 0.8) !important;
+                    }
+                    
+                    @keyframes saveButtonGlow {
+                        from {
+                            box-shadow: 0 0 20px rgba(40, 167, 69, 0.5);
+                        }
+                        to {
+                            box-shadow: 0 0 25px rgba(40, 167, 69, 0.8), 0 0 35px rgba(40, 167, 69, 0.3);
+                        }
+                    }
+                    
+                    @keyframes saveButtonShine {
+                        0% {
+                            transform: translateX(-100%) translateY(-100%) rotate(45deg);
+                        }
+                        50% {
+                            transform: translateX(100%) translateY(100%) rotate(45deg);
+                        }
+                        100% {
+                            transform: translateX(-100%) translateY(-100%) rotate(45deg);
+                        }
+                    }
+                    
+                    @keyframes saveButtonZoom {
+                        0% {
+                            transform: scale(1);
+                        }
+                        25% {
+                            transform: scale(1.03);
+                        }
+                        50% {
+                            transform: scale(1);
+                        }
+                        75% {
+                            transform: scale(0.98);
+                        }
+                        100% {
+                            transform: scale(1);
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Add the effect class
+            saveButton.classList.add('save-button-ready');
+            
+            // Also add field highlight for compatibility
+            if (typeof LightEffect !== 'undefined') {
+                LightEffect.highlightField('#saveButton');
+            }
+        }
+        
+        // Function để remove save button effects
+        function removeSaveButtonEffects() {
+            const saveButton = document.getElementById('saveButton');
+            if (!saveButton) return;
+            
+            saveButton.classList.remove('save-button-ready');
+            if (typeof LightEffect !== 'undefined') {
+                LightEffect.removeHighlight('#saveButton');
+                LightEffect.remove('#saveButton');
+            }
+        }
+        
+        // Function để check và highlight save button với effects
+        function checkAndHighlightSaveButton() {
+            if (!fieldGuide || hasTableFooter()) return;
+            
+            const progress = fieldGuide.getProgress();
+            const totalRequiredFields = 6; // 7 fields required
+            const requiredFieldsCompleted = progress.completed >= totalRequiredFields;
+            
+            if (requiredFieldsCompleted) {
+                addSaveButtonEffects();
+            } else {
+                removeSaveButtonEffects();
+            }
+        }
+    });
+</script>

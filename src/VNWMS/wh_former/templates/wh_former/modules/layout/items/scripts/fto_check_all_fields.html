@@ -1,0 +1,22 @@
+<script>
+    function ftocheckAllFieldsFilled() {
+        const requiredFields = [
+            'stockout_form',
+            'params_size',
+        ];
+
+        return requiredFields.every(field => {
+            let el = document.getElementById(field) || document.querySelector(`[name="${field}"]`);
+            let value = (el && el.value) ? el.value.trim() : '';
+
+            if (field === 'params_size' && value === '') {
+                const displayInput = document.querySelector('.form-control[readonly]');
+                if (displayInput && displayInput.value.trim() !== '') {
+                    value = displayInput.value.trim();
+                }
+            }
+
+            return {% if type == "empty" %} true {% else %} value !== '' {% endif %};
+        });
+    }
+</script>

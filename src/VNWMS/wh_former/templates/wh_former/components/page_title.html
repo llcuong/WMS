@@ -1,0 +1,257 @@
+{% load i18n %}
+{% load user_groups %}
+
+<style>
+    .page-title {
+        padding: 10px 16px !important;
+        border-radius: 10px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+        font-size: 20px;
+        font-weight: 500;
+        background-color: white;
+        color: #212529;
+        border: 2px solid white;
+        display: inline-flex;
+        align-items: center;
+        letter-spacing: 0.05rem;
+    }
+
+    .settings-icon{
+        font-size: 38px;
+        color: #374151;
+    }
+
+    .stock-label-container{
+        color: white;
+        border-radius: 12px;
+        padding: 2px 16px;
+    }
+
+    .gate-name-container {
+        background-color: #211C19;
+        border-radius: 12px;
+        font-size: 17px;
+        height: 44px !important;
+        padding: 8px 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        font-weight: 600;
+        letter-spacing: 0.03rem;
+        transition: transform 0.2s ease-in-out;
+        width: auto;
+        white-space: nowrap;
+    }
+
+    .custom-form-control{
+        width: 103px;
+        min-width: 103px;
+        max-width: 103px;
+        flex: 0 0 auto;
+    }
+
+    #machine-select #plant-select{
+        min-width: 103px;
+    }
+</style>
+
+<div class="row px-3 pt-3 pb-2">
+    <div class="col-12">
+        <div class="row no-margin">
+            <div class="col-9 no-margin">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="d-flex align-items-center" style="gap: 16px;">
+                            <div class="p-3 page-title">
+                                <i class="fas {{ icon }} fa-lg"></i>
+                                <b class="ml-2">{{ title }}</b>
+                            </div>
+                            {% if change == True %}
+                                <div class="user-choice-wrapper">
+                                  <span id="userChoice">
+                                    <i class="fas fa-retweet" style="margin-right:6px;"></i>{% trans 'Production' %}
+                                  </span>
+                                </div>
+
+                                <style>
+                                    .user-choice-wrapper {
+                                        background-color: #316aff;
+                                        color: white;
+                                        padding: 6px 10px;
+                                        border-radius: 16px;
+                                        display: inline-flex;
+                                        align-items: center;
+                                        font-size: 13px;
+                                        font-weight: bold;
+                                    }
+                                </style>
+                            {% elif clean == True %}
+                                <div class="user-choice-wrapper">
+                                  <span id="userChoice">
+                                    <i class="fas fa-brush" style="margin-right:6px;"></i>{% trans 'Washing' %}
+                                  </span>
+                                </div>
+
+                                <style>
+                                    .user-choice-wrapper {
+                                        background-color: #dc3545;
+                                        color: white;
+                                        padding: 6px 10px;
+                                        border-radius: 16px;
+                                        display: inline-flex;
+                                        align-items: center;
+                                        font-size: 13px;
+                                        font-weight: bold;
+                                    }
+                                </style>
+                            {% elif to_lk == True %}
+                                <div class="user-choice-wrapper">
+                                  <span id="userChoice">
+                                    <i class="fas fa-brush" style="margin-right:6px;"></i>{% trans 'Long Khanh' %}
+                                  </span>
+                                </div>
+
+                                <style>
+                                    .user-choice-wrapper {
+                                        background-color: #3B82F6;
+                                        color: white;
+                                        padding: 6px 10px;
+                                        border-radius: 16px;
+                                        display: inline-flex;
+                                        align-items: center;
+                                        font-size: 13px;
+                                        font-weight: bold;
+                                    }
+                                </style>
+                            {% endif %}
+                            {% if stockout or stockin %}
+                                {% if stockin and new %}
+                                    <div class="stock-label-container" style="background-color: #316aff;">
+                                        <div class="fw-bold fs-6">
+                                            <i class="fas fa-plus" style="margin-right: 6px;"></i>Mới
+                                        </div>
+                                    </div>
+                                {% elif stockout %}
+                                    <div class="stock-label-container">
+                                        <div id="user-choice" class="fw-bold fs-6"></div>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 d-flex justify-content-end">
+                {% if stockout or old %}
+                    <div class="d-flex align-items-center" style="gap: 12px;">
+                        <select id="plant-select" name="selected_plant" class="form-control custom-form-control">
+                            {% for p in plants %}
+                                <option value="{{ p }}" {% if p == selected_plant %}selected{% endif %}>{{ p|cut:"MACH"|cut:" "|safe }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <select id="machine-select" name="selected_machine" class="form-control custom-form-control">
+                            <option value="">{% trans "Select..." %}</option>
+                            {% if machines %}
+                                {% for machine in machines %}
+                                    <option value="{{ machine }}" {% if machine == selected_machine %}selected{% endif %}>{{ machine }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    {% if user|has_group:"developer" %}
+                        <div class="d-flex justify-content-end align-items-center" style="gap:12px;">
+                            {% if request.user.is_superuser %}
+                                <a href="{% url 'actions' %}" class="text-decoration-none">
+                                    <i class="fas fa-users-cog settings-icon"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const plantOptions = [
+            {% for plant in plants %}
+                "{{ plant|escapejs }}"{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        ];
+        initDropdown("plant_value_input", "plant_dropdown", plantOptions);
+    });
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        {% if stockout or stockin %}
+
+        window.preservedMachine = '{{ selected_machine|escapejs }}';
+        window.preservedPlant = '{{ selected_plant|escapejs }}';
+
+        const machineSelect = document.getElementById('machine-select');
+        const plantSelect = document.getElementById('plant-select');
+
+        if (machineSelect && window.preservedMachine) {
+            machineSelect.value = window.preservedMachine;
+        }
+        if (plantSelect && window.preservedPlant) {
+            plantSelect.value = window.preservedPlant;
+        }
+
+        window.restoreSelectValues = function() {
+            if (machineSelect && window.preservedMachine) {
+                machineSelect.value = window.preservedMachine;
+            }
+            if (plantSelect && window.preservedPlant) {
+                plantSelect.value = window.preservedPlant;
+            }
+        };
+
+        if (machineSelect) {
+            machineSelect.addEventListener('change', function() {
+                window.preservedMachine = this.value;
+            });
+        }
+
+        if (plantSelect) {
+            plantSelect.addEventListener('change', function() {
+                window.preservedPlant = this.value;
+            });
+        }
+
+        setInterval(function() {
+            window.restoreSelectValues();
+        }, 2000);
+
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function() {
+                let hiddenMachineInput = document.getElementById('selected-machine-hidden');
+                if (!hiddenMachineInput) {
+                    hiddenMachineInput = document.createElement('input');
+                    hiddenMachineInput.type = 'hidden';
+                    hiddenMachineInput.id = 'selected-machine-hidden';
+                    hiddenMachineInput.name = 'selected_machine';
+                    form.appendChild(hiddenMachineInput);
+                }
+                hiddenMachineInput.value = machineSelect ? machineSelect.value : '';
+
+                let hiddenPlantInput = document.getElementById('selected-plant-hidden');
+                if (!hiddenPlantInput) {
+                    hiddenPlantInput = document.createElement('input');
+                    hiddenPlantInput.type = 'hidden';
+                    hiddenPlantInput.id = 'selected-plant-hidden';
+                    hiddenPlantInput.name = 'selected_plant';
+                    form.appendChild(hiddenPlantInput);
+                }
+                hiddenPlantInput.value = plantSelect ? plantSelect.value : '';
+            });
+        }
+
+        {% endif %}
+    });
+</script>

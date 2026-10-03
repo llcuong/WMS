@@ -1,0 +1,123 @@
+<script>
+    function ftoenableSaveButton(mode = null) {
+        const saveButton = document.getElementById('saveButton');
+        const lockOverlay = document.getElementById('lock-overlay');
+
+        const formFields = document.querySelectorAll('input[name="stockout_form"], input[name="params_size"]');
+
+        if (!saveButton) return;
+
+        const tableBody = document.querySelector('.rfid-table-result-body tbody');
+        const hasTableRows = tableBody && tableBody.querySelectorAll('tr').length > 0;
+
+        const scanningModal = document.querySelector('[id^="rfid-table-loading-overlay-"]');
+        const isScanningHidden = !scanningModal || scanningModal.style.display === 'none' || scanningModal.hidden;
+
+        const noBinConflict = !window.hasBinConflict;
+
+        const stockNewInfoBody = document.getElementById('stock-new-info-body');
+        const sizeNamesInput = document.getElementById('size_name_input');
+        let hasSameSize = false;
+
+        if (stockNewInfoBody) {
+            const rows = stockNewInfoBody.querySelectorAll('tr');
+            if (rows.length > 0) {
+                const sizes = Array.from(rows).map(row => {
+                    const sizeCell = row.children[2];
+                    return sizeCell ? sizeCell.textContent.trim() : '';
+                });
+
+                const validSizes = sizes.filter(size => size !== '' && size !== '-');
+
+                if (sizeNamesInput) {
+                    const inputSize = sizeNamesInput.value.trim();
+                    if (inputSize !== '') {
+                        hasSameSize = validSizes.length > 0 && validSizes.every(size => size === inputSize);
+                    }
+                } else {
+                    const uniqueSizes = [...new Set(validSizes)];
+                    hasSameSize = uniqueSizes.length === 1 && uniqueSizes[0] !== '';
+                }
+            }
+        }
+
+        // ĐIỀU KIỆN MỚI: hasTableRows + isScanningHidden + hasSameSize
+        {#if (hasTableRows && isScanningHidden && hasSameSize && noBinConflict) {#}
+        if (hasTableRows && isScanningHidden && noBinConflict) {
+            saveButton.disabled = false;
+            saveButton.classList.remove('btn-disabled');
+        } else {
+            saveButton.disabled = true;
+            saveButton.classList.add('btn-disabled');
+        }
+
+        if (mode === 'clean') {
+            if (lockOverlay) {
+                lockOverlay.style.setProperty('display', 'none', 'important');
+            }
+
+            formFields.forEach(field => {
+                field.readOnly = false;
+            });
+            return;
+        }
+
+
+        if (ftocheckAllFieldsFilled()) {
+            console.log('if (ftocheckAllFieldsFilled())');
+            if (lockOverlay) {
+                lockOverlay.style.setProperty('display', 'none', 'important');
+            }
+
+            formFields.forEach(field => {
+                field.readOnly = true;
+            });
+        } else {
+            console.log('else')
+            if (lockOverlay) {
+                lockOverlay.style.setProperty('display', 'flex', 'important');
+            }
+
+            formFields.forEach(field => {
+                field.readOnly = false;
+            });
+        }
+    }
+
+    let saveButtonCheckInterval;
+
+    function startSaveButtonCheck() {
+        if (saveButtonCheckInterval) {
+            clearInterval(saveButtonCheckInterval);
+        }
+
+        saveButtonCheckInterval = setInterval(() => {
+            const mode = document.querySelector('form') ?
+                (document.querySelector('form').dataset.mode ||
+                 document.querySelector('input[name="mode"]')?.value ||
+                 '{{ mode|default:"" }}') : null;
+            ftoenableSaveButton(mode);
+        }, 1000);
+    }
+
+    function stopSaveButtonCheck() {
+        if (saveButtonCheckInterval) {
+            clearInterval(saveButtonCheckInterval);
+            saveButtonCheckInterval = null;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        startSaveButtonCheck();
+    });
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', startSaveButtonCheck);
+    } else {
+        startSaveButtonCheck();
+    }
+
+    window.addEventListener('beforeunload', () => {
+        stopSaveButtonCheck();
+    });
+</script>

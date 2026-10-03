@@ -1,0 +1,334 @@
+{% load i18n %}
+
+<label for="item_no_input" class="form-label">{% trans "Item No" %}{% if is_required %}<span class="">*</span>{% endif %}</label>
+
+<div class="custom-select-wrapper position-relative">
+    <input type="text" id="item_no_input" name="item_no" class="select-input form-control"
+           placeholder="{% trans 'Select or Typing' %}..." autocomplete="off"
+           value="{{ former_item_no|default:'' }}"
+           {% if is_required %}required{% endif %}>
+
+    <span class="x-button position-absolute" style="right: {% if add and is_wh_former_admin %}35{% else %}10{% endif %}px"
+          onclick="document.getElementById('item_no_input').value = '';">
+        &times;
+    </span>
+
+    {% if add and is_wh_former_admin %}
+        <span class="x-button position-absolute end-0 me-2"
+              onclick="$('#itemModal').modal('show')">
+            <i class="fa-solid fa-circle-plus fa-sm me-1"></i>
+        </span>
+    {% endif %}
+
+    <div id="item_dropdown" class="select-dropdown"></div>
+</div>
+
+{% for error in form.item_no.errors %}
+    <div class="text-danger">{{ error }}</div>
+{% endfor %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const itemOptions = [
+            {% for name in form.item_no_list %}
+                "{{ name|escapejs }}"{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        ];
+        initDropdown("item_no_input", "item_dropdown", itemOptions);
+
+        const itemInput = document.getElementById('item_no_input');
+        
+        const reverseMappings = {
+            vendor: {
+                'Shinko': 'A',
+                'Jinhong': 'B', 
+                'Mediceram': 'C',
+                'PT': 'D',
+                'HL': 'E'
+            },
+            length: {
+                '380': '38',
+                '430': '43'
+            },
+            surface: {
+                '{% trans "Standard Fine Surface" %}': '1',
+                '{% trans "Standard Coarse Surface" %}': '2',
+                '{% trans "Standard Diamond Textured" %}': '3',
+                '{% trans "Energy-saving Fine Surface" %}': '4'
+            },
+            type: {
+                '{% trans "Stainless steel" %}': '1',
+                '{% trans "Ceramic" %}': '2'
+            },
+            size: {
+                'XXS': '0',
+                'XS': '1',
+                'S': '2',
+                'M': '3',
+                'L': '4',
+                'XL': '5',
+                'XXL': '6',
+                'XXXL': '7'
+            }
+        };
+        
+        function autoDecodeItemNumber(itemNo) {
+            if (!itemNo || itemNo.length < 7) return; // FNA38124 = 7 chars minimum
+            
+            const originalPlaceholder = itemInput.placeholder;
+            itemInput.placeholder = 'Decoding...';
+            
+            fetch(`{% url "decode_item_number_api" %}?item_no=${encodeURIComponent(itemNo)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.form_data) {
+                        fillFormField('vendor_name', data.form_data.former_vendor);
+                        fillFormField('params_size', data.form_data.former_size);
+                        fillFormField('length_value', data.form_data.former_length);
+                        fillFormField('params_surface', data.form_data.former_surface);
+                        fillFormField('params_type', data.form_data.former_type);
+                    } else if (data.error) {
+                        console.warn('Decode error:', data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error decoding item number:', error);
+                })
+                .finally(() => {
+                    itemInput.placeholder = originalPlaceholder;
+                });
+        }
+
+        function fillFormField(fieldName, value) {
+            if (!value) return;
+
+            let field = null;
+
+            if (fieldName === 'params_surface') {
+                field = document.getElementById('surface_name_input');
+            } else if (fieldName === 'params_type') {
+                field = document.getElementById('type_name_input');
+            } else {
+                const selectors = [
+                    `input[name="${fieldName}"]`,
+                    `select[name="${fieldName}"]`,
+                    `#${fieldName}`,
+                    `#${fieldName}_input`
+                ];
+
+                for (const selector of selectors) {
+                    field = document.querySelector(selector);
+                    if (field) break;
+                }
+            }
+
+            if (field) {
+                field.value = value;
+                field.dispatchEvent(new Event('change'));
+                field.dispatchEvent(new Event('input'));
+            } else {
+                console.warn(`Field not found for: ${fieldName}`);
+            }
+        }
+
+        function generateItemNumberFromFields() {
+            const vendorField = document.querySelector('input[name="vendor_name"], #vendor_name, #vendor_name_input');
+            const lengthField = document.querySelector('input[name="length_value"], #length_value, #length_value_input');
+            const surfaceField = document.getElementById('surface_name_input');
+            const typeField = document.getElementById('type_name_input');
+            const sizeField = document.querySelector('input[name="params_size"], #params_size, #params_size_input');
+
+            if (!vendorField || !lengthField || !surfaceField || !typeField || !sizeField) {
+                return null;
+            }
+
+            const vendor = vendorField.value.trim();
+            const length = lengthField.value.trim();
+            const surface = surfaceField.value.trim();
+            const type = typeField.value.trim();
+            const size = sizeField.value.trim();
+
+            if (!vendor || !length || !surface || !type || !size) {
+                return null;
+            }
+
+            const vendorCode = reverseMappings.vendor[vendor];
+            const lengthCode = reverseMappings.length[length];
+            const surfaceCode = reverseMappings.surface[surface];
+            const typeCode = reverseMappings.type[type];
+            const sizeCode = reverseMappings.size[size];
+
+            if (!vendorCode || !lengthCode || !surfaceCode || !typeCode || !sizeCode) {
+                return null;
+            }
+
+            return `FN${vendorCode}${lengthCode}${surfaceCode}${typeCode}${sizeCode}`;
+        }
+
+        function autoFillItemNumber() {
+            const generatedItemNo = generateItemNumberFromFields();
+
+            if (generatedItemNo) {
+                const itemInput = document.getElementById('item_no_input');
+
+                if (itemOptions.includes(generatedItemNo)) {
+                    itemInput.value = generatedItemNo;
+
+                    showReverseDecodeSuccess(generatedItemNo);
+                } else {
+                    showReverseDecodeFail(generatedItemNo);
+                }
+            }
+        }
+
+        function showReverseDecodeSuccess(itemNo) {
+            const indicator = document.createElement('div');
+            indicator.className = 'reverse-decode-success-indicator';
+            indicator.style.cssText = `
+                position: absolute;
+                top: -25px;
+                right: 0;
+                background: #007bff;
+                color: white;
+                padding: 2px 8px;
+                border-radius: 3px;
+                font-size: 11px;
+                z-index: 10000;
+                animation: fadeInOut 2s ease-in-out;
+            `;
+            indicator.textContent = `✓ Decode: ${itemNo}`;
+
+            if (!document.getElementById('decode-animation-styles')) {
+                const style = document.createElement('style');
+                style.id = 'decode-animation-styles';
+                style.textContent = `
+                    @keyframes fadeInOut {
+                        0% { opacity: 0; transform: translateY(5px); }
+                        20% { opacity: 1; transform: translateY(0); }
+                        80% { opacity: 1; transform: translateY(0); }
+                        100% { opacity: 0; transform: translateY(-5px); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            const wrapper = itemInput.parentElement;
+            wrapper.style.position = 'relative';
+            wrapper.appendChild(indicator);
+
+            setTimeout(() => {
+                if (indicator.parentElement) {
+                    indicator.parentElement.removeChild(indicator);
+                }
+            }, 2000);
+        }
+
+        function showReverseDecodeFail(itemNo) {
+            const indicator = document.createElement('div');
+            indicator.className = 'reverse-decode-fail-indicator';
+            indicator.style.cssText = `
+                position: absolute;
+                top: -25px;
+                right: 0;
+                background: #dc3545; /* đỏ */
+                color: white;
+                padding: 2px 8px;
+                border-radius: 3px;
+                font-size: 11px;
+                z-index: 10000;
+                animation: fadeInOut 2s ease-in-out;
+            `;
+            indicator.textContent = `✗ Not found: ${itemNo}`;
+
+            if (!document.getElementById('decode-animation-styles')) {
+                const style = document.createElement('style');
+                style.id = 'decode-animation-styles';
+                style.textContent = `
+                    @keyframes fadeInOut {
+                        0% { opacity: 0; transform: translateY(5px); }
+                        20% { opacity: 1; transform: translateY(0); }
+                        80% { opacity: 1; transform: translateY(0); }
+                        100% { opacity: 0; transform: translateY(-5px); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            const wrapper = document.getElementById('item_no_input').parentElement;
+            wrapper.style.position = 'relative';
+            wrapper.appendChild(indicator);
+
+            setTimeout(() => {
+                if (indicator.parentElement) {
+                    indicator.parentElement.removeChild(indicator);
+                }
+            }, 2000);
+        }
+
+        itemInput.addEventListener('blur', function() {
+            const value = this.value.trim().toUpperCase();
+            if (value !== this.value) {
+                this.value = value;
+            }
+            autoDecodeItemNumber(value);
+        });
+
+        itemInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const value = this.value.trim().toUpperCase();
+                this.value = value;
+                autoDecodeItemNumber(value);
+            }
+        });
+
+        itemInput.addEventListener('change', function() {
+            const value = this.value.trim().toUpperCase();
+            if (value !== this.value) {
+                this.value = value;
+            }
+            autoDecodeItemNumber(value);
+        });
+
+        itemInput.addEventListener('input', function() {
+            const cursorPos = this.selectionStart;
+            const value = this.value.toUpperCase();
+            this.value = value;
+            this.setSelectionRange(cursorPos, cursorPos);
+        });
+
+        function addReverseEncodingListeners() {
+            const fieldSelectors = [
+                'input[name="vendor_name"], #vendor_name, #vendor_name_input',
+                'input[name="length_value"], #length_value, #length_value_input',
+                '#surface_name_input',
+                '#type_name_input',
+                'input[name="params_size"], #params_size, #params_size_input'
+            ];
+
+            fieldSelectors.forEach(selector => {
+                const field = document.querySelector(selector);
+                if (field) {
+                    let timeout;
+                    field.addEventListener('change', function() {
+                        clearTimeout(timeout);
+                        timeout = setTimeout(() => {
+                            autoFillItemNumber();
+                        }, 300);
+                    });
+
+                    field.addEventListener('input', function() {
+                        clearTimeout(timeout);
+                        timeout = setTimeout(() => {
+                            autoFillItemNumber();
+                        }, 500);
+                    });
+                }
+            });
+        }
+
+        setTimeout(() => {
+            addReverseEncodingListeners();
+        }, 500);
+    });
+</script>

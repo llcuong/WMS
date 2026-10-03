@@ -1,0 +1,39 @@
+{% load i18n %}
+
+<label for="type_name_input" class="form-label">{% trans "Former type" %}{% if is_required %}<span class="">*</span>{% endif %}</label>
+
+<div class="custom-select-wrapper position-relative">
+    <input type="text" id="type_name_input" name="params_type" class="select-input form-control"
+           placeholder='{% trans "Select..." %}' autocomplete="off"
+           value="{{ former_type|default:'' }}"
+           {% if is_required %}required{% endif %}>
+
+    <span class="x-button position-absolute" style="right: {% if add %}35{% else %}10{% endif %}px"
+          onclick="document.getElementById('type_name_input').value = '';">
+        &times;
+    </span>
+
+    {% if add %}
+        <span class="x-button position-absolute end-0 me-2"
+              onclick="$('#typeModal').modal('show')">
+            <i class="fa-solid fa-circle-plus fa-sm me-1"></i>
+        </span>
+    {% endif %}
+
+    <div id="type_dropdown" class="select-dropdown"></div>
+</div>
+
+{% for error in form.vendor_name.errors %}
+    <div class="text-danger">{{ error }}</div>
+{% endfor %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const typeOptions = [
+            {% for name in form.params_type_list %}
+                "{% translate name as tname %}{{ tname|escapejs }}"{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        ];
+        initDropdown("type_name_input", "type_dropdown", typeOptions);
+    });
+</script>

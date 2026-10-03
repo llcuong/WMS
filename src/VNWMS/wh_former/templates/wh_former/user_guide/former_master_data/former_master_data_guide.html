@@ -1,0 +1,371 @@
+{% load i18n %}
+
+<!-- Light Box Guide -->
+{% include 'wh_former/user_guide/light_box_guide.html' %}
+
+<!-- Step by Step Guide -->
+{% include 'wh_former/user_guide/step_by_guide.html' %}
+
+<script>
+    // Khởi tạo Step Guide
+    let formStepGuide;
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        // Khởi tạo Step Guide với mapping các field - BỎ BATCH_NO
+        formStepGuide = new window.FieldStepGuide({
+            fieldMapping: {
+                'step1': '#former_receive_form',
+                'step2': '#item_no_input',
+                'step3': '#former_purchase_order'
+                // Bỏ 'step4': '#id_batch_no'
+            },
+            autoProgress: true,
+            onFieldComplete: function(fieldSelector, stepNumber) {
+                
+                // Custom validation cho từng field - BỎ BATCH_NO
+                if (fieldSelector === '#former_receive_form') {
+                    validateFormerReceiveForm();
+                } else if (fieldSelector === '#item_no') {
+                    validateItemNo();
+                } else if (fieldSelector === '#former_purchase_order') {
+                    validatePurchaseOrder();
+                }
+                // Bỏ else if cho batch_no
+            }
+        });
+
+        // Thêm light effect cho form
+        LightEffect.add('#formerMasterDataForm', 'default');
+
+        // Override isFieldValid cho custom validation
+        if (formStepGuide) {
+            formStepGuide.isFieldValid = function(field) {
+                if (!field.value || field.value.trim() === '') {
+                    return false;
+                }
+
+                // Custom validation cho từng field
+                switch (field.id) {
+                    case 'former_receive_form':
+                        return field.value.length === 9;
+                    case 'item_no_input':
+                        return field.value.trim() !== '';
+                    case 'former_purchase_order':
+                        return true; // Không bắt buộc
+                    case 'id_batch_no':
+                        return field.value.trim() !== '';
+                    default:
+                        return field.value.trim() !== '';
+                }
+            };
+        }
+    });
+
+    // Custom validation functions
+    function validateFormerReceiveForm() {
+        const field = document.getElementById('former_receive_form');
+        if (field && field.value.length >= 9) {
+            // Valid - có thể thêm logic validation khác
+            return true;
+        }
+        return false;
+    }
+
+    function validateItemNo() {
+        const field = document.getElementById('item_no');
+        if (field && field.value.trim() !== '') {
+            // Valid - có thể thêm logic validation khác
+            return true;
+        }
+        return false;
+    }
+
+    function validatePurchaseOrder() {
+        const field = document.getElementById('former_purchase_order');
+        // Purchase order không bắt buộc, nên chỉ cần check có value
+        return true;
+    }
+
+    function validateBatchNo() {
+        const field = document.getElementById('id_batch_no');
+        if (field && field.value.trim() !== '') {
+            return true;
+        }
+        return false;
+    }
+
+    // Function để reset guide khi crfidStartedần
+    function resetFormGuide() {
+        if (formStepGuide) {
+            formStepGuide.reset();
+        }
+    }
+
+    // Function để check progress
+    function getFormProgress() {
+        if (formStepGuide) {
+            return formStepGuide.getProgress();
+        }
+        return { completed: 0, total: 0, percentage: 0 };
+    }
+</script>
+
+
+<script>
+(function() {
+  const STRICT_FORM_MUST_EXIST = false; // true = Form phải tồn tại trong DB mới cho nhập tiếp
+
+  const sel = {
+    receive_form:  '#former_receive_form',
+    form:          '#formerMasterDataForm',
+    po:            '#former_purchase_order',
+    item_no:       '#item_no_input, #item_no',
+    used_day:      '#former_used_day',
+    data_date:     '#batch_data_date',
+    vendor:        '#vendor_name_input',
+    f_type:        '#type_name_input',
+    surface:       '#surface_name_input',
+    size:          '#size_name_input',
+    length:        '#length_value_input',
+    aql:           '[name="former_aql"]',
+    batch_no:      '#id_batch_no'
+  };
+
+  const toArray = (selector) => Array.from(document.querySelectorAll(selector));
+
+  const otherFields = [
+    sel.po, sel.item_no, sel.used_day, sel.data_date,
+    sel.vendor, sel.f_type, sel.surface, sel.size, sel.length,
+    sel.aql, sel.batch_no
+  ].join(',');
+
+  // Mark date user-edited
+  const dateEl = document.querySelector(sel.data_date);
+  if (dateEl) {
+    dateEl.addEventListener('input', () => dateEl.dataset.userEdited = 'true');
+  }
+
+  function disableOthers(clear=true) {
+    toArray(otherFields).forEach(el => {
+      if (!el) return;
+      el.disabled = true;
+      el.setAttribute('aria-disabled', 'true');
+      el.classList.add('disabled-field');
+      el.style.cursor = 'not-allowed';
+      el.title = 'Hãy nhập Former Receive Form (9 ký tự) trước';
+      if (clear) {
+        if (el === dateEl && dateEl?.dataset.userEdited === 'true') {
+          // giữ ngày nếu user tự nhập
+        } else {
+          if (el.type !== 'hidden') el.value = '';
+        }
+      }
+      el.readOnly = false;
+    });
+  }
+
+  function enableOthers() {
+    toArray(otherFields).forEach(el => {
+      if (!el) return;
+      el.disabled = false;
+      el.removeAttribute('aria-disabled');
+      el.classList.remove('disabled-field');
+      el.style.cursor = 'auto';
+      el.removeAttribute('title');
+    });
+  }
+
+  function setReadonlyFilled(selectors) {
+    selectors.forEach(({sel, value}) => {
+      toArray(sel).forEach(f => {
+        if (!f) return;
+        if (typeof value !== 'undefined' && f.type !== 'hidden') f.value = value ?? '';
+        f.readOnly = true;
+        f.classList.add('disabled-field');
+        f.title = 'Tự động điền từ Former Receive Form';
+      });
+    });
+  }
+
+  function autofillFromAPI(payload) {
+    // Auto fill data từ API response
+    const v = payload || {};
+    setReadonlyFilled([
+      { sel: sel.po,           value: v.batch_purchase_order },
+      { sel: sel.item_no,      value: v.batch_item_no },
+      { sel: sel.used_day,     value: v.batch_used_day },
+      { sel: sel.data_date,    value: v.batch_data_date }, // YYYY-MM-DD
+      { sel: sel.vendor,       value: v.batch_former_vendor },
+      { sel: sel.f_type,       value: v.batch_former_type },
+      { sel: sel.surface,      value: v.batch_former_surface },
+      { sel: sel.size,         value: v.batch_former_size },
+      { sel: sel.length,       value: v.batch_former_length },
+      { sel: sel.aql,          value: v.batch_former_aql },
+      { sel: sel.batch_no,     value: v.batch_no }
+    ]);
+  }
+
+  async function fetchByReceiveForm(receiveForm) {
+    const csrf = document.querySelector('input[name="csrfmiddlewaretoken"]')?.value || '';
+    
+    try {
+      const res = await fetch('{% url "check_purchase_order_data" %}', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrf, 
+          'X-Requested-With': 'XMLHttpRequest' 
+        },
+        body: JSON.stringify({ 
+          'former_receive_form': receiveForm 
+        })
+      });
+      
+      if (!res.ok) throw new Error('API_ERROR');
+      return await res.json();
+    } catch (error) {
+      console.error('Error fetching receive form data:', error);
+      throw error;
+    }
+  }
+
+  function setDefaultValues() {
+    // Set default values when no auto-fill data
+    const usedDayEl = document.querySelector(sel.used_day);
+    const dateEl = document.querySelector(sel.data_date);
+    const aqlEl = document.querySelector(sel.aql);
+    
+    // Used day mặc định = 0
+    if (usedDayEl && !usedDayEl.value) {
+        usedDayEl.value = '0';
+    }
+    
+    // Data date mặc định = hôm nay
+    if (dateEl && !dateEl.value) {
+        const today = new Date().toISOString().split('T')[0];
+        dateEl.value = today;
+        dateEl.max = today;
+    }
+    
+    // AQL mặc định = 1
+    if (aqlEl && !aqlEl.value) {
+        aqlEl.value = '1';
+    }
+  }
+
+  async function onReceiveFormChange() {
+    const receiveFormEl = document.querySelector(sel.receive_form);
+    const receiveForm = (receiveFormEl?.value || '').toUpperCase().trim();
+    
+    if (!receiveForm || receiveForm.length < 9) {
+      disableOthers(/*clear=*/true);
+      return;
+    }
+
+    // Form đủ 9 ký tự: gọi API
+    try {
+      const data = await fetchByReceiveForm(receiveForm);
+
+      if (data.success && data.data) {
+        enableOthers();
+        autofillFromAPI(data.data);
+        
+        // Show success message
+        showToast('Đã tải dữ liệu từ hệ thống', 'success');
+      } else {
+        if (STRICT_FORM_MUST_EXIST) {
+          // không cho nhập tay
+          disableOthers(/*clear=*/true);
+          showToast('Former Receive Form không tồn tại trong hệ thống', 'error');
+        } else {
+          // cho nhập tay
+          enableOthers();
+          
+          // Set default values
+          setDefaultValues();
+          
+          showToast('Không tìm thấy dữ liệu, vui lòng nhập thủ công', 'info');
+        }
+      }
+    } catch (e) {
+      // lỗi API → cho nhập tay nhưng báo thông tin
+      if (!STRICT_FORM_MUST_EXIST) {
+        enableOthers();
+        
+        // Set default values khi có lỗi API
+        setDefaultValues();
+      }
+      console.warn('check_purchase_order_data error:', e);
+      showToast('Lỗi kết nối, vui lòng thử lại', 'error');
+    }
+  }
+
+  function showToast(message, type = 'info') {
+    // Simple toast notification
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type === 'error' ? 'danger' : type === 'success' ? 'success' : 'info'} toast-notification`;
+    toast.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      min-width: 300px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    `;
+    toast.textContent = message;
+    
+    document.body.appendChild(toast);
+    
+    // Show
+    setTimeout(() => toast.style.opacity = '1', 100);
+    
+    // Hide and remove
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      setTimeout(() => document.body.removeChild(toast), 300);
+    }, 3000);
+  }
+
+  // Khởi tạo: disable tất cả trừ receive form
+  document.addEventListener('DOMContentLoaded', () => {
+    disableOthers(/*clear=*/false);
+
+    const receiveFormEl = document.querySelector(sel.receive_form);
+    if (receiveFormEl) {
+      // input + change + paste
+      let debounceTimer;
+      const debounced = () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(onReceiveFormChange, 300);
+      };
+      
+      receiveFormEl.addEventListener('input', debounced);
+      receiveFormEl.addEventListener('change', debounced);
+      receiveFormEl.addEventListener('paste', () => setTimeout(onReceiveFormChange, 100));
+
+      // Nếu receive form đã có sẵn (trường hợp restore), vẫn áp logic
+      if ((receiveFormEl.value || '').trim().length >= 9) {
+        onReceiveFormChange();
+      }
+    }
+
+    // Chặn submit khi receive form chưa hợp lệ
+    const form = document.querySelector(sel.form);
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        const receiveForm = (document.querySelector(sel.receive_form)?.value || '').trim();
+        if (receiveForm.length < 9) {
+          e.preventDefault(); 
+          e.stopPropagation();
+          showToast('Vui lòng nhập Former Receive Form (9 ký tự) trước khi lưu.', 'error');
+          return false;
+        }
+      }, true);
+    }
+  });
+
+  // Export function để có thể gọi từ bên ngoài nếu cần
+  window.checkReceiveForm = onReceiveFormChange;
+})();
+</script>

@@ -1,0 +1,15 @@
+<style>
+    .button-no-outline:focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+</style>
+
+<div style="display: inline-block; height: 44px; width: 80px; background-color: transparent !important; text-align: center; vertical-align: middle;">
+    <span class="selected-area-name" style="font-weight: 500; color: #333; line-height: 44px; display: inline-block;"></span>
+</div>
+<button type="button" class="btn btn-primary open-custom-modal" style="display: inline-block; height: 44px; width: 44px; vertical-align: middle; padding: 0;">
+    <i class="fas fa-location"></i>
+</button>
+
+{% include "wh_former/components/modals/area_modal.html" with action_name="stockin" %}

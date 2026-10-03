@@ -1,0 +1,26 @@
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block title %}
+    {% trans "User Information" %}
+{% endblock %}
+
+{% block js %}
+
+{% endblock js %}
+
+{% block sub_container %}
+<form method="post" action="{% url 'user_info' %}">
+    {% csrf_token %}
+    {% crispy form %}
+    <div class="pb-4" style="text-align: center;">
+      <input class="btn btn-success" type="submit" value="{% trans "save" %}" />
+    </div>
+    {% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+        {% endfor %}
+    {% endif %}
+</form>
+{% endblock %}

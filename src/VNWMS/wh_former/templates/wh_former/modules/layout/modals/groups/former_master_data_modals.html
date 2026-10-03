@@ -1,0 +1,16 @@
+{% include 'wh_former/components/modals/area_modal.html' %}
+{% include 'wh_former/modules/components/modals/action/error_modal.html' %}
+{% include 'wh_former/modules/components/modals/action/success_modal.html' %}
+{% include 'wh_former/modules/components/modals/action/loading_modal.html' %}
+{% include 'wh_former/modules/components/modals/action/rack_modal.html' %}
+{% include 'wh_former/modules/components/modals/helpers_modal/leave_confirm.html' %}
+{% include 'wh_former/modules/components/modals/helpers_modal/show_noti_modal.html' %}
+{% url 'former_insert' as url %}{% include 'wh_former/modules/components/modals/action/cancel_modal.html' with url=url %}
+{#{% include 'wh_former/modules/components/modals/action/not_done_modal.html' %}#}
+{% include 'wh_former/modules/components/modals/params/vendor_modal.html' %}
+{% include 'wh_former/modules/components/modals/params/size_modal.html' %}
+{% include 'wh_former/modules/components/modals/params/length_modal.html' %}
+{% include 'wh_former/modules/components/modals/params/surface_modal.html' %}
+{% include 'wh_former/components/modals/item_modal.html' %}
+{% include 'wh_former/modules/components/tables/former/table_rfid_.html' %}
+

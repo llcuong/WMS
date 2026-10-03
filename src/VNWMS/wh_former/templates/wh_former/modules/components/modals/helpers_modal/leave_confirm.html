@@ -1,0 +1,33 @@
+{% load i18n %}
+<div class="modal fade" id="confirmLeaveModal" tabindex="-1" role="dialog" aria-labelledby="confirmLeaveModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 12px;">
+            <div class="modal-header bg-warning" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                <h5 class="modal-title font-weight-bold" id="confirmLeaveModalLabel">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {% trans "Warning" %}
+                </h5>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
+                </div>
+                <p class="text-center mb-3">
+                    <strong>{% trans "You have unsaved data." %}</strong><br>
+                    <strong>{% trans " Are you sure you want to leave this page?" %}</strong>
+                </p>
+                <p class="text-center text-danger">
+                    {% trans "Saved data may be corrupted!" %}<br>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="cancel-button-2" onclick="$('#confirmLeaveModal').modal('hide')">
+                    {% include 'wh_former/modules/components/buttons/cancel-button-2.html' %}
+                </button>
+                <button type="button" id="confirmLeaveBtn" class="exit-button-2">
+                    {% include 'wh_former/modules/components/buttons/exit-button-2.html' %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

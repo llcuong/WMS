@@ -1,0 +1,437 @@
+{% extends 'wh_packing/bases/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Stock Out" %} {% endblock %}
+{% block css %}
+    {{ block.super }}
+    <style>
+        .jsgrid-button.jsgrid-mode-button.jsgrid-insert-mode-button {
+            display: none !important;
+        }
+
+        .jsgrid-grid-body::-webkit-scrollbar {
+            height: 16px !important;
+        }
+
+        .input-custom {
+            --bs-gutter-x: 0;
+        }
+
+        th {
+            text-align: center;
+        }
+
+        .jsgrid-cell {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .jsgrid-cell.expanded {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            word-wrap: break-word;
+            max-width: none;
+        }
+
+        /* Hiệu ứng hover: Phóng to nhẹ và thêm bóng đổ */
+        .btn-click-effect {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* Hiệu ứng khi click: Thu nhỏ nhẹ rồi trở lại bình thường */
+        .btn-click-effect:active {
+            transform: scale(0.95); /* Thu nhỏ 5% */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Giảm bóng */
+        }
+
+        input[type="checkbox"] {
+            display: flex;
+            align-items: center;
+            width: 35px;
+            height: 22px;
+            transform: scale(1.5);
+        }
+
+        body {
+            font-size: 0.875rem;
+        }
+
+
+    </style>
+{% endblock %}
+
+{% block jquery %}{% endblock %}
+
+{% block content %}
+    <div class="container">
+    <div class="row p-3">
+        <div class="col-12">
+            <h3 class="p-3 text-center">{% trans "Warehouse Stock Out Form" %}</h3>
+            <form id="myForm">
+                {% crispy form %}
+                <div class="row mb-3">
+                    <div class="col-md-12 text-center">
+                        <button type="submit" id="btnSearch" class="btn btn-outline-success w-auto btn-click-effect">🔍 {% trans "Search" %}</button>
+                    </div>
+                </div>
+                <hr />
+
+                <div id="jsGrid"></div>
+
+                <hr />
+                <div style="text-align: center" class="p-3">
+                    <button type="button" id="postDataButton" class="btn btn-info btn-lg">{% trans "Post" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+
+
+    <script>
+    $(document).ready(function() {
+        let selectedItems = {};
+
+        $("#jsGrid").on("click", ".jsgrid-cell", function() {
+            $(this).toggleClass("expanded");
+        });
+
+        {# Search #}
+        $("#btnSearch").on("click", function (event) {
+            event.preventDefault();
+            let product_order = $('#id_product_order').val().trim();
+            let purchase_no = $('#id_purchase_no').val().trim();
+            let size = $('#id_size').val().trim();
+            let lot_no = $('#id_lot_no').val().trim();
+            let version_no = $('#id_version_no').val().trim();
+            let item_type = $('#id_item_type').val();
+            let isItemTypeSelected = item_type !== null && item_type !== "";
+
+            if (product_order || size || lot_no || version_no || purchase_no || isItemTypeSelected ) {
+                event.preventDefault();
+                get_sap_info();
+            }
+            event.stopPropagation();
+        });
+
+        const get_sap_info = function() {
+            selectedItems = {};
+
+            let product_order = $("#id_product_order").val().trim();
+            let purchase_no = $("#id_purchase_no").val().trim();
+
+            let size = $("#id_size").val().trim();
+            let lot_no = $("#id_lot_no").val().trim();
+            let version_no = $("#id_version_no").val().trim();
+            let item_type = $("#id_item_type").val().trim();
+
+            $.ajax({
+                url: '{% url 'get_product_order_stout' %}',
+                type: 'get',
+                dataType: 'json',
+                async: false,
+                data: {
+                    "product_order": product_order,
+                    "purchase_no": purchase_no,
+                    "size": size,
+                    "lot_no": lot_no,
+                    "version_no": version_no,
+                    "item_type": item_type
+                },
+                success: function(data) {
+                    if (data.status === 'no_change'){
+                        console.log("Keep the data table");
+                    } else {
+                        $("#jsGrid").jsGrid("option", "data", data.data_list_stout);
+                    }
+
+                },
+                error: function (xhr) {
+                    const errorMsg = JSON.parse(xhr.responseText);
+                    alert(errorMsg.message);
+                }
+            });
+        };
+
+        $("#jsGrid").on("change", "#selectAll", function() {
+            let isChecked = $(this).is(":checked");
+
+             $(".rowCheckbox").prop("checked", isChecked).each(function() {
+                let id = $(this).attr("data-id");
+
+                if (isChecked) {
+                    selectedItems[id] = true;
+                } else {
+                    delete selectedItems[id];
+                }
+             });
+        });
+
+        $("#jsGrid").on("change", ".rowCheckbox", function() {
+            let id = $(this).attr("data-id");
+
+            if ($(this).is(":checked")) {
+                selectedItems[id] = true;
+            } else {
+                delete selectedItems[id];
+            }
+
+            // Kiểm tra nếu tất cả checkbox con đều được chọn thì tick vào #selectAll
+            let allChecked = $(".rowCheckbox").length === $(".rowCheckbox:checked").length;
+            $("#selectAll").prop("checked", allChecked);
+        });
+
+
+         {#Shortcut Keyboard #}
+        $(document).on('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const updateButton = $(".jsgrid-button.jsgrid-update-button:visible");
+                if (updateButton.length) {
+                    updateButton.click();
+                }
+            } else if (e.key === 'Escape') {
+                const cancelButton = $(".jsgrid-button.jsgrid-cancel-edit-button:visible");
+                if (cancelButton.length) {
+                    cancelButton.click();
+                }
+            }
+
+            e.stopPropagation();
+
+        });
+
+
+        {# Main JsGrid #}
+        data: [], // 初始為空，將透過 AJAX 加載資料
+
+        // 初始化 jsGrid
+        $("#jsGrid").jsGrid({
+            width: "100%",
+            height: "70vh",
+            noDataContent: "{% trans "Not found" %}",
+            {#autoload: true,#}
+            selecting: true,
+            inserting: false,  // 啟用新增功能
+            editing: true,    // 啟用編輯功能
+            sorting: true,    // 啟用排序功能
+            paging: false,     // 啟用分頁功能
+
+            rowClick: function (args) {
+
+                let $target = $(args.event.target);
+                if ($target.closest("td").index() <= 1) {
+                    return;
+                }
+                this.editItem(args.item);
+
+                let $row = $(".jsgrid-edit-row");
+
+                // Ẩn input có class rowCheckbox (nếu nó có mặt trong dòng edit)
+                {#$row.find("input.rowCheckbox").hide();#}
+
+                // Tìm checkbox trong dòng edit
+                let $checkbox = $row.find("input.rowCheckbox");
+
+                // Bỏ check nếu đang được chọn
+                if ($checkbox.prop("checked")) {
+                    $checkbox.prop("checked", false);
+                }
+
+                // Ẩn checkbox
+                $checkbox.hide();
+
+            },
+
+            {#data: [],   // 將 JSON 資料導入表格#}
+            {# Main #}
+            fields: [
+                {
+                    name: "select",
+                    title: "<input type='checkbox' id='selectAll'>",
+                    itemTemplate: function(_, item) {
+
+                        let $checkbox = $("<input>").attr("type", "checkbox")
+                            .addClass("rowCheckbox")
+                            .attr("data-id", item.id)
+                            .attr("data-product-order", item.product_order)
+                            .attr("data-purchase-no", item.purchase_no)
+                            .attr("data-version-no", item.version_no)
+                            .attr("data-version-seq", item.version_seq)
+                            .attr("data-item-type", item.item_type)
+                            .attr("data-size", item.size)
+                            .attr("data-bin-id", item.bin_id)
+                            .attr("data-qty", item.qty)
+                            .attr("data-desc", item.desc)
+                            .attr("data-purchase-unit", item.purchase_unit);
+
+                        if (selectedItems[item.id]) {
+                            $checkbox.prop("checked", true);
+                        }
+
+                        $checkbox.on("change", function() {
+                            if ($(this).is(":checked")) {
+                                selectedItems[item.id] = true;
+                            } else {
+                                delete selectedItems[item.id];
+                            }
+
+                        });
+
+                        return $checkbox;
+                    },
+                    align: "center",
+                    width: 50,
+                    filtering: false,
+                    sorting: false,
+                },
+                {
+                    type: "control",
+                    width: 80,
+                    itemTemplate: function(_, item) {
+                        // Tạo nút Edit
+                        var editButton = $("<button>")
+                            .addClass("btn btn-primary btn-sm")
+                            .text("{% trans 'Edit' %}")
+                            .on("click", function(e) {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                $("#jsGrid").jsGrid("editItem", item);
+
+                                let $row = $(".jsgrid-edit-row");
+
+                                // Tìm checkbox trong dòng edit
+                                let $checkbox = $row.find("input.rowCheckbox");
+
+                                // Bỏ check nếu đang được chọn
+                                if ($checkbox.prop("checked")) {
+                                    $checkbox.prop("checked", false);
+                                }
+
+                                // Ẩn checkbox
+                                $checkbox.hide();
+                            });
+
+                        return editButton;
+                    }
+                },
+                { name: "bin_id", type: "text", width: 100, title: "{% trans "Location" %}", editing: false, css: "text-center"},
+                { name: "product_order", type: "text", width: 135, title: "{% trans "Product Order" %}", validate: "required", editing: false, css: "text-center" },
+                { name: "version_no", type: "text", width: 120, title: "{% trans "Version No" %}", editing: false, css: "text-center" },
+                { name: "lot_no", type: "text", width: 150, title: "{% trans "Lot Number" %}", editing: false, css: "text-center" },
+                { name: "size", type: "text", width: 70, title: "{% trans "Size" %}", editing: false, css: "text-center"},
+                { name: "qty", type: "number", width: 125, title: "{% trans "Qty" %}"},
+                { name: "item_type", type: "text", width: 200, title: "{% trans "Item Type" %}", editing: false, css: "text-center" },
+                { name: "desc", type: "text", width: 225, title: "{% trans "Comment" %}", editing: true, css: "text-center" },
+                { name: "customer_no", type: "text", width: 150, title: "{% trans "Customer" %}", editing: false, css: "text-center" },
+                { name: "post_date", type: "date", width: 200, title: "{% trans "Post Date" %}", editing: false, css: "text-center" },
+                { name: "supplier", type: "text", width: 150, title: "{% trans "Supplier" %}", editing: false, css: "text-center" },
+                { name: "purchase_qty", type: "number", width: 120, title: "{% trans "Purchase Quantity" %}", editing: false},
+                { name: "purchase_unit", type: "text", width: 130, title: "{% trans "Purchase Unit" %}", editing: false, css: "text-center" },
+                { name: "purchase_no", type: "text", width: 125, title: "{% trans "Purchase Order" %}", editing: false, css: "text-center"},
+                { name: "sap_mtr_no", type: "text", width: 120, title: "{% trans "SAP Material Number" %}", editing: false, css: "text-center" },
+                { name: "version_seq", type: "text", width: 120, title: "{% trans "Version Seq" %}", editing: false, css: "text-center" },
+
+            ],
+        });
+
+        $("form input").on("keydown", function (e) {
+           if (e.keyCode === 13) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
+
+
+        $('#postDataButton').click(function(event) {
+            event.preventDefault();
+            // 獲取 jsGrid 的所有數據
+            let gridData = $("#jsGrid").data("JSGrid").data;
+
+            if (!gridData || gridData.length === 0) {
+                alert("{% trans "No data in the table! Please enter at least one row." %}");
+                event.stopPropagation();
+                return;
+            }
+
+            let selectedIds = Object.keys(selectedItems); // Lấy danh sách ID đã chọn
+            let count = selectedIds.length;
+            let selectedData = [];
+
+            $(".rowCheckbox:checked").each(function() {
+                let rowData = $(this).data(); // Lấy toàn bộ data-* attributes
+                selectedData.push(rowData);
+            });
+
+            if (selectedData.length === 0) {
+                const select_trans = "{% trans 'Please select at least one row to delete!' %}";
+                alert(select_trans);
+                return;
+            }
+
+            {#if (!confirm("{% trans "Are you sure you want to stock out?" %}")) return;#}
+            const confirmMessage = "[" + count + "] " + "{% trans 'Are you sure you want to stock out?' %}";
+            if (!confirm(confirmMessage)) return;
+
+            $.ajax({
+                type: "POST",
+                url: "{% url 'packing_material_stock_out_post' %}",
+                data: JSON.stringify({
+                    ids: selectedIds ,
+                    list_data: selectedData,
+                }),
+                contentType: "application/json",
+                success: function (response) {
+                    alert("{% trans "Stock out successful!" %}");
+
+                    {#DEBUG#}
+                    {#console.log("Data API:", response);#}
+
+                    // Reset danh sách đã chọn
+                    selectedItems = {};
+                    $(".rowCheckbox").prop("checked", false); // Bỏ chọn tất cả checkbox
+                    $("#selectAll").prop("checked", false); // Bỏ chọn "Chọn tất cả"
+
+
+                    const product_order = $("#id_product_order").val();
+                    const purchase_no = $("#id_purchase_no").val();
+                    const size = $("#id_size").val();
+                    const lot_no = $("#id_lot_no").val().trim();
+                    const version_no = $("#id_version_no").val().trim();
+                    const item_type = $("#id_item_type").val().trim();
+
+                    if (product_order || purchase_no || size || lot_no || version_no || item_type) {
+
+                        $.getJSON("{% url 'get_product_order_stout' %}", {
+                            product_order: product_order,
+                            purchase_no: purchase_no,
+                            size: size,
+                            lot_no: lot_no,
+                            version_no: version_no,
+                            item_type: item_type
+                            }, function (data) {
+                                {#DEBUG#}
+                                {#console.log("Data received:", data);#}
+                                $("#btnSearch").trigger("click");
+                        });
+                    }
+                },
+                error: function (xhr) {
+                    const errorMsg = JSON.parse(xhr.responseText);
+                    alert(errorMsg.message);
+                }
+            });
+
+        });
+
+    });
+
+</script>
+
+{% endblock %}

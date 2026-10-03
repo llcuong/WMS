@@ -1,0 +1,236 @@
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+<div class="modal fade" id="lengthModal" tabindex="-1" aria-labelledby="lengthModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 border-0">
+            <div class="modal-header">
+                <h4 class="modal-title" id="lengthModalLabel"><b>{% trans "Add Length ..." %}</b></h4>
+                <button type="button" class="btn p-0 border-0 bg-transparent" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                {% if length_form %}
+                    <form method="post">
+                        <input type="hidden" name="form_type" value="length">
+                        {% csrf_token %}
+                        <div class="col-12 card p-4 shadow-sm border rounded bg-white">
+                            <div class="row no-margin">
+                                <div class="col-9 g-3 align-items-center">
+                                    {% crispy length_form %}
+                                </div>
+                                <div class="col-4 d-flex align-items-end pb-3">
+                                     <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-1"></i> Save
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="form_type" value="length">
+                    </form>
+                {% endif %}
+
+                {% if all_lengths %}
+                    <div class="table-responsive mt-4" style="max-height: calc(100vh - 460px); overflow-y: auto; margin-bottom: 10px;">
+                        <table class="table table-bordered table-striped table-hover align-middle text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Active</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for length in all_lengths %}
+                                    <tr>
+                                        <td>{{ length.name }}</td>
+                                        <td>{{ length.is_active }}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary me-1" onclick="editParam('{{ length.code }}', '{{ length.name }}', '{{ length.is_active }}')">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                            <button class="btn btn-sm btn-success me-1" onclick="enableParam('{{ length.code }}')">
+                                                <i class="fas fa-check"></i> Enable
+                                            </button>
+                                            <button class="btn btn-sm btn-warning me-1" onclick="disableParam('{{ length.code }}')">
+                                                <i class="fas fa-ban"></i> Disable
+                                            </button>
+                                            <button class="btn btn-sm btn-danger" onclick="deleteParam('{{ length.code }}')">
+                                                <i class="fas fa-trash-alt"></i> Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                {% else %}
+                    <p class="text-muted mt-3">Nothing was found...</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editLengthModal" tabindex="-1" aria-labelledby="editLengthModalLabel" aria-hidden="true" style="z-index: 1070;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0">
+            <div class="modal-header">
+                <button type="button" class="btn p-0 border-0 bg-transparent" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3 d-none">
+                        <label for="editLengthCode" class="form-label">{% trans "Code" %}</label>
+                        <input type="text" id="editLengthCode" class="form-control" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editLengthName" class="form-label">{% trans "Length" %}</label>
+                        <input type="text" id="editLengthName" class="form-control">
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" id="editLengthActive" class="form-check-input">
+                        <label for="editLengthActive" class="form-check-label">{% trans "Active" %}</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+                <button type="button" class="btn btn-primary" onclick="saveEditParam()">{% trans "Save changes" %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Đảm bảo edit modal luôn hiển thị trên Length modal */
+#editLengthModal {
+    z-index: 1070 !important;
+}
+
+#editLengthModal .modal-backdrop {
+    z-index: 1069 !important;
+}
+
+/* Điều chỉnh backdrop để không che phủ edit modal */
+.modal-backdrop.show {
+    z-index: 1040;
+}
+
+/* Đảm bảo Length modal có z-index thấp hơn */
+#lengthModal {
+    z-index: 1050;
+}
+</style>
+
+<script>
+    function editParam(code, name, isActive) {
+        // Điền thông tin vào edit modal
+        document.getElementById('editLengthCode').value = code;
+        document.getElementById('editLengthName').value = name;
+        document.getElementById('editLengthActive').checked = (isActive === 'True' || isActive === true);
+
+        // Hiển thị edit modal
+        const editModal = new bootstrap.Modal(document.getElementById('editLengthModal'));
+        editModal.show();
+    }
+
+    function enableParam(code) {
+        if (confirm(`Enable #${code}?`)) {
+            fetch("{% url 'enable_param_api' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            });
+        }
+    }
+
+    function disableParam(code) {
+        if (confirm(`Disable #${code}?`)) {
+            fetch("{% url 'disable_param_api' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            });
+        }
+    }
+
+    function deleteParam(code) {
+        if (confirm(`Delete #${code}?`)) {
+            fetch("{% url 'delete_param_api' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            });
+        }
+    }
+
+    function saveEditParam() {
+        const code = document.getElementById('editLengthCode').value;
+        const name = document.getElementById('editLengthName').value;
+        const isActive = document.getElementById('editLengthActive').checked;
+
+        fetch("{% url 'edit_param_api' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({ code: code, name: name, is_active: isActive })
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message);
+            // Đóng edit modal trước khi reload
+            const editModal = bootstrap.Modal.getInstance(document.getElementById('editLengthModal'));
+            if (editModal) {
+                editModal.hide();
+            }
+            location.reload();
+        });
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.slice(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>

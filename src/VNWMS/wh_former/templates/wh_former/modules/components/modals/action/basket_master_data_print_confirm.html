@@ -1,0 +1,89 @@
+{% load i18n %}
+
+<div class="modal fade confirm-modal" id="confirmPrintModal" tabindex="-1" aria-labelledby="confirmPrintModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 12px;">
+            <div class="modal-header bg-primary" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                <h5 class="modal-title text-white" id="confirmPrintModalLabel">
+                    <i class="fas fa-print me-2"></i>
+                    {% trans 'Confirm Print' %} ?
+                </h5>
+            </div>
+            <div class="modal-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-print text-primary" style="font-size: 3rem;"></i>
+                </div>
+                <p class="text-center mb-3" style="font-size: 18px;">
+                    <strong>{% trans 'Are you sure you want to print?' %}</strong>
+                </p>
+                <p class="text-muted mb-0" style="font-size: 17px;">
+                    {% trans 'Total labels to print' %}: <strong id="totalLabelsCount">0</strong>
+                </p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="cancel-button-2" data-bs-dismiss="modal">
+                    {% include 'wh_former/modules/components/buttons/cancel-button-2.html' %}
+                </button>
+                <button type="button" class="confirm-button-2-print" id="confirmPrintBtn">
+                    {% include 'wh_former/modules/components/buttons/confirm-button-2-print.html' %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="batchConfirmModal" tabindex="-1" aria-labelledby="batchConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-dark">
+                <h5 class="modal-title" id="batchConfirmModalLabel">
+                    <i class="fas fa-question-circle"></i> {% trans 'Confirm Printing Quality' %}
+                </h5>
+            </div>
+            <div class="modal-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-print fa-3x text-primary mb-3"></i>
+                </div>
+                <p class="mb-2">{% trans 'Finished' %} <strong id="printedCount">0</strong> {% trans 'labels' %}</p>
+                <p class="mb-2">{% trans 'Still have' %} <strong id="remainingCount">0</strong> {% trans 'labels' %}</p>
+                <p class="mb-0 text-info">{% trans 'Next will print' %} <strong>--</strong> {% trans 'labels' %}</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" id="stopPrintBtn">
+                    <i class="fas fa-stop"></i> {% trans 'Stop' %}
+                </button>
+                <button type="button" class="btn btn-warning" id="reprintBtn">
+                    <i class="fas fa-redo"></i> {% trans 'Re-print' %}
+                </button>
+                <button type="button" class="btn btn-primary" id="continuePrintBtn">
+                    <i class="fas fa-play"></i> {% trans 'Continue' %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+     .confirm-modal .modal-dialog {
+        max-width: 400px;
+    }
+    .confirm-modal .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+    }
+    .confirm-modal .modal-title {
+        color: #495057;
+        font-weight: 600;
+    }
+    .confirm-modal .btn-cancel {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: white;
+    }
+    .confirm-modal .btn-confirm {
+        background-color: #2272F4;
+        border-color: #2272F4;
+        color: white;
+    }
+</style>

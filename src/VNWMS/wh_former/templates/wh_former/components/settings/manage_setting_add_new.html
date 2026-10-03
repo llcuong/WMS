@@ -1,0 +1,8 @@
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+<form method="post" id="add-new-form">
+    {% csrf_token %}
+    {% crispy form %}
+</form>
+

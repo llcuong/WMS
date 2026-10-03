@@ -1,0 +1,20 @@
+<style>
+    .button{
+        width: 120px !important;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .button[disabled], .button.disabled {
+        pointer-events: none;
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+</style>
+
+{% block buttons %}
+    {% if is_ip_allowed %}
+        {% include "wh_former/modules/components/buttons/start_button.html" %}
+        {% include "wh_former/modules/components/buttons/stop_button.html" %}
+        {% include "wh_former/modules/components/buttons/delete_button.html" %}
+    {% endif %}
+{% endblock %}

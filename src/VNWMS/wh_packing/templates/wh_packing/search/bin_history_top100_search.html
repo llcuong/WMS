@@ -1,0 +1,188 @@
+{% extends 'wh_packing/bases/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "New Transaction History" %} {% endblock %}
+
+{% block css %}
+    {{ block.super }}
+
+    <style>
+
+        .jsgrid-cell {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .jsgrid-cell.expanded {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            word-wrap: break-word;
+            max-width: none;
+        }
+
+        .jsgrid-cell, .jsgrid-header-cell {
+            padding: 12px 10px;
+        }
+
+        .jsgrid-pager {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .nav-tabs .nav-link {
+            transition: background-color 0.3s ease;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block content %}
+{#<div class="container-fluid p-0">#}
+{#    <div id="jsGrid"></div>#}
+{#</div>#}
+
+<ul class="nav nav-tabs pl-3 pt-1" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" style="width: 70px; text-align: center"
+         role="tab" aria-controls="home" aria-selected="true">NBR</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" style="width: 70px; text-align: center"
+         role="tab" aria-controls="profile" aria-selected="false">PVC</a>
+    </li>
+</ul>
+
+<div class="tab-content border border-top-0 p-3" id="myTabContent">
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <div id="jsGridGDNBR"></div>
+    </div>
+    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+      <div id="jsGridGDPVC"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(document).ready(function () {
+
+
+            const translations = {
+                notFound: "{% trans 'Not found' %}",
+
+                plant: "{% trans 'Plant' %}",
+                productOrder: "{% trans 'Product Order' %}",
+                purchaseOrder: "{% trans 'Purchase Order' %}",
+                versionNo: "{% trans 'Version No' %}",
+                versionSeq: "{% trans 'Version Seq' %}",
+                item_type: "{% trans 'Item Type' %}",
+                size: "{% trans 'Size' %}",
+                comment: "{% trans 'Comment' %}",
+                bin: "{% trans 'Bin' %}",
+                mvt: "{% trans 'Mvt' %}",
+                minusQty: "-",
+                plusQty: "+",
+                qty: "{% trans 'Qty' %}",
+                createAt: "{% trans 'Create at' %}",
+                createBy: "{% trans 'Create by' %}"
+            };
+
+            function loadJsGrid(plant=""){
+                const idGrid = "#jsGrid" + plant;
+                const plant_id = plant;
+
+                $(idGrid).on("click", ".jsgrid-cell", function() {
+                    $(this).toggleClass("expanded");
+                });
+
+                $(idGrid).jsGrid("openPage", 1);
+
+                $(idGrid).jsGrid({
+                    width: "100%",
+                    height: "81vh",
+                    noDataContent: translations.notFound,
+                    inserting: false,
+                    editing: false,
+                    paging:true,
+                    sorting: true,
+                    autoload:true,
+                    controller: {
+                        loadData: function() {
+                            return $.ajax({
+                                type: "GET",
+                                url: "{% url 'product_order_hist100_data' %}",
+                                dataType: "json",
+                                data: {
+                                    plant: plant_id
+                                }
+                            });
+                        }
+                    },
+                    pageSize: 50,
+                    pageButtonCount: 5,
+                    headerRowClass: "table-bordered",
+                    pagerFormat: "{first} {prev} {pages} {next} {last} \u00A0  |\u00A0\u00A0 {pageIndex} of {pageCount}",
+                    pagePrevText: "<i class='fas fa-chevron-left'></i>",
+                    pageNextText: "<i class='fas fa-chevron-right'></i>",
+                    pageFirstText: "<i class='fas fa-angle-double-left'></i>",
+                    pageLastText: "<i class='fas fa-angle-double-right'></i>",
+                    fields: [
+                        { name: "product_order", title: translations.productOrder, type: "text", width: 120, css: "text-center"},
+                        { name: "purchase_no", title: translations.purchaseOrder, type: "text", width: 140, css: "text-center"},
+                        { name: "version_no", title: translations.versionNo, type: "text", width: 110, css: "text-center"},
+                        { name: "version_seq", title: translations.versionSeq, type: "text", width: 60, css: "text-center"},
+                        { name: "item_type", title: translations.item_type, type: "text", width: 100, css: "text-center"},
+                        { name: "size", title: translations.size, type: "text", width: 65, css: "text-center"},
+                        { name: "comment", title: translations.comment, type: "text", width: 70, css: "text-center"},
+                        { name: "warehouse_name", title: translations.plant, type: "text", width: 75, css: "text-center"},
+                        { name: "bin_id", title: translations.bin, type: "text", width: 70, css: "text-center"},
+                        { name: "mvt_id", title: translations.mvt, type: "text", width: 95, css: "text-center"},
+                        {
+                            name: "minus_qty",
+                            title: "-",
+                            type: "number",
+                            width: 80,
+                            itemTemplate: function(value){
+                                return value.toLocaleString();
+                            },
+                        },
+                        {
+                            name: "plus_qty",
+                            title: "+",
+                            type: "number",
+                            width: 80,
+                            itemTemplate: function (value) {
+                                return value.toLocaleString();
+                            },
+                        },
+                        {
+                            name: "remain_qty",
+                            title: translations.qty,
+                            type: "number",
+                            width: 80,
+                            itemTemplate: function(value) {
+                                return value.toLocaleString();
+                            }
+                        },
+                        { name: "create_at", title: translations.createAt, type: "date", width: 130, css: "text-center"},
+                        { name: "create_by__username", title: translations.createBy, type: "text", width: 140, css: "text-center"},
+                    ]
+                });
+            }
+
+            loadJsGrid('GDNBR');
+            $('a[data-toggle="tab"]').on('click', function (e) {
+                let tabText = "GD" + $(e.target).text().trim();
+                loadJsGrid(tabText);
+            });
+
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% csrf_token %}
+{{ form.media }}
+{{ form.non_field_errors }}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-3 mt-1">
+            {{ form.basket_purchase_order|as_crispy_field }}
+        </div>
+        <div class="col-12 col-md-6 col-lg-3 mt-1">
+            {% include 'wh_former/modules/components/forms/fields/parameters_brand_field.html' with add=True %}
+        </div>
+        <div class="col-12 col-md-6 col-lg-3 mt-1">
+            {{ form.basket_receive_qty|as_crispy_field }}
+        </div>
+        <div class="col-12 col-md-6 col-lg-3 mt-1">
+            {% trans "Basket width" as basket_width %}
+            {% include "wh_former/modules/components/forms/fields/forms_length_field.html" with add=True is_required=True name=basket_width %}
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3 mt-1">
+            {{ form.basket_receive_date|as_crispy_field }}
+        </div>
+        <div class="col-12 col-md-6 col-lg-3 mt-1">
+            {{ form.basket_capacity|as_crispy_field }}
+        </div>
+        <div class="col-12 col-md-4 col-lg-2 mt-1">
+            <label for="plant_code_input" class="form-label">{% trans "Plant code" %}<span class="">*</span></label>
+            <div class="custom-select-wrapper position-relative">
+                <input  required
+                        type="text" id="plant_code_input" name="plant_code"
+                        class="select-input form-control" placeholder="Select or type…"
+                        autocomplete="off" value="{{ 3002|default_if_none:'' }}"
+                >
+                <div id="plant_dropdown" class="select-dropdown"></div>
+            </div>
+        </div>
+        <div class="col-12 col-md-8 col-lg-4 mt-1">
+            {{ form.basket_description|as_crispy_field }}
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const plantOptions = ["3002", "3001", "3003"];
+        initDropdown("plant_code_input", "plant_dropdown", plantOptions);
+        window.plantOptions = plantOptions;
+    });
+</script>

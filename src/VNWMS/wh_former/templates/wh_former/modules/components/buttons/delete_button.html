@@ -1,0 +1,64 @@
+{% load i18n %}
+
+<style>
+    .delete-button {
+        background-color: #fa5856;
+    }
+
+    .delete-button:hover {
+        color: #363636 !important;
+    }
+</style>
+
+<button class="button delete-button" type="button" data-pid="{{ pid }}">
+    <i class="fas fa-trash-alt"></i>
+    <span class="btn-text">{% trans "Delete" %}</span>
+</button>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        window.CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]')?.content ||
+                            document.querySelector('[name="csrfmiddlewaretoken"]')?.value;
+
+        document.querySelectorAll(".delete-button").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const pid = btn.dataset.pid;
+                fetch("{% url 'rfid_clear_reader' %}", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': window.CSRF_TOKEN
+                    },
+                    body: `pid=${pid}`
+                }).then(res => res.json())
+                    .then(data => {
+                        if (data.status === "ok") {
+                          const tbody = document.querySelector(`#epc-table-body-${pid}`);
+                          if (tbody) {
+                              // Remove EPCs from global cache and allEpcs array before clearing table
+                              tbody.querySelectorAll('tr[data-epc]').forEach(row => {
+                                  const epc = row.dataset.epc;
+                                  if (epc && window.globalEpcCache) {
+                                      window.globalEpcCache.delete(epc);
+                                  }
+                                  // Remove from allEpcs array
+                                  if (window.allEpcs) {
+                                      window.allEpcs = window.allEpcs.filter(item => item.epc_raw !== epc);
+                                  }
+                              });
+                              tbody.innerHTML = "";
+                          }
+                          epcCache[pid] = new Set();
+                          lastEPCSeen[pid] = null;
+                          const count = document.getElementById(`epc-count-${pid}`);
+                          if (count) count.innerText = "0";
+                          if (window.rowIndexMap) rowIndexMap[pid] = 1;
+                            const infoTable = document.getElementById('stock-new-info-table');
+                            if (infoTable) infoTable.innerHTML = "";
+                        }
+                    });
+            });
+        });
+
+    });
+</script>

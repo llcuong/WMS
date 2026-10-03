@@ -1,0 +1,244 @@
+{% load i18n %}
+
+<style>
+    .result-table-header {
+        padding-top: 6px;
+        overflow-x: hidden;
+        width: 100%;
+        position: relative;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+    }
+
+    .result-table-header::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+
+    .result-table thead {
+        background-color: #2272f4;
+        border-bottom: 3px solid #d8d8d8;
+    }
+
+    .result-table thead tr {
+        display: flex;
+        width: 100%;
+        margin: auto;
+    }
+
+    .result-table thead th {
+        background-color: #f4f4fb;
+        height: 44px;
+        padding: 0 !important;
+        box-sizing: border-box;
+        text-align: center;
+        vertical-align: middle;
+        flex-shrink: 0;
+        flex-grow: 0;
+    }
+
+    .th-flex {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+        position: relative;
+        background-color: #2272f4;
+    }
+
+    .th-label {
+        font-size: 16px;
+        color: white;
+        line-height: 1;
+    }
+
+    .sort-icon {
+        color: white;
+        font-size: 16px;
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .active {
+        color: #221ecc;
+    }
+
+    .table-header-cell {
+        background-color: #f4f4fb;
+        height: 44px;
+        padding: 0 !important;
+        box-sizing: border-box;
+        text-align: center;
+        vertical-align: middle;
+        flex-shrink: 0;
+        flex-grow: 0;
+    }
+
+    .expand-header-cell {
+        width: 42px;
+        flex: 0 0 42px;
+        text-align: center;
+        background-color: #f4f4fb;
+        height: 44px;
+        padding: 0 !important;
+        box-sizing: border-box;
+        vertical-align: middle;
+    }
+
+    .checkbox-header-cell {
+        width: 50px;
+        flex: 0 0 50px;
+        text-align: center;
+        background-color: #f4f4fb;
+        height: 44px;
+        padding: 0 !important;
+        box-sizing: border-box;
+        vertical-align: middle;
+    }
+
+    .checkbox-header-cell .th-flex {
+        background-color: #2272f4;
+    }
+
+    .header-checkbox {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+
+    /* Responsive table styles */
+    .result-table {
+        table-layout: fixed;
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 16px;
+    }
+
+    /* No media queries needed - always full width and responsive */
+</style>
+
+<div class="result-table-header">
+    <table class="result-table" id="result-table-container">
+        <thead>
+        <tr>
+            <!-- Checkbox column -->
+            <th class="checkbox-header-cell">
+                <div class="th-flex">
+                    <input type="checkbox" id="select-all-checkbox" class="header-checkbox">
+                </div>
+            </th>
+            {% for label, width, align in columns %}
+                <th class="table-header-cell" data-width="{{ width }}" onclick="sortTable({{ forloop.counter0 }}, this)">
+                    <div class="th-flex">
+                        <span class="th-label">{{ label }}</span>
+                        <i class="sort-icon fas fa-arrow-down"></i>
+                    </div>
+                </th>
+            {% endfor %}
+            {% if expand %}
+                <th class="expand-header-cell">
+                    <div style="border:none; background:none; outline:none; width:42px !important;"></div>
+                </th>
+            {% endif %}
+        </tr>
+        </thead>
+    </table>
+</div>
+
+<script>
+    let currentSortCol = null;
+    let currentSortDir = 'asc';
+
+    function sortTable(colIndex, thElement) {
+        const tbody = document.querySelector(".result-table-body tbody");
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+
+        // Adjust column index to account for checkbox column
+        const actualColIndex = colIndex + 1;
+
+        if (currentSortCol === colIndex) {
+            currentSortDir = currentSortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+            currentSortCol = colIndex;
+            currentSortDir = 'asc';
+        }
+
+        rows.sort((a, b) => {
+            const aText = a.children[actualColIndex]?.innerText.trim() || "";
+            const bText = b.children[actualColIndex]?.innerText.trim() || "";
+            const aVal = isNaN(aText) ? aText.toLowerCase() : parseFloat(aText);
+            const bVal = isNaN(bText) ? bText.toLowerCase() : parseFloat(bText);
+
+            if (aVal < bVal) return currentSortDir === 'asc' ? -1 : 1;
+            if (aVal > bVal) return currentSortDir === 'asc' ? 1 : -1;
+            return 0;
+        });
+
+        rows.forEach(row => tbody.appendChild(row));
+
+        document.querySelectorAll(".result-table-header th.table-header-cell").forEach((th, idx) => {
+            th.classList.remove("active");
+            const icon = th.querySelector('.sort-icon');
+            if (icon) icon.className = 'sort-icon fas fa-arrow-down';
+        });
+
+        const icon = thElement.querySelector('.sort-icon');
+        if (icon) {
+            icon.className = currentSortDir === 'asc'
+                ? 'sort-icon fas fa-arrow-up'
+                : 'sort-icon fas fa-arrow-down';
+        }
+
+        thElement.classList.add("active");
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+        // Calculate percentage widths based on column_width proportions
+        const headerCells = document.querySelectorAll(".result-table-header .table-header-cell[data-width]");
+        const table = document.querySelector('.result-table-header .result-table');
+        let totalWidth = 0;
+
+        // Calculate total width
+        headerCells.forEach(cell => {
+            totalWidth += parseInt(cell.dataset.width);
+        });
+
+        // Set minimum width for the table
+        if (table && totalWidth > 0) {
+            table.style.minWidth = (totalWidth + 50) + 'px'; // Add 50px for checkbox column
+        }
+
+        // Apply percentage-based flex-basis
+        headerCells.forEach(cell => {
+            const width = parseInt(cell.dataset.width);
+            const percentage = (width / totalWidth) * 100;
+            cell.style.flexBasis = percentage + '%';
+        });
+
+        const firstTh = document.querySelector(".result-table-header th.table-header-cell");
+        if (firstTh) sortTable(0, firstTh);
+
+        // Sync header scroll with body scroll
+        const header = document.querySelector('.result-table-header');
+        const body = document.querySelector('.result-table-body');
+
+        if (body && header) {
+            body.addEventListener('scroll', function() {
+                header.scrollLeft = body.scrollLeft;
+            });
+        }
+
+        // Handle select all checkbox
+        const selectAllCheckbox = document.getElementById('select-all-checkbox');
+        if (selectAllCheckbox) {
+            selectAllCheckbox.addEventListener('change', function() {
+                const allRowCheckboxes = document.querySelectorAll('.row-checkbox');
+                allRowCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+        }
+    });
+</script>

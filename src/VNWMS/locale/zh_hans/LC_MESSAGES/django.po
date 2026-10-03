@@ -1,0 +1,2502 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-20 10:00+0700\n"
+"PO-Revision-Date: 2025-01-15 16:56+0700\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.4.4\n"
+
+#: .\bases\templates\bases\attach_form.html:9
+msgid "attachment"
+msgstr ""
+
+#: .\bases\templates\bases\attach_form.html:12
+#: .\bases\templates\bases\attach_form.html:23
+msgid "file"
+msgstr ""
+
+#: .\bases\templates\bases\attach_form.html:17
+#: .\bases\templates\bases\attach_form.html:27
+msgid "desc"
+msgstr ""
+
+#: .\bases\templates\bases\attach_form.html:33 .\users\forms.py:63
+#: .\users\templates\users\info.html:17
+msgid "save"
+msgstr "储存"
+
+#: .\bases\templates\bases\base.html:84
+#, fuzzy
+#| msgid "Warehouse Name"
+msgid "Warehouse Management System"
+msgstr "倉庫名稱"
+
+#: .\bases\templates\bases\base.html:101
+msgid "Personal Setting"
+msgstr "个人资讯"
+
+#: .\bases\templates\bases\base.html:107
+msgid "Logout"
+msgstr "登出"
+
+#: .\bases\utils.py:61
+msgid "Update Status"
+msgstr "更新状态"
+
+#: .\users\admin.py:29
+msgid "Personal info"
+msgstr "个人资讯"
+
+#: .\users\admin.py:31
+msgid "Permissions"
+msgstr "权限"
+
+#: .\users\admin.py:33
+msgid "Important dates"
+msgstr ""
+
+#: .\users\forms.py:47
+msgid "user_type"
+msgstr ""
+
+#: .\users\forms.py:49 .\users\models.py:120
+msgid "active"
+msgstr ""
+
+#: .\users\forms.py:50
+msgid "password"
+msgstr ""
+
+#: .\users\forms.py:50
+msgid "Please type the password"
+msgstr ""
+
+#: .\users\forms.py:51 .\users\forms.py:117
+msgid "confirm_password"
+msgstr ""
+
+#: .\users\forms.py:51
+msgid "Please type the login password again"
+msgstr ""
+
+#: .\users\forms.py:52 .\users\models.py:102
+#: .\users\templates\users\login.html:168
+msgid "emp_no"
+msgstr ""
+
+#: .\users\forms.py:53 .\users\models.py:103
+msgid "sap_emp_no"
+msgstr ""
+
+#: .\users\forms.py:54
+msgid "name"
+msgstr ""
+
+#: .\users\forms.py:55
+msgid "plant"
+msgstr "工厂"
+
+#: .\users\forms.py:107 .\users\forms.py:169
+msgid "The password is not same with the confirm password"
+msgstr ""
+
+#: .\users\forms.py:112
+msgid "login_account"
+msgstr ""
+
+#: .\users\forms.py:113
+msgid "old_password"
+msgstr ""
+
+#: .\users\forms.py:114
+msgid "Please type the login password"
+msgstr ""
+
+#: .\users\forms.py:115
+msgid "new_password"
+msgstr ""
+
+#: .\users\forms.py:116
+msgid "Please type the new password"
+msgstr ""
+
+#: .\users\forms.py:118
+msgid "Please type the confirm password"
+msgstr ""
+
+#: .\users\forms.py:119
+msgid "Default Homepage"
+msgstr ""
+
+#: .\users\forms.py:135
+msgid "base_information"
+msgstr ""
+
+#: .\users\forms.py:146
+msgid "Change Password"
+msgstr "变更密码"
+
+#: .\users\forms.py:174
+msgid "The password is not correct"
+msgstr ""
+
+#: .\users\models.py:54
+msgid "類別"
+msgstr ""
+
+#: .\users\models.py:104
+msgid "username"
+msgstr ""
+
+#: .\users\models.py:105
+msgid "email address"
+msgstr ""
+
+#: .\users\models.py:107
+msgid "first name"
+msgstr ""
+
+#: .\users\models.py:108
+msgid "last name"
+msgstr ""
+
+#: .\users\models.py:110
+msgid "mobile number"
+msgstr ""
+
+#: .\users\models.py:112
+msgid "Required. digits and +-() only."
+msgstr ""
+
+#: .\users\models.py:114
+msgid "Enter a valid mobile number."
+msgstr ""
+
+#: .\users\models.py:117
+msgid "staff status"
+msgstr ""
+
+#: .\users\models.py:118
+msgid "Designates whether the user can log into this admin site."
+msgstr ""
+
+#: .\users\models.py:121
+msgid ""
+"Designates whether this user should be treated as active. Unselect this "
+"instead of deleting accounts."
+msgstr ""
+
+#: .\users\models.py:123
+msgid "date joined"
+msgstr ""
+
+#: .\users\models.py:133
+msgid "user"
+msgstr ""
+
+#: .\users\models.py:134
+msgid "users"
+msgstr ""
+
+#: .\users\templates\users\base.html:15
+msgid "Add User"
+msgstr "新增使用者"
+
+#: .\users\templates\users\base.html:16
+msgid "User List"
+msgstr "使用者列表"
+
+#: .\users\templates\users\info.html:5
+msgid "User Information"
+msgstr "使用者资讯"
+
+#: .\users\templates\users\login.html:193
+msgid "Submit"
+msgstr "送出"
+
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_form_helper.py:130
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_form_helper.py:140
+#: .\venv\Lib\site-packages\django\forms\fields.py:54
+msgid "This field is required."
+msgstr ""
+
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_layout.py:392
+msgid "i18n text"
+msgstr ""
+
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_layout.py:394
+msgid "i18n legend"
+msgstr ""
+
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_layout_objects.py:143
+#: .\venv\Lib\site-packages\django\core\validators.py:22
+msgid "Enter a valid value."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\contrib\messages\apps.py:7
+msgid "Messages"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\contrib\sitemaps\apps.py:8
+msgid "Site Maps"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\contrib\staticfiles\apps.py:9
+msgid "Static Files"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\contrib\syndication\apps.py:7
+msgid "Syndication"
+msgstr ""
+
+#. Translators: String used to replace omitted page numbers in elided page
+#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
+#: .\venv\Lib\site-packages\django\core\paginator.py:30
+msgid "…"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:51
+msgid "That page number is not an integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:53
+msgid "That page number is less than 1"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:58
+msgid "That page contains no results"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:93
+#: .\venv\Lib\site-packages\django\forms\fields.py:678
+msgid "Enter a valid URL."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:151
+msgid "Enter a valid integer."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:162
+msgid "Enter a valid email address."
+msgstr ""
+
+#. Translators: "letters" means latin letters: a-z and A-Z.
+#: .\venv\Lib\site-packages\django\core\validators.py:265
+msgid ""
+"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:272
+msgid ""
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
+"hyphens."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:281
+#: .\venv\Lib\site-packages\django\core\validators.py:291
+#: .\venv\Lib\site-packages\django\core\validators.py:314
+msgid "Enter a valid IPv4 address."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:299
+#: .\venv\Lib\site-packages\django\core\validators.py:315
+msgid "Enter a valid IPv6 address."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:309
+#: .\venv\Lib\site-packages\django\core\validators.py:313
+msgid "Enter a valid IPv4 or IPv6 address."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:343
+msgid "Enter only digits separated by commas."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:349
+#, python-format
+msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:382
+#, python-format
+msgid "Ensure this value is less than or equal to %(limit_value)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:391
+#, python-format
+msgid "Ensure this value is greater than or equal to %(limit_value)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:401
+#, python-format
+msgid ""
+"Ensure this value has at least %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at least %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:416
+#, python-format
+msgid ""
+"Ensure this value has at most %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at most %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:435
+#: .\venv\Lib\site-packages\django\forms\fields.py:292
+#: .\venv\Lib\site-packages\django\forms\fields.py:327
+msgid "Enter a number."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:437
+#, python-format
+msgid "Ensure that there are no more than %(max)s digit in total."
+msgid_plural "Ensure that there are no more than %(max)s digits in total."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:442
+#, python-format
+msgid "Ensure that there are no more than %(max)s decimal place."
+msgid_plural "Ensure that there are no more than %(max)s decimal places."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:447
+#, python-format
+msgid ""
+"Ensure that there are no more than %(max)s digit before the decimal point."
+msgid_plural ""
+"Ensure that there are no more than %(max)s digits before the decimal point."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:509
+#, python-format
+msgid ""
+"File extension “%(extension)s” is not allowed. Allowed extensions are: "
+"%(allowed_extensions)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:562
+msgid "Null characters are not allowed."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\base.py:1210
+#: .\venv\Lib\site-packages\django\forms\models.py:768
+msgid "and"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\base.py:1212
+#, python-format
+msgid "%(model_name)s with this %(field_labels)s already exists."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:100
+#, python-format
+msgid "Value %(value)r is not a valid choice."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:101
+msgid "This field cannot be null."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:102
+msgid "This field cannot be blank."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:103
+#, python-format
+msgid "%(model_name)s with this %(field_label)s already exists."
+msgstr ""
+
+#. Translators: The 'lookup_type' is one of 'date', 'year' or 'month'.
+#. Eg: "Title must be unique for pub_date year"
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:107
+#, python-format
+msgid ""
+"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:126
+#, python-format
+msgid "Field of type: %(field_type)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:958
+#, python-format
+msgid "“%(value)s” value must be either True or False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:959
+#, python-format
+msgid "“%(value)s” value must be either True, False, or None."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:961
+msgid "Boolean (Either True or False)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1002
+#, python-format
+msgid "String (up to %(max_length)s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1096
+msgid "Comma-separated integers"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1145
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
+"format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1147
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1290
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
+"date."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1150
+msgid "Date (without time)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1288
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[."
+"uuuuuu]][TZ] format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1292
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+"[TZ]) but it is an invalid date/time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1296
+msgid "Date (with time)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1444
+#, python-format
+msgid "“%(value)s” value must be a decimal number."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1446
+msgid "Decimal number"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1585
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in [DD] [[HH:]MM:]ss[."
+"uuuuuu] format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1588
+msgid "Duration"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1638
+msgid "Email address"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1661
+msgid "File path"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1727
+#, python-format
+msgid "“%(value)s” value must be a float."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1729
+msgid "Floating point number"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1767
+#, python-format
+msgid "“%(value)s” value must be an integer."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1769
+msgid "Integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1852
+msgid "Big (8 byte) integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1867
+msgid "Small integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1875
+msgid "IPv4 address"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1906
+msgid "IP address"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1986
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1987
+#, python-format
+msgid "“%(value)s” value must be either None, True or False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1989
+msgid "Boolean (Either True, False or None)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2043
+msgid "Positive big integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2056
+msgid "Positive integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2069
+msgid "Positive small integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2083
+#, python-format
+msgid "Slug (up to %(max_length)s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2115
+msgid "Text"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2181
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+"format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2183
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
+"invalid time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2186
+msgid "Time"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2312
+msgid "URL"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2334
+msgid "Raw binary data"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2399
+#, python-format
+msgid "“%(value)s” is not a valid UUID."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2401
+msgid "Universally unique identifier"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\files.py:226
+msgid "File"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\files.py:375
+msgid "Image"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\json.py:18
+msgid "A JSON object"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\json.py:20
+msgid "Value must be valid JSON."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:790
+#, python-format
+msgid "%(model)s instance with %(field)s %(value)r does not exist."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:792
+msgid "Foreign Key (type determined by related field)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1045
+msgid "One-to-one relationship"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1099
+#, python-format
+msgid "%(from)s-%(to)s relationship"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1100
+#, python-format
+msgid "%(from)s-%(to)s relationships"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1142
+msgid "Many-to-many relationship"
+msgstr ""
+
+#. Translators: If found as last label character, these punctuation
+#. characters will prevent the default label_suffix to be appended to the label
+#: .\venv\Lib\site-packages\django\forms\boundfield.py:150
+msgid ":?.!"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:247
+msgid "Enter a whole number."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:402
+#: .\venv\Lib\site-packages\django\forms\fields.py:1146
+msgid "Enter a valid date."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:426
+#: .\venv\Lib\site-packages\django\forms\fields.py:1147
+msgid "Enter a valid time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:454
+msgid "Enter a valid date/time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:488
+msgid "Enter a valid duration."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:489
+#, python-brace-format
+msgid "The number of days must be between {min_days} and {max_days}."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:552
+msgid "No file was submitted. Check the encoding type on the form."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:553
+msgid "No file was submitted."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:554
+msgid "The submitted file is empty."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:556
+#, python-format
+msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid_plural ""
+"Ensure this filename has at most %(max)d characters (it has %(length)d)."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:559
+msgid "Please either submit a file or check the clear checkbox, not both."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:620
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:782
+#: .\venv\Lib\site-packages\django\forms\fields.py:872
+#: .\venv\Lib\site-packages\django\forms\models.py:1309
+#, python-format
+msgid "Select a valid choice. %(value)s is not one of the available choices."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:873
+#: .\venv\Lib\site-packages\django\forms\fields.py:988
+#: .\venv\Lib\site-packages\django\forms\models.py:1308
+msgid "Enter a list of values."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:989
+msgid "Enter a complete value."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1205
+msgid "Enter a valid UUID."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1235
+msgid "Enter a valid JSON."
+msgstr ""
+
+#. Translators: This is the default suffix added to form field labels
+#: .\venv\Lib\site-packages\django\forms\forms.py:76
+msgid ":"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\forms.py:203
+#, python-format
+msgid "(Hidden field %(name)s) %(error)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:61
+#, python-format
+msgid ""
+"ManagementForm data is missing or has been tampered with. Missing fields: "
+"%(field_names)s. You may need to file a bug report if the issue persists."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:370
+#, python-format
+msgid "Please submit at most %d form."
+msgid_plural "Please submit at most %d forms."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:377
+#, python-format
+msgid "Please submit at least %d form."
+msgid_plural "Please submit at least %d forms."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:405
+#: .\venv\Lib\site-packages\django\forms\formsets.py:412
+msgid "Order"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:417
+#: .\warehouse\templates\warehouse\area\area_by_warehouse.html:71
+#: .\warehouse\templates\warehouse\area\area_by_warehouse.html:76
+#: .\warehouse\templates\warehouse\bin\bin_by_area.html:69
+#: .\warehouse\templates\warehouse\bin\bin_by_area.html:76
+#: .\warehouse\templates\warehouse\list_warehouse.html:64
+#: .\warehouse\templates\warehouse\list_warehouse.html:67
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:384
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:144
+msgid "Delete"
+msgstr "删除"
+
+#: .\venv\Lib\site-packages\django\forms\models.py:763
+#, python-format
+msgid "Please correct the duplicate data for %(field)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:767
+#, python-format
+msgid "Please correct the duplicate data for %(field)s, which must be unique."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:773
+#, python-format
+msgid ""
+"Please correct the duplicate data for %(field_name)s which must be unique "
+"for the %(lookup)s in %(date_field)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:782
+msgid "Please correct the duplicate values below."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1109
+msgid "The inline value did not match the parent instance."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1193
+msgid "Select a valid choice. That choice is not one of the available choices."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1311
+#, python-format
+msgid "“%(pk)s” is not a valid value."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\utils.py:172
+#, python-format
+msgid ""
+"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
+"may be ambiguous or it may not exist."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:427
+#: .\warehouse\templates\warehouse\test.html:113
+msgid "Clear"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:428
+msgid "Currently"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:429
+msgid "Change"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:738
+msgid "Unknown"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:739
+msgid "Yes"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:740
+msgid "No"
+msgstr ""
+
+#. Translators: Please do not add spaces around commas.
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:817
+msgid "yes,no,maybe"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:846
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:863
+#, python-format
+msgid "%(size)d byte"
+msgid_plural "%(size)d bytes"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:865
+#, python-format
+msgid "%s KB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:867
+#, python-format
+msgid "%s MB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:869
+#, python-format
+msgid "%s GB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:871
+#, python-format
+msgid "%s TB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:873
+#, python-format
+msgid "%s PB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:66
+msgid "p.m."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:67
+msgid "a.m."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:72
+msgid "PM"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:73
+msgid "AM"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:146
+msgid "midnight"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:148
+msgid "noon"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:6
+msgid "Monday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:6
+msgid "Tuesday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:6
+msgid "Wednesday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:6
+msgid "Thursday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:6
+msgid "Friday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:7
+msgid "Saturday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:7
+msgid "Sunday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Mon"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Tue"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Wed"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Thu"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Fri"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:11
+msgid "Sat"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:11
+msgid "Sun"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "January"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "February"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "March"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "April"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "May"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "June"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:15
+msgid "July"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:15
+msgid "August"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:15
+msgid "September"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:15
+msgid "October"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:15
+msgid "November"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:16
+msgid "December"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "jan"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "feb"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "mar"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "apr"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "may"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "jun"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "jul"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "aug"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "sep"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "oct"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "nov"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "dec"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:23
+msgctxt "abbrev. month"
+msgid "Jan."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:24
+msgctxt "abbrev. month"
+msgid "Feb."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:25
+msgctxt "abbrev. month"
+msgid "March"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:26
+msgctxt "abbrev. month"
+msgid "April"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:27
+msgctxt "abbrev. month"
+msgid "May"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:28
+msgctxt "abbrev. month"
+msgid "June"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:29
+msgctxt "abbrev. month"
+msgid "July"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:30
+msgctxt "abbrev. month"
+msgid "Aug."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:31
+msgctxt "abbrev. month"
+msgid "Sept."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:32
+msgctxt "abbrev. month"
+msgid "Oct."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:33
+msgctxt "abbrev. month"
+msgid "Nov."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:34
+msgctxt "abbrev. month"
+msgid "Dec."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:37
+msgctxt "alt. month"
+msgid "January"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:38
+msgctxt "alt. month"
+msgid "February"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:39
+msgctxt "alt. month"
+msgid "March"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:40
+msgctxt "alt. month"
+msgid "April"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:41
+msgctxt "alt. month"
+msgid "May"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:42
+msgctxt "alt. month"
+msgid "June"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:43
+msgctxt "alt. month"
+msgid "July"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:44
+msgctxt "alt. month"
+msgid "August"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:45
+msgctxt "alt. month"
+msgid "September"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:46
+msgctxt "alt. month"
+msgid "October"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:47
+msgctxt "alt. month"
+msgid "November"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:48
+msgctxt "alt. month"
+msgid "December"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\ipv6.py:8
+msgid "This is not a valid IPv6 address."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\text.py:131
+#, python-format
+msgctxt "String to return when truncating text"
+msgid "%(truncated_text)s…"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\text.py:309
+msgid "or"
+msgstr ""
+
+#. Translators: This string is used as a separator between list elements
+#: .\venv\Lib\site-packages\django\utils\text.py:328
+#: .\venv\Lib\site-packages\django\utils\timesince.py:94
+msgid ", "
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:9
+#, python-format
+msgid "%d year"
+msgid_plural "%d years"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:10
+#, python-format
+msgid "%d month"
+msgid_plural "%d months"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:11
+#, python-format
+msgid "%d week"
+msgid_plural "%d weeks"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:12
+#, python-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:13
+#, python-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:14
+#, python-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:110
+msgid "Forbidden"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:111
+msgid "CSRF verification failed. Request aborted."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:115
+msgid ""
+"You are seeing this message because this HTTPS site requires a “Referer "
+"header” to be sent by your Web browser, but none was sent. This header is "
+"required for security reasons, to ensure that your browser is not being "
+"hijacked by third parties."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:120
+msgid ""
+"If you have configured your browser to disable “Referer” headers, please re-"
+"enable them, at least for this site, or for HTTPS connections, or for “same-"
+"origin” requests."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:124
+msgid ""
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
+"including the “Referrer-Policy: no-referrer” header, please remove them. The "
+"CSRF protection requires the “Referer” header to do strict referer checking. "
+"If you’re concerned about privacy, use alternatives like <a rel=\"noreferrer"
+"\" …> for links to third-party sites."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:132
+msgid ""
+"You are seeing this message because this site requires a CSRF cookie when "
+"submitting forms. This cookie is required for security reasons, to ensure "
+"that your browser is not being hijacked by third parties."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:137
+msgid ""
+"If you have configured your browser to disable cookies, please re-enable "
+"them, at least for this site, or for “same-origin” requests."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:142
+msgid "More information is available with DEBUG=True."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:41
+msgid "No year specified"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:61
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:111
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:208
+msgid "Date out of range"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:90
+msgid "No month specified"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:142
+msgid "No day specified"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:188
+msgid "No week specified"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:338
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:367
+#, python-format
+msgid "No %(verbose_name_plural)s available"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:594
+#, python-format
+msgid ""
+"Future %(verbose_name_plural)s not available because %(class_name)s."
+"allow_future is False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:628
+#, python-format
+msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\detail.py:54
+#, python-format
+msgid "No %(verbose_name)s found matching the query"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:67
+msgid "Page is not “last”, nor can it be converted to an int."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:72
+#, python-format
+msgid "Invalid page (%(page_number)s): %(message)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:154
+#, python-format
+msgid "Empty list and “%(class_name)s.allow_empty” is False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\static.py:40
+msgid "Directory indexes are not allowed here."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\static.py:42
+#, python-format
+msgid "“%(path)s” does not exist"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\static.py:80
+#, python-format
+msgid "Index of %(directory)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:7
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:221
+msgid "The install worked successfully! Congratulations!"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:207
+#, python-format
+msgid ""
+"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:222
+#, python-format
+msgid ""
+"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
+"%(version)s/ref/settings/#debug\" target=\"_blank\" rel=\"noopener"
+"\">DEBUG=True</a> is in your settings file and you have not configured any "
+"URLs."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:230
+msgid "Django Documentation"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:231
+msgid "Topics, references, &amp; how-to’s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:239
+msgid "Tutorial: A Polling App"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:240
+msgid "Get started with Django"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:248
+msgid "Django Community"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:249
+msgid "Connect, get help, or contribute"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:313
+msgid "usage: "
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:821
+msgid ".__call__() not defined"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1105
+#, python-format
+msgid "unknown parser %r (choices: %s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1146
+#, python-format
+msgid "argument \"-\" with mode %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1349
+#, python-format
+msgid "cannot merge actions - two groups are named %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1387
+msgid "'required' is an invalid argument for positionals"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1407
+#, python-format
+msgid "invalid option string %r: must start with a character %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1428
+#, python-format
+msgid "dest= is required for options like %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1445
+#, python-format
+msgid "invalid conflict_resolution value: %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1463
+#, python-format
+msgid "conflicting option string(s): %s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1526
+msgid "mutually exclusive arguments must be optional"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1596
+msgid "positional arguments"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1597
+msgid "optional arguments"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1615
+msgid "show this help message and exit"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1621
+msgid "show program's version number and exit"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1653
+msgid "cannot have multiple subparser arguments"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1705
+#, python-format
+msgid "unrecognized arguments: %s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1802
+#, python-format
+msgid "not allowed with argument %s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1848
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1862
+#, python-format
+msgid "ignored explicit argument %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1952
+msgid "too few arguments"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1959
+#, python-format
+msgid "argument %s is required"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1973
+#, python-format
+msgid "one of the arguments %s is required"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2019
+msgid "expected one argument"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2020
+msgid "expected at most one argument"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2021
+msgid "expected at least one argument"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2023
+#, python-format
+msgid "expected %s argument(s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2080
+#, python-format
+msgid "ambiguous option: %s could match %s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2142
+#, python-format
+msgid "unexpected option string: %s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2243
+#, python-format
+msgid "%r is not callable"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2259
+#, python-format
+msgid "invalid %s value: %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2269
+#, python-format
+msgid "invalid choice: %r (choose from %s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2362
+#, python-format
+msgid "%s: error: %s\n"
+msgstr ""
+
+#: .\warehouse\forms.py:56
+#, fuzzy
+#| msgid "Create Area"
+msgid "Choose Plant"
+msgstr "创建区域"
+
+#: .\warehouse\forms.py:161
+#: .\warehouse\templates\warehouse\bin\bin_adjust.html:47
+#: .\warehouse\templates\warehouse\bin\bin_transfer.html:62
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:63
+#: .\warehouse\templates\warehouse\transfer_and_adjust.html:75
+#, fuzzy
+#| msgid "Bin Id"
+msgid "Bin"
+msgstr "宾代码"
+
+#: .\warehouse\forms.py:165 .\warehouse\forms.py:313 .\warehouse\forms.py:415
+#: .\warehouse\templates\warehouse\bin\bin_adjust.html:42
+#: .\warehouse\templates\warehouse\bin\bin_transfer.html:57
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:45
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:88
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:61
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:114
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:274
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:159
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:12
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:57
+#: .\warehouse\templates\warehouse\search_bin_history.html:133
+#: .\warehouse\templates\warehouse\search_bin_history.html:188
+#: .\warehouse\templates\warehouse\transfer_and_adjust.html:12
+#: .\warehouse\templates\warehouse\transfer_and_adjust.html:70
+#, fuzzy
+#| msgid "Product"
+msgid "Product Order"
+msgstr "产品"
+
+#: .\warehouse\forms.py:166 .\warehouse\forms.py:210 .\warehouse\forms.py:321
+#: .\warehouse\templates\warehouse\bin\bin_adjust.html:46
+#: .\warehouse\templates\warehouse\bin\bin_transfer.html:61
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:92
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:65
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:118
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:274
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:163
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:20
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:61
+#: .\warehouse\templates\warehouse\search_bin_history.html:137
+#: .\warehouse\templates\warehouse\search_bin_history.html:190
+#: .\warehouse\templates\warehouse\transfer_and_adjust.html:13
+#: .\warehouse\templates\warehouse\transfer_and_adjust.html:74
+msgid "Size"
+msgstr "尺寸"
+
+#: .\warehouse\forms.py:167
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:94
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:67
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:127
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:156
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:67
+#: .\warehouse\templates\warehouse\search_bin_history.html:138
+#: .\warehouse\templates\warehouse\transfer_and_adjust.html:76
+msgid "Qty"
+msgstr ""
+
+#: .\warehouse\forms.py:202 .\warehouse\forms.py:253 .\warehouse\forms.py:328
+msgid "Location:"
+msgstr ""
+
+#: .\warehouse\forms.py:206
+#, fuzzy
+#| msgid "Product"
+msgid "Product Order:"
+msgstr "产品"
+
+#: .\warehouse\forms.py:215
+msgid "From"
+msgstr ""
+
+#: .\warehouse\forms.py:223
+msgid "To"
+msgstr ""
+
+#: .\warehouse\forms.py:245
+#: .\warehouse\templates\warehouse\search_bin_history.html:241
+msgid "Location, Product Order, and Size cannot all be null!"
+msgstr ""
+
+#: .\warehouse\forms.py:259 .\warehouse\forms.py:324
+#: .\warehouse\templates\warehouse\bin\bin_adjust.html:48
+#: .\warehouse\templates\warehouse\bin\bin_transfer.html:63
+msgid "Quantity"
+msgstr ""
+
+#: .\warehouse\forms.py:274 .\warehouse\forms.py:295
+#: .\warehouse\templates\warehouse\test.html:111
+#, fuzzy
+#| msgid "Confirm Delete"
+msgid "Confirm"
+msgstr "确认删除"
+
+#: .\warehouse\forms.py:283
+msgid "New Quantity"
+msgstr ""
+
+#: .\warehouse\forms.py:314
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:125
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:166
+#: .\warehouse\templates\warehouse\search_bin_history.html:144
+msgid "Customer"
+msgstr ""
+
+#: .\warehouse\forms.py:315
+#: .\warehouse\templates\warehouse\bin\bin_adjust.html:44
+#: .\warehouse\templates\warehouse\bin\bin_transfer.html:59
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:90
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:63
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:116
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:274
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:161
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:59
+#: .\warehouse\templates\warehouse\search_bin_history.html:135
+#: .\warehouse\templates\warehouse\transfer_and_adjust.html:72
+msgid "Version No"
+msgstr ""
+
+#: .\warehouse\forms.py:316
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:274
+#: .\warehouse\templates\warehouse\search_bin_history.html:136
+msgid "Version Sequence"
+msgstr ""
+
+#: .\warehouse\forms.py:317
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:168
+msgid "Lot Number"
+msgstr ""
+
+#: .\warehouse\forms.py:318
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:122
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:274
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:170
+#: .\warehouse\templates\warehouse\search_bin_history.html:141
+msgid "Item Type"
+msgstr ""
+
+#: .\warehouse\forms.py:319 .\warehouse\forms.py:416
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:89
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:62
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:274
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:160
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:58
+#: .\warehouse\templates\warehouse\search_bin_history.html:134
+#: .\warehouse\templates\warehouse\search_bin_history.html:189
+msgid "Purchase Order"
+msgstr ""
+
+#: .\warehouse\forms.py:320
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:169
+msgid "Purchase Quantity"
+msgstr ""
+
+#: .\warehouse\forms.py:322
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:95
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:68
+#: .\warehouse\templates\warehouse\search_bin_history.html:195
+msgid "Unit"
+msgstr ""
+
+#: .\warehouse\forms.py:323
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:123
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:171
+#: .\warehouse\templates\warehouse\search_bin_history.html:142
+#, fuzzy
+#| msgid "Start Date"
+msgid "Post Date"
+msgstr "开始日期"
+
+#: .\warehouse\forms.py:332
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:124
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:167
+#: .\warehouse\templates\warehouse\search_bin_history.html:143
+msgid "Supplier"
+msgstr ""
+
+#: .\warehouse\forms.py:333
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:172
+msgid "SAP Material Number"
+msgstr ""
+
+#: .\warehouse\forms.py:334
+#: .\warehouse\templates\warehouse\create_warehouse.html:30
+#: .\warehouse\templates\warehouse\edit_warehouse.html:32
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:113
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:158
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:24
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:62
+msgid "Comment"
+msgstr "評論"
+
+#: .\warehouse\forms.py:398
+#: .\warehouse\templates\warehouse\area\area_by_warehouse.html:38
+#: .\warehouse\templates\warehouse\bin\bin_by_area.html:37
+#: .\warehouse\templates\warehouse\list_warehouse.html:40
+msgid "Add"
+msgstr "添加"
+
+#: .\warehouse\forms.py:436
+msgid "Choose Excel File"
+msgstr ""
+
+#: .\warehouse\forms.py:460 .\warehouse\forms.py:484
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:29
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:16
+#, fuzzy
+#| msgid "Create Warehouse"
+msgid "Choose Warehouse"
+msgstr "建立倉庫"
+
+#: .\warehouse\forms.py:462 .\warehouse\forms.py:486
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:102
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:75
+#, fuzzy
+#| msgid "Create Area"
+msgid "Choose Area"
+msgstr "创建区域"
+
+#: .\warehouse\forms.py:463 .\warehouse\forms.py:487
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:103
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:117
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:76
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:90
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:42
+msgid "Choose Location"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\area\area_by_warehouse.html:5
+#: .\warehouse\templates\warehouse\area\area_by_warehouse.html:35
+msgid "Area List By Warehouse"
+msgstr "按仓库列出的区域"
+
+#: .\warehouse\templates\warehouse\area\area_by_warehouse.html:41
+#: .\warehouse\templates\warehouse\area\edit_area.html:66
+#: .\warehouse\templates\warehouse\bin\bin_by_area.html:40
+#: .\warehouse\templates\warehouse\bin\edit_bin.html:36
+#: .\warehouse\templates\warehouse\edit_warehouse.html:47
+msgid "Back to List"
+msgstr "返回列表"
+
+#: .\warehouse\templates\warehouse\area\area_by_warehouse.html:50
+#: .\warehouse\templates\warehouse\area\create_area.html:16
+#: .\warehouse\templates\warehouse\area\edit_area.html:15
+#: .\warehouse\templates\warehouse\bin\bin_by_area.html:51
+#: .\warehouse\templates\warehouse\bin\create_bin.html:25
+#: .\warehouse\templates\warehouse\bin\edit_bin.html:28
+msgid "Area Id"
+msgstr "区域编号"
+
+#: .\warehouse\templates\warehouse\area\area_by_warehouse.html:51
+#: .\warehouse\templates\warehouse\area\create_area.html:22
+#: .\warehouse\templates\warehouse\area\edit_area.html:21
+msgid "Area Name"
+msgstr "区域名称"
+
+#: .\warehouse\templates\warehouse\area\area_by_warehouse.html:52
+#: .\warehouse\templates\warehouse\area\create_area.html:52
+#: .\warehouse\templates\warehouse\area\edit_area.html:57
+#: .\warehouse\templates\warehouse\edit_warehouse.html:14
+#: .\warehouse\templates\warehouse\list_warehouse.html:48
+msgid "Warehouse Id"
+msgstr "仓库编号"
+
+#: .\warehouse\templates\warehouse\area\area_by_warehouse.html:67
+#: .\warehouse\templates\warehouse\area\area_by_warehouse.html:75
+#: .\warehouse\templates\warehouse\bin\bin_by_area.html:65
+#: .\warehouse\templates\warehouse\bin\bin_by_area.html:73
+#: .\warehouse\templates\warehouse\list_warehouse.html:62
+#: .\warehouse\templates\warehouse\list_warehouse.html:66
+msgid "Edit"
+msgstr "编辑"
+
+#: .\warehouse\templates\warehouse\area\area_by_warehouse.html:85
+#, fuzzy
+#| msgid "Warehouse Code"
+msgid "No area found."
+msgstr "倉庫代碼"
+
+#: .\warehouse\templates\warehouse\area\area_by_warehouse.html:96
+#: .\warehouse\templates\warehouse\bin\bin_by_area.html:96
+msgid "Confirm Delete"
+msgstr "确认删除"
+
+#: .\warehouse\templates\warehouse\area\area_by_warehouse.html:100
+msgid "Are you sure you want to delete the area"
+msgstr "您确定要删除该区域吗"
+
+#: .\warehouse\templates\warehouse\area\area_by_warehouse.html:105
+#: .\warehouse\templates\warehouse\bin\bin_by_area.html:105
+#: .\warehouse\templates\warehouse\list_warehouse.html:97
+msgid "Yes, Delete"
+msgstr "删除"
+
+#: .\warehouse\templates\warehouse\area\area_by_warehouse.html:107
+#: .\warehouse\templates\warehouse\bin\bin_by_area.html:107
+#: .\warehouse\templates\warehouse\list_warehouse.html:99
+#: .\warehouse\templates\warehouse\test.html:112
+msgid "Cancel"
+msgstr "取消"
+
+#: .\warehouse\templates\warehouse\area\create_area.html:5
+#: .\warehouse\templates\warehouse\bin\create_bin.html:5
+#: .\warehouse\templates\warehouse\create_warehouse.html:5
+#: .\warehouse\templates\warehouse\create_warehouse.html:12
+msgid "Create Warehouse"
+msgstr "建立倉庫"
+
+#: .\warehouse\templates\warehouse\area\create_area.html:14
+msgid "Create Area"
+msgstr "创建区域"
+
+#: .\warehouse\templates\warehouse\area\create_area.html:28
+#: .\warehouse\templates\warehouse\area\edit_area.html:27
+msgid "Position X"
+msgstr "位置 X"
+
+#: .\warehouse\templates\warehouse\area\create_area.html:34
+#: .\warehouse\templates\warehouse\area\edit_area.html:33
+msgid "Position Y"
+msgstr "位置 Y"
+
+#: .\warehouse\templates\warehouse\area\create_area.html:40
+#: .\warehouse\templates\warehouse\area\edit_area.html:39
+#, fuzzy
+#| msgid "Area Id"
+msgid "Area Width"
+msgstr "区域编号"
+
+#: .\warehouse\templates\warehouse\area\create_area.html:46
+#: .\warehouse\templates\warehouse\area\edit_area.html:45
+#, fuzzy
+#| msgid "Bin Length"
+msgid "Area Length"
+msgstr "箱长"
+
+#: .\warehouse\templates\warehouse\area\create_area.html:58
+#: .\warehouse\templates\warehouse\bin\create_bin.html:30
+#: .\warehouse\templates\warehouse\create_warehouse.html:42
+msgid "Save"
+msgstr "储存"
+
+#: .\warehouse\templates\warehouse\area\edit_area.html:5
+#: .\warehouse\templates\warehouse\area\edit_area.html:13
+#, fuzzy
+#| msgid "Edit"
+msgid "Edit Area"
+msgstr "编辑"
+
+#: .\warehouse\templates\warehouse\area\edit_area.html:51
+msgid "Layer"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\area\edit_area.html:63
+#: .\warehouse\templates\warehouse\bin\edit_bin.html:33
+#: .\warehouse\templates\warehouse\edit_warehouse.html:44
+msgid "Save Changes"
+msgstr "保存更改"
+
+#: .\warehouse\templates\warehouse\bases\base.html:30
+msgid "Transaction Function"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\bases\base.html:35
+#, fuzzy
+#| msgid "Packaging Material WH 1F"
+msgid "Packing Material Stock In"
+msgstr "1F包装材料仓库"
+
+#: .\warehouse\templates\warehouse\bases\base.html:40
+#, fuzzy
+#| msgid "Packaging Material WH 1F"
+msgid "Packing Material Stock Out"
+msgstr "1F包装材料仓库"
+
+#: .\warehouse\templates\warehouse\bases\base.html:47
+#: .\warehouse\templates\warehouse\transfer_and_adjust.html:5
+#: .\warehouse\templates\warehouse\transfer_and_adjust.html:9
+msgid "Quantity Transfer & Adjust Form"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\bases\base.html:50
+msgid "Inventory Deletion"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\bases\base.html:58
+msgid "Search Function"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\bases\base.html:63
+msgid "Inventory Search"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\bases\base.html:68
+msgid "Transaction History"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\bases\base.html:73
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:4
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:9
+msgid "Inventory Sheet"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\bases\base.html:81
+msgid "Basic Data"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\bases\base.html:86
+#, fuzzy
+#| msgid "Personal Setting"
+msgid "Storage Setting"
+msgstr "个人资讯"
+
+#: .\warehouse\templates\warehouse\bases\base.html:91
+#, fuzzy
+#| msgid "Production Information"
+msgid "Location Importing"
+msgstr "生产资讯"
+
+#: .\warehouse\templates\warehouse\bases\base.html:96
+#: .\warehouse\templates\warehouse\bin\open_data_import.html:5
+msgid "Open Data Importing"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\bin\bin_adjust.html:5
+#: .\warehouse\templates\warehouse\bin\bin_adjust.html:27
+msgid "Quantity Adjust"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\bin\bin_adjust.html:41
+#: .\warehouse\templates\warehouse\bin\bin_transfer.html:56
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:27
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:87
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:14
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:60
+#: .\warehouse\templates\warehouse\transfer_and_adjust.html:69
+msgid "Warehouse"
+msgstr "仓库"
+
+#: .\warehouse\templates\warehouse\bin\bin_adjust.html:43
+#: .\warehouse\templates\warehouse\bin\bin_transfer.html:58
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:115
+#: .\warehouse\templates\warehouse\transfer_and_adjust.html:71
+msgid "Purchase No"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\bin\bin_adjust.html:45
+#: .\warehouse\templates\warehouse\bin\bin_transfer.html:60
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:91
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:64
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:117
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:162
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:60
+#: .\warehouse\templates\warehouse\transfer_and_adjust.html:73
+msgid "Version Seq"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\bin\bin_by_area.html:5
+#: .\warehouse\templates\warehouse\bin\bin_by_area.html:34
+msgid "Bin List By Area"
+msgstr "按区域分类的 Bin 列表"
+
+#: .\warehouse\templates\warehouse\bin\bin_by_area.html:49
+#: .\warehouse\templates\warehouse\bin\create_bin.html:14
+#: .\warehouse\templates\warehouse\bin\edit_bin.html:15
+msgid "Bin Id"
+msgstr "宾代码"
+
+#: .\warehouse\templates\warehouse\bin\bin_by_area.html:50
+#: .\warehouse\templates\warehouse\bin\create_bin.html:19
+#: .\warehouse\templates\warehouse\bin\edit_bin.html:22
+msgid "Bin Name"
+msgstr "姓名斌"
+
+#: .\warehouse\templates\warehouse\bin\bin_by_area.html:85
+msgid "No bins found."
+msgstr "沒有找到儲位。"
+
+#: .\warehouse\templates\warehouse\bin\bin_by_area.html:100
+msgid "Are you sure you want to delete the bin "
+msgstr "您确定要删除儲位吗"
+
+#: .\warehouse\templates\warehouse\bin\bin_transfer.html:5
+#: .\warehouse\templates\warehouse\bin\bin_transfer.html:26
+msgid "Location Transfer"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\bin\create_bin.html:12
+msgid "Create Bin"
+msgstr "创建儲位"
+
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:4
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:22
+msgid "Manage Inventory Deletion"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:37
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:23
+#, fuzzy
+#| msgid "Area Id"
+msgid "Area"
+msgstr "区域编号"
+
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:41
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:93
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:27
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:66
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:413
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:157
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:16
+#: .\warehouse\templates\warehouse\search_bin_history.html:132
+#: .\warehouse\templates\warehouse\search_bin_history.html:187
+msgid "Location"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:50
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:32
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:28
+#: .\warehouse\templates\warehouse\search_bin_history.html:90
+#: .\warehouse\templates\warehouse\transfer_and_adjust.html:15
+msgid "Search"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:85
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:58
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:334
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:123
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:56
+#: .\warehouse\templates\warehouse\search_bin_history.html:172
+#: .\warehouse\templates\warehouse\search_bin_history.html:219
+#: .\warehouse\templates\warehouse\transfer_and_adjust.html:62
+#, fuzzy
+#| msgid "No bins found."
+msgid "Not found"
+msgstr "沒有找到儲位。"
+
+#: .\warehouse\templates\warehouse\bin\delete_bin_value.html:86
+#: .\warehouse\templates\warehouse\bin\search_bin_value.html:59
+#: .\warehouse\templates\warehouse\create_warehouse.html:24
+#: .\warehouse\templates\warehouse\edit_warehouse.html:26
+#: .\warehouse\templates\warehouse\list_warehouse.html:47
+msgid "Plant"
+msgstr "厂别"
+
+#: .\warehouse\templates\warehouse\bin\edit_bin.html:5
+#: .\warehouse\templates\warehouse\bin\edit_bin.html:13
+msgid "Edit Bin"
+msgstr "編輯箱"
+
+#: .\warehouse\templates\warehouse\bin\open_data_import.html:126
+msgid "Upload Open Data Excel File"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\bin\open_data_import.html:138
+#: .\warehouse\templates\warehouse\upload.html:53
+msgid "Upload"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\create_warehouse.html:14
+msgid "Warehouse Code"
+msgstr "倉庫代碼"
+
+#: .\warehouse\templates\warehouse\create_warehouse.html:19
+#: .\warehouse\templates\warehouse\edit_warehouse.html:20
+#: .\warehouse\templates\warehouse\list_warehouse.html:49
+msgid "Warehouse Name"
+msgstr "倉庫名稱"
+
+#: .\warehouse\templates\warehouse\create_warehouse.html:36
+#: .\warehouse\templates\warehouse\edit_warehouse.html:38
+msgid "Background Image"
+msgstr "背景圖片"
+
+#: .\warehouse\templates\warehouse\dashboard.html:5
+msgid "Dashboard"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\dashboard.html:10
+#, fuzzy
+#| msgid "Warehouse Code"
+msgid "Warehouse Dashboard"
+msgstr "倉庫代碼"
+
+#: .\warehouse\templates\warehouse\edit_warehouse.html:5
+#: .\warehouse\templates\warehouse\edit_warehouse.html:12
+#, fuzzy
+#| msgid "Create Warehouse"
+msgid "Edit Warehouse"
+msgstr "建立倉庫"
+
+#: .\warehouse\templates\warehouse\index.html:75
+#: .\warehouse\templates\warehouse\list_warehouse.html:75
+#, fuzzy
+#| msgid "Warehouse Code"
+msgid "No warehouses found."
+msgstr "倉庫代碼"
+
+#: .\warehouse\templates\warehouse\list_warehouse.html:5
+#: .\warehouse\templates\warehouse\list_warehouse.html:38
+#, fuzzy
+#| msgid "Warehouse Code"
+msgid "Warehouse List"
+msgstr "倉庫代碼"
+
+#: .\warehouse\templates\warehouse\list_warehouse.html:87
+#, fuzzy
+#| msgid "Delete"
+msgid "Delete Item"
+msgstr "删除"
+
+#: .\warehouse\templates\warehouse\list_warehouse.html:92
+msgid "Are you sure you want to delete the warehouse"
+msgstr "您确定要删除仓库吗"
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:5
+msgid "Stock In"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:36
+#, fuzzy
+#| msgid "Warehouse Id"
+msgid "Warehouse Stock In Form"
+msgstr "仓库编号"
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:54
+msgid "Close"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:59
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:36
+msgid "Post"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:119
+#: .\warehouse\templates\warehouse\search_bin_history.html:146
+msgid "Lot No"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:120
+#: .\warehouse\templates\warehouse\search_bin_history.html:139
+msgid "Purchase Qty"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:121
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:164
+#: .\warehouse\templates\warehouse\search_bin_history.html:140
+msgid "Purchase Unit"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:126
+#: .\warehouse\templates\warehouse\search_bin_history.html:145
+msgid "Mtr No"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:181
+#, fuzzy
+#| msgid "Product"
+msgid "Product Order cannot be null!"
+msgstr "产品"
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:195
+msgid "Purchase Order cannot be null!"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:274
+msgid "are required"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:351
+msgid "Copy"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:370
+msgid "Copy and insert below this row Success!"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:514
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:220
+msgid "No data in the table! Please enter at least one row."
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:522
+msgid "\"The 'location' field in row \" + (i + 1) + \" cannot be empty!\""
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:527
+msgid "The 'order quantity' field in row \" + (i + 1) + \" cannot be empty!"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:550
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:241
+msgid "Form submitted successfully!"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_in.html:554
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:245
+msgid "Form submission failed!"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:5
+msgid "Stock Out"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:29
+msgid "Warehouse Stock Out Form"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\packing_material_stock_out.html:155
+msgid "ID"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:5
+msgid "Transaction"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:7
+msgid "Transaction History Search"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:64
+#: .\warehouse\templates\warehouse\search_bin_history.html:194
+msgid "Mvt"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:68
+#: .\warehouse\templates\warehouse\search_bin_history.html:196
+#, fuzzy
+#| msgid "Create Area"
+msgid "Create at"
+msgstr "创建区域"
+
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:69
+#: .\warehouse\templates\warehouse\search_bin_history.html:197
+#, fuzzy
+#| msgid "Create Bin"
+msgid "Create by"
+msgstr "创建儲位"
+
+#: .\warehouse\templates\warehouse\product_order_bin_search.html:109
+msgid "(Product Order/Location/Size/Comment) cannot all be null!"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\search_bin_history.html:6
+msgid "Search Bin Value History"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\search_bin_history.html:125
+msgid "Current Inventory"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\search_bin_history.html:181
+msgid "History"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\search_bin_history.html:193
+msgid "Remain Qty"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\stockin_detail.html:5
+#: .\warehouse\templates\warehouse\stockout_detail.html:5
+msgid "Stock In Detail"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\transfer_and_adjust.html:80
+msgid "Transfer"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\transfer_and_adjust.html:103
+msgid "Adjust"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\upload.html:5
+#: .\warehouse\templates\warehouse\upload.html:43
+msgid "Upload Location Excel File"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\warehouse_map.html:7
+#, fuzzy
+#| msgid "Create Warehouse"
+msgid "Packing Warehouse Map"
+msgstr "建立倉庫"
+
+#, fuzzy
+#~| msgid "User Information"
+#~ msgid "Enter Location"
+#~ msgstr "使用者资讯"
+
+#, fuzzy
+#~| msgid "A1 Production"
+#~ msgid "Action"
+#~ msgstr "A1产品"
+
+#, fuzzy
+#~| msgid "Create Warehouse"
+#~ msgid "reate Warehouse"
+#~ msgstr "建立倉庫"
+
+#~ msgid "Key Parameter"
+#~ msgstr "关键参数"
+
+#~ msgid "End Date"
+#~ msgstr "结束日期"
+
+#~ msgid "mach_name"
+#~ msgstr "机台"
+
+#~ msgid "process_type"
+#~ msgstr "制程类型"
+
+#~ msgid "param_define"
+#~ msgstr "参数定义"
+
+#~ msgid "control_high"
+#~ msgstr "控制上限"
+
+#~ msgid "control_low"
+#~ msgstr "控制下限"
+
+#~ msgid "param_code"
+#~ msgstr "参数类型"
+
+#~ msgid "Record"
+#~ msgstr "报工新增"
+
+#~ msgid "record_date"
+#~ msgstr "作业日期"
+
+#~ msgid "Chlorine Free"
+#~ msgstr "无氯"
+
+#~ msgid "Polymer Free"
+#~ msgstr "无二次料"
+
+#~ msgid "Alkaline Tank pH Test"
+#~ msgstr "碱槽测pH值"
+
+#~ msgid "Machine Shutdown"
+#~ msgstr "停机"
+
+#~ msgid "A1 Size"
+#~ msgstr "A1尺寸"
+
+#~ msgid "A2 Production"
+#~ msgstr "A2产品"
+
+#~ msgid "A2 Size"
+#~ msgstr "A2尺寸"
+
+#~ msgid "B1 Production"
+#~ msgstr "B1产品"
+
+#~ msgid "B1 Size"
+#~ msgstr "B1尺寸"
+
+#~ msgid "B2 Production"
+#~ msgstr "B2产品"
+
+#~ msgid "B2 Size"
+#~ msgstr "B2尺寸"
+
+#~ msgid "Remark"
+#~ msgstr "备注"
+
+#~ msgid "Change Coagulant Time(Hour)"
+#~ msgstr "换凝固剂时间(Hour)"
+
+#~ msgid "Change Coagulant Time(Minute)"
+#~ msgstr "换凝固剂时间(Minute)"
+
+#~ msgid "Change Latex Time(Hour)"
+#~ msgstr "换乳胶时间(Hour)"
+
+#~ msgid "Change Latex Time(Minute)"
+#~ msgstr "换乳胶时间(Minute)"
+
+#~ msgid "Change Tooling Time(Hour)"
+#~ msgstr "换模时间(Hour)"
+
+#~ msgid "Change Tooling Time(Minute)"
+#~ msgstr "换模时间(Minute)"
+
+#~ msgid "Machine"
+#~ msgstr "机台"
+
+#~ msgid "Record Date"
+#~ msgstr "作业日期"
+
+#~ msgid "Chart"
+#~ msgstr "圖表"
+
+#~ msgid "Production Data"
+#~ msgstr "生产资料"
+
+#~ msgid "Line"
+#~ msgstr "线别"
+
+#~ msgid "create_at"
+#~ msgstr "建立时间"
+
+#~ msgid "Are you sure?"
+#~ msgstr "确定吗？"
+
+#~ msgid "Completed Rate"
+#~ msgstr "完成率"
+
+#~ msgid "Update Done"
+#~ msgstr "更新完成"
+
+#~ msgid "Finished Product WH"
+#~ msgstr "成品仓库"
+
+#~ msgid "Semi-finished Product WH"
+#~ msgstr "半成品仓库"
+
+#~ msgid "Hand Mold WH"
+#~ msgstr "手模仓库"
+
+#~ msgid "Bin Width"
+#~ msgstr "箱宽"
+
+#~ msgid "logout"
+#~ msgstr "登出"

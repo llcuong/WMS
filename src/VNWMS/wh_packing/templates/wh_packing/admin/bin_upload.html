@@ -1,0 +1,128 @@
+{% extends 'wh_packing/bases/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Upload Location Excel File" %} {% endblock %}
+{% block js %}
+<style>
+    .alert-align{
+        width: 15%;
+    }
+
+    @keyframes blink {
+        50% { opacity: 0; }
+    }
+
+    .blinking-text {
+        animation: blink 5s infinite;
+    }
+
+    .upload, .download {
+        padding: 0;
+        margin-top: 32px;
+        height: 51%;
+    }
+
+    form {
+        max-width: 600px;
+        margin: auto;
+        background: white;
+        border-radius: 10px;
+    }
+
+    /* Hiệu ứng hover cho nút bấm */
+    .upload-btn:hover {
+        background: #28a745;
+        box-shadow: 0 0 15px rgba(40, 167, 69, 0.5);
+    }
+
+    .download-btn:hover {
+        background: #17a2b8;
+        box-shadow: 0 0 15px rgba(23, 162, 184, 0.5);
+    }
+
+    /* Nút upload nhấp nháy nhẹ */
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+    .upload-btn i {
+        animation: blink 1s infinite;
+    }
+</style>
+{% endblock js %}
+
+{% block content %}
+        <div class="alert-align d-flex justify-content-start mb-1">
+        {% if message %}
+            <div id="alert-message" class="alert alert-success fade show position-absolute top-0 start-50 translate-middle-x mt-1 ml-1" role="alert">
+            {{ message }}
+            </div>
+
+            <script>
+                setTimeout(function() {
+                    var alert = document.getElementById("alert-message");
+                    if (alert) {
+                        alert.classList.remove("show");
+                        setTimeout(() => alert.remove(), 500);  // Xóa khỏi DOM sau khi ẩn
+                    }
+                }, 3000);
+
+                sessionStorage.removeItem('message');
+            </script>
+
+        {% endif %}
+        </div>
+
+
+        <div class="container mt">
+            <div class="card shadow-lg border-secondary">
+                <div class="card-header bg-secondary text-white text-center">
+                    <h3 class="mb-0">{% trans "Excel Import Tool (Warehouse, Area, Bin)" %}</h3>
+                </div>
+                <div class="card-body bg-light">
+                    <form method="post" enctype="multipart/form-data" class="p-4">
+                        {% csrf_token %}
+                        <div class="row justify-content-center">
+                            <!-- Form nhập liệu -->
+                            <div class="col-md-6">
+                                {% crispy form %}
+                            </div>
+
+                            <!-- Nút Upload -->
+                            <div class="col-12 text-center mt-3">
+                                <button type="submit" class="btn btn-success btn-lg px-4 shadow upload-btn">
+                                    <i class="fa fa-upload"></i> {% trans "Upload" %}
+                                </button>
+                            </div>
+
+                            <!-- Nút tải template -->
+                            <div class="col-12 text-center mt-2">
+                                <a href="{% url 'download_excel_template' 'Location_basic_data_import.xlsx' %}"
+                                   class="btn btn-info btn-lg px-4 shadow download-btn">
+                                    <i class="fas fa-download"></i> {% trans "Download Template" %}
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <span id="loading-text" style="display: none;">{% trans "Loading..." %}</span>
+
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(document).ready(function () {
+            $("form").on("submit", function () {
+                let button = $(".upload-btn");
+                let loadingText = $("#loading-text").text();
+
+                button.html('<i class="fa fa-spinner fa-spin"></i> ' + loadingText);
+                button.prop("disabled", true);
+            });
+        });
+    </script>
+{% endblock %}
+

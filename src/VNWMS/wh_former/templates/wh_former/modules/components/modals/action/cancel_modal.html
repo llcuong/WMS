@@ -1,0 +1,42 @@
+{% load i18n %}
+<style>
+    .no-button{
+        background-color: #eaeaec !important;
+        color: black !important;
+    }
+
+    .yes-button{
+        background-color: #ff854c !important;
+    }
+</style>
+
+
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="width: 380px;">
+        <div class="modal-content" style="border-radius: 20px;">
+            <div class="modal-body">
+                <div class="my-4 mx-2">
+
+                    <h3 class="fw-bold mb-3 text-start">
+                        <b>{% trans "Unsaved changes" %}</b>
+                    </h3>
+
+                    <p class="fs-5 text-secondary">
+                        {% trans "If you do this, any changes you have made will be lost." %}
+                    </p>
+
+                    <div class="d-flex justify-content-center mt-4" style="gap: 15px">
+
+                        <button type="button" class="btn btn-light px-4 button no-button" data-bs-dismiss="modal">
+                            {% trans "No" %}
+                        </button>
+
+                        <a href="{{ url }}" class="btn btn-warning text-white px-4 button yes-button">
+                            {% trans "Yes" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

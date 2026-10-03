@@ -1,0 +1,35 @@
+{% load i18n %}
+<style>
+    .result-table-container {
+        padding-top: 0;
+    }
+
+    .result-table-content {
+        border: 2px solid #6b73fd;
+        border-radius: 12px;
+    }
+
+    .result-table-scroll-wrapper {
+        overflow-x: auto;
+    }
+
+    .result-table-content-content {
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+
+<div class="result-table-container">
+    <div class="result-table-content">
+        <div class="result-table-content-content">
+            <div class="result-table-scroll-wrapper">
+                {% include 'wh_former/modules/components/tables/basket/result/result_table_header.html' %}
+                {% include 'wh_former/modules/components/tables/basket/result/result_table_body.html' %}
+            </div>
+            {% include 'wh_former/modules/components/tables/basket/result/result_table_footer.html' %}
+        </div>
+    </div>
+</div>
+
+
+

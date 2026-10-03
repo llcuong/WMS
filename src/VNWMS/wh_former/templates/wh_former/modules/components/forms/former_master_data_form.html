@@ -1,0 +1,184 @@
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+<div class="col-12 pt-3 px-4">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form.non_field_errors }}
+    <div class="row">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <div class="form-group mb-3">
+                <label for="{{ form.former_receive_form.id_for_label }}" class="form-label">{{ form.former_receive_form.label }}<span class="">*</span></label>
+                <input type="text" name="{{ form.former_receive_form.html_name }}"
+                       id="former_receive_form"
+                       class="form-control"
+                       value="{{ former_receive_form|default:'' }}"
+                       placeholder='{% trans "Enter form name" %}'
+                       maxlength="9"
+                       oninput="this.value = this.value.toUpperCase()"
+                       {% if is_form_restored %}readonly{% else %}required{% endif %}>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            {% if is_form_restored %}
+                <div class="form-group mb-3">
+                    <label class="form-label">{% trans "Item No" %}<span class="">*</span></label>
+                    <input type="text" class="form-control" value="{{ former_item_no|default:'' }}" readonly>
+                    <input type="hidden" id="item_no" name="item_no" value="{{ former_item_no|default:'' }}">
+                </div>
+            {% else %}
+                {% include "wh_former/modules/components/forms/fields/forms_item_field.html" with add=True is_required=True %}
+            {% endif %}
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <div class="form-group mb-3">
+                <label for="{{ form.former_used_day.id_for_label }}" class="form-label">{{ form.former_used_day.label }}<span class="">*</span></label>
+                <input type="number" name="{{ form.former_used_day.html_name }}"
+                       id="former_used_day"
+                       class="form-control"
+                       value="{{ former_used_day|default:0 }}"
+                       {% if is_form_restored %}readonly{% else %}required{% endif %}>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <div class="form-group mb-3">
+                <label for="{{ form.former_purchase_order.id_for_label }}" class="form-label">{{ form.former_purchase_order.label }}</label>
+                <input type="text" name="{{ form.former_purchase_order.html_name }}"
+                       id="former_purchase_order"
+                       class="form-control"
+                       value="{{ former_purchase_order|default:'' }}"
+                       placeholder='{% trans "Enter purchase order" %}'
+                       oninput="this.value = this.value.toUpperCase()"
+                       {% if is_form_restored %}readonly{% endif %}>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <div class="form-group mb-3">
+                <label for="{{ form.batch_data_date.id_for_label }}" class="form-label">{{ form.batch_data_date.label }}<span class="">*</span></label>
+                <input type="date" name="{{ form.batch_data_date.html_name }}"
+                       id="batch_data_date"
+                       class="form-control"
+                       value="{{ batch_data_date|default:'' }}"
+                       {% if is_form_restored %}readonly{% else %}required{% endif %}>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            {% if is_form_restored %}
+                <div class="form-group mb-3">
+                    <label class="form-label">{% trans "Brand" %}<span class="">*</span></label>
+                    <input type="text" class="form-control" value="{{ former_vendor|default:'' }}" readonly>
+                    <input type="hidden" id="vendor_name" name="vendor_name" value="{{ former_vendor|default:'' }}">
+                </div>
+            {% else %}
+                {% include "wh_former/modules/components/forms/fields/forms_brand_field.html" with add=True is_required=True%}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            {% if is_form_restored %}
+                <div class="form-group mb-3">
+                    <label class="form-label">{% trans "Former type" %}<span class="">*</span></label>
+                    <input type="text" class="form-control" value="{% trans former_type|default:'' %}" readonly>
+                    <input type="hidden" id="params_type" name="params_type" value="{{ former_type|default:'' }}">
+                </div>
+            {% else %}
+                {% include "wh_former/modules/components/forms/fields/form_type_field.html" with is_required=True %}
+            {% endif %}
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            {% if is_form_restored %}
+                <div class="form-group mb-3">
+                    <label class="form-label">{% trans "Surface" %}<span class="">*</span></label>
+                    <input type="text" class="form-control" value="{% trans former_surface|default:'' %}" readonly>
+                    <input type="hidden" id="params_surface" name="params_surface" value="{{ former_surface|default:'' }}">
+                </div>
+            {% else %}
+                {% include "wh_former/modules/components/forms/fields/former_surface_field.html" with is_required=True %}
+            {% endif %}
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2">
+            {% if is_form_restored %}
+                <div class="form-group mb-3">
+                    <label class="form-label">{% trans "Size" %}<span class="">*</span></label>
+                    <input type="text" class="form-control" value="{{ former_size|default:'' }}" readonly>
+                    <input type="hidden" id="params_size" name="params_size" value="{{ former_size|default:'' }}">
+                </div>
+            {% else %}
+                {% include "wh_former/modules/components/forms/fields/forms_size_field.html" with add=True is_required=True %}
+            {% endif %}
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2">
+            {% if is_form_restored %}
+                <div class="form-group mb-3">
+                    <label class="form-label">{% trans "Length" %}<span class="">*</span></label>
+                    <input type="text" class="form-control" value="{{ length_value|default:'' }}" readonly>
+                    <input type="hidden" id="length_value" name="length_value" value="{{ length_value|default:'' }}">
+                </div>
+            {% else %}
+                {% include "wh_former/modules/components/forms/fields/forms_length_field.html" with add=True is_required=True %}
+            {% endif %}
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-1">
+            <div class="mb-3">
+                {% if is_form_restored %}
+                    <label class="form-label">{{ form.former_aql.label }}<span class="">*</span></label>
+                    <input type="text" class="form-control" value="{{ form.former_aql.value|default:'' }}" readonly>
+                    <input type="hidden" name="{{ form.former_aql.html_name }}" value="{{ form.former_aql.value|default:'' }}">
+                {% else %}
+                    {{ form.former_aql|as_crispy_field }}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-12 col-md-8 col-lg-6 col-xl-3">
+           {% if is_form_restored %}
+                <div class="form-group mb-3">
+                    <label class="form-label">{% trans "Batch No" %}</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" value="{{ batch_no|default:'' }}" readonly required>
+                        <input type="hidden" id="batch_no" name="batch_no" value="{{ batch_no|default:'' }}">
+                    </div>
+                </div>
+            {% else %}
+                {% include "wh_former/modules/components/forms/fields/forms_batch_field.html" with is_required=True %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .disabled-field {
+        background-color: #f8f9fa !important;
+        opacity: 0.8 !important;
+        cursor: not-allowed !important;
+    }
+
+    .disabled-field:focus {
+        box-shadow: none !important;
+        border-color: #ced4da !important;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        {% if not is_form_restored %}
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('batch_data_date');
+            if (dateInput) {
+                dateInput.value = today;
+                dateInput.max = today;
+            }
+        {% endif %}
+    });
+</script>

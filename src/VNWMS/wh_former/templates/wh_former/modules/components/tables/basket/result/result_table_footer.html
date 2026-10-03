@@ -1,0 +1,653 @@
+{% load i18n %}
+{% load static %}
+
+<style>
+    /* Thêm vào phần style */
+    #batchConfirmModal .modal {
+        z-index: 1060 !important; /* Cao hơn loading modal */
+    }
+
+    #loadingModal .modal {
+        z-index: 1050 !important; /* Thấp hơn batch confirm modal */
+    }
+
+    .result-table-footer {
+        height: fit-content;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 4px 20px;
+        font-size: 16px;
+        gap: 6px;
+        overflow-x: hidden;
+    }
+
+    .result-table-footer-btn {
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 4px 16px;
+        color: white;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+
+    .result-table-footer-print-btn {
+        background-color: #2272F4;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(34, 114, 244, 0.5);
+        animation: glow 2s ease-in-out infinite alternate, pulse-zoom 3s ease-in-out infinite;
+    }
+
+    .result-table-footer-print-btn::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transform: rotate(45deg);
+        animation: shine 3s infinite;
+    }
+
+    .result-table-footer-print-btn:hover {
+        background-color: #1e5cb8;
+        box-shadow: 0 0 30px rgba(34, 114, 244, 0.8);
+        transform: scale(1.05);
+        animation-play-state: paused;
+    }
+
+    @keyframes glow {
+        from {
+            box-shadow: 0 0 20px rgba(34, 114, 244, 0.5);
+        }
+        to {
+            box-shadow: 0 0 25px rgba(34, 114, 244, 0.8), 0 0 35px rgba(34, 114, 244, 0.3);
+        }
+    }
+
+    @keyframes shine {
+        0% {
+            transform: translateX(-100%) translateY(-100%) rotate(45deg);
+        }
+        50% {
+            transform: translateX(100%) translateY(100%) rotate(45deg);
+        }
+        100% {
+            transform: translateX(-100%) translateY(-100%) rotate(45deg);
+        }
+    }
+
+    @keyframes pulse-zoom {
+        0% {
+            transform: scale(1);
+        }
+        25% {
+            transform: scale(1.05);
+        }
+        50% {
+            transform: scale(1);
+        }
+        75% {
+            transform: scale(0.98);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .result-table-footer-excel-btn {
+        background-color: #207244;
+    }
+
+    .result-table-footer-excel-btn:hover {
+        background-color: #1a5d36;
+    }
+
+    .pagination-container {
+        padding: 4px 24px;
+        background: transparent;
+        border-top: 1px solid #e9ecef;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin: 0 auto;
+    }
+
+    .pagination {
+        display: flex;
+        list-style: none;
+        gap: 2px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .pagination .page-item {
+        margin: 0;
+    }
+
+    .pagination .page-link {
+        display: block;
+        padding: 6px 12px;
+        text-decoration: none;
+        color: #495057;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        font-size: 14px;
+    }
+
+    .pagination .page-link:hover {
+        background: #e9ecef;
+        color: #495057;
+    }
+
+    .pagination .page-item.active .page-link {
+        background: #495057;
+        border-color: #495057;
+        color: white;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        color: #6c757d;
+        background: white;
+        border-color: #dee2e6;
+        cursor: not-allowed;
+    }
+
+    .pagination-info {
+        color: #6c757d;
+        font-size: 14px;
+    }
+</style>
+
+<div class="result-table-footer">
+    {% if results %}
+        <div style="margin-right: auto; display: flex; gap: 10px">
+            <div class="result-table-footer-print d-flex align-items-center">
+                {% if print_rfid %}
+                    <button id="rfid-print-btn" class="result-table-footer-btn result-table-footer-print-btn">
+                        <i class="fas fa-print"></i>
+                        <span>{% trans 'Print' %} RFID</span>
+                    </button>
+                {% endif %}
+            </div>
+            <div class="result-table-footer-excel d-flex align-items-center">
+                <button id="basket-excel-table-btn" class="result-table-footer-btn result-table-footer-excel-btn">
+                    <i class="fas fa-file-excel"></i>
+                    <span>{% trans 'Excel' %}</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="pagination-container">
+            {% if is_paginated %}
+                <nav aria-label="頁面導航">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a href="#" class="page-link" data-page="1">
+                                    <i class="fas fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a href="#" class="page-link" data-page="{{ page_obj.previous_page_number }}">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ num }}</span>
+                                </li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item">
+                                    <a href="#" class="page-link" data-page="{{ num }}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a href="#" class="page-link" data-page="{{ page_obj.next_page_number }}">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a href="#" class="page-link" data-page="{{ page_obj.paginator.num_pages }}">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+        {% if total_result %}
+            <i class="fas fa-equals"></i>
+            <span><b>{% trans "Total basket" %}:&nbsp;{{ total_result }}</b></span>
+        {% endif %}
+    {% endif %}
+</div>
+
+{% include 'wh_former/modules/components/modals/action/basket_master_data_print_confirm.html' %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".pagination .page-link[data-page]").forEach(link => {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+                const url = new URL(window.location.href);
+                url.searchParams.set("page", this.dataset.page);
+                window.location.href = url.toString();
+            });
+        });
+    });
+
+
+    document.getElementById('basket-excel-table-btn').addEventListener('click', function () {
+        const customFilename = `DN_basket_${new Date().toLocaleDateString('vi-VN').replace(/\//g, '_')}`;
+        fetch('{% url "export_excel_button_api" %}', {method: 'GET'})
+            .then(r => {
+                if (!r.ok) throw new Error('Export failed');
+                return r.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.setAttribute('data-no-exit-guard', '1');
+                a.href = url;
+                a.download = customFilename;
+                a.rel = 'noopener';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(err => alert(err.message));
+    });
+
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+
+<script>
+    let epcsGlobal = [];
+    let currentPrintIndex = 0;
+    let currentBatchNumber = 0;
+    let lastBatchSize = 0; // Thêm biến để lưu kích thước batch vừa in
+    let lastBatchStartIndex = 0; // Thêm biến để lưu vị trí bắt đầu batch vừa in
+
+    // Định nghĩa kích thước batch cho từng lần in
+    function getBatchSize() {
+        if (currentBatchNumber === 0) {
+            return 1; // Batch đầu tiên: in 1 cái test
+        } else if (currentBatchNumber === 1) {
+            return 5; // Batch thứ hai: in 5 cái đầu
+        } else {
+            return 50; // Các batch tiếp theo: in 50 cái
+        }
+    }
+
+    // Print - only print checked rows
+    document.getElementById('rfid-print-btn').addEventListener('click', function() {
+        // Get only checked rows
+        const checkedCheckboxes = document.querySelectorAll('.row-checkbox:checked');
+        
+        if (checkedCheckboxes.length === 0) {
+            return alert("Vui lòng chọn ít nhất một dòng để in.");
+        }
+
+        epcsGlobal = Array.from(checkedCheckboxes)
+            .map(checkbox => {
+                const tr = checkbox.closest('tr');
+                const basketNoCell = tr.querySelector('td:nth-child(3)');
+                return basketNoCell ? basketNoCell.textContent.trim() : '';
+            })
+            .filter(basketNo => basketNo);
+
+        if (epcsGlobal.length === 0) {
+            return alert("Không có dữ liệu để in.");
+        }
+
+        // Reset các biến
+        currentPrintIndex = 0;
+        currentBatchNumber = 0;
+        lastBatchSize = 0;
+        lastBatchStartIndex = 0;
+
+        // Cập nhật số lượng nhãn sẽ in
+        document.getElementById('totalLabelsCount').textContent = epcsGlobal.length;
+
+        // Hiển thị modal xác nhận ban đầu
+        const confirmModal = new bootstrap.Modal(document.getElementById('confirmPrintModal'));
+        confirmModal.show();
+    });
+
+    document.getElementById('confirmPrintBtn').addEventListener('click', async function() {
+        // Đóng modal xác nhận ban đầu
+        const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmPrintModal'));
+        confirmModal.hide();
+
+        // Bắt đầu quá trình in theo batch
+        await startBatchPrinting();
+    });
+
+    async function startBatchPrinting() {
+        try {
+            await printCurrentBatch();
+        } catch (error) {
+            showErrorModal(error.message);
+        }
+    }
+
+    async function printCurrentBatch(isReprint = false) {
+        if (currentPrintIndex >= epcsGlobal.length) {
+            showSuccessModal();
+            return;
+        }
+
+        const currentBatchSize = getBatchSize();
+        
+        // Lưu thông tin batch hiện tại cho re-print
+        if (!isReprint) {
+            lastBatchStartIndex = currentPrintIndex;
+            lastBatchSize = currentBatchSize;
+        }
+
+        let loadingModal = null;
+        let loadingTimeout = null;
+        let isLoadingShown = false;
+
+        // CHỈ SET TIMEOUT NẾU KHÔNG PHẢI BATCH CUỐI CÙNG
+        const isLastBatch = (currentPrintIndex + currentBatchSize) >= epcsGlobal.length;
+        
+        if (!isLastBatch && !isReprint) {
+            loadingTimeout = setTimeout(() => {
+                loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+                loadingModal.show();
+                isLoadingShown = true;
+            }, 200);
+        }
+
+        try {
+            const resp = await fetch("{% url 'rfid_print_api' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({
+                    epc_list: epcsGlobal,
+                    batch_size: isReprint ? lastBatchSize : currentBatchSize,
+                    start_index: isReprint ? lastBatchStartIndex : currentPrintIndex,
+                    current_batch_number: currentBatchNumber,
+                    is_reprint: isReprint
+                })
+            });
+
+            const data = await resp.json();
+
+            // Clear timeout chỉ khi có timeout
+            if (loadingTimeout) {
+                clearTimeout(loadingTimeout);
+            }
+
+            if (resp.ok && data.status === 'ok') {
+                // Đóng loading modal nếu đang hiện
+                if (isLoadingShown && loadingModal) {
+                    loadingModal.hide();
+                    isLoadingShown = false;
+                }
+
+                // Chỉ cập nhật index và batch number nếu không phải re-print
+                if (!isReprint) {
+                    currentPrintIndex = data.end_index;
+                    currentBatchNumber++;
+                }
+
+                if (data.has_more && !isReprint) {
+                    // Còn nhãn để in, hiển thị modal xác nhận batch tiếp theo
+                    setTimeout(() => {
+                        showBatchConfirmModal(data.end_index, epcsGlobal.length - data.end_index);
+                    }, 200);
+                } else if (isReprint) {
+                    // Re-print xong, hiển thị lại batch confirm modal
+                    setTimeout(() => {
+                        showBatchConfirmModal(currentPrintIndex, epcsGlobal.length - currentPrintIndex);
+                    }, 200);
+                } else {
+                    // ĐÃ IN XONG TẤT CẢ
+                    setTimeout(() => {
+                        showSuccessModal();
+                    }, 100);
+                }
+            } else {
+                // Error case
+                if (isLoadingShown && loadingModal) {
+                    loadingModal.hide();
+                    isLoadingShown = false;
+                }
+                throw new Error(data.message || 'Lỗi không xác định');
+            }
+        } catch (err) {
+            // Error handling
+            if (loadingTimeout) {
+                clearTimeout(loadingTimeout);
+            }
+            if (isLoadingShown && loadingModal) {
+                loadingModal.hide();
+                isLoadingShown = false;
+            }
+
+            setTimeout(() => {
+                showErrorModal(err.message);
+            }, 200);
+        }
+    }
+
+    function showBatchConfirmModal(printedCount, remainingCount) {
+        // Force close loading modal
+        try {
+            const existingLoadingModal = bootstrap.Modal.getInstance(document.getElementById('loadingModal'));
+            if (existingLoadingModal) {
+                existingLoadingModal.hide();
+            }
+        } catch (e) {
+            // Ignore error
+        }
+        
+        const loadingModalElement = document.getElementById('loadingModal');
+        if (loadingModalElement) {
+            loadingModalElement.classList.remove('show');
+            loadingModalElement.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop) {
+                backdrop.remove();
+            }
+        }
+        
+        isLoadingShown = false;
+        
+        document.getElementById('printedCount').textContent = printedCount;
+        document.getElementById('remainingCount').textContent = remainingCount;
+        
+        const nextBatchSize = getBatchSize();
+        const batchInfo = document.querySelector('#batchConfirmModal .modal-body p:last-child');
+        if (batchInfo) {
+            batchInfo.innerHTML = `{% trans 'Next will print' %} <strong>${Math.min(nextBatchSize, remainingCount)}</strong> {% trans 'labels' %}`;
+        }
+
+        setTimeout(() => {
+            const batchConfirmModal = new bootstrap.Modal(document.getElementById('batchConfirmModal'));
+            batchConfirmModal.show();
+        }, 100);
+    }
+
+    // Continue Print Button
+    document.getElementById('continuePrintBtn').addEventListener('click', async function() {
+        const batchConfirmModal = bootstrap.Modal.getInstance(document.getElementById('batchConfirmModal'));
+        batchConfirmModal.hide();
+
+        setTimeout(() => {
+            printCurrentBatch();
+        }, 300);
+    });
+
+    // Re-print Button - THÊM MỚI
+    document.getElementById('reprintBtn').addEventListener('click', async function() {
+        const batchConfirmModal = bootstrap.Modal.getInstance(document.getElementById('batchConfirmModal'));
+        batchConfirmModal.hide();
+
+        // Hiển thị loading cho re-print
+        setTimeout(() => {
+            const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+            loadingModal.show();
+            
+            // Gọi printCurrentBatch với flag isReprint = true
+            setTimeout(() => {
+                printCurrentBatch(true);
+            }, 100);
+        }, 300);
+    });
+
+    // Stop Print Button
+    document.getElementById('stopPrintBtn').addEventListener('click', function() {
+        const batchConfirmModal = bootstrap.Modal.getInstance(document.getElementById('batchConfirmModal'));
+        batchConfirmModal.hide();
+        
+        deleteRemainingBasketsAndExit();
+    });
+
+    function deleteRemainingBasketsAndExit() {
+        const csrfToken = getCookie('csrftoken');
+
+        fetch('{% url "delete_basket_master_data" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrfToken
+            },
+            body: new URLSearchParams({
+                'action_type': 'delete_all_and_exit',
+                'csrfmiddlewaretoken': csrfToken
+            })
+        })
+        .then(response => {
+            alert(`Đã dừng in. In thành công ${currentPrintIndex} nhãn.`);
+            window.location.href = '{% url "basket_insert" %}';
+        })
+        .catch(error => {
+            alert(`Đã dừng in. In thành công ${currentPrintIndex} nhãn.`);
+            window.location.href = '{% url "basket_insert" %}';
+        });
+        
+        currentPrintIndex = 0;
+        currentBatchNumber = 0;
+    }
+
+    function showSuccessModal() {
+        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        successModal.show();
+    }
+
+    // Function để hiển thị error modal với message
+    function showErrorModal(errorMessage) {
+        const errorMsgElement = document.querySelector('#errorModal .text-black');
+        if (errorMsgElement) {
+            errorMsgElement.textContent = errorMessage;
+        }
+
+        const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+        errorModal.show();
+
+        setTimeout(() => {
+            errorModal.hide();
+        }, 3000);
+    }
+
+    function getCookie(name) {
+        let value = null;
+        document.cookie.split(';').forEach(c => {
+            const [k, v] = c.trim().split('=');
+            if (k === name) value = decodeURIComponent(v);
+        });
+        return value;
+    }
+
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const printBtn = document.getElementById('rfid-print-btn');
+        const selectAll = document.getElementById('select-all-checkbox');
+
+        window.updatePrintButtonState = function updatePrintButtonState() {
+            const body = document.querySelector('.result-table-body');
+            const rows = body ? body.querySelectorAll('input.row-checkbox')
+                : document.querySelectorAll('input.row-checkbox');
+            const checked = body ? body.querySelectorAll('input.row-checkbox:checked')
+                : document.querySelectorAll('input.row-checkbox:checked');
+
+            const hasChecked = checked.length > 0;
+
+            if (printBtn) {
+                printBtn.disabled = !hasChecked;
+                printBtn.style.opacity = hasChecked ? '1' : '0.5';
+                printBtn.style.cursor = hasChecked ? 'pointer' : 'not-allowed';
+                printBtn.classList.toggle('result-table-footer-print-btn', hasChecked);
+            }
+
+            if (selectAll) {
+                const total = rows.length;
+                const on = checked.length;
+                selectAll.checked = (total > 0 && on === total);
+                selectAll.indeterminate = (on > 0 && on < total);
+            }
+        };
+
+        document.addEventListener('change', function (e) {
+            if (e.target.matches('input.row-checkbox')) {
+                window.updatePrintButtonState();
+                return;
+            }
+            if (e.target.id === 'select-all-checkbox') {
+                const body = document.querySelector('.result-table-body');
+                const rows = body ? body.querySelectorAll('input.row-checkbox')
+                    : document.querySelectorAll('input.row-checkbox');
+
+                const shouldCheck = e.target.checked;
+                for (let i = 0; i < rows.length; i++) {
+                    const cb = rows[i];
+                    if (cb.disabled) continue;
+                    cb.checked = shouldCheck;
+                    cb.dispatchEvent(new Event('change', {bubbles: true}));
+                }
+                window.updatePrintButtonState();
+            }
+        });
+
+        window.updatePrintButtonState();
+    });
+</script>

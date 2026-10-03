@@ -1,0 +1,323 @@
+{% extends 'wh_packing/bases/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Inventory Discrepancy Report" %} {% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
+
+    <style>
+        .jsgrid-grid-body::-webkit-scrollbar {
+            height: 14px !important;
+        }
+
+        .jsgrid-cell {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .jsgrid-cell.expanded {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            word-wrap: break-word;
+            max-width: none;
+        }
+
+        .jsgrid-cell, .jsgrid-header-cell {
+            padding: 12px 14px;
+        }
+
+        .jsgrid-pager {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        #Search {
+            border-radius: 6px 30px 30px 6px;
+        }
+
+        .legend {
+          display: flex;
+          gap: 15px;
+          margin-top: 10px;
+          font-family: Arial, sans-serif;
+        }
+        .legend-item {
+          display: flex;
+          align-items: center;
+        }
+        .color-box {
+          width: 15px;
+          height: 15px;
+          margin-right: 5px;
+          border: 1px solid #ccc;
+        }
+
+        #badge-completed {
+            color: black;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h3 class="text-center">{% trans "Inventory Discrepancy Report" %}</h3>
+
+    <form id="searchForm" class="mt-2">
+        <div class="row g-2">
+            <div class="col-12 col-md-2">
+                <label for="warehouse">{% trans "Warehouse" %}</label>
+                <select id="warehouse" name="warehouse" class="form-control">
+                    <option value="">{% trans "Choose Warehouse" %}</option>
+                    {% for wh in warehouses %}
+                    <option value="{{ wh.wh_code }}">{{ wh.wh_plant }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-12 col-md-2">
+                <label for="id_po" class="form-label">{% trans "Product Order" %}</label>
+                {{ form.po }}
+            </div>
+            <div class="col-12 col-md-2 d-flex align-items-end">
+                <button type="button" class="btn btn-primary" id="Search">
+                    &nbsp;<i class="fas fa-search"></i>&nbsp;&nbsp;
+                </button>
+            </div>
+            <div class="col-12 col-md-6 d-flex align-items-end justify-content-end">
+                <button id="exportExcel" type="button" class="btn btn-outline-success" aria-label="Template">
+                    <i class="fas fa-download"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <div id="jsGrid" class="mt-2"></div>
+
+    <hr>
+
+    <div class="row d-flex justify-content-center align-items-end">
+        <span id="badge-pending" class="badge badge-warning" style="width: 100px">0</span>
+        <span id="badge-completed" class="badge badge-success" style="width: 100px">0</span>
+    </div>
+
+    <div class="legend row d-flex justify-content-center">
+      <div class="legend-item">
+        <span class="color-box" style="background-color: gold;"></span>
+        <span>Máy chủ</span>
+      </div>
+      <div class="legend-item">
+        <span class="color-box" style="background-color: green;"></span>
+        <span>Hệ thống</span>
+      </div>
+    </div>
+
+    <hr class="mt-5">
+</div>
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("#jsGrid").on("click", ".jsgrid-cell", function() {
+                $(this).toggleClass("expanded");
+            });
+
+            $("#warehouse").change(function () {
+                var warehouseId = $(this).val();
+                $("#id_area").prop("disabled", true).html('<option value="">{% trans "Choose Area" %}</option>');
+                $("#id_bin").prop("disabled", true).html('<option value="">{% trans "Choose Location" %}</option>');
+                if (warehouseId) {
+                    $.getJSON("{% url 'get_areas' %}", { warehouse: warehouseId }, function (data) {
+                        $.each(data, function (index, obj) {
+                            $("#id_area").append('<option value="' + obj.area_id + '">' + obj.area_name + '</option>');
+                        });
+                        $("#id_area").prop("disabled", false);
+                    });
+                }
+            });
+
+
+            $("#searchForm").on("submit", function (e) {
+               e.preventDefault();
+            });
+
+
+            $("#Search").click(function () {
+                let warehouseId = $("#warehouse").val().trim();
+                let poId = $("#id_po").val().trim();
+
+                if (warehouseId || poId) {
+                    $.getJSON("{% url 'order_problem' %}",
+                        {
+                            warehouse: warehouseId,
+                            po: poId
+                        }, function (data) {
+                            console.log("Dữ liệu nhận về:", data);
+                               $("#badge-pending").text(data.system_sum).height(data.system_sum * 0.5 + 'px');
+                               $("#badge-completed").text(data.search_sum).height(data.search_sum * 0.5 + 'px');
+
+                            $("#jsGrid").jsGrid("option", "data", data.data);
+                            $("#jsGrid").jsGrid("option", "pageIndex", 1);
+                            $("#jsGrid").jsGrid("refresh");
+                    });
+                }
+
+            });
+
+
+            $("#exportExcel").click(function () {
+                let gridData = $("#jsGrid").jsGrid("option", "data");
+
+                const fields = [
+                    {
+                        title: "STT",
+                        width: 60,
+                        align: "center",
+                    },
+                    { name: "id", title: translations.id, type: "text", width: 80, css: "text-center"},
+                    { name: "product_order", title: translations.product_order, type: "text", width: 120, css: "text-center"},
+                    { name: "version_no", title: translations.version_no, type: "text", width: 120, css: "text-center"},
+                    { name: "size", title: translations.size, type: "text", width: 60, css: "text-center"},
+                    {
+                        name: "qty",
+                        title: translations.qty,
+                        type: "number",
+                        width: 120,
+                    },
+                    { name: "item_type", title: translations.item_type, type: "text", width: 130, css: "text-center"},
+                    { name: "bin_id", title: translations.location, type: "text", width: 110, css: "text-center"},
+                    { name: "stockin_form", title: translations.stockin_form, type: "text", width: 150, css: "text-center"},
+                    { name: "stockout_form", title: translations.stockout_form, type: "text", width: 150, css: "text-center"},
+                    { name: "update_at", title: translations.update_at, type: "date", width: 150, css: "text-center"},
+                    { name: "update_by", title: translations.update_by, type: "text", width: 150, css: "text-center"},
+                    { name: "purchase_no", title: translations.purchase_order, type: "text", width: 120, css: "text-center"},
+                    { name: "version_seq", title: translations.version_seq, type: "text", width: 70, css: "text-center"},
+                    { name: "purchase_unit", title: translations.purchase_unit, type: "text", width: 100, css: "text-center"},
+                ];
+
+                gridData.sort((a, b) => {
+                    if (a.bin_id < b.bin_id) return -1;
+                    if (a.bin_id > b.bin_id) return 1;
+                    return 0;
+                });
+
+                const transformedData = gridData.map(function (item, index) {
+                    let transformedItem = {};
+                    fields.forEach(function (field) {
+                        let value;
+                        if (field.title === "STT") {
+                            value = index + 1; // Tạo số thứ tự
+                        } else {
+                            value = item[field.name] || "";
+                        }
+                        if (field.type === "number") {
+                            value = Number(value) || 0;
+                        }
+                        transformedItem[field.title] = value;
+                    });
+                    return transformedItem;
+                });
+
+                let ws = XLSX.utils.json_to_sheet(transformedData, { raw: true });
+
+                ws["!cols"] = fields.map(field => ({ wpx: field.width }));
+
+                let wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Data");
+
+                XLSX.writeFile(wb, "chênh lệch số lượng tồn.xlsx");
+            });
+
+            const translations = {
+                notFound: "{% trans 'Not found' %}",
+                plant: "{% trans 'Plant' %}",
+                warehouse: "{% trans 'Warehouse' %}",
+                product_order: "{% trans 'Product Order' %}",
+                purchase_order: "{% trans 'Purchase Order' %}",
+                version_no: "{% trans 'Version No' %}",
+                version_seq: "{% trans 'Version Seq' %}",
+                size: "{% trans 'Size' %}",
+                location: "{% trans 'Location' %}",
+                qty: "{% trans 'Qty' %}",
+                unit: "{% trans 'Unit' %}",
+                item_type: "{% trans 'Item Type' %}",
+                post_date: "{% trans 'Post Date' %}",
+                supplier: "{% trans 'Supplier' %}",
+                customer_no: "{% trans 'Customer' %}",
+                update_by: "{% trans 'Create by' %}",
+                update_at: "{% trans 'Create at' %}",
+                lot_no: "{% trans 'Lot No' %}",
+                desc: "{% trans 'Comment' %}",
+                purchase_unit: "{% trans 'Purchase Unit' %}",
+                stockin_form: "{% trans 'stockin_form' %}",
+                stockout_form: "{% trans 'stockout_form' %}"
+            };
+
+            {# Main jsGrid #}
+            $("#jsGrid").jsGrid({
+                width: "100%",
+                height: "71vh",
+                sorting: true,
+                paging: true,
+                noDataContent: translations.notFound,
+                pageSize: 20,
+                pageLoading: true,
+                pageButtonCount: 5,
+                editing: false,
+                pagerFormat: "{first} {prev} {pages} {next} {last} \u00A0  |\u00A0\u00A0 {pageIndex} of {pageCount}",
+                pagePrevText: "<i class='fas fa-chevron-left'></i>",
+                pageNextText: "<i class='fas fa-chevron-right'></i>",
+                pageFirstText: "<i class='fas fa-angle-double-left'></i>",
+                pageLastText: "<i class='fas fa-angle-double-right'></i>",
+                data: [],
+                fields: [
+                    {
+                        title: "STT",
+                        width: 60,
+                        align: "center",
+                        itemTemplate: function(value, item) {
+                            var grid = $("#jsGrid").data("JSGrid");
+                            return grid.data.indexOf(item) + 1;
+                        }
+                    },
+                    { name: "id", title: translations.id, type: "text", width: 80, css: "text-center"},
+                    { name: "product_order", title: translations.product_order, type: "text", width: 120, css: "text-center"},
+                    { name: "version_no", title: translations.version_no, type: "text", width: 120, css: "text-center"},
+                    { name: "size", title: translations.size, type: "text", width: 60, css: "text-center"},
+                    {
+                        name: "qty",
+                        title: translations.qty,
+                        type: "number",
+                        width: 120,
+                        itemTemplate: function(value) {
+                            return value.toLocaleString();
+                        }
+                    },
+                    { name: "item_type", title: translations.item_type, type: "text", width: 130, css: "text-center"},
+                    { name: "bin_id", title: translations.location, type: "text", width: 110, css: "text-center"},
+                    { name: "stockin_form", title: translations.stockin_form, type: "text", width: 150, css: "text-center"},
+                    { name: "stockout_form", title: translations.stockout_form, type: "text", width: 150, css: "text-center"},
+                    { name: "update_at", title: translations.update_at, type: "date", width: 150, css: "text-center"},
+                    { name: "update_by", title: translations.update_by, type: "text", width: 150, css: "text-center"},
+                    { name: "purchase_no", title: translations.purchase_order, type: "text", width: 120, css: "text-center"},
+                    { name: "version_seq", title: translations.version_seq, type: "text", width: 70, css: "text-center"},
+                    { name: "purchase_unit", title: translations.purchase_unit, type: "text", width: 100, css: "text-center"},
+                ]
+            });
+
+
+        });
+    </script>
+{% endblock %}

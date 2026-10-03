@@ -1,0 +1,32 @@
+<style>
+    .table-container-container{
+        background-color: white;
+        border: 2px solid #edeef0;
+        border-radius: 8px;
+    }
+</style>
+
+<div class="col-12 no-margin table-container-container">
+    <div id="device-table" class="col-12 table-container mt-3 no-margin setting-table-container-height">
+        {% include 'wh_former/components/settings/components/device/settings_device.html' with settings_list=settings_list %}
+    </div>
+    <div id="database-table" class="col-12 table-container mt-3 no-margin setting-table-container-height" style="display: none;">
+        {% include 'wh_former/components/settings/settings_db.html' %}
+    </div>
+</div>
+
+<script>
+    function adjustSettingTableHeight() {
+        const tableContainers = document.querySelectorAll(".setting-table-container-height");
+
+        const topOffset = tableContainers[0]?.getBoundingClientRect().top || 0;
+        const availableHeight = window.innerHeight - topOffset - 15;
+
+        tableContainers.forEach(c => {
+            c.style.height = availableHeight + "px";
+        });
+    }
+
+    window.addEventListener('load', adjustSettingTableHeight);
+    window.addEventListener('resize', adjustSettingTableHeight);
+</script>

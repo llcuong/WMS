@@ -1,0 +1,39 @@
+{% load i18n %}
+
+<label for="size_name_input" class="form-label">{% trans "Size" %}{% if is_required %}<span class="">*</span>{% endif %}</label>
+
+<div class="custom-select-wrapper position-relative">
+    <input type="text" id="size_name_input" name="params_size" class="select-input form-control"
+           placeholder='{% trans "Select..." %}' autocomplete="off"
+           value="{{ former_size|default:'' }}"
+           {% if is_required %}required{% endif %}>
+
+    <span class="x-button position-absolute" style="right:{% if add and is_wh_former_admin %}35{% else %}10{% endif %}px"
+          onclick="document.getElementById('size_name_input').value = '';">
+        &times;
+    </span>
+
+    {% if add and is_wh_former_admin %}
+        <span class="x-button position-absolute end-0 me-2"
+              onclick="$('#sizeModal').modal('show')">
+            <i class="fa-solid fa-circle-plus fa-sm me-1"></i>
+        </span>
+    {% endif %}
+
+    <div id="size_dropdown" class="select-dropdown"></div>
+</div>
+
+{% for error in form.vendor_name.errors %}
+    <div class="text-danger">{{ error }}</div>
+{% endfor %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sizeOptions = [
+            {% for name in form.params_size_list %}
+                "{{ name|escapejs }}"{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        ];
+        initDropdown("size_name_input", "size_dropdown", sizeOptions);
+    });
+</script>

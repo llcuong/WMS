@@ -1,0 +1,24 @@
+{% load i18n %}
+
+<div class="row">
+    <div class="col-md-10">
+        <label for="id_batch_no" class="form-label">{% trans "Batch No" %}<span class="">*</span></label>
+
+        <div class="custom-input-wrapper position-relative">
+            <input type="text" id="id_batch_no" name="batch_no" class="form-control"
+                   placeholder='{% trans "Click button to generate..." %}'
+                   autocomplete="off" readonly
+                   value="{{ batch_no|default:'' }}"
+                   required>
+
+            <span class="x-button position-absolute end-0 me-2"
+                  onclick="document.getElementById('id_batch_no').value = '';"
+                  style="cursor: pointer; right: 10px; top: 50%; transform: translateY(-50%); z-index: 10;">
+                &times;
+            </span>
+        </div>
+    </div>
+
+    {% include "wh_former/components/buttons/batch_button.html" %}
+
+</div>

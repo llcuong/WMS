@@ -1,0 +1,232 @@
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+<div class="modal fade" id="surfaceModal" tabindex="-1" aria-labelledby="surfaceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 border-0">
+            <div class="modal-header">
+                <h4 class="modal-title" id="surfaceModalLabel"><b>{% trans "Add Surface ..." %}</b></h4>
+                <button type="button" class="btn p-0 border-0 bg-transparent" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                {% if surface_form %}
+                    <form method="post">
+                        <input type="hidden" name="form_type" value="surface">
+                        {% csrf_token %}
+                        <div class="col-12 card p-4 shadow-sm border rounded bg-white">
+                            <div class="row no-margin">
+                                <div class="col-9 g-3 align-items-center">
+                                    {% crispy surface_form %}
+                                </div>
+                                <div class="col-4 d-flex align-items-end pb-3">
+                                     <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-1"></i> Save
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="form_type" value="surface">
+                    </form>
+                {% endif %}
+
+                {% if all_surfaces %}
+                    <div class="table-responsive mt-4" style="max-height: calc(100vh - 460px); overflow-y: auto; margin-bottom: 10px;">
+                        <table class="table table-bordered table-striped table-hover align-middle text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Active</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for surface in all_surfaces %}
+                                    <tr>
+                                        <td>{{ surface.name }}</td>
+                                        <td>{{ surface.is_active }}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary me-1" onclick="editParam('{{ surface.code }}', '{{ surface.name }}', '{{ surface.is_active }}')">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                            <button class="btn btn-sm btn-success me-1" onclick="enableParam('{{ surface.code }}')">
+                                                <i class="fas fa-check"></i> Enable
+                                            </button>
+                                            <button class="btn btn-sm btn-warning me-1" onclick="disableParam('{{ surface.code }}')">
+                                                <i class="fas fa-ban"></i> Disable
+                                            </button>
+                                            <button class="btn btn-sm btn-danger" onclick="deleteParam('{{ surface.code }}')">
+                                                <i class="fas fa-trash-alt"></i> Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                {% else %}
+                    <p class="text-muted mt-3">Nothing was found...</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editSurfaceModal" tabindex="-1" aria-labelledby="editSurfaceModalLabel" aria-hidden="true" style="z-index: 1070;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0">
+            <div class="modal-header">
+                <button type="button" class="btn p-0 border-0 bg-transparent" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3 d-none">
+                        <label for="editSurfaceCode" class="form-label">{% trans "Code" %}</label>
+                        <input type="text" id="editSurfaceCode" class="form-control" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editVendorName" class="form-label">{% trans "Surface" %}</label>
+                        <input type="text" id="editSurfaceName" class="form-control">
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" id="editSurfaceActive" class="form-check-input">
+                        <label for="editVendorActive" class="form-check-label">{% trans "Active" %}</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+                <button type="button" class="btn btn-primary" onclick="saveEditParam()">{% trans "Save changes" %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+#editSurfaceModal {
+    z-index: 1070 !important;
+}
+
+#editSurfaceModal .modal-backdrop {
+    z-index: 1069 !important;
+}
+
+.modal-backdrop.show {
+    z-index: 1040;
+}
+
+/* Đảm bảo surface modal có z-index thấp hơn */
+#surfaceModal {
+    z-index: 1050;
+}
+</style>
+
+<script>
+    function editParam(code, name, isActive) {
+        document.getElementById('editSurfaceCode').value = code;
+        document.getElementById('editSurfaceName').value = name;
+        document.getElementById('editSurfaceActive').checked = (isActive === 'True' || isActive === true);
+
+        const editModal = new bootstrap.Modal(document.getElementById('editSurfaceModal'));
+        editModal.show();
+    }
+
+    function enableParam(code) {
+        if (confirm(`Enable #${code}?`)) {
+            fetch("{% url 'enable_param_api' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            });
+        }
+    }
+
+    function disableParam(code) {
+        if (confirm(`Disable #${code}?`)) {
+            fetch("{% url 'disable_param_api' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            });
+        }
+    }
+
+    function deleteParam(code) {
+        if (confirm(`Delete #${code}?`)) {
+            fetch("{% url 'delete_param_api' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            });
+        }
+    }
+
+    function saveEditParam() {
+        const code = document.getElementById('editSurfaceCode').value;
+        const name = document.getElementById('editSurfaceName').value;
+        const isActive = document.getElementById('editSurfaceActive').checked;
+
+        fetch("{% url 'edit_param_api' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({ code: code, name: name, is_active: isActive })
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message);
+            const editModal = bootstrap.Modal.getInstance(document.getElementById('editSurfaceModal'));
+            if (editModal) {
+                editModal.hide();
+            }
+            location.reload();
+        });
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.slice(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>

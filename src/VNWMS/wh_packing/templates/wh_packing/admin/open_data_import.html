@@ -1,0 +1,185 @@
+{% extends 'wh_packing/bases/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Open Data Importing" %} {% endblock %}
+{% block js %}
+
+<style>
+    .alert-align{
+        width: 15%;
+    }
+
+    .upload, .download{
+        padding-left: 0px;
+        margin-top: 32px;
+        height: 51%;
+    }
+
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 18px;
+        z-index: 9999;
+    }
+
+</style>
+<script>
+    $(document).ready(function() {
+        // 上傳 Excel 並取得結果
+        $("#uploadForm").submit(function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+            $('body').loading({ message: 'Đang tải...'});
+            $.ajax({
+                url: "{% url 'open_data_import_api' %}",  // Django URL
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    let invalidRecords = response.invalid_data || [];
+                    if (invalidRecords.length > 0) {
+                        $("#error_title").show();
+                        $("#invalidGrid").jsGrid({
+                            width: "100%",
+                            height: "400px",
+                            inserting: false,
+                            editing: false,
+                            sorting: true,
+                            paging: true,
+                            data: response.invalid_data,
+                            fields: [
+                                { name: "CustomerName", type: "text", width: 100, title: "CustomerName" },
+                                { name: "ProductOrder", type: "text", width: 100, title: "ProductOrder" },
+                                { name: "PackingVersion", type: "text", width: 100, title: "PackingVersion" },
+                                { name: "Lot", type: "text", width: 100, title: "Lot" },
+                                { name: "ItemType", type: "text", width: 100, title: "ItemType" },
+                                { name: "Size", type: "text", width: 100, title: "Size" },
+                                { name: "StockInDate", type: "text", width: 100, title: "StockInDate" },
+                                { name: "Qty", type: "number", width: 50, title: "Qty" },
+                                { name: "Location", type: "text", width: 100, title: "Location" },
+                                { name: "Supplier", type: "text", width: 100, title: "Supplier" },
+                                { name: "PurchaseOrder", type: "text", width: 100, title: "PurchaseOrder" },
+                                { name: "TransactionNo", type: "text", width: 100, title: "TransactionNo" },
+                            ]
+                        });
+                    } else {
+                        $("#confirmImport").show();  // **沒有錯誤才顯示確認匯入按鈕**
+                    }
+                },
+                complete: function () {
+                    $('body').loading('stop');
+                }
+            });
+        });
+
+        $("#confirmImport").click(function() {
+            let confirmAction = confirm("現有庫存及交易紀錄會被全部刪除，是否同意？");
+            if (confirmAction) {
+                $("#loadingOverlay").show();
+                $.ajax({
+                    url: "{% url 'open_data_import_confirm_api' %}",
+                    type: "POST",
+                    headers: { "X-CSRFToken": "{{ csrf_token }}" },
+                    success: function(response) {
+                        alert(response.message);
+                        location.reload();
+                    },
+                    error: function (xhr) {
+                        alert("錯誤: " + xhr.responseJSON.error);
+                    },
+                    complete: function () {
+                        $("#loadingOverlay").hide();
+                    }
+                });
+            }
+        });
+
+    });
+</script>
+{% endblock %}
+{% block content %}
+    <!-- Loading 畫面 -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">載入中...</span>
+        </div>
+        <p class="mt-2">資料匯入中，請稍候...</p>
+    </div>
+
+    <div class="alert-align d-flex justify-content-start">
+    {% if message %}
+        <div id="alert-message" class="alert alert-success fade show position-absolute top-0 start-50 translate-middle-x mt-1 ml-1" role="alert">
+        {{ message }}
+        </div>
+    {% endif %}
+    </div>
+
+
+{#    <h3 class="mt-5 text-center">{% trans "Excel Import Tool" %}</h3>#}
+
+    <!-- 加上 ID 讓 JavaScript 綁定 -->
+{#    <form id="uploadForm" method="post" enctype="multipart/form-data">#}
+{#        {% csrf_token %}#}
+{#        <div class="row d-flex justify-content-center">#}
+{#            <div class="col-md-5">#}
+{#                {% crispy form %}#}
+{#            </div>#}
+{##}
+{#            <div class="col-12 col-md-1 text-center upload">#}
+{#                <button type="submit" class="btn btn-success">#}
+{#                    <i class="fa fa-upload"></i> {% trans "Upload" %}#}
+{#                </button>#}
+{#            </div>#}
+{##}
+{#            <a href="{% url 'download_excel_template' 'stock_data_import.xlsx' %}" class="download col-12 col-md-1 text-center">#}
+{#                <button id="exportExcel" type="button" class="btn btn-info" aria-label="template">#}
+{#                    <i class="fas fa-download"></i>#}
+{#                </button>#}
+{#            </a>#}
+{#        </div>#}
+{#    </form>#}
+
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+
+                <div class="card shadow-lg border-danger">
+                    <div class="card-header bg-danger text-white text-center">
+                        <h3 class="mb-0">{% trans "Initial Inventory Data" %}</h3>
+                    </div>
+
+                    <div class="card-body bg-light">
+                        <form id="uploadForm" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="">
+                                {% crispy form %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <h2 id="error_title" style="color: red;display: none;">無效資料</h2>
+    <div id="invalidGrid"></div>
+    <div class="d-flex justify-content-center">
+        <button id="confirmImport" class="btn btn-primary mt-3" style="display: none;">
+            確認匯入
+        </button>
+    </div>
+{% endblock %}

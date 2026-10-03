@@ -1,0 +1,146 @@
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+<div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 border-0">
+            <div class="modal-header">
+                <h4 class="modal-title" id="itemModalLabel"><b>{% trans "Add Item ..." %}</b></h4>
+                <button type="button" class="btn p-0 border-0 bg-transparent" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                {% if item_form %}
+                    <form method="post">
+                        <input type="hidden" name="form_type" value="item">
+                        <input type="hidden" name="value" value="1">
+                        {% csrf_token %}
+                        <div class="col-12 card p-4 shadow-sm border rounded bg-white">
+                            <div class="row no-margin">
+                                <div class="col-9 g-3 align-items-center">
+                                    {% crispy item_form %}
+                                </div>
+                                <div class="col-4 d-flex align-items-end pb-3">
+                                     <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-1"></i> Save
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="form_type" value="item">
+                    </form>
+                {% endif %}
+
+                {% if all_sizes %}
+                    <div class="table-responsive mt-4" style="max-height: calc(100vh - 460px); overflow-y: auto; margin-bottom: 10px;">
+                        <table class="table table-bordered table-striped table-hover align-middle text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Active</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in all_items %}
+                                    <tr>
+                                        <td>{{ item.name }}</td>
+                                        <td>{{ item.is_active }}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-success me-1" onclick="enableParam('{{ item.code }}')">
+                                                <i class="fas fa-check"></i> Enable
+                                            </button>
+                                            <button class="btn btn-sm btn-warning me-1" onclick="disableParam('{{ item.code }}')">
+                                                <i class="fas fa-ban"></i> Disable
+                                            </button>
+                                            <button class="btn btn-sm btn-danger" onclick="deleteParam('{{ item.code }}')">
+                                                <i class="fas fa-trash-alt"></i> Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                {% else %}
+                    <p class="text-muted mt-3">Nothing was found...</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function enableParam(code) {
+        if (confirm(`Disable #${code}?`)) {
+            fetch("{% url 'enable_param_api' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            });
+        }
+    }
+
+    function disableParam(code) {
+        if (confirm(`Disable #${code}?`)) {
+            fetch("{% url 'disable_param_api' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            });
+        }
+    }
+
+    function deleteParam(code) {
+        if (confirm(`Delete #${code}?`)) {
+            fetch("{% url 'delete_param_api' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            });
+        }
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.slice(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>

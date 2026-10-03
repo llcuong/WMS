@@ -1,0 +1,70 @@
+{% load i18n %}
+<span class="text">{% trans "Cancel" %}</span>
+<span class="icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z">
+        </path>
+    </svg>
+</span>
+
+<style>
+    .cancel-button-2 {
+        width: 150px;
+        height: 42px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+        background: #343a40;
+    }
+
+    .cancel-button-2, .cancel-button-2 span {
+        transition: 200ms;
+    }
+
+    .cancel-button-2 .text {
+        transform: translateX(35px);
+        color: white;
+        font-weight: bold;
+    }
+
+    .cancel-button-2 .icon {
+        position: absolute;
+        border-left: 1px solid white;
+        transform: translateX(110px);
+        height: 40px;
+        width: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cancel-button-2 svg {
+        width: 15px;
+        fill: #eee;
+    }
+
+    .cancel-button-2:hover {
+        background: #343a40;
+    }
+
+    .cancel-button-2:hover .text {
+        color: transparent;
+    }
+
+    .cancel-button-2:hover .icon {
+        width: 150px;
+        border-left: none;
+        transform: translateX(0);
+    }
+
+    .cancel-button-2:focus {
+        outline: none;
+    }
+
+    .cancel-button-2:active .icon svg {
+        transform: scale(0.8);
+    }
+</style>

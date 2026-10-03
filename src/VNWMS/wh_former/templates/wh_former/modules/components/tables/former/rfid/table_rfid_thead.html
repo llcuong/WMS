@@ -1,0 +1,42 @@
+<style>
+    .rfid-table-result thead {
+        background-color: white;
+    }
+
+    .rfid-table-result thead tr {
+        display: table;
+        min-width: 99%;
+        margin-left: 10px !important;
+        margin-right: 10px !important;
+        border-bottom: 3px solid #d8d8d8;
+    }
+
+    .rfid-table-result-th {
+        background-color: #3b49e7;
+        color: white;
+        padding: 8px;
+        border: none;
+        text-align: center;
+    }
+</style>
+
+<div class="rfid-table-result-header">
+    <table class="rfid-{% if manual %}manual-{% endif %}table-result">
+        <thead>
+            <tr>
+                {% for label, width, align in columns %}
+                    {% if manual %}
+                        <th class="rfid-table-result-th" style="width: {{ width }}px;" onclick="sortRFIDManualTable({{ forloop.counter0 }}, this)">
+                    {% else %}
+                        <th class="rfid-table-result-th" style="width: {{ width }}px;" onclick="sortRFIDTable({{ forloop.counter0 }}, this)">
+                    {% endif %}
+                        <div style="position: relative; width: 100%; display: flex; justify-content: center; align-items: center;">
+                            <span style="text-align: center;">{{ label }}</span>
+                            <i class="sort-icon fas fa-arrow-down" style="position: absolute; right: 8px;"></i>
+                        </div>
+                    </th>
+                {% endfor %}
+            </tr>
+        </thead>
+    </table>
+</div>

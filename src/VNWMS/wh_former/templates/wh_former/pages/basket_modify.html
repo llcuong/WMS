@@ -1,0 +1,155 @@
+{% extends 'wh_former/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Former - Modify Basket" %} {% endblock %}
+{% block local_css %}
+    <style>
+        .result-table-body{
+            min-height: 360px !important;
+        }
+        
+        .edit-group-btn {
+            white-space: nowrap;
+            min-width: 80px;
+            font-size: 14px;
+            margin-bottom: 5px;
+            background-color: #28a745;
+            border-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .edit-group-btn:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+        
+        .modal-content {
+            border-radius: 8px;
+        }
+        
+        .alert {
+            border-radius: 6px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="container-fluid no-copy">
+        {% trans "Modify Basket" as page_title %}
+        {% include 'wh_former/components/page_title.html' with title=page_title icon="fas fa-edit" %}
+        <div class="row p-3 main-body">
+            <div class="col-11 pt-3">
+
+                <form method="get">
+                    <input type="hidden" name="page" value="1"/>
+                    {% include 'wh_former/modules/components/forms/basket_search_form.html'%}
+                </form>
+
+            </div>
+            <div class="col-1 pt-3" style="margin-top: 32px">
+                {% if is_wh_former_admin %}
+                    {% if editable_groups %}
+                        {% for saved_value, group_info in editable_groups.items %}
+                            <button type="button" class="btn edit-group-btn"
+                                    data-saved-value="{{ saved_value }}"
+                                    data-basket-no="{{ group_info.basket_no }}"
+                                    data-receive-date="{{ group_info.basket_receive_date }}"
+                                    data-basket-length="{{ group_info.basket_length }}"
+                                    data-basket-vendor="{{ group_info.basket_vendor }}"
+                                    data-purchase-order="{{ group_info.basket_purchase_order }}"
+                                    data-description="{{ group_info.basket_description }}"
+                                    onclick="openEditGroupModal(this)">
+                               {% include 'wh_former/modules/components/buttons/edit-button-3.html' %}
+                            </button>
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div class="col-1"></div>
+            <div class="col-12">
+                {% include 'wh_former/modules/components/tables/basket/basket_result_table.html' with columns=columns results=data filter=search_filter print_rfid=True %}
+            </div>
+        </div>
+    </div>
+    {% include 'wh_former/modules/components/modals/action/loading_modal.html' %}
+    {% include 'wh_former/modules/components/modals/helpers_modal/basket_master_edit.html' %}
+    {% include 'wh_former/modules/components/modals/new-alert-modals/new-warning-modal.html' %}
+{% endblock %}
+{% block js %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modalElement = document.getElementById('loadingModal');
+            if (modalElement) {
+                const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+                modal.hide();
+            }
+            
+            {% if warning_modal %}
+                const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                errorModal.show();
+                setTimeout(function() {
+                    errorModal.hide();
+                }, 3000);
+            {% endif %}
+        });
+
+        function openEditGroupModal(buttonElement) {
+            const savedValue = buttonElement.getAttribute('data-saved-value');
+            const basketNo = buttonElement.getAttribute('data-basket-no');
+            let receiveDate = buttonElement.getAttribute('data-receive-date');
+            const basketLength = buttonElement.getAttribute('data-basket-length');
+            const basketVendor = buttonElement.getAttribute('data-basket-vendor');
+            const purchaseOrder = buttonElement.getAttribute('data-purchase-order');
+            const description = buttonElement.getAttribute('data-description');
+
+            if (receiveDate && receiveDate !== '' && receiveDate !== 'None') {
+                const dateObj = new Date(receiveDate);
+                if (!isNaN(dateObj.getTime())) {
+                    receiveDate = dateObj.toISOString().split('T')[0];
+                }
+            } else {
+                receiveDate = '';
+            }
+
+            document.getElementById('edit_basket_no').value = basketNo;
+            document.getElementById('edit_saved_value').value = savedValue;
+            document.getElementById('edit_purchase_order').value = purchaseOrder;
+            document.getElementById('edit_basket_receive_date').value = receiveDate;
+            document.getElementById('length_value_input').value = basketLength;
+            document.getElementById('vendor_name_input').value = basketVendor;
+            document.getElementById('edit_basket_purchase_order').value = purchaseOrder;
+            document.getElementById('edit_basket_description').value = description;
+
+            const modal = new bootstrap.Modal(document.getElementById('basketEditModal'));
+            modal.show();
+        }
+
+        function updateBasket() {
+            if (confirm('{% trans "Are you sure you want to update all baskets in this group?" %}')) {
+                const form = document.getElementById('basketEditForm');
+                const actionInput = document.createElement('input');
+                actionInput.type = 'hidden';
+                actionInput.name = 'action_type';
+                actionInput.value = 'update';
+                form.appendChild(actionInput);
+                form.submit();
+            }
+        }
+
+        function deleteBasketGroup() {
+            if (confirm('{% trans "Are you sure you want to delete all baskets in this group? This action cannot be undone." %}')) {
+                const form = document.getElementById('basketEditForm');
+                const actionInput = document.createElement('input');
+                actionInput.type = 'hidden';
+                actionInput.name = 'action_type';
+                actionInput.value = 'delete';
+                form.appendChild(actionInput);
+                form.submit();
+            }
+        }
+    </script>
+{% endblock %}

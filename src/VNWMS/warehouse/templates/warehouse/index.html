@@ -1,0 +1,159 @@
+{% extends 'warehouse/bases/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} Warehouse List {% endblock %}
+{% block base_js %}
+{{ block.super }}
+<!-- Bootstrap CSS -->
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td {
+        cursor: pointer; /* Thêm con trỏ chuột dạng pointer */
+        transition: background-color 0.3s ease; /* Hiệu ứng nền khi hover */
+    }
+
+    td:hover {
+        {#background-color: #fdf0cb;#}
+        color: #ff2b3b; /* Màu chữ khi hover */
+    }
+</style>
+{% endblock %}
+
+{% block container %}
+    <div class="container mt-5">
+        <div class="row">
+            {% block sidebar %} {{ block.super }} {% endblock %}
+            {% block content %}
+            <div class="col-sm-9" style="border: 1px #6c757d solid; height: 90vh;">
+                <h2 class="mb-4">Warehouse List</h2>
+                <a class="btn btn-primary mb-3" style="width: 70px" href="{% url 'warehouse_create' %}" role="button">Add</a>
+    {#            <a class="btn btn-info mb-3 ms-3"  href="{% url 'area_list' %}" role="button">Area List</a>#}
+                <!-- Kiểm tra nếu có dữ liệu -->
+                {% if warehouses %}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Warehouse Id</th>
+                            <th>Warehouse Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Lặp qua danh sách warehouse -->
+                        {% for warehouse in warehouses %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td onclick="redirectToPage('{% url 'area_by_warehouse' wh_code=warehouse.wh_code %}')">{{ warehouse.wh_code }}</td>
+                            <td onclick="redirectToPage('{% url 'area_by_warehouse' wh_code=warehouse.wh_code %}')">{{ warehouse.wh_name }}</td>
+        {#                    <td>{{ warehouse.wh_comment }}</td>#}
+        {#                    <td>#}
+        {#                        {% if warehouse.wh_bg %}#}
+        {#                        <img src="{{ warehouse.wh_bg.url }}" alt="Background Image" style="max-width: 100px;">#}
+        {#                        {% else %}#}
+        {#                        <em>No Image</em>#}
+        {#                        {% endif %}#}
+        {#                    </td>#}
+                            <td>
+                                {% if warehouse.wh_code %}
+                                    <a class="btn btn-primary" style="width: 70px" href="{% url 'warehouse_edit' warehouse_code=warehouse.wh_code %}" role="button">Edit</a>
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-warehouse-id="{{ warehouse.pk }}" data-warehouse-name="{{ warehouse.wh_name }}">Delete</button>
+                                {% else %}
+                                    <a class="btn btn-primary" style="width: 70px" href="#" role="button">Edit</a>
+                                    <a class="btn btn-primary" style="width: 70px" href="#" role="button">Delete</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>{% trans "No warehouses found." %}</p>
+                {% endif %}
+            </div>
+            {% endblock %}
+        </div>
+    </div>
+
+    {#    Modal#}
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete the warehouse "<strong id="modalWarehouseName"></strong>"?
+                </div>
+                <div class="modal-footer">
+                    <form method="post" id="deleteForm">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script>
+            // Dynamic data injection into modal
+            const deleteModal = document.getElementById('deleteModal');
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget; // Button that triggered the modal
+                const warehouseName = button.getAttribute('data-warehouse-name');
+                const warehouseId = button.getAttribute('data-warehouse-id');
+
+                // Update modal content
+                const modalWarehouseName = document.getElementById('modalWarehouseName');
+                modalWarehouseName.textContent = warehouseName;
+
+                // Update form action dynamically
+                const deleteForm = document.getElementById('deleteForm');
+                deleteForm.action = `/warehouse/delete/${warehouseId}/`;
+            });
+        </script>
+        <script>
+        // Hàm chuyển hướng đến trang khác
+        function redirectToPage(url) {
+            window.location.href = url;
+        }
+        </script>
+{% endblock %}
+
+
+
+
+
+
+
+{#{% extends 'warehouse/bases/base.html' %}#}
+{#{% load crispy_forms_tags %}#}
+{#{% load static %}#}
+{#{% block css %}#}
+{#{% load i18n %}#}
+{##}
+{#{% endblock css %}#}
+{#{% block js %}#}
+{#<style>#}
+{##}
+{#</style>#}
+{##}
+{#<script>#}
+{##}
+{#</script>#}
+{#{% endblock js %}#}
+{#{% block title %}#}
+{##}
+{#{% endblock title %}#}
+{#{% block content %}#}
+{##}
+{#{% endblock content %}#}

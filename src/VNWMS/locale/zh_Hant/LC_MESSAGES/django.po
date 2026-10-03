@@ -1,0 +1,4795 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-13 15:48+0700\n"
+"PO-Revision-Date: 2025-10-13 15:52+0700\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.7\n"
+
+#: .\bases\templates\bases\attach_form.html:9
+msgid "attachment"
+msgstr "附件"
+
+#: .\bases\templates\bases\attach_form.html:12
+#: .\bases\templates\bases\attach_form.html:23
+msgid "file"
+msgstr "文件"
+
+#: .\bases\templates\bases\attach_form.html:17
+#: .\bases\templates\bases\attach_form.html:27
+msgid "desc"
+msgstr "描述"
+
+#: .\bases\templates\bases\attach_form.html:33 .\users\forms.py:63
+#: .\users\templates\users\info.html:17
+msgid "save"
+msgstr "儲存"
+
+#: .\bases\templates\bases\base.html:75
+msgid "Warehouse Setting"
+msgstr "倉庫管理設定"
+
+#: .\bases\templates\bases\base.html:83
+msgid "GD Packing Warehouse"
+msgstr "GD 包裝倉庫"
+
+#: .\bases\templates\bases\base.html:91
+msgid "Warehouse Former"
+msgstr "手模倉庫"
+
+#: .\bases\templates\bases\base.html:109
+msgid "Personal Setting"
+msgstr "個人資訊"
+
+#: .\bases\templates\bases\base.html:119
+msgid "Logout"
+msgstr "登出"
+
+#: .\bases\utils.py:61
+msgid "Update Status"
+msgstr "更新狀態"
+
+#: .\users\admin.py:29
+msgid "Personal info"
+msgstr "個人資訊"
+
+#: .\users\admin.py:31
+msgid "Permissions"
+msgstr "權限"
+
+#: .\users\admin.py:33
+msgid "Important dates"
+msgstr "重要日期"
+
+#: .\users\forms.py:47
+msgid "user_type"
+msgstr "使用者類型"
+
+#: .\users\forms.py:49 .\users\models.py:120
+msgid "active"
+msgstr "是否啟用"
+
+#: .\users\forms.py:50
+msgid "password"
+msgstr "新密碼"
+
+#: .\users\forms.py:50
+msgid "Please type the password"
+msgstr "請輸入密碼"
+
+#: .\users\forms.py:51 .\users\forms.py:117
+msgid "confirm_password"
+msgstr "確認密碼"
+
+#: .\users\forms.py:51
+msgid "Please type the login password again"
+msgstr "請再次輸入密碼"
+
+#: .\users\forms.py:52 .\users\models.py:102
+#: .\users\templates\users\login.html:454
+msgid "emp_no"
+msgstr "員工編號"
+
+#: .\users\forms.py:53 .\users\models.py:103
+msgid "sap_emp_no"
+msgstr "SAP員工編號"
+
+#: .\users\forms.py:54
+msgid "name"
+msgstr "名稱"
+
+#: .\users\forms.py:55
+msgid "plant"
+msgstr "工廠"
+
+#: .\users\forms.py:107 .\users\forms.py:169
+msgid "The password is not same with the confirm password"
+msgstr "密碼與確認密碼不相符"
+
+#: .\users\forms.py:112
+msgid "login_account"
+msgstr "登入帳號"
+
+#: .\users\forms.py:113
+msgid "old_password"
+msgstr "舊密碼"
+
+#: .\users\forms.py:114
+msgid "Please type the login password"
+msgstr "請輸入登入密碼"
+
+#: .\users\forms.py:115
+msgid "new_password"
+msgstr "新密碼"
+
+#: .\users\forms.py:116
+msgid "Please type the new password"
+msgstr "請輸入新密碼"
+
+#: .\users\forms.py:118
+msgid "Please type the confirm password"
+msgstr "請再次輸入密碼"
+
+#: .\users\forms.py:119
+msgid "Default Homepage"
+msgstr ""
+
+#: .\users\forms.py:134
+msgid "base_information"
+msgstr "基本資訊"
+
+#: .\users\forms.py:145
+msgid "Change Password"
+msgstr "變更密碼"
+
+#: .\users\forms.py:174
+msgid "The password is not correct"
+msgstr "密碼不正確"
+
+#: .\users\models.py:54
+msgid "類別"
+msgstr ""
+
+#: .\users\models.py:104
+msgid "username"
+msgstr "用戶名"
+
+#: .\users\models.py:105
+msgid "email address"
+msgstr "email address"
+
+#: .\users\models.py:107
+msgid "first name"
+msgstr "名"
+
+#: .\users\models.py:108
+msgid "last name"
+msgstr "姓"
+
+#: .\users\models.py:110
+msgid "mobile number"
+msgstr "手機號碼"
+
+#: .\users\models.py:112
+msgid "Required. digits and +-() only."
+msgstr "請使用數字及+-()"
+
+#: .\users\models.py:114
+msgid "Enter a valid mobile number."
+msgstr "請輸入有效號碼"
+
+#: .\users\models.py:117
+msgid "staff status"
+msgstr "員工狀態"
+
+#: .\users\models.py:118
+msgid "Designates whether the user can log into this admin site."
+msgstr "Designates whether the user can log into this admin site."
+
+#: .\users\models.py:121
+msgid ""
+"Designates whether this user should be treated as active. Unselect this "
+"instead of deleting accounts."
+msgstr ""
+"Designates whether this user should be treated as active. Unselect this "
+"instead of deleting accounts."
+
+#: .\users\models.py:123
+msgid "date joined"
+msgstr "加入日期"
+
+#: .\users\models.py:133
+msgid "user"
+msgstr "用戶名"
+
+#: .\users\models.py:134
+msgid "users"
+msgstr "users"
+
+#: .\users\templates\users\base.html:16
+msgid "Add User"
+msgstr "新增使用者"
+
+#: .\users\templates\users\base.html:20
+msgid "User List"
+msgstr "使用者列表"
+
+#: .\users\templates\users\info.html:5
+msgid "User Information"
+msgstr "使用者资讯"
+
+#: .\users\templates\users\login.html:384
+#: .\venv\Lib\site-packages\django\utils\dates.py:7
+msgid "Sunday"
+msgstr "Sunday"
+
+#: .\users\templates\users\login.html:385
+#: .\venv\Lib\site-packages\django\utils\dates.py:6
+msgid "Monday"
+msgstr "Monday"
+
+#: .\users\templates\users\login.html:386
+#: .\venv\Lib\site-packages\django\utils\dates.py:6
+msgid "Tuesday"
+msgstr "Tuesday"
+
+#: .\users\templates\users\login.html:387
+#: .\venv\Lib\site-packages\django\utils\dates.py:6
+msgid "Wednesday"
+msgstr "Wednesday"
+
+#: .\users\templates\users\login.html:388
+#: .\venv\Lib\site-packages\django\utils\dates.py:6
+msgid "Thursday"
+msgstr "Thursday"
+
+#: .\users\templates\users\login.html:389
+#: .\venv\Lib\site-packages\django\utils\dates.py:6
+msgid "Friday"
+msgstr "Friday"
+
+#: .\users\templates\users\login.html:390
+#: .\venv\Lib\site-packages\django\utils\dates.py:7
+msgid "Saturday"
+msgstr "Saturday"
+
+#: .\users\templates\users\login.html:460
+msgid "Password"
+msgstr "新密碼"
+
+#: .\users\templates\users\login.html:467
+msgid "Remember Password"
+msgstr "變更密碼"
+
+#: .\users\templates\users\login.html:480
+msgid "Submit"
+msgstr "確定"
+
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_form_helper.py:130
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_form_helper.py:140
+#: .\venv\Lib\site-packages\django\forms\fields.py:54
+msgid "This field is required."
+msgstr "必填"
+
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_layout.py:392
+msgid "i18n text"
+msgstr "i18n text"
+
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_layout.py:394
+msgid "i18n legend"
+msgstr "i18n legend"
+
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_layout_objects.py:143
+#: .\venv\Lib\site-packages\django\core\validators.py:22
+msgid "Enter a valid value."
+msgstr "請輸入有效值"
+
+#: .\venv\Lib\site-packages\django\contrib\messages\apps.py:7
+msgid "Messages"
+msgstr "訊息"
+
+#: .\venv\Lib\site-packages\django\contrib\sitemaps\apps.py:8
+msgid "Site Maps"
+msgstr "網站地圖"
+
+#: .\venv\Lib\site-packages\django\contrib\staticfiles\apps.py:9
+msgid "Static Files"
+msgstr "靜態文件"
+
+#: .\venv\Lib\site-packages\django\contrib\syndication\apps.py:7
+msgid "Syndication"
+msgstr "Syndication"
+
+#. Translators: String used to replace omitted page numbers in elided page
+#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
+#: .\venv\Lib\site-packages\django\core\paginator.py:30
+msgid "…"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:51
+msgid "That page number is not an integer"
+msgstr "That page number is not an integer"
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:53
+msgid "That page number is less than 1"
+msgstr "That page number is less than 1"
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:58
+msgid "That page contains no results"
+msgstr "That page contains no results"
+
+#: .\venv\Lib\site-packages\django\core\validators.py:93
+#: .\venv\Lib\site-packages\django\forms\fields.py:678
+msgid "Enter a valid URL."
+msgstr "Enter a valid URL."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:151
+msgid "Enter a valid integer."
+msgstr "Enter a valid integer."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:162
+msgid "Enter a valid email address."
+msgstr "Enter a valid email address."
+
+#. Translators: "letters" means latin letters: a-z and A-Z.
+#: .\venv\Lib\site-packages\django\core\validators.py:265
+#, fuzzy
+#| msgid ""
+#| "Enter a valid 'slug' consisting of letters, numbers, underscores or "
+#| "hyphens."
+msgid ""
+"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
+msgstr ""
+"Enter a valid 'slug' consisting of letters, numbers, underscores or hyphens."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:272
+#, fuzzy
+#| msgid ""
+#| "Enter a valid 'slug' consisting of Unicode letters, numbers, underscores, "
+#| "or hyphens."
+msgid ""
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
+"hyphens."
+msgstr ""
+"Enter a valid 'slug' consisting of Unicode letters, numbers, underscores, or "
+"hyphens."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:281
+#: .\venv\Lib\site-packages\django\core\validators.py:291
+#: .\venv\Lib\site-packages\django\core\validators.py:314
+msgid "Enter a valid IPv4 address."
+msgstr "Enter a valid IPv4 address."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:299
+#: .\venv\Lib\site-packages\django\core\validators.py:315
+msgid "Enter a valid IPv6 address."
+msgstr "Enter a valid IPv6 address."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:309
+#: .\venv\Lib\site-packages\django\core\validators.py:313
+msgid "Enter a valid IPv4 or IPv6 address."
+msgstr "Enter a valid IPv4 or IPv6 address."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:343
+msgid "Enter only digits separated by commas."
+msgstr "Enter only digits separated by commas."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:349
+#, python-format
+msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+msgstr "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:382
+#, python-format
+msgid "Ensure this value is less than or equal to %(limit_value)s."
+msgstr "Ensure this value is less than or equal to %(limit_value)s."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:391
+#, python-format
+msgid "Ensure this value is greater than or equal to %(limit_value)s."
+msgstr "Ensure this value is greater than or equal to %(limit_value)s."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:401
+#, python-format
+msgid ""
+"Ensure this value has at least %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at least %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+"Ensure this value has at least %(limit_value)d character (it has "
+"%(show_value)d)."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:416
+#, python-format
+msgid ""
+"Ensure this value has at most %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at most %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+"Ensure this value has at most %(limit_value)d character (it has "
+"%(show_value)d)."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:435
+#: .\venv\Lib\site-packages\django\forms\fields.py:292
+#: .\venv\Lib\site-packages\django\forms\fields.py:327
+msgid "Enter a number."
+msgstr "Enter a number."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:437
+#, python-format
+msgid "Ensure that there are no more than %(max)s digit in total."
+msgid_plural "Ensure that there are no more than %(max)s digits in total."
+msgstr[0] "Ensure that there are no more than %(max)s digit in total."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:442
+#, python-format
+msgid "Ensure that there are no more than %(max)s decimal place."
+msgid_plural "Ensure that there are no more than %(max)s decimal places."
+msgstr[0] "Ensure that there are no more than %(max)s decimal place."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:447
+#, python-format
+msgid ""
+"Ensure that there are no more than %(max)s digit before the decimal point."
+msgid_plural ""
+"Ensure that there are no more than %(max)s digits before the decimal point."
+msgstr[0] ""
+"Ensure that there are no more than %(max)s digit before the decimal point."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:509
+#, fuzzy, python-format
+#| msgid ""
+#| "File extension '%(extension)s' is not allowed. Allowed extensions are: "
+#| "'%(allowed_extensions)s'."
+msgid ""
+"File extension “%(extension)s” is not allowed. Allowed extensions are: "
+"%(allowed_extensions)s."
+msgstr ""
+"File extension '%(extension)s' is not allowed. Allowed extensions are: "
+"'%(allowed_extensions)s'."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:562
+#, fuzzy
+#| msgid "Directory indexes are not allowed here."
+msgid "Null characters are not allowed."
+msgstr "Directory indexes are not allowed here."
+
+#: .\venv\Lib\site-packages\django\db\models\base.py:1210
+#: .\venv\Lib\site-packages\django\forms\models.py:768
+msgid "and"
+msgstr "and"
+
+#: .\venv\Lib\site-packages\django\db\models\base.py:1212
+#, python-format
+msgid "%(model_name)s with this %(field_labels)s already exists."
+msgstr "%(model_name)s with this %(field_labels)s already exists."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:100
+#, python-format
+msgid "Value %(value)r is not a valid choice."
+msgstr "Value %(value)r is not a valid choice."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:101
+msgid "This field cannot be null."
+msgstr "This field cannot be null."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:102
+msgid "This field cannot be blank."
+msgstr "This field cannot be blank."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:103
+#, python-format
+msgid "%(model_name)s with this %(field_label)s already exists."
+msgstr "%(model_name)s with this %(field_label)s already exists."
+
+#. Translators: The 'lookup_type' is one of 'date', 'year' or 'month'.
+#. Eg: "Title must be unique for pub_date year"
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:107
+#, python-format
+msgid ""
+"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+msgstr ""
+"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:126
+#, python-format
+msgid "Field of type: %(field_type)s"
+msgstr "Field of type: %(field_type)s"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:958
+#, fuzzy, python-format
+#| msgid "'%(value)s' value must be either True or False."
+msgid "“%(value)s” value must be either True or False."
+msgstr "'%(value)s' value must be either True or False."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:959
+#, fuzzy, python-format
+#| msgid "'%(value)s' value must be either True or False."
+msgid "“%(value)s” value must be either True, False, or None."
+msgstr "'%(value)s' value must be either True or False."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:961
+msgid "Boolean (Either True or False)"
+msgstr "Boolean (Either True or False)"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1002
+#, python-format
+msgid "String (up to %(max_length)s)"
+msgstr "String (up to %(max_length)s)"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1096
+msgid "Comma-separated integers"
+msgstr "Comma-separated integers"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1145
+#, fuzzy, python-format
+#| msgid ""
+#| "'%(value)s' value has an invalid date format. It must be in YYYY-MM-DD "
+#| "format."
+msgid ""
+"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
+"format."
+msgstr ""
+"'%(value)s' value has an invalid date format. It must be in YYYY-MM-DD "
+"format."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1147
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1290
+#, fuzzy, python-format
+#| msgid ""
+#| "'%(value)s' value has the correct format (YYYY-MM-DD) but it is an "
+#| "invalid date."
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
+"date."
+msgstr ""
+"'%(value)s' value has the correct format (YYYY-MM-DD) but it is an invalid "
+"date."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1150
+msgid "Date (without time)"
+msgstr "Date (without time)"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1288
+#, fuzzy, python-format
+#| msgid ""
+#| "'%(value)s' value has an invalid format. It must be in YYYY-MM-DD "
+#| "HH:MM[:ss[.uuuuuu]][TZ] format."
+msgid ""
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ] format."
+msgstr ""
+"'%(value)s' value has an invalid format. It must be in YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ] format."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1292
+#, fuzzy, python-format
+#| msgid ""
+#| "'%(value)s' value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+#| "[TZ]) but it is an invalid date/time."
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+"[TZ]) but it is an invalid date/time."
+msgstr ""
+"'%(value)s' value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+"[TZ]) but it is an invalid date/time."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1296
+msgid "Date (with time)"
+msgstr "Date (with time)"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1444
+#, fuzzy, python-format
+#| msgid "'%(value)s' value must be a decimal number."
+msgid "“%(value)s” value must be a decimal number."
+msgstr "'%(value)s' value must be a decimal number."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1446
+msgid "Decimal number"
+msgstr "Decimal number"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1585
+#, fuzzy, python-format
+#| msgid ""
+#| "'%(value)s' value has an invalid format. It must be in [DD] [HH:"
+#| "[MM:]]ss[.uuuuuu] format."
+msgid ""
+"“%(value)s” value has an invalid format. It must be in [DD] "
+"[[HH:]MM:]ss[.uuuuuu] format."
+msgstr ""
+"'%(value)s' value has an invalid format. It must be in [DD] [HH:"
+"[MM:]]ss[.uuuuuu] format."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1588
+msgid "Duration"
+msgstr "Duration"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1638
+msgid "Email address"
+msgstr "Email address"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1661
+msgid "File path"
+msgstr "File path"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1727
+#, fuzzy, python-format
+#| msgid "'%(value)s' value must be a float."
+msgid "“%(value)s” value must be a float."
+msgstr "'%(value)s' value must be a float."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1729
+msgid "Floating point number"
+msgstr "Floating point number"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1767
+#, fuzzy, python-format
+#| msgid "'%(value)s' value must be an integer."
+msgid "“%(value)s” value must be an integer."
+msgstr "'%(value)s' value must be an integer."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1769
+msgid "Integer"
+msgstr "Integer"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1852
+msgid "Big (8 byte) integer"
+msgstr "Big (8 byte) integer"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1867
+msgid "Small integer"
+msgstr "Small integer"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1875
+msgid "IPv4 address"
+msgstr "IPv4 address"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1906
+msgid "IP address"
+msgstr "IP address"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1986
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1987
+#, fuzzy, python-format
+#| msgid "'%(value)s' value must be either None, True or False."
+msgid "“%(value)s” value must be either None, True or False."
+msgstr "'%(value)s' value must be either None, True or False."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1989
+msgid "Boolean (Either True, False or None)"
+msgstr "Boolean (Either True, False or None)"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2043
+#, fuzzy
+#| msgid "Positive integer"
+msgid "Positive big integer"
+msgstr "Positive integer"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2056
+msgid "Positive integer"
+msgstr "Positive integer"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2069
+msgid "Positive small integer"
+msgstr "Positive small integer"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2083
+#, python-format
+msgid "Slug (up to %(max_length)s)"
+msgstr "Slug (up to %(max_length)s)"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2115
+msgid "Text"
+msgstr "Text"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2181
+#, fuzzy, python-format
+#| msgid ""
+#| "'%(value)s' value has an invalid format. It must be in "
+#| "HH:MM[:ss[.uuuuuu]] format."
+msgid ""
+"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+"format."
+msgstr ""
+"'%(value)s' value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+"format."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2183
+#, fuzzy, python-format
+#| msgid ""
+#| "'%(value)s' value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is "
+#| "an invalid time."
+msgid ""
+"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
+"invalid time."
+msgstr ""
+"'%(value)s' value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
+"invalid time."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2186
+msgid "Time"
+msgstr "Time"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2312
+msgid "URL"
+msgstr "URL"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2334
+msgid "Raw binary data"
+msgstr "Raw binary data"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2399
+#, fuzzy, python-format
+#| msgid "'%(value)s' is not a valid UUID."
+msgid "“%(value)s” is not a valid UUID."
+msgstr "'%(value)s' is not a valid UUID."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2401
+msgid "Universally unique identifier"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\files.py:226
+msgid "File"
+msgstr "File"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\files.py:375
+msgid "Image"
+msgstr "Image"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\json.py:18
+msgid "A JSON object"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\json.py:20
+msgid "Value must be valid JSON."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:790
+#, python-format
+msgid "%(model)s instance with %(field)s %(value)r does not exist."
+msgstr "%(model)s instance with %(field)s %(value)r does not exist."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:792
+msgid "Foreign Key (type determined by related field)"
+msgstr "Foreign Key (type determined by related field)"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1045
+msgid "One-to-one relationship"
+msgstr "One-to-one relationship"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1099
+#, python-format
+msgid "%(from)s-%(to)s relationship"
+msgstr "%(from)s-%(to)s relationship"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1100
+#, python-format
+msgid "%(from)s-%(to)s relationships"
+msgstr "%(from)s-%(to)s relationships"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1142
+msgid "Many-to-many relationship"
+msgstr "Many-to-many relationship"
+
+#. Translators: If found as last label character, these punctuation
+#. characters will prevent the default label_suffix to be appended to the label
+#: .\venv\Lib\site-packages\django\forms\boundfield.py:150
+msgid ":?.!"
+msgstr ":?.!"
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:247
+msgid "Enter a whole number."
+msgstr "Enter a whole number."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:402
+#: .\venv\Lib\site-packages\django\forms\fields.py:1146
+msgid "Enter a valid date."
+msgstr "Enter a valid date."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:426
+#: .\venv\Lib\site-packages\django\forms\fields.py:1147
+msgid "Enter a valid time."
+msgstr "Enter a valid time."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:454
+msgid "Enter a valid date/time."
+msgstr "Enter a valid date/time."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:488
+msgid "Enter a valid duration."
+msgstr "Enter a valid duration."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:489
+#, python-brace-format
+msgid "The number of days must be between {min_days} and {max_days}."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:552
+msgid "No file was submitted. Check the encoding type on the form."
+msgstr "No file was submitted. Check the encoding type on the form."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:553
+msgid "No file was submitted."
+msgstr "No file was submitted."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:554
+msgid "The submitted file is empty."
+msgstr "The submitted file is empty."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:556
+#, python-format
+msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid_plural ""
+"Ensure this filename has at most %(max)d characters (it has %(length)d)."
+msgstr[0] ""
+"Ensure this filename has at most %(max)d character (it has %(length)d)."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:559
+msgid "Please either submit a file or check the clear checkbox, not both."
+msgstr "Please either submit a file or check the clear checkbox, not both."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:620
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+msgstr ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:782
+#: .\venv\Lib\site-packages\django\forms\fields.py:872
+#: .\venv\Lib\site-packages\django\forms\models.py:1309
+#, python-format
+msgid "Select a valid choice. %(value)s is not one of the available choices."
+msgstr "Select a valid choice. %(value)s is not one of the available choices."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:873
+#: .\venv\Lib\site-packages\django\forms\fields.py:988
+#: .\venv\Lib\site-packages\django\forms\models.py:1308
+msgid "Enter a list of values."
+msgstr "Enter a list of values."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:989
+msgid "Enter a complete value."
+msgstr "Enter a complete value."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1205
+msgid "Enter a valid UUID."
+msgstr "Enter a valid UUID."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1235
+#, fuzzy
+#| msgid "Enter a valid URL."
+msgid "Enter a valid JSON."
+msgstr "Enter a valid URL."
+
+#. Translators: This is the default suffix added to form field labels
+#: .\venv\Lib\site-packages\django\forms\forms.py:76
+msgid ":"
+msgstr ":"
+
+#: .\venv\Lib\site-packages\django\forms\forms.py:203
+#, python-format
+msgid "(Hidden field %(name)s) %(error)s"
+msgstr "(Hidden field %(name)s) %(error)s"
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:61
+#, python-format
+msgid ""
+"ManagementForm data is missing or has been tampered with. Missing fields: "
+"%(field_names)s. You may need to file a bug report if the issue persists."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:370
+#, fuzzy, python-format
+#| msgid "Please submit %d or more forms."
+#| msgid_plural "Please submit %d or more forms."
+msgid "Please submit at most %d form."
+msgid_plural "Please submit at most %d forms."
+msgstr[0] "Please submit %d or more forms."
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:377
+#, fuzzy, python-format
+#| msgid "Please submit %d or more forms."
+#| msgid_plural "Please submit %d or more forms."
+msgid "Please submit at least %d form."
+msgid_plural "Please submit at least %d forms."
+msgstr[0] "Please submit %d or more forms."
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:405
+#: .\venv\Lib\site-packages\django\forms\formsets.py:412
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:8
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:8
+msgid "Order"
+msgstr "Order"
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:417
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:71
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:76
+#: .\warehouse\templates\warehouse\bin_by_area.html:69
+#: .\warehouse\templates\warehouse\bin_by_area.html:76
+#: .\warehouse\templates\warehouse\warehouse_list.html:63
+#: .\warehouse\templates\warehouse\warehouse_list.html:66
+#: .\wh_former\templates\wh_former\modules\components\buttons\delete_button.html:15
+#: .\wh_former\templates\wh_former\modules\components\buttons\exit_button.html:7
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:110
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:502
+msgid "Delete"
+msgstr "刪除"
+
+#: .\venv\Lib\site-packages\django\forms\models.py:763
+#, python-format
+msgid "Please correct the duplicate data for %(field)s."
+msgstr "Please correct the duplicate data for %(field)s."
+
+#: .\venv\Lib\site-packages\django\forms\models.py:767
+#, python-format
+msgid "Please correct the duplicate data for %(field)s, which must be unique."
+msgstr "Please correct the duplicate data for %(field)s, which must be unique."
+
+#: .\venv\Lib\site-packages\django\forms\models.py:773
+#, python-format
+msgid ""
+"Please correct the duplicate data for %(field_name)s which must be unique "
+"for the %(lookup)s in %(date_field)s."
+msgstr ""
+"Please correct the duplicate data for %(field_name)s which must be unique "
+"for the %(lookup)s in %(date_field)s."
+
+#: .\venv\Lib\site-packages\django\forms\models.py:782
+msgid "Please correct the duplicate values below."
+msgstr "Please correct the duplicate values below."
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1109
+#, fuzzy
+#| msgid ""
+#| "The inline foreign key did not match the parent instance primary key."
+msgid "The inline value did not match the parent instance."
+msgstr "The inline foreign key did not match the parent instance primary key."
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1193
+msgid "Select a valid choice. That choice is not one of the available choices."
+msgstr ""
+"Select a valid choice. That choice is not one of the available choices."
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1311
+#, fuzzy, python-format
+#| msgid "\"%(pk)s\" is not a valid value for a primary key."
+msgid "“%(pk)s” is not a valid value."
+msgstr "\"%(pk)s\" is not a valid value for a primary key."
+
+#: .\venv\Lib\site-packages\django\forms\utils.py:172
+#, fuzzy, python-format
+#| msgid ""
+#| "%(datetime)s couldn't be interpreted in time zone %(current_timezone)s; "
+#| "it may be ambiguous or it may not exist."
+msgid ""
+"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
+"may be ambiguous or it may not exist."
+msgstr ""
+"%(datetime)s couldn't be interpreted in time zone %(current_timezone)s; it "
+"may be ambiguous or it may not exist."
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:427
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:42
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:64
+msgid "Clear"
+msgstr "清理"
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:428
+msgid "Currently"
+msgstr "Currently"
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:429
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:116
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:163
+msgid "Change"
+msgstr "Change"
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:738
+#: .\wh_former\forms.py:229 .\wh_former\forms.py:243
+msgid "Unknown"
+msgstr "遺失"
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:739
+#: .\wh_former\templates\wh_former\modules\components\modals\action\cancel_modal.html:35
+msgid "Yes"
+msgstr "Yes"
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:740
+#: .\wh_former\templates\wh_former\modules\components\modals\action\cancel_modal.html:31
+msgid "No"
+msgstr "No"
+
+#. Translators: Please do not add spaces around commas.
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:817
+msgid "yes,no,maybe"
+msgstr "yes,no,maybe"
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:846
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:863
+#, python-format
+msgid "%(size)d byte"
+msgid_plural "%(size)d bytes"
+msgstr[0] "%(size)d byte"
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:865
+#, python-format
+msgid "%s KB"
+msgstr "%s KB"
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:867
+#, python-format
+msgid "%s MB"
+msgstr "%s MB"
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:869
+#, python-format
+msgid "%s GB"
+msgstr "%s GB"
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:871
+#, python-format
+msgid "%s TB"
+msgstr "%s TB"
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:873
+#, python-format
+msgid "%s PB"
+msgstr "%s PB"
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:66
+msgid "p.m."
+msgstr "p.m."
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:67
+msgid "a.m."
+msgstr "a.m."
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:72
+msgid "PM"
+msgstr "PM"
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:73
+msgid "AM"
+msgstr "AM"
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:146
+msgid "midnight"
+msgstr "midnight"
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:148
+msgid "noon"
+msgstr "noon"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Mon"
+msgstr "Mon"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Tue"
+msgstr "Tue"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Wed"
+msgstr "Wed"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Thu"
+msgstr "Thu"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Fri"
+msgstr "Fri"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:11
+msgid "Sat"
+msgstr "Sat"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:11
+msgid "Sun"
+msgstr "Sun"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "January"
+msgstr "January"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "February"
+msgstr "February"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "March"
+msgstr "March"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "April"
+msgstr "April"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "May"
+msgstr "May"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "June"
+msgstr "June"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:15
+msgid "July"
+msgstr "July"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:15
+msgid "August"
+msgstr "August"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:15
+msgid "September"
+msgstr "September"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:15
+msgid "October"
+msgstr "October"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:15
+msgid "November"
+msgstr "November"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:16
+msgid "December"
+msgstr "December"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "jan"
+msgstr "jan"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "feb"
+msgstr "feb"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "mar"
+msgstr "mar"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "apr"
+msgstr "apr"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "may"
+msgstr "may"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "jun"
+msgstr "jun"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "jul"
+msgstr "jul"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "aug"
+msgstr "aug"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "sep"
+msgstr "sep"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "oct"
+msgstr "oct"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "nov"
+msgstr "nov"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "dec"
+msgstr "dec"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:23
+msgctxt "abbrev. month"
+msgid "Jan."
+msgstr "Jan."
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:24
+msgctxt "abbrev. month"
+msgid "Feb."
+msgstr "Feb."
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:25
+msgctxt "abbrev. month"
+msgid "March"
+msgstr "March"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:26
+msgctxt "abbrev. month"
+msgid "April"
+msgstr "April"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:27
+msgctxt "abbrev. month"
+msgid "May"
+msgstr "May"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:28
+msgctxt "abbrev. month"
+msgid "June"
+msgstr "June"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:29
+msgctxt "abbrev. month"
+msgid "July"
+msgstr "July"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:30
+msgctxt "abbrev. month"
+msgid "Aug."
+msgstr "Aug."
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:31
+msgctxt "abbrev. month"
+msgid "Sept."
+msgstr "Sept."
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:32
+msgctxt "abbrev. month"
+msgid "Oct."
+msgstr "Oct."
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:33
+msgctxt "abbrev. month"
+msgid "Nov."
+msgstr "Nov."
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:34
+msgctxt "abbrev. month"
+msgid "Dec."
+msgstr "Dec."
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:37
+msgctxt "alt. month"
+msgid "January"
+msgstr "January"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:38
+msgctxt "alt. month"
+msgid "February"
+msgstr "February"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:39
+msgctxt "alt. month"
+msgid "March"
+msgstr "March"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:40
+msgctxt "alt. month"
+msgid "April"
+msgstr "April"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:41
+msgctxt "alt. month"
+msgid "May"
+msgstr "May"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:42
+msgctxt "alt. month"
+msgid "June"
+msgstr "June"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:43
+msgctxt "alt. month"
+msgid "July"
+msgstr "July"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:44
+msgctxt "alt. month"
+msgid "August"
+msgstr "August"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:45
+msgctxt "alt. month"
+msgid "September"
+msgstr "September"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:46
+msgctxt "alt. month"
+msgid "October"
+msgstr "October"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:47
+msgctxt "alt. month"
+msgid "November"
+msgstr "November"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:48
+msgctxt "alt. month"
+msgid "December"
+msgstr "December"
+
+#: .\venv\Lib\site-packages\django\utils\ipv6.py:8
+msgid "This is not a valid IPv6 address."
+msgstr "This is not a valid IPv6 address."
+
+#: .\venv\Lib\site-packages\django\utils\text.py:131
+#, fuzzy, python-format
+#| msgctxt "String to return when truncating text"
+#| msgid "%(truncated_text)s..."
+msgctxt "String to return when truncating text"
+msgid "%(truncated_text)s…"
+msgstr "%(truncated_text)s..."
+
+#: .\venv\Lib\site-packages\django\utils\text.py:309
+msgid "or"
+msgstr "or"
+
+#. Translators: This string is used as a separator between list elements
+#: .\venv\Lib\site-packages\django\utils\text.py:328
+#: .\venv\Lib\site-packages\django\utils\timesince.py:94
+msgid ", "
+msgstr ", "
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:9
+#, python-format
+msgid "%d year"
+msgid_plural "%d years"
+msgstr[0] "%d year"
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:10
+#, python-format
+msgid "%d month"
+msgid_plural "%d months"
+msgstr[0] "%d month"
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:11
+#, python-format
+msgid "%d week"
+msgid_plural "%d weeks"
+msgstr[0] "%d week"
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:12
+#, python-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] "%d day"
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:13
+#, python-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] "%d hour"
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:14
+#, python-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d minute"
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:110
+msgid "Forbidden"
+msgstr "Forbidden"
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:111
+msgid "CSRF verification failed. Request aborted."
+msgstr "CSRF verification failed. Request aborted."
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:115
+#, fuzzy
+#| msgid ""
+#| "You are seeing this message because this HTTPS site requires a 'Referer "
+#| "header' to be sent by your Web browser, but none was sent. This header is "
+#| "required for security reasons, to ensure that your browser is not being "
+#| "hijacked by third parties."
+msgid ""
+"You are seeing this message because this HTTPS site requires a “Referer "
+"header” to be sent by your Web browser, but none was sent. This header is "
+"required for security reasons, to ensure that your browser is not being "
+"hijacked by third parties."
+msgstr ""
+"You are seeing this message because this HTTPS site requires a 'Referer "
+"header' to be sent by your Web browser, but none was sent. This header is "
+"required for security reasons, to ensure that your browser is not being "
+"hijacked by third parties."
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:120
+#, fuzzy
+#| msgid ""
+#| "If you have configured your browser to disable 'Referer' headers, please "
+#| "re-enable them, at least for this site, or for HTTPS connections, or for "
+#| "'same-origin' requests."
+msgid ""
+"If you have configured your browser to disable “Referer” headers, please re-"
+"enable them, at least for this site, or for HTTPS connections, or for “same-"
+"origin” requests."
+msgstr ""
+"If you have configured your browser to disable 'Referer' headers, please re-"
+"enable them, at least for this site, or for HTTPS connections, or for 'same-"
+"origin' requests."
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:124
+msgid ""
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
+"including the “Referrer-Policy: no-referrer” header, please remove them. The "
+"CSRF protection requires the “Referer” header to do strict referer checking. "
+"If you’re concerned about privacy, use alternatives like <a "
+"rel=\"noreferrer\" …> for links to third-party sites."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:132
+msgid ""
+"You are seeing this message because this site requires a CSRF cookie when "
+"submitting forms. This cookie is required for security reasons, to ensure "
+"that your browser is not being hijacked by third parties."
+msgstr ""
+"You are seeing this message because this site requires a CSRF cookie when "
+"submitting forms. This cookie is required for security reasons, to ensure "
+"that your browser is not being hijacked by third parties."
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:137
+#, fuzzy
+#| msgid ""
+#| "If you have configured your browser to disable cookies, please re-enable "
+#| "them, at least for this site, or for 'same-origin' requests."
+msgid ""
+"If you have configured your browser to disable cookies, please re-enable "
+"them, at least for this site, or for “same-origin” requests."
+msgstr ""
+"If you have configured your browser to disable cookies, please re-enable "
+"them, at least for this site, or for 'same-origin' requests."
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:142
+msgid "More information is available with DEBUG=True."
+msgstr "More information is available with DEBUG=True."
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:41
+msgid "No year specified"
+msgstr "No year specified"
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:61
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:111
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:208
+msgid "Date out of range"
+msgstr "Date out of range"
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:90
+msgid "No month specified"
+msgstr "No month specified"
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:142
+msgid "No day specified"
+msgstr "No day specified"
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:188
+msgid "No week specified"
+msgstr "No week specified"
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:338
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:367
+#, python-format
+msgid "No %(verbose_name_plural)s available"
+msgstr "No %(verbose_name_plural)s available"
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:594
+#, python-format
+msgid ""
+"Future %(verbose_name_plural)s not available because "
+"%(class_name)s.allow_future is False."
+msgstr ""
+"Future %(verbose_name_plural)s not available because "
+"%(class_name)s.allow_future is False."
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:628
+#, fuzzy, python-format
+#| msgid "Invalid date string '%(datestr)s' given format '%(format)s'"
+msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
+msgstr "Invalid date string '%(datestr)s' given format '%(format)s'"
+
+#: .\venv\Lib\site-packages\django\views\generic\detail.py:54
+#, python-format
+msgid "No %(verbose_name)s found matching the query"
+msgstr "No %(verbose_name)s found matching the query"
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:67
+#, fuzzy
+#| msgid "Page is not 'last', nor can it be converted to an int."
+msgid "Page is not “last”, nor can it be converted to an int."
+msgstr "Page is not 'last', nor can it be converted to an int."
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:72
+#, python-format
+msgid "Invalid page (%(page_number)s): %(message)s"
+msgstr "Invalid page (%(page_number)s): %(message)s"
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:154
+#, fuzzy, python-format
+#| msgid "Empty list and '%(class_name)s.allow_empty' is False."
+msgid "Empty list and “%(class_name)s.allow_empty” is False."
+msgstr "Empty list and '%(class_name)s.allow_empty' is False."
+
+#: .\venv\Lib\site-packages\django\views\static.py:40
+msgid "Directory indexes are not allowed here."
+msgstr "Directory indexes are not allowed here."
+
+#: .\venv\Lib\site-packages\django\views\static.py:42
+#, fuzzy, python-format
+#| msgid "\"%(path)s\" does not exist"
+msgid "“%(path)s” does not exist"
+msgstr "\"%(path)s\" does not exist"
+
+#: .\venv\Lib\site-packages\django\views\static.py:80
+#, python-format
+msgid "Index of %(directory)s"
+msgstr "Index of %(directory)s"
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:7
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:221
+msgid "The install worked successfully! Congratulations!"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:207
+#, python-format
+msgid ""
+"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:222
+#, fuzzy, python-format
+#| msgid ""
+#| "You're seeing this message because you have <code>DEBUG = True</code> in "
+#| "your Django settings file and you haven't configured any URLs. Get to "
+#| "work!"
+msgid ""
+"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
+"%(version)s/ref/settings/#debug\" target=\"_blank\" "
+"rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not "
+"configured any URLs."
+msgstr ""
+"You're seeing this message because you have <code>DEBUG = True</code> in "
+"your Django settings file and you haven't configured any URLs. Get to work!"
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:230
+msgid "Django Documentation"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:231
+msgid "Topics, references, &amp; how-to’s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:239
+msgid "Tutorial: A Polling App"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:240
+msgid "Get started with Django"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:248
+msgid "Django Community"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:249
+msgid "Connect, get help, or contribute"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:313
+msgid "usage: "
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:821
+msgid ".__call__() not defined"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1105
+#, python-format
+msgid "unknown parser %r (choices: %s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1146
+#, python-format
+msgid "argument \"-\" with mode %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1349
+#, python-format
+msgid "cannot merge actions - two groups are named %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1387
+msgid "'required' is an invalid argument for positionals"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1407
+#, python-format
+msgid "invalid option string %r: must start with a character %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1428
+#, python-format
+msgid "dest= is required for options like %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1445
+#, python-format
+msgid "invalid conflict_resolution value: %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1463
+#, python-format
+msgid "conflicting option string(s): %s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1526
+msgid "mutually exclusive arguments must be optional"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1596
+msgid "positional arguments"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1597
+msgid "optional arguments"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1615
+msgid "show this help message and exit"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1621
+msgid "show program's version number and exit"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1653
+msgid "cannot have multiple subparser arguments"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1705
+#, python-format
+msgid "unrecognized arguments: %s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1802
+#, python-format
+msgid "not allowed with argument %s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1848
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1862
+#, python-format
+msgid "ignored explicit argument %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1952
+msgid "too few arguments"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1959
+#, python-format
+msgid "argument %s is required"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1973
+#, python-format
+msgid "one of the arguments %s is required"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2019
+msgid "expected one argument"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2020
+msgid "expected at most one argument"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2021
+msgid "expected at least one argument"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2023
+#, python-format
+msgid "expected %s argument(s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2080
+#, python-format
+msgid "ambiguous option: %s could match %s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2142
+#, python-format
+msgid "unexpected option string: %s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2243
+#, python-format
+msgid "%r is not callable"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2259
+#, fuzzy, python-format
+#| msgid "Enter a valid value."
+msgid "invalid %s value: %r"
+msgstr "請輸入有效值"
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2269
+#, python-format
+msgid "invalid choice: %r (choose from %s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2362
+#, python-format
+msgid "%s: error: %s\n"
+msgstr ""
+
+#: .\warehouse\forms.py:82
+msgid "Choose Plant"
+msgstr "選擇廠區"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:5
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:35
+msgid "Area List By Warehouse"
+msgstr "按倉庫劃分的區域列表"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:38
+#: .\warehouse\templates\warehouse\bin_by_area.html:37
+#: .\warehouse\templates\warehouse\warehouse_list.html:39
+#: .\wh_former\templates\wh_former\modules\components\buttons\save_button.html:20
+#: .\wh_packing\forms.py:302
+msgid "Add"
+msgstr "添加"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:41
+#: .\warehouse\templates\warehouse\area_edit.html:66
+#: .\warehouse\templates\warehouse\bin_by_area.html:40
+#: .\warehouse\templates\warehouse\bin_edit.html:36
+#: .\warehouse\templates\warehouse\warehouse_edit.html:91
+msgid "Back to List"
+msgstr "返回列表"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:50
+#: .\warehouse\templates\warehouse\area_create.html:16
+#: .\warehouse\templates\warehouse\area_edit.html:15
+#: .\warehouse\templates\warehouse\bin_by_area.html:51
+#: .\warehouse\templates\warehouse\bin_create.html:25
+#: .\warehouse\templates\warehouse\bin_edit.html:28
+msgid "Area Id"
+msgstr "區域編號"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:51
+#: .\warehouse\templates\warehouse\area_create.html:22
+#: .\warehouse\templates\warehouse\area_edit.html:21
+msgid "Area Name"
+msgstr "區域名稱"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:52
+#: .\warehouse\templates\warehouse\area_create.html:52
+#: .\warehouse\templates\warehouse\area_edit.html:57
+#: .\warehouse\templates\warehouse\warehouse_edit.html:31
+#: .\warehouse\templates\warehouse\warehouse_list.html:47
+msgid "Warehouse Id"
+msgstr "倉庫編號"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:67
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:75
+#: .\warehouse\templates\warehouse\bin_by_area.html:65
+#: .\warehouse\templates\warehouse\bin_by_area.html:73
+#: .\warehouse\templates\warehouse\warehouse_list.html:61
+#: .\warehouse\templates\warehouse\warehouse_list.html:65
+#: .\wh_former\templates\wh_former\modules\components\buttons\edit-button-3.html:3
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:301
+msgid "Edit"
+msgstr "編輯"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:85
+#, fuzzy
+#| msgid "No warehouses found."
+msgid "No area found."
+msgstr "沒有找到倉庫。"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:98
+#: .\warehouse\templates\warehouse\bin_by_area.html:98
+#: .\warehouse\templates\warehouse\warehouse_list.html:87
+msgid "Alert"
+msgstr "警告"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:105
+msgid "Are you sure you want to delete the area"
+msgstr "您確定要刪除該區域嗎"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:111
+#: .\warehouse\templates\warehouse\bin_by_area.html:111
+#: .\warehouse\templates\warehouse\warehouse_list.html:100
+msgid "Yes, Delete"
+msgstr "是的，刪除"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:115
+#: .\warehouse\templates\warehouse\bin_by_area.html:115
+#: .\warehouse\templates\warehouse\warehouse_list.html:104
+#: .\wh_former\templates\wh_former\components\buttons\save_button.html:241
+#: .\wh_former\templates\wh_former\components\modals\warning_modal.html:26
+#: .\wh_former\templates\wh_former\modules\components\buttons\cancel-button-2.html:2
+#: .\wh_former\templates\wh_former\modules\components\buttons\cancel_button.html:8
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:119
+msgid "Cancel"
+msgstr "取消"
+
+#: .\warehouse\templates\warehouse\area_create.html:5
+#: .\warehouse\templates\warehouse\bin_create.html:5
+#: .\warehouse\templates\warehouse\warehouse_create.html:5
+#: .\warehouse\templates\warehouse\warehouse_create.html:29
+msgid "Create Warehouse"
+msgstr "建立倉庫"
+
+#: .\warehouse\templates\warehouse\area_create.html:14
+msgid "Create Area"
+msgstr "建立區域"
+
+#: .\warehouse\templates\warehouse\area_create.html:28
+#: .\warehouse\templates\warehouse\area_edit.html:27
+msgid "Position X"
+msgstr "位置 X"
+
+#: .\warehouse\templates\warehouse\area_create.html:34
+#: .\warehouse\templates\warehouse\area_edit.html:33
+msgid "Position Y"
+msgstr "位置 Y"
+
+#: .\warehouse\templates\warehouse\area_create.html:40
+#: .\warehouse\templates\warehouse\area_edit.html:39
+msgid "Area Width"
+msgstr "地圖區域寬度"
+
+#: .\warehouse\templates\warehouse\area_create.html:46
+#: .\warehouse\templates\warehouse\area_edit.html:45
+msgid "Area Length"
+msgstr "地圖區域長度"
+
+#: .\warehouse\templates\warehouse\area_create.html:58
+#: .\warehouse\templates\warehouse\bin_create.html:30
+#: .\warehouse\templates\warehouse\warehouse_create.html:87
+#: .\wh_former\forms.py:402
+#: .\wh_former\templates\wh_former\components\buttons\button\button_save.html:20
+#: .\wh_former\templates\wh_former\components\buttons\save_button.html:231
+#: .\wh_former\templates\wh_former\modules\components\buttons\done_button.html:10
+msgid "Save"
+msgstr "儲存"
+
+#: .\warehouse\templates\warehouse\area_edit.html:5
+#: .\warehouse\templates\warehouse\area_edit.html:13
+msgid "Edit Area"
+msgstr "編輯區域"
+
+#: .\warehouse\templates\warehouse\area_edit.html:51
+msgid "Layer"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\area_edit.html:63
+#: .\warehouse\templates\warehouse\bin_edit.html:33
+#: .\warehouse\templates\warehouse\warehouse_edit.html:88
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:122
+msgid "Save Changes"
+msgstr "儲存變更"
+
+#: .\warehouse\templates\warehouse\bin_by_area.html:5
+#: .\warehouse\templates\warehouse\bin_by_area.html:34
+msgid "Bin List By Area"
+msgstr "按區域分類的儲位列表"
+
+#: .\warehouse\templates\warehouse\bin_by_area.html:49
+#: .\warehouse\templates\warehouse\bin_create.html:14
+#: .\warehouse\templates\warehouse\bin_edit.html:15
+msgid "Bin Id"
+msgstr "儲位編號"
+
+#: .\warehouse\templates\warehouse\bin_by_area.html:50
+#: .\warehouse\templates\warehouse\bin_create.html:19
+#: .\warehouse\templates\warehouse\bin_edit.html:22
+msgid "Bin Name"
+msgstr "儲位名稱"
+
+#: .\warehouse\templates\warehouse\bin_by_area.html:85
+msgid "No bins found."
+msgstr "沒有找到儲位。"
+
+#: .\warehouse\templates\warehouse\bin_by_area.html:105
+msgid "Are you sure you want to delete the bin "
+msgstr "您確定要刪除儲位嗎"
+
+#: .\warehouse\templates\warehouse\bin_create.html:12
+msgid "Create Bin"
+msgstr "創建儲位"
+
+#: .\warehouse\templates\warehouse\bin_edit.html:5
+#: .\warehouse\templates\warehouse\bin_edit.html:13
+msgid "Edit Bin"
+msgstr "編輯儲位"
+
+#: .\warehouse\templates\warehouse\index.html:75
+#: .\warehouse\templates\warehouse\warehouse_list.html:74
+msgid "No warehouses found."
+msgstr "沒有找到倉庫。"
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:31
+msgid "Warehouse Code"
+msgstr "倉庫代碼"
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:36
+#: .\warehouse\templates\warehouse\warehouse_edit.html:37
+#: .\warehouse\templates\warehouse\warehouse_list.html:48
+msgid "Warehouse Name"
+msgstr "倉庫名稱"
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:41
+#: .\warehouse\templates\warehouse\warehouse_edit.html:43
+#: .\warehouse\templates\warehouse\warehouse_list.html:46
+#: .\wh_packing\forms.py:63 .\wh_packing\forms.py:427 .\wh_packing\forms.py:457
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:134
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:142
+#: .\wh_packing\templates\wh_packing\admin\sap_query.html:105
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:194
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:237
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:301
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:80
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:192
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:245
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:58
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:118
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:204
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:235
+msgid "Plant"
+msgstr "廠別"
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:47
+#: .\warehouse\templates\warehouse\warehouse_edit.html:49
+#: .\wh_packing\forms.py:231
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:146
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:331
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:87
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:208
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:262
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:79
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:125
+msgid "Comment"
+msgstr "備註"
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:56
+#: .\warehouse\templates\warehouse\warehouse_edit.html:57
+msgid "For Packing Warehouse Function"
+msgstr "包材倉庫程式專用"
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:62
+#: .\warehouse\templates\warehouse\warehouse_edit.html:63
+msgid "For Former Warehouse Function"
+msgstr "手模倉庫程式專用"
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:68
+#: .\warehouse\templates\warehouse\warehouse_edit.html:69
+msgid "For WIP Warehouse Function"
+msgstr "半成品倉庫程式專用"
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:74
+#: .\warehouse\templates\warehouse\warehouse_edit.html:75
+msgid "For Product Warehouse Function"
+msgstr "成品倉庫程式專用"
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:81
+#: .\warehouse\templates\warehouse\warehouse_edit.html:82
+msgid "Background Image"
+msgstr "背景圖片"
+
+#: .\warehouse\templates\warehouse\warehouse_edit.html:5
+#: .\warehouse\templates\warehouse\warehouse_edit.html:29
+msgid "Edit Warehouse"
+msgstr "編輯倉庫"
+
+#: .\warehouse\templates\warehouse\warehouse_list.html:5
+#: .\warehouse\templates\warehouse\warehouse_list.html:37
+msgid "Warehouse List"
+msgstr "倉庫清單"
+
+#: .\warehouse\templates\warehouse\warehouse_list.html:94
+msgid "Are you sure you want to delete the warehouse"
+msgstr "您確定要刪除倉庫嗎"
+
+#: .\wh_former\forms.py:16
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:284
+msgid "Note"
+msgstr "備註"
+
+#: .\wh_former\forms.py:17
+#: .\wh_former\templates\wh_former\modules\components\forms\basket_master_data_form.html:19
+#, fuzzy
+#| msgid "Basket Length"
+msgid "Basket width"
+msgstr "支援手模長度"
+
+#: .\wh_former\forms.py:17 .\wh_former\forms.py:108 .\wh_former\forms.py:163
+#: .\wh_former\forms.py:297
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_length_field.html:3
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:123
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:104
+#: .\wh_former\templates\wh_former\modules\components\modals\params\length_modal.html:93
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:272
+#: .\wh_former\templates\wh_former\pages\former_search.html:283
+#: .\wh_former\utils\configs\table_configs.py:7
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:9
+msgid "Length"
+msgstr "長度"
+
+#: .\wh_former\forms.py:24 .\wh_former\forms.py:101 .\wh_former\forms.py:158
+#: .\wh_former\forms.py:233
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_brand_field.html:3
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\parameters_brand_field.html:3
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:73
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:260
+#: .\wh_former\utils\configs\table_configs.py:7
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:7
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:31
+msgid "Brand"
+msgstr "廠商"
+
+#: .\wh_former\forms.py:25
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:8
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:32
+msgid "Capacity"
+msgstr "放置手模數量"
+
+#: .\wh_former\forms.py:26
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:268
+msgid "Receive Qty"
+msgstr "收貨數量"
+
+#: .\wh_former\forms.py:27 .\wh_former\forms.py:234
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\basket_master_edit.html:20
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:276
+msgid "Receive Date"
+msgstr "收貨日期"
+
+#: .\wh_former\forms.py:28 .\wh_former\forms.py:237
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\basket_master_edit.html:35
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:76
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:280
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:11
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:26
+#: .\wh_packing\forms.py:203 .\wh_packing\forms.py:320
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:137
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:323
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:337
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:208
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:82
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:195
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:248
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:120
+msgid "Purchase Order"
+msgstr "採購單"
+
+#: .\wh_former\forms.py:32
+msgid "Max: 5"
+msgstr ""
+
+#: .\wh_former\forms.py:33
+msgid "Example: 24"
+msgstr ""
+
+#: .\wh_former\forms.py:35 .\wh_former\forms.py:112 .\wh_former\forms.py:116
+#: .\wh_former\forms.py:117 .\wh_former\forms.py:119 .\wh_former\forms.py:121
+#: .\wh_former\forms.py:159 .\wh_former\forms.py:160 .\wh_former\forms.py:161
+#: .\wh_former\forms.py:165 .\wh_former\forms.py:166
+msgid "Type here..."
+msgstr ""
+
+#: .\wh_former\forms.py:41
+msgid "Why create if you get 0?"
+msgstr ""
+
+#: .\wh_former\forms.py:47
+msgid "A basket without any mold?"
+msgstr ""
+
+#: .\wh_former\forms.py:53
+msgid "Please select a receipt date!"
+msgstr "請選擇收貨日期"
+
+#: .\wh_former\forms.py:59
+msgid "Length must be a positive number"
+msgstr "長度必須是正數"
+
+#: .\wh_former\forms.py:65
+#, fuzzy
+#| msgid "Product Order cannot be null!"
+msgid "Product Order cannot exceed 10 characters"
+msgstr "訂單為必填欄位"
+
+#: .\wh_former\forms.py:98
+msgid "DN"
+msgstr ""
+
+#: .\wh_former\forms.py:99 .\wh_former\forms.py:164
+#: .\wh_former\templates\wh_former\components\forms\former_stock_in_form.html:52
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_size_field.html:3
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:111
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:110
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:158
+#: .\wh_former\templates\wh_former\modules\components\modals\params\size_modal.html:94
+#: .\wh_former\utils\configs\table_configs.py:7
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:29
+#: .\wh_packing\forms.py:22 .\wh_packing\forms.py:85 .\wh_packing\forms.py:212
+#: .\wh_packing\forms.py:322
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:65
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:91
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:141
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:151
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:328
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:83
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:14
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:149
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:201
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:242
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:86
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:198
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:251
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:75
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:124
+msgid "Size"
+msgstr "尺寸"
+
+#: .\wh_former\forms.py:100
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:10
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_batch_field.html:5
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:147
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:16
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:10
+#: .\wh_former\templates\wh_former\pages\batch_history.html:21
+#: .\wh_former\templates\wh_former\pages\former_search.html:279
+#: .\wh_packing\forms.py:526
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:117
+msgid "Batch No"
+msgstr "批號"
+
+#: .\wh_former\forms.py:102 .\wh_former\forms.py:159
+#: .\wh_former\utils\configs\table_configs.py:7
+msgid "Model"
+msgstr "型號"
+
+#: .\wh_former\forms.py:103
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:153
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:203
+msgid "Purchase Qty"
+msgstr "採購數量"
+
+#: .\wh_former\forms.py:104 .\wh_former\utils\configs\table_configs.py:7
+msgid "Data date"
+msgstr "建檔日期"
+
+#: .\wh_former\forms.py:105 .\wh_former\forms.py:160 .\wh_former\forms.py:300
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\former_surface_field.html:3
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:99
+#: .\wh_former\templates\wh_former\modules\components\modals\params\surface_modal.html:93
+msgid "Surface"
+msgstr "表面材質"
+
+#: .\wh_former\forms.py:106
+msgid "AQL"
+msgstr "AQL"
+
+#: .\wh_former\forms.py:107
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_item_field.html:3
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:26
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:31
+#: .\wh_former\templates\wh_former\pages\former_search.html:282
+msgid "Item No"
+msgstr "料號"
+
+#: .\wh_former\forms.py:109 .\wh_former\forms.py:162
+#: .\wh_former\templates\wh_former\components\forms\former_stock_in_form.html:53
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:159
+#: .\wh_former\utils\configs\table_configs.py:7
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:28
+msgid "Used day"
+msgstr "使用天數"
+
+#: .\wh_former\forms.py:161
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:22
+#: .\wh_former\templates\wh_former\pages\former_search.html:281
+msgid "Receive Form"
+msgstr "DN"
+
+#: .\wh_former\forms.py:165 .\wh_former\utils\configs\table_configs.py:7
+msgid "Item no"
+msgstr "料號"
+
+#: .\wh_former\forms.py:166
+#: .\wh_former\templates\wh_former\components\forms\former_stock_in_form.html:50
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:156
+#: .\wh_former\utils\configs\table_configs.py:7
+msgid "Batch no"
+msgstr "批號"
+
+#: .\wh_former\forms.py:221
+msgid "Nhập đúng định dạng: =10, >=10, <=10, >10, <10"
+msgstr ""
+
+#: .\wh_former\forms.py:229 .\wh_former\forms.py:243
+msgid "All"
+msgstr ""
+
+#: .\wh_former\forms.py:229 .\wh_former\forms.py:243
+msgid "In use"
+msgstr "使用中"
+
+#: .\wh_former\forms.py:229 .\wh_former\forms.py:243
+#: .\wh_former\templates\wh_former\modules\components\modals\params\length_modal.html:98
+#: .\wh_former\templates\wh_former\modules\components\modals\params\size_modal.html:99
+#: .\wh_former\templates\wh_former\modules\components\modals\params\surface_modal.html:98
+#: .\wh_former\templates\wh_former\modules\components\modals\params\vendor_modal.html:97
+msgid "Active"
+msgstr "啟用"
+
+#: .\wh_former\forms.py:229 .\wh_former\forms.py:243
+#: .\wh_former\templates\wh_former\modules\components\buttons\scrap-button-2.html:2
+msgid "Scrap"
+msgstr "報廢"
+
+#: .\wh_former\forms.py:229 .\wh_former\forms.py:236 .\wh_former\forms.py:245
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:27
+msgid "Group"
+msgstr "群組"
+
+#: .\wh_former\forms.py:232
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:6
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:25
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:52
+msgid "Basket No"
+msgstr "籮筐號碼"
+
+#: .\wh_former\forms.py:232
+#, fuzzy
+#| msgid "Enter a list of values."
+msgid "Enter at least 8 characters..."
+msgstr "Enter a list of values."
+
+#: .\wh_former\forms.py:236
+#, fuzzy
+#| msgid "Enter length"
+msgid "Enter group"
+msgstr "輸入長度"
+
+#: .\wh_former\forms.py:237
+#, fuzzy
+#| msgid "Enter length"
+msgid "Enter PO"
+msgstr "輸入長度"
+
+#: .\wh_former\forms.py:282
+msgid "Brand name"
+msgstr "廠商名稱"
+
+#: .\wh_former\forms.py:286
+msgid "Size name"
+msgstr "尺寸"
+
+#: .\wh_former\forms.py:290
+msgid "Item name"
+msgstr "料號"
+
+#: .\wh_former\forms.py:296
+#, fuzzy
+#| msgid "Length"
+msgid "Length code"
+msgstr "長度"
+
+#: .\wh_former\forms.py:345
+msgid "Giá trị không hợp lệ."
+msgstr ""
+
+#: .\wh_former\forms.py:347
+msgid "Giá trị không được nhỏ hơn 0."
+msgstr ""
+
+#: .\wh_former\forms.py:368
+msgid "Client Device IP"
+msgstr ""
+
+#: .\wh_former\forms.py:369
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:55
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:65
+msgid "RFID Reader IP"
+msgstr ""
+
+#: .\wh_former\forms.py:370
+msgid "RFID Reader Port"
+msgstr ""
+
+#: .\wh_former\forms.py:371
+#, fuzzy
+#| msgid "Location"
+msgid "Location Name"
+msgstr "儲位"
+
+#: .\wh_former\forms.py:372
+msgid "RFID Reader Status"
+msgstr ""
+
+#: .\wh_former\forms.py:433
+msgid "Size:"
+msgstr "尺寸"
+
+#: .\wh_former\forms.py:435
+msgid "Select size"
+msgstr "選擇尺寸"
+
+#: .\wh_former\forms.py:442
+msgid "Stock form"
+msgstr "出庫單號"
+
+#: .\wh_former\forms.py:465
+msgid "Invalid size selected. Please choose a valid size."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\base.html:278
+#: .\wh_former\templates\wh_former\modules\components\tables\former\rfid\table_rfid_footer.html:5
+#: .\wh_former\templates\wh_former\modules\components\tables\former\rfid\table_rfid_result.html:38
+msgid "Basket"
+msgstr "籮筐"
+
+#: .\wh_former\templates\wh_former\base.html:284
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:65
+msgid "Add Basket"
+msgstr "籮筐建檔"
+
+#: .\wh_former\templates\wh_former\base.html:292
+#: .\wh_former\templates\wh_former\pages\basket_search.html:15
+msgid "Search Basket"
+msgstr "籮筐查詢"
+
+#: .\wh_former\templates\wh_former\base.html:302
+#: .\wh_former\templates\wh_former\pages\basket_modify.html:42
+msgid "Modify Basket"
+msgstr "調整籮筐"
+
+#: .\wh_former\templates\wh_former\base.html:312
+#: .\wh_former\templates\wh_former\modules\components\tables\former\rfid\table_rfid_result.html:31
+msgid "Former"
+msgstr "手模"
+
+#: .\wh_former\templates\wh_former\base.html:317
+msgid "Add Former"
+msgstr "手模建檔"
+
+#: .\wh_former\templates\wh_former\base.html:322
+msgid "Search Former"
+msgstr "查詢手模"
+
+#: .\wh_former\templates\wh_former\base.html:328
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:57
+msgid "Former Stock In"
+msgstr "手模入庫"
+
+#: .\wh_former\templates\wh_former\base.html:333
+#: .\wh_former\templates\wh_former\pages\former_stock_out.html:49
+msgid "Former Stock Out"
+msgstr "手模出庫"
+
+#: .\wh_former\templates\wh_former\base.html:341
+msgid "Transaction"
+msgstr "交易"
+
+#: .\wh_former\templates\wh_former\base.html:347
+#, fuzzy
+#| msgid "export"
+msgid "Scrap Report"
+msgstr "報廢報表"
+
+#: .\wh_former\templates\wh_former\base.html:353
+#, fuzzy
+#| msgid "Batch No"
+msgid "Batch Report"
+msgstr "批號報表"
+
+#: .\wh_former\templates\wh_former\components\buttons\save_button.html:236
+msgid "Done"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\forms\former_stock_in_form.html:24
+msgid "Choose stockout form"
+msgstr "選擇出庫單"
+
+#: .\wh_former\templates\wh_former\components\forms\former_stock_in_form.html:29
+#, fuzzy
+#| msgid "Select..."
+msgid "Select form..."
+msgstr "請選擇"
+
+#: .\wh_former\templates\wh_former\components\forms\former_stock_in_form.html:51
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\form_type_field.html:3
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:87
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:157
+msgid "Former type"
+msgstr "手模類別"
+
+#: .\wh_former\templates\wh_former\components\forms\former_stock_in_form.html:54
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:160
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:172
+#: .\wh_former\templates\wh_former\pages\former_master_data.html:40
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:78
+msgid "Baskets"
+msgstr "籮筐"
+
+#: .\wh_former\templates\wh_former\components\forms\former_stock_in_form.html:55
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:161
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:175
+#: .\wh_former\templates\wh_former\pages\former_master_data.html:43
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:81
+msgid "Formers"
+msgstr "手模"
+
+#: .\wh_former\templates\wh_former\components\modals\area_modal.html:7
+msgid "Detail Area Infomation"
+msgstr "區域地圖資訊"
+
+#: .\wh_former\templates\wh_former\components\modals\area_modal.html:17
+msgid "LEFT"
+msgstr "左側"
+
+#: .\wh_former\templates\wh_former\components\modals\area_modal.html:20
+msgid "CENTER"
+msgstr "中間"
+
+#: .\wh_former\templates\wh_former\components\modals\area_modal.html:23
+msgid "RIGHT"
+msgstr "右側"
+
+#: .\wh_former\templates\wh_former\components\modals\area_modal2.html:8
+msgid "Thông tin chi tiết"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\item_modal.html:8
+msgid "Add Item ..."
+msgstr "新增料號"
+
+#: .\wh_former\templates\wh_former\components\modals\stockin_modal.html:37
+msgid "Nhập mới"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\stockin_modal.html:38
+msgid "Đã sử dụng"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\stockin_modal.html:39
+msgid "Thoát"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\stockout_modal.html:41
+msgid "Choose action"
+msgstr "選擇出庫原因"
+
+#: .\wh_former\templates\wh_former\components\modals\stockout_modal.html:46
+#: .\wh_former\templates\wh_former\components\page_title.html:71
+msgid "Production"
+msgstr "手模上機"
+
+#: .\wh_former\templates\wh_former\components\modals\stockout_modal.html:47
+#: .\wh_former\templates\wh_former\components\page_title.html:90
+msgid "Washing"
+msgstr "清洗手模"
+
+#: .\wh_former\templates\wh_former\components\modals\stockout_modal.html:48
+msgid "To LK"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\stockout_modal.html:49
+#: .\wh_former\templates\wh_former\modules\components\buttons\cancel-button-3.html:7
+#: .\wh_former\templates\wh_former\modules\components\buttons\exit-button-2.html:2
+msgid "Exit"
+msgstr "離開"
+
+#: .\wh_former\templates\wh_former\components\modals\warning_modal.html:8
+msgid "Bin Selection Required"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\warning_modal.html:14
+msgid "Warning:"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\warning_modal.html:14
+msgid "Some baskets do not have bins selected."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\warning_modal.html:21
+msgid ""
+"Please select bins for all baskets before saving, or click Continue to save "
+"without bin selection."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\warning_modal.html:29
+msgid "Continue Anyway"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\page_title.html:134
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\form_type_field.html:7
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\former_surface_field.html:7
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_size_field.html:7
+msgid "Select..."
+msgstr "請選擇"
+
+#: .\wh_former\templates\wh_former\components\settings\components\device\settings_device.html:12
+#: .\wh_former\templates\wh_former\components\settings\manage_index.html:27
+msgid "Add new"
+msgstr "新增使用者"
+
+#: .\wh_former\templates\wh_former\components\settings\components\device\settings_device_result.html:6
+#: .\wh_former\templates\wh_former\components\settings\manage_index.html:47
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:12
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:12
+msgid "Client IP"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\settings\components\device\settings_device_result.html:7
+#: .\wh_former\templates\wh_former\components\settings\manage_index.html:48
+msgid "Gate"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\settings\components\device\settings_device_result.html:8
+#: .\wh_former\templates\wh_former\components\settings\manage_index.html:49
+msgid "Controller IP"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\settings\components\device\settings_device_result.html:9
+#: .\wh_former\templates\wh_former\components\settings\manage_index.html:50
+msgid "Port"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\settings\components\device\settings_device_result.html:54
+#: .\wh_former\templates\wh_former\components\settings\manage_index.html:95
+msgid "No records yet."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\settings\components\settings_title.html:15
+#, fuzzy
+#| msgid "Storage Setting"
+msgid "Setting"
+msgstr "編輯倉庫"
+
+#: .\wh_former\templates\wh_former\components\settings\manage_index.html:5
+msgid "Hand Former - Manage - Settings"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\settings\manage_index.html:22
+msgid "RFID Setting"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\settings\settings.html:5
+msgid "Hand Former - Basket Master Data"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:13
+msgid "PID"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:14
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:13
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:18
+#: .\wh_former\templates\wh_former\pages\batch_history.html:53
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:38
+msgid "Action"
+msgstr "類型"
+
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:15
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:14
+msgid "From Bin"
+msgstr "開始日期"
+
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:16
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:15
+msgid "To Bin"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:48
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:58
+msgid "No rack data found for this RFID reader."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:56
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:66
+msgid "Filter"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:57
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:67
+msgid "Total Records"
+msgstr "總紀錄數"
+
+#: .\wh_former\templates\wh_former\modules\components\buttons\confirm-button-2-print.html:2
+#: .\wh_former\templates\wh_former\modules\components\tables\basket\result\result_table_footer.html:175
+msgid "Print"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\buttons\confirm-button-2.html:2
+#: .\wh_former\templates\wh_former\pages\batch_history.html:91
+#: .\wh_packing\forms.py:171 .\wh_packing\forms.py:190
+msgid "Confirm"
+msgstr "確認"
+
+#: .\wh_former\templates\wh_former\modules\components\buttons\delete-button-2.html:2
+msgid "Delete all"
+msgstr "刪除"
+
+#: .\wh_former\templates\wh_former\modules\components\buttons\rack_button.html:9
+msgid "Rack"
+msgstr "貨架"
+
+#: .\wh_former\templates\wh_former\modules\components\buttons\start_button.html:20
+msgid "Start"
+msgstr "開始"
+
+#: .\wh_former\templates\wh_former\modules\components\buttons\stop_button.html:29
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:53
+msgid "Stop"
+msgstr "停止"
+
+#: .\wh_former\templates\wh_former\modules\components\buttons\update-button-2.html:2
+msgid "Update"
+msgstr "更新完成"
+
+#: .\wh_former\templates\wh_former\modules\components\errors\403.html:5
+#: .\wh_former\templates\wh_former\modules\components\errors\404.html:5
+msgid "Hand Former - Access Denied"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\errors\403.html:13
+#: .\wh_former\templates\wh_former\modules\components\errors\404.html:13
+msgid "Access Denied"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\errors\403.html:14
+#: .\wh_former\templates\wh_former\modules\components\errors\404.html:14
+msgid ""
+"Your <b style='color: black;'>IP address</b> is not authorized to access "
+"this page!"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\forms\basket_master_data_form.html:30
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:256
+msgid "Plant code"
+msgstr "廠別代碼"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_batch_field.html:9
+msgid "Click button to generate..."
+msgstr "點擊按鈕產生"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_brand_field.html:7
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_item_field.html:7
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_length_field.html:7
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\parameters_brand_field.html:7
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:34
+msgid "Select or Typing"
+msgstr "輸入或選擇"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_item_field.html:54
+#: .\wh_former\utils\api\item_decode_api.py:21
+#: .\wh_former\utils\modules\helpers\forms\former_form.py:10
+msgid "Standard Fine Surface"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_item_field.html:55
+#: .\wh_former\utils\api\item_decode_api.py:22
+#: .\wh_former\utils\modules\helpers\forms\former_form.py:11
+msgid "Standard Coarse Surface"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_item_field.html:56
+#: .\wh_former\utils\api\item_decode_api.py:23
+#: .\wh_former\utils\modules\helpers\forms\former_form.py:12
+msgid "Standard Diamond Textured"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_item_field.html:57
+#: .\wh_former\utils\api\item_decode_api.py:24
+#: .\wh_former\utils\modules\helpers\forms\former_form.py:13
+msgid "Energy-saving Fine Surface"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_item_field.html:60
+#: .\wh_former\utils\api\item_decode_api.py:28
+#: .\wh_former\utils\modules\helpers\forms\former_form.py:17
+msgid "Stainless steel"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_item_field.html:61
+#: .\wh_former\utils\api\item_decode_api.py:29
+#: .\wh_former\utils\modules\helpers\forms\former_form.py:18
+msgid "Ceramic"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:16
+msgid "Enter form name"
+msgstr "輸入DN號碼"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:53
+msgid "Enter purchase order"
+msgstr "輸入採購單"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:121
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:134
+#, fuzzy
+#| msgid "Create Bin"
+msgid "Create new form"
+msgstr "創建儲位"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:125
+#, fuzzy
+#| msgid "Create Area"
+msgid "Create New Form"
+msgstr "建立區域"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:131
+msgid "Continue with form"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\action_modal.html:10
+msgid "Basket Detail"
+msgstr "籮筐明細"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_exit_confirm.html:10
+#, fuzzy
+#| msgid "Confirm"
+msgid "Confirm Exit"
+msgstr "確認"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_exit_confirm.html:18
+#, fuzzy
+#| msgid "That page number is not an integer"
+msgid "You have basket number that has not been printed."
+msgstr "That page number is not an integer"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_exit_confirm.html:21
+#, fuzzy
+#| msgid "Are you sure you want to delete the bin "
+msgid "Are you sure you want to exit without printing?"
+msgstr "您確定要退出而不列印嗎"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:9
+#, fuzzy
+#| msgid "Confirm"
+msgid "Confirm Print"
+msgstr "確認"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:17
+#, fuzzy
+#| msgid "Are you sure you want to delete?"
+msgid "Are you sure you want to print?"
+msgstr "您確定要列印嗎?"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:20
+msgid "Total labels to print"
+msgstr "列印的標籤總數"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:40
+#, fuzzy
+#| msgid "Comfirm Printing Quality"
+msgid "Confirm Printing Quality"
+msgstr "確認列印數量"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:47
+#, fuzzy
+#| msgid "finished"
+msgid "Finished"
+msgstr "已完成"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:47
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:48
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:49
+#: .\wh_former\templates\wh_former\modules\components\tables\basket\result\result_table_footer.html:499
+msgid "labels"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:48
+msgid "Still have"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:49
+#: .\wh_former\templates\wh_former\modules\components\tables\basket\result\result_table_footer.html:499
+msgid "Next will print"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:56
+msgid "Re-print"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:59
+msgid "Continue"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\cancel_confirm_modal.html:9
+msgid "Confirm Delete"
+msgstr "確認刪除"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\cancel_confirm_modal.html:17
+#, fuzzy
+#| msgid "Are you sure you want to delete?"
+msgid "Are you sure you want to cancel this operation?"
+msgstr "您確定要取消此次操作嗎?"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\cancel_confirm_modal.html:20
+msgid "This will delete all current data."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\cancel_confirm_modal.html:21
+#: .\wh_former\templates\wh_former\modules\components\modals\action\save_confirm_modal.html:62
+#, fuzzy
+#| msgid "This field cannot be null."
+msgid "This action cannot be undone!"
+msgstr "This field cannot be null."
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\cancel_modal.html:21
+msgid "Unsaved changes"
+msgstr "儲存變更"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\cancel_modal.html:25
+msgid "If you do this, any changes you have made will be lost."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\error_modal.html:18
+#: .\wh_former\templates\wh_former\modules\layout\items\scripts\rack_modal_logic.html:86
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:217
+msgid "Error"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\error_modal.html:23
+#: .\wh_former\templates\wh_former\pages\former_search.html:266
+msgid "Try again"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\loading_modal.html:49
+#: .\wh_former\templates\wh_former\modules\components\modals\action\rack_modal.html:15
+#: .\wh_former\templates\wh_former\modules\layout\items\scripts\rack_modal_logic.html:61
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:188
+#: .\wh_packing\templates\wh_packing\admin\bin_upload.html:111
+msgid "Loading..."
+msgstr "載入中"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\loading_modal.html:50
+msgid "Please wait"
+msgstr "請稍等"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\loading_modal3.html:142
+msgid "Scanning data"
+msgstr "掃描RFID中"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\not_done_modal.html:9
+msgid "Cảnh báo dữ liệu chưa lưu"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\not_done_modal.html:17
+msgid "Bạn có dữ liệu tạm thời trong rack chưa được lưu!"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\not_done_modal.html:20
+msgid ""
+"Nếu thoát trang mà không lưu, có thể xảy ra lỗi khi thực hiện lại. Bạn có "
+"chắc chắn muốn thoát không?"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\not_done_modal.html:26
+msgid "Hủy"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\not_done_modal.html:30
+msgid "Thoát trang"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\not_done_modal.html:123
+msgid "Bạn có dữ liệu chưa lưu. Thoát trang có thể gây mất dữ liệu."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\rack_modal.html:8
+msgid "Rack scanned Information"
+msgstr "掃描資訊"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\rack_modal.html:17
+#: .\wh_former\templates\wh_former\modules\layout\items\scripts\rack_modal_logic.html:63
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:190
+msgid "Loading rack data..."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\save_confirm_modal.html:51
+#, fuzzy
+#| msgid "Confirm"
+msgid "Confirm Save"
+msgstr "確認"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\save_confirm_modal.html:59
+#, fuzzy
+#| msgid "Are you sure you want to delete the area"
+msgid "Are you sure you want to complete this operation?"
+msgstr "您確定要刪除該區域嗎"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\save_confirm_modal.html:61
+msgid "This will finalize all data and move items to final storage."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\success_modal.html:18
+msgid "Success"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\success_modal.html:22
+msgid "OK"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\basket_master_data_confirm.html:9
+msgid "Confirm the following basket infomation"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\basket_master_data_confirm.html:20
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:196
+msgid "Loading form data..."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\basket_master_edit.html:8
+msgid "Edit Basket Information"
+msgstr "編輯籮筐資訊"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\basket_master_edit.html:47
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:39
+msgid "Description"
+msgstr "描述"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:7
+msgid "Edit Batch"
+msgstr "編輯批次資料"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:54
+msgid "Former Size"
+msgstr "手模尺寸"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:62
+msgid "Former Type"
+msgstr "手模類型"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:68
+msgid "Former Surface"
+msgstr "手模表面材質"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:82
+msgid "Former AQL"
+msgstr "手模 AQL"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:90
+#: .\wh_former\templates\wh_former\pages\former_search.html:280
+msgid "Former Vendor"
+msgstr "手模廠商"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:96
+msgid "Batch Data Date"
+msgstr "建檔日期"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:110
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:122
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:164
+#: .\wh_former\templates\wh_former\pages\batch_history.html:62
+#: .\wh_former\templates\wh_former\pages\former_search.html:284
+msgid "Used Day"
+msgstr "使用天數"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\leave_confirm.html:8
+#, fuzzy
+#| msgid "Warning!"
+msgid "Warning"
+msgstr "清洗手模"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\leave_confirm.html:16
+msgid "You have unsaved data."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\leave_confirm.html:17
+#, fuzzy
+#| msgid "Are you sure you want to delete the area"
+msgid " Are you sure you want to leave this page?"
+msgstr "您確定要刪除該區域嗎"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\leave_confirm.html:20
+msgid "Saved data may be corrupted!"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\show_noti_modal.html:8
+#, fuzzy
+#| msgid "Location"
+msgid "Notification"
+msgstr "儲位"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\show_noti_modal.html:14
+msgid "You have uncompleted action!"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\show_noti_modal.html:17
+msgid "is still in process"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\show_noti_modal.html:18
+msgid "Please continue to complete or cancel this process."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\length_modal.html:8
+msgid "Add Length ..."
+msgstr "新增長度"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\length_modal.html:89
+#: .\wh_former\templates\wh_former\modules\components\modals\params\size_modal.html:90
+#: .\wh_former\templates\wh_former\modules\components\modals\params\surface_modal.html:89
+#: .\wh_former\templates\wh_former\modules\components\modals\params\vendor_modal.html:88
+msgid "Code"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\length_modal.html:103
+#: .\wh_former\templates\wh_former\modules\components\modals\params\size_modal.html:104
+#: .\wh_former\templates\wh_former\modules\components\modals\params\surface_modal.html:103
+#: .\wh_former\templates\wh_former\modules\components\modals\params\vendor_modal.html:102
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:80
+msgid "Close"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\length_modal.html:104
+#: .\wh_former\templates\wh_former\modules\components\modals\params\size_modal.html:105
+#: .\wh_former\templates\wh_former\modules\components\modals\params\surface_modal.html:104
+#: .\wh_former\templates\wh_former\modules\components\modals\params\vendor_modal.html:103
+msgid "Save changes"
+msgstr "儲存變更"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\size_modal.html:8
+msgid "Add Size ..."
+msgstr "新增尺寸"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\size_modal.html:82
+msgid "Edit Size"
+msgstr "編輯尺寸"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\surface_modal.html:8
+msgid "Add Surface ..."
+msgstr "新增表面材質"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\vendor_modal.html:8
+msgid "Add Brand ..."
+msgstr "新增廠商"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\vendor_modal.html:92
+msgid "Name"
+msgstr "儲位名稱"
+
+#: .\wh_former\templates\wh_former\modules\components\tables\basket\result\result_table_body.html:312
+msgid "No result found!"
+msgstr "沒有找到倉庫。"
+
+#: .\wh_former\templates\wh_former\modules\components\tables\basket\result\result_table_footer.html:182
+msgid "Excel"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\tables\basket\result\result_table_footer.html:234
+#: .\wh_former\utils\configs\table_configs.py:7
+msgid "Total basket"
+msgstr "總籮筐數"
+
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:16
+#: .\wh_former\templates\wh_former\pages\former_search.html:286
+msgid "Total Baskets"
+msgstr "籮筐"
+
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:17
+#: .\wh_former\templates\wh_former\pages\former_search.html:287
+msgid "Total Formers"
+msgstr "手模"
+
+#: .\wh_former\templates\wh_former\modules\layout\items\scripts\rack_modal_logic.html:71
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:198
+msgid "Missing required parameters. Please check RFID Reader IP and Action."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\layout\items\scripts\rack_modal_logic.html:96
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:228
+msgid "Failed to load rack data. Please try again."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:5
+msgid "Former - Add Basket"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:264
+#, fuzzy
+#| msgid "Capacity"
+msgid "Capacity/1 Basket"
+msgstr "放置手模數量"
+
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:295
+msgid "Form Validation Errors:"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\basket_modify.html:5
+msgid "Former - Modify Basket"
+msgstr "手模建檔"
+
+#: .\wh_former\templates\wh_former\pages\basket_modify.html:132
+#: .\wh_former\templates\wh_former\pages\basket_search.html:69
+msgid "Are you sure you want to update all baskets in this group?"
+msgstr "您確定要刪除倉庫嗎"
+
+#: .\wh_former\templates\wh_former\pages\basket_modify.html:144
+#: .\wh_former\templates\wh_former\pages\basket_search.html:81
+msgid ""
+"Are you sure you want to delete all baskets in this group? This action "
+"cannot be undone."
+msgstr "您確定要刪除倉庫嗎"
+
+#: .\wh_former\templates\wh_former\pages\basket_search.html:5
+msgid "Former - Search Basket"
+msgstr "手模查詢"
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:5
+#: .\wh_former\templates\wh_former\pages\batch_history.html:7
+msgid "Hand Former - Former Batch History"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:9
+msgid "Batch Action History"
+msgstr "交易紀錄"
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:22
+msgid "Batch Number"
+msgstr "Lot批號"
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:29
+msgid "Enter batch number to view complete history..."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:38
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:78
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:104
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:395
+msgid "Search"
+msgstr "查詢"
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:56
+msgid "Search Results for"
+msgstr "搜尋功能"
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:63
+msgid "Found"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:63
+msgid "total records"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:64
+msgid "including related merge/split batches"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:108
+msgid "Qty Before"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:112
+msgid "Qty After"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:131
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:81
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:68
+msgid "Area"
+msgstr "區域"
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:141
+msgid "Related Batches in this Operation"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:181
+msgid "No history records found for batch number"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:11
+msgid "Batch History"
+msgstr "歷史紀錄"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:27
+msgid "Enter batch number"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:52
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:34
+msgid "Batch"
+msgstr "手模批號"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:54
+#, fuzzy
+#| msgid "Action"
+msgid "Sub Action"
+msgstr "類型"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:55
+#, fuzzy
+#| msgid "Save Changes"
+msgid "Basket Qty Change"
+msgstr "籮筐異動數量"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:56
+#, fuzzy
+#| msgid "Basket No"
+msgid "Basket Qty Stock"
+msgstr "籮筐庫存數"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:57
+#, fuzzy
+#| msgid "Basket Master Data"
+msgid "Basket Qty Total"
+msgstr "籮筐總數量"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:58
+#, fuzzy
+#| msgid "Former Qty"
+msgid "Former Qty Change"
+msgstr "手模異動數"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:59
+#, fuzzy
+#| msgid "Former Stock In"
+msgid "Former Qty Stock"
+msgstr "手模庫存數"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:60
+#, fuzzy
+#| msgid "Former Qty"
+msgid "Former Qty Total"
+msgstr "手模總數量"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:61
+#, fuzzy
+#| msgid "Change"
+msgid "Change Day"
+msgstr "異動日期"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:63
+#, fuzzy
+#| msgid "Batch No"
+msgid "Sub Batch No"
+msgstr "歸屬批號"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:96
+#: .\wh_former\templates\wh_former\pages\batch_history.html:108
+#, fuzzy
+#| msgid "Confirm"
+msgid "Confirmed"
+msgstr "確認"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:103
+#, fuzzy
+#| msgid "Confirm"
+msgid "Not Confirm"
+msgstr "確認"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:123
+msgid "No records found for batch number"
+msgstr "沒有此批號紀錄"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:126
+#, fuzzy
+#| msgid "Enter a whole number."
+msgid "Enter a batch number to search"
+msgstr "Enter a whole number."
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:139
+#, fuzzy
+#| msgid "Total Records"
+msgid "Total records"
+msgstr "總紀錄數"
+
+#: .\wh_former\templates\wh_former\pages\former_master_data.html:5
+msgid "Hand Former - Former Master Data"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\former_master_data.html:19
+msgid "Former Master Data"
+msgstr "手模建檔"
+
+#: .\wh_former\templates\wh_former\pages\former_master_data.html:31
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:66
+msgid "Full basket"
+msgstr "滿手模籮筐"
+
+#: .\wh_former\templates\wh_former\pages\former_master_data.html:34
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:69
+msgid "Filled basket"
+msgstr "尾數籮筐"
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:5
+msgid "Hand Former - Former Search"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:113
+msgid "Former Search"
+msgstr "手模查詢"
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:133
+#, fuzzy
+#| msgid "Batch Data Date"
+msgid "Batch Detail"
+msgstr "批次明細"
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:139
+#, fuzzy
+#| msgid "Location"
+msgid "Loading"
+msgstr "讀取中"
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:141
+#: .\wh_former\templates\wh_former\pages\former_search.html:235
+msgid "Loading data"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:250
+#, fuzzy
+#| msgid "User Information"
+msgid "No detail information"
+msgstr "使用者资讯"
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:251
+#, fuzzy
+#| msgid "There is no this confirmation code information."
+msgid "This batch dont have detail information"
+msgstr "沒有此確認碼資料"
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:263
+msgid "Unknown error happended"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:264
+msgid "Can not get detail information. Please try again"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:285
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:30
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:55
+#: .\wh_packing\forms.py:17
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:66
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:92
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:84
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:150
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:88
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:126
+msgid "Bin"
+msgstr "儲位"
+
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:5
+msgid "Hand Former - Former Stock In"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:72
+msgid "Empty basket"
+msgstr "空籮筐"
+
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:110
+#: .\wh_former\templates\wh_former\pages\former_stock_out.html:87
+msgid "Hãy điền thông tin trước ..."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\former_stock_out.html:5
+msgid "Hand Former - Former Stock Out"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\scrap_report.html:7
+#, fuzzy
+#| msgid "Transaction"
+msgid "Former - Transaction"
+msgstr "交易"
+
+#: .\wh_former\utils\api\former_api.py:23
+msgid "Missing itemno"
+msgstr ""
+
+#: .\wh_former\utils\api\former_api.py:28
+#, fuzzy
+#| msgid "No bins found."
+msgid "Itemno not found"
+msgstr "沒有找到儲位。"
+
+#: .\wh_former\utils\api\former_api.py:33
+#, fuzzy
+#| msgid "Enter a valid value."
+msgid "Invalid value for itemno"
+msgstr "請輸入有效值"
+
+#: .\wh_former\utils\api\former_api.py:114
+msgid "rfid_reader_ip and action are required parameters"
+msgstr ""
+
+#: .\wh_former\utils\api\former_api.py:189
+#: .\wh_former\utils\api\former_api.py:233
+msgid "Missing batch_no"
+msgstr ""
+
+#: .\wh_former\utils\api\former_api.py:194
+#, fuzzy
+#| msgid "Batch no"
+msgid "Batch not found"
+msgstr "批號"
+
+#: .\wh_former\utils\api\former_api.py:223
+#, fuzzy
+#| msgid "Form submitted successfully!"
+msgid "Batch updated successfully"
+msgstr "資料儲存成功"
+
+#: .\wh_former\utils\api\former_api.py:226
+#, fuzzy
+#| msgid "Enter a valid URL."
+msgid "Invalid JSON data"
+msgstr "Enter a valid URL."
+
+#: .\wh_former\utils\api\former_api.py:293
+#, python-brace-format
+msgid "Area {new_bin} not found"
+msgstr ""
+
+#: .\wh_former\utils\api\former_api.py:334
+#, python-brace-format
+msgid "Updated records from {old_bin} to {new_bin}"
+msgstr ""
+
+#: .\wh_former\utils\api\former_api.py:336
+msgid "Can not add different sizes on same area !"
+msgstr ""
+
+#: .\wh_former\utils\api\former_api.py:339
+msgid "Uplimit error. Can not move to new location"
+msgstr ""
+
+#: .\wh_former\utils\configs\table_configs.py:7
+msgid "Received Form"
+msgstr "採購單號"
+
+#: .\wh_former\utils\configs\table_configs.py:7
+msgid "Total former"
+msgstr "總手模數"
+
+#: .\wh_former\utils\modules\helpers\forms\basket_form.py:610
+msgid "Atleast 1 basket in thís group already IN USE, can not edit anymore"
+msgstr ""
+
+#: .\wh_former\utils\modules\helpers\forms\basket_form.py:704
+#: .\wh_former\utils\modules\helpers\forms\basket_form.py:849
+msgid "days"
+msgstr ""
+
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:10
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:33
+msgid "Received Date"
+msgstr "作業日期"
+
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:12
+#, fuzzy
+#| msgid "Create Warehouse"
+msgid "Create Group"
+msgstr "建立倉庫"
+
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:35
+#: .\wh_packing\forms.py:150 .\wh_packing\forms.py:217
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:67
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:93
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:85
+msgid "Quantity"
+msgstr "數量"
+
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:36
+msgid "Printed"
+msgstr ""
+
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:37
+msgid "Status"
+msgstr "狀態"
+
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:53
+msgid "Vendor name"
+msgstr "廠商名稱"
+
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:54
+msgid "Former Qty"
+msgstr "手模數量"
+
+#: .\wh_former\views.py:630 .\wh_former\views.py:636
+#, fuzzy
+#| msgid "The operation quantity cannot over the production order quantity."
+msgid "Return quantity is more than out quantity"
+msgstr "作業數量不能超過工單數量"
+
+#: .\wh_former\views.py:854
+#, fuzzy
+#| msgid "No bins found."
+msgid "Not return"
+msgstr "沒有找到儲位。"
+
+#: .\wh_packing\forms.py:21 .\wh_packing\forms.py:75 .\wh_packing\forms.py:197
+#: .\wh_packing\forms.py:319
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:59
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:85
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:89
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:136
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:147
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:323
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:325
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:77
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:13
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:143
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:197
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:239
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:304
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:81
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:76
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:194
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:88
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:247
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:67
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:119
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:239
+msgid "Product Order"
+msgstr "訂單單號"
+
+#: .\wh_packing\forms.py:23
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:143
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:160
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:329
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:151
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:202
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:92
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:200
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:253
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:130
+msgid "Qty"
+msgstr "數量"
+
+#: .\wh_packing\forms.py:69 .\wh_packing\forms.py:144 .\wh_packing\forms.py:225
+msgid "Location:"
+msgstr "儲位"
+
+#: .\wh_packing\forms.py:80
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:240
+msgid "purchase_order"
+msgstr "採購單"
+
+#: .\wh_packing\forms.py:90
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:64
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:90
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:82
+msgid "Lot"
+msgstr "Lot"
+
+#: .\wh_packing\forms.py:98 .\wh_packing\forms.py:202 .\wh_packing\forms.py:325
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:63
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:89
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:140
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:155
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:323
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:330
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:81
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:147
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:207
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:241
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:85
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:202
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:255
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:123
+msgid "Item Type"
+msgstr "項目類型"
+
+#: .\wh_packing\forms.py:103 .\wh_packing\forms.py:199
+#: .\wh_packing\forms.py:324
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:61
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:87
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:138
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:149
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:323
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:326
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:79
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:145
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:198
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:83
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:196
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:249
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:121
+msgid "Version No"
+msgstr "包裝版本"
+
+#: .\wh_packing\forms.py:108
+msgid "From"
+msgstr "開始日期"
+
+#: .\wh_packing\forms.py:116
+msgid "To"
+msgstr "結束日期"
+
+#: .\wh_packing\forms.py:179
+msgid "New Quantity"
+msgstr "新數量"
+
+#: .\wh_packing\forms.py:198
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:158
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:332
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:196
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:205
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:258
+msgid "Customer"
+msgstr "客戶名稱"
+
+#: .\wh_packing\forms.py:200
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:199
+msgid "Version Sequence"
+msgstr "包裝版次"
+
+#: .\wh_packing\forms.py:201 .\wh_packing\forms.py:323
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:327
+msgid "Lot Number"
+msgstr "Lot批號"
+
+#: .\wh_packing\forms.py:206
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:335
+msgid "Purchase Quantity"
+msgstr "採購數量"
+
+#: .\wh_packing\forms.py:213
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:144
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:247
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:201
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:254
+msgid "Unit"
+msgstr "單位"
+
+#: .\wh_packing\forms.py:214
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:156
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:323
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:333
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:206
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:203
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:256
+msgid "Post Date"
+msgstr "過帳日期"
+
+#: .\wh_packing\forms.py:229
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:157
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:334
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:205
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:204
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:257
+msgid "Supplier"
+msgstr "供應商"
+
+#: .\wh_packing\forms.py:230
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:338
+msgid "SAP Material Number"
+msgstr "物料文件編號"
+
+#: .\wh_packing\forms.py:367 .\wh_packing\forms.py:390
+#: .\wh_packing\forms.py:438
+msgid "Choose Excel File"
+msgstr "選擇Excel檔案"
+
+#: .\wh_packing\forms.py:386
+#, fuzzy
+#| msgid "Select or Typing"
+msgid "Select Type"
+msgstr "輸入或選擇"
+
+#: .\wh_packing\forms.py:434 .\wh_packing\forms.py:465
+#, fuzzy
+#| msgid "Choose Plant"
+msgid "Choose Month"
+msgstr "選擇廠區"
+
+#: .\wh_packing\forms.py:495 .\wh_packing\forms.py:519
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:73
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:61
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:81
+msgid "Choose Warehouse"
+msgstr "選擇倉庫"
+
+#: .\wh_packing\forms.py:497 .\wh_packing\forms.py:521
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:151
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:106
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:139
+msgid "Choose Area"
+msgstr "選擇區域"
+
+#: .\wh_packing\forms.py:498 .\wh_packing\forms.py:522
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:152
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:166
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:68
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:107
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:121
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:140
+msgid "Choose Location"
+msgstr "選擇儲位"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:5
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:33
+msgid "Quantity Adjust"
+msgstr "數量調整"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:58
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:84
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:71
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:135
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:76
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:59
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:193
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:79
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:246
+msgid "Warehouse"
+msgstr "倉庫"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:60
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:86
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:148
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:78
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:144
+msgid "Purchase No"
+msgstr "採購單"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:62
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:88
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:139
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:150
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:339
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:80
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:84
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:197
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:250
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:122
+msgid "Version Seq"
+msgstr "包裝版次"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:5
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:44
+msgid "Location Transfer"
+msgstr "調撥"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:4
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:66
+#: .\wh_packing\templates\wh_packing\bases\base.html:80
+msgid "Inventory Deletion"
+msgstr "刪除庫存"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:85
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:142
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:541
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:324
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:195
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:238
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:304
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:72
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:199
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:252
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:71
+msgid "Location"
+msgstr "儲位"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:133
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:403
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:218
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:129
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:78
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:191
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:244
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:116
+#, fuzzy
+#| msgid "No bins found."
+msgid "Not found"
+msgstr "沒有找到儲位。"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:346
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:373
+msgid "Please select at least one row to delete!"
+msgstr "請選擇至少一列要刪除！"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:351
+msgid "Are you sure you want to delete?"
+msgstr "您確定要刪除嗎?"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:363
+#, fuzzy
+#| msgid "Form submitted successfully!"
+msgid "Deleted successfully"
+msgstr "資料儲存成功"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:5
+msgid "Stock In"
+msgstr "入庫"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:59
+msgid "Warehouse Stock In Form"
+msgstr "包材倉入庫單"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:85
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:87
+msgid "Post"
+msgstr "過帳"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:152
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:200
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:207
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:261
+msgid "Lot No"
+msgstr "Lot批號"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:154
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:336
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:204
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:263
+msgid "Purchase Unit"
+msgstr "採購單位"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:159
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:209
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:206
+msgid "Mtr No"
+msgstr "物料文件編號"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:211
+msgid "Product Order cannot be null!"
+msgstr "訂單為必填欄位"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:227
+msgid "Purchase Order cannot be null!"
+msgstr "採購單為必填欄位"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:323
+msgid "are required"
+msgstr "必填"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:381
+msgid "The checkbox needs to be checked"
+msgstr "必須勾選複選框"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:469
+msgid "Copy"
+msgstr "複製"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:488
+#, fuzzy
+#| msgid "Copy and insert below this row Success!"
+msgid "Copy and insert below this row Success!"
+msgstr "複製成功"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:665
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:358
+msgid "No data in the table! Please enter at least one row."
+msgstr "請至少輸入一筆資料"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:677
+msgid "\"(Location) field in row \" + (i + 1) + \" cannot be empty!\""
+msgstr "\"資料 \" + (i + 1) + \" 儲位為必填欄位\""
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:686
+msgid "\"(Order Quantity) field in row \" + (i + 1) + \" cannot be empty!\""
+msgstr "\"資料 \" + (i + 1) + \" 數量為必填欄位\""
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:691
+#, fuzzy
+#| msgid "\"(Location) field in row \" + (i + 1) + \" cannot be empty!\""
+msgid "(Post Date) field in row \" + (i + 1) + \" cannot be empty!"
+msgstr "\"資料 \" + (i + 1) + \" 儲位為必填欄位\""
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:716
+msgid "Form submitted successfully!"
+msgstr "資料儲存成功"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:5
+msgid "Stock Out"
+msgstr "出庫"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:73
+msgid "Warehouse Stock Out Form"
+msgstr "包材倉出庫單"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:379
+msgid "Are you sure you want to stock out?"
+msgstr "您確定要出庫嗎？"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:391
+#, fuzzy
+#| msgid "Form submitted successfully!"
+msgid "Stock out successful!"
+msgstr "資料儲存成功"
+
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:5
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:44
+#: .\wh_packing\templates\wh_packing\bases\base.html:70
+#, fuzzy
+#| msgid "Receive Date"
+msgid "Recover Data"
+msgstr "收貨日期"
+
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:159
+#, fuzzy
+#| msgid "Form submitted successfully!"
+msgid "product recover successfully!"
+msgstr "資料儲存成功"
+
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:6
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:10
+#: .\wh_packing\templates\wh_packing\bases\base.html:65
+msgid "Quantity Transfer & Adjust Form"
+msgstr "調撥及調帳"
+
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:148
+msgid "lot_no"
+msgstr "Lot"
+
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:158
+msgid "Transfer"
+msgstr "運送"
+
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:194
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:195
+msgid "Adjust"
+msgstr "調整"
+
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:243
+msgid "Product Order, Size cannot all be null!"
+msgstr "產品、訂單和尺寸不能全為空！"
+
+#: .\wh_packing\templates\wh_packing\admin\bin_upload.html:5
+msgid "Upload Location Excel File"
+msgstr ""
+
+#: .\wh_packing\templates\wh_packing\admin\bin_upload.html:81
+msgid "Excel Import Tool (Warehouse, Area, Bin)"
+msgstr "倉庫、區域、儲位 Excel 匯入工具"
+
+#: .\wh_packing\templates\wh_packing\admin\bin_upload.html:95
+#: .\wh_packing\templates\wh_packing\admin\sap_import.html:30
+msgid "Upload"
+msgstr "上傳"
+
+#: .\wh_packing\templates\wh_packing\admin\bin_upload.html:103
+msgid "Download Template"
+msgstr "下載範本"
+
+#: .\wh_packing\templates\wh_packing\admin\open_data_import.html:5
+#: .\wh_packing\templates\wh_packing\admin\sap_query.html:5
+msgid "Open Data Importing"
+msgstr "開帳資料匯入"
+
+#: .\wh_packing\templates\wh_packing\admin\open_data_import.html:157
+msgid "Database Reset Function"
+msgstr ""
+
+#: .\wh_packing\templates\wh_packing\admin\sap_import.html:5
+#: .\wh_packing\templates\wh_packing\admin\sap_import.html:22
+#: .\wh_packing\templates\wh_packing\bases\base.html:151
+#, fuzzy
+#| msgid "Inventory Log"
+msgid "SAP Inventory Import"
+msgstr "庫存日誌"
+
+#: .\wh_packing\templates\wh_packing\admin\sap_query.html:75
+msgid "Query"
+msgstr ""
+
+#: .\wh_packing\templates\wh_packing\admin\sap_query.html:105
+#: .\wh_packing\templates\wh_packing\admin\sap_query.html:109
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:301
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:304
+#, fuzzy
+#| msgid "cannot all be null"
+msgid "cannot_be_null"
+msgstr "不能全部為空"
+
+#: .\wh_packing\templates\wh_packing\admin\sap_query.html:109
+#, fuzzy
+#| msgid "Mon"
+msgid "Month"
+msgstr "Mon"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:47
+msgid "Transaction Function"
+msgstr "交易功能"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:52
+msgid "Packing Material Stock In"
+msgstr "包材倉入庫單"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:57
+msgid "Packing Material Stock Out"
+msgstr "包材倉出庫單"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:87
+msgid "Search Function"
+msgstr "搜尋功能"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:93
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:5
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:53
+msgid "Transaction History"
+msgstr "交易紀錄"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:98
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:4
+msgid "New Transaction History"
+msgstr "最新交易"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:104
+msgid "Inventory Log"
+msgstr "庫存日誌"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:110
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:4
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:54
+msgid "Inventory Sheet"
+msgstr "盤點清冊"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:115
+msgid "SAP Query"
+msgstr ""
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:125
+msgid "Basic Data"
+msgstr "基本資料"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:132
+msgid "Shelf Locations Import"
+msgstr "匯入貨架位置"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:140
+msgid "Bulk Stock Import"
+msgstr "批量入庫"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:160
+msgid "problem"
+msgstr "問題"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:6
+msgid "Inventory Check"
+msgstr "盤點清冊"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:187
+msgid "Current Inventory"
+msgstr "目前庫存"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:225
+msgid "History"
+msgstr "交易紀錄"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:245
+msgid "Remain Qty"
+msgstr "剩餘數量"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:246
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:89
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:127
+msgid "Mvt"
+msgstr "異動碼"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:248
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:93
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:260
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:131
+msgid "Create at"
+msgstr "輸入日期"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:249
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:94
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:259
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:132
+msgid "Create by"
+msgstr "輸入者"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:260
+msgid "Searching"
+msgstr "查詢中"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:385
+msgid "Total Quantity: "
+msgstr "總數量:"
+
+#: .\wh_packing\templates\wh_packing\search\dashboard.html:5
+msgid "Dashboard"
+msgstr "看板"
+
+#: .\wh_packing\templates\wh_packing\search\dashboard.html:19
+msgid "Welcome to our application!"
+msgstr "歡迎使用我們的應用程式！"
+
+#: .\wh_packing\templates\wh_packing\search\dashboard.html:21
+msgid ""
+"Our platform is designed to enhance your experience with optimal "
+"functionality."
+msgstr "我們的平台旨在為您提供最佳化的使用體驗。"
+
+#: .\wh_packing\templates\wh_packing\search\dashboard.html:22
+msgid "Please use the menu to navigate through the system’s core features."
+msgstr "請使用選單來瀏覽系統的主要功能。"
+
+#: .\wh_packing\templates\wh_packing\search\dashboard.html:23
+msgid ""
+"If you do not see any menu options, your access permissions might be "
+"restricted."
+msgstr "如果您看不到任何選單選項，可能是您的權限尚未開通。"
+
+#: .\wh_packing\templates\wh_packing\search\dashboard.html:24
+msgid ""
+"Kindly contact the system administrator for support and proper authorization."
+msgstr "如需協助或授權，請聯繫系統管理員。"
+
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:4
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:74
+#, fuzzy
+#| msgid "Inventory Deletion"
+msgid "Inventory Discrepancy Report"
+msgstr "刪除庫存"
+
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:264
+#, fuzzy
+#| msgid "Stock In"
+msgid "stockin_form"
+msgstr "入庫"
+
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:265
+#, fuzzy
+#| msgid "Choose stockout form"
+msgid "stockout_form"
+msgstr "選擇出庫單"
+
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:204
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:235
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:239
+msgid "cannot all be null"
+msgstr "不能全部為空"
+
+#: .\wh_packing\templates\wh_packing\search\warehouse_map.html:7
+msgid "Packing Warehouse Map"
+msgstr "包材倉地圖"
+
+#: .\wh_packing\views.py:362
+msgid "The quantity must be a positive number!"
+msgstr ""
+
+#: .\wh_packing\views.py:419
+msgid "Invalid request method"
+msgstr ""
+
+#: .\wh_packing\views.py:1359
+#, fuzzy
+#| msgid "Form submitted successfully!"
+msgid "import_successful"
+msgstr "資料儲存成功"
+
+#~| msgid "Stock Out"
+#~ msgid "Stock type"
+#~ msgstr "出庫單上機類型"
+
+#, fuzzy
+#~| msgid "Select or Typing"
+#~ msgid "Select type..."
+#~ msgstr "輸入或選擇"
+
+#, fuzzy
+#~| msgid "Bin Name"
+#~ msgid "in same day"
+#~ msgstr "儲位名稱"
+
+#, fuzzy
+#~| msgid "Used day"
+#~ msgid "not same day"
+#~ msgstr "使用天數"
+
+#~ msgid "Created basket no will be delete"
+#~ msgstr "建立的籮筐不會被刪除"
+
+#~| msgid "Item Type"
+#~ msgid "Type"
+#~ msgstr "項目類型"
+
+#~ msgid "IN WH"
+#~ msgstr "已完成貨架"
+
+#~ msgid "Disable"
+#~ msgstr "停用"
+
+#~| msgid "Are you sure you want to delete the area"
+#~ msgid "You have unsaved data. Are you sure you want to leave this page?"
+#~ msgstr "您確定要刪除該區域嗎"
+
+#~| msgid "Save Changes"
+#~ msgid "Leave Page"
+#~ msgstr "儲存變更"
+
+#~| msgid "Length"
+#~ msgid "Edit Length"
+#~ msgstr "長度"
+
+#~| msgid "Surface"
+#~ msgid "Edit Surface"
+#~ msgstr "表面材質"
+
+#~| msgid "Edit Bin"
+#~ msgid "Edit Vendor"
+#~ msgstr "編輯儲位"
+
+#~| msgid "User Information"
+#~ msgid "Rack scanned data"
+#~ msgstr "使用者资讯"
+
+#~| msgid "item_no"
+#~ msgid "items"
+#~ msgstr "料號"
+
+#, fuzzy
+#~| msgid "Image"
+#~ msgid "Images in: "
+#~ msgstr "Image"
+
+#, fuzzy
+#~| msgid "Image"
+#~ msgid "Embed Image"
+#~ msgstr "Image"
+
+#~ msgid "Vendor code"
+#~ msgstr "廠商代碼"
+
+#~ msgid "Size code"
+#~ msgstr "尺寸"
+
+#~ msgid "Basket Search"
+#~ msgstr "籮筐查詢"
+
+#~ msgid "Enter surface type"
+#~ msgstr "輸入表面材質"
+
+#~ msgid "Enter former type"
+#~ msgstr "輸入手模型號"
+
+#~ msgid "Filled"
+#~ msgstr "尾筐"
+
+#~ msgid "Product Order:"
+#~ msgstr "訂單"
+
+#, fuzzy
+#~| msgid "Purchase Order"
+#~ msgid "Purchase Order:"
+#~ msgstr "採購單"
+
+#, fuzzy
+#~| msgid "Excel Import Tool (Open Data)"
+#~ msgid "Excel Import Tool"
+#~ msgstr "Excel 匯入工具（開放數據）"
+
+#~ msgid "Location, Product Order, and Size cannot all be null!"
+#~ msgstr "地點、訂單和尺寸不能全部為空！"
+
+#~ msgid "Enter former length"
+#~ msgstr "輸入手模長度"
+
+#~ msgid "Saving..."
+#~ msgstr "儲存中"
+
+#, fuzzy
+#~| msgid "No"
+#~ msgid "N.o"
+#~ msgstr "No"
+
+#~ msgid "version_seq"
+#~ msgstr "包裝版次"
+
+#~ msgid "Transaction History Search"
+#~ msgstr "交易紀錄查詢"
+
+#~ msgid "Form submission failed!"
+#~ msgstr "資料儲存失敗"
+
+#~ msgid "(Product Order/Location/Size/Comment) cannot all be null!"
+#~ msgstr "訂單、儲位、尺寸、備註不能全部為空！"
+
+#~ msgid "Warehouse Management System"
+#~ msgstr "倉庫管理系統"
+
+#~ msgid "Stock Location Manager"
+#~ msgstr "庫架管理"
+
+#, fuzzy
+#~| msgid "Bin"
+#~ msgid "in"
+#~ msgstr "儲位"
+
+#~ msgid "Warehouse Dashboard"
+#~ msgstr "倉庫看板"
+
+#~ msgid "Import Shelf Locations"
+#~ msgstr "匯入貨架位置"
+
+#, fuzzy
+#~| msgid "Open Data Importing"
+#~ msgid "Open Data &nbsp;- Bulk Import"
+#~ msgstr "開帳資料匯入"
+
+#, fuzzy
+#~| msgid "Warehouse Stock In Form"
+#~ msgid "Warehouse - Bulk Import"
+#~ msgstr "包材倉入庫單"
+
+#~ msgid "Inventory Search"
+#~ msgstr "庫存查詢"
+
+#, fuzzy
+#~| msgid "Inventory Sheet"
+#~ msgid "Manage Inventory Deletion"
+#~ msgstr "盤點清冊"
+
+#~ msgid "Delete Item"
+#~ msgstr "刪除項目"
+
+#~ msgid "Customer No"
+#~ msgstr "客戶編號"
+
+#~ msgid "Packing Type"
+#~ msgstr "包材類型"
+
+#~ msgid "Complimentary Location"
+#~ msgstr "贈品儲位"
+
+#~ msgid "Enter Product Order"
+#~ msgstr "輸入訂單"
+
+#, fuzzy
+#~| msgid "Create Warehouse"
+#~ msgid "reate Warehouse"
+#~ msgstr "创建仓库"
+
+#~ msgid "Key Parameter"
+#~ msgstr "關鍵參數"
+
+#~ msgid "End Date"
+#~ msgstr "結束日期"
+
+#~ msgid "mach_name"
+#~ msgstr "機台"
+
+#~ msgid "process_type"
+#~ msgstr "製程類型"
+
+#~ msgid "param_define"
+#~ msgstr "參數定義"
+
+#~ msgid "control_high"
+#~ msgstr "控制上限"
+
+#~ msgid "control_low"
+#~ msgstr "控制下限"
+
+#~ msgid "param_code"
+#~ msgstr "參數類型"
+
+#~ msgid "record_date"
+#~ msgstr "作業日期"
+
+#~ msgid "Chlorine Free"
+#~ msgstr "無氯"
+
+#~ msgid "Polymer Free"
+#~ msgstr "無二次料"
+
+#~ msgid "Alkaline Tank pH Test"
+#~ msgstr "碱槽测pH值"
+
+#~ msgid "Machine Shutdown"
+#~ msgstr "停機"
+
+#~ msgid "A2 Size"
+#~ msgstr "A2尺寸"
+
+#~ msgid "B1 Production"
+#~ msgstr "B1產品"
+
+#~ msgid "B1 Size"
+#~ msgstr "B1尺寸"
+
+#~ msgid "B2 Production"
+#~ msgstr "B2產品"
+
+#~ msgid "B2 Size"
+#~ msgstr "B2尺寸"
+
+#~ msgid "Remark"
+#~ msgstr "備註"
+
+#~ msgid "Change Coagulant Time(Hour)"
+#~ msgstr "換凝固劑時間(Hour)"
+
+#~ msgid "Change Coagulant Time(Minute)"
+#~ msgstr "換凝固劑時間(Minute)"
+
+#~ msgid "Change Latex Time(Hour)"
+#~ msgstr "換乳膠時間(Hour)"
+
+#~ msgid "Change Latex Time(Minute)"
+#~ msgstr "換乳膠時間(Minute)"
+
+#~ msgid "Change Tooling Time(Hour)"
+#~ msgstr "換模時間(Hour)"
+
+#~ msgid "Change Tooling Time(Minute)"
+#~ msgstr "換模時間(Minute)"
+
+#~ msgid "Machine"
+#~ msgstr "機台"
+
+#~ msgid "Chart"
+#~ msgstr "圖表"
+
+#~ msgid "Production Data"
+#~ msgstr "生產資料"
+
+#~ msgid "Line"
+#~ msgstr "線別"
+
+#~ msgid "create_at"
+#~ msgstr "建立時間"
+
+#~ msgid "Are you sure?"
+#~ msgstr "確定嗎？"
+
+#~ msgid "Completed Rate"
+#~ msgstr "完成率"
+
+#~ msgid "dept"
+#~ msgstr "部門"
+
+#~ msgid "Finished Product WH"
+#~ msgstr "成品倉"
+
+#~ msgid "Semi-finished Product WH"
+#~ msgstr "半成品倉"
+
+#~ msgid "Hand Mold WH"
+#~ msgstr "手模倉"
+
+#~ msgid "Bin Width"
+#~ msgstr "箱寬"
+
+#~ msgid "Temokura"
+#~ msgstr "手模倉"
+
+#~ msgid "logout"
+#~ msgstr "登出"
+
+#~ msgid "Asset Management System"
+#~ msgstr "資產管理"
+
+#~ msgid "IT Equipment Borrow Application"
+#~ msgstr "資訊物品借用單"
+
+#~ msgid "General Supply Application"
+#~ msgstr "總務用品請領單"
+
+#~ msgid "Authority Management"
+#~ msgstr "權限管理"
+
+#~ msgid "login"
+#~ msgstr "登入"
+
+#~ msgid "title"
+#~ msgstr "標題"
+
+#~ msgid "level"
+#~ msgstr "緊急狀態"
+
+#~ msgid "owner"
+#~ msgstr "擁有者"
+
+#~ msgid "belong_to"
+#~ msgstr "所屬"
+
+#~ msgid "bug_index"
+#~ msgstr "Bug內容"
+
+#~ msgid "bug_edit"
+#~ msgstr "編輯Bug單"
+
+#~ msgid "bug_delete"
+#~ msgstr "刪除Bug單"
+
+#~ msgid "belong_project"
+#~ msgstr "所屬專案"
+
+#~ msgid "update_at"
+#~ msgstr "最後回覆時間"
+
+#~ msgid "problem_create"
+#~ msgstr "建立問題"
+
+#~ msgid "problem_no"
+#~ msgstr "問題編號"
+
+#~ msgid "replies"
+#~ msgstr "回覆數"
+
+#~ msgid "update_by"
+#~ msgstr "最後回覆人"
+
+#~ msgid "bug_create"
+#~ msgstr "建立Bug單"
+
+#~ msgid "project_manage"
+#~ msgstr "專案處理"
+
+#~ msgid "bug_no"
+#~ msgstr "Bug編號"
+
+#~ msgid "problem_edit"
+#~ msgstr "編輯問題"
+
+#~ msgid "problem_delete"
+#~ msgstr "刪除問題"
+
+#~ msgid "project_belong"
+#~ msgstr "所屬專案"
+
+#~ msgid "problem_index"
+#~ msgstr "問題內容"
+
+#~ msgid "reply_num"
+#~ msgstr "回覆數"
+
+#~ msgid "prod_order"
+#~ msgstr "工單"
+
+#~ msgid "worked_labor_time"
+#~ msgstr "已累計報工"
+
+#~ msgid "spec"
+#~ msgstr "物料說明"
+
+#~ msgid "confirm_code"
+#~ msgstr "確認碼"
+
+#~ msgid "step_code"
+#~ msgstr "站點代碼"
+
+#~ msgid "step_name"
+#~ msgstr "站點名稱"
+
+#~ msgid "labor_time"
+#~ msgstr "人時"
+
+#~ msgid "mach_time"
+#~ msgstr "機時"
+
+#~ msgid "good_qty"
+#~ msgstr "良品"
+
+#~ msgid "ng_qty"
+#~ msgstr "NG"
+
+#~ msgid "SAP employee number is not correct or no data"
+#~ msgstr "SAP員工編號不正確或尚未建立資料"
+
+#~ msgid "The first step has been not finished yet"
+#~ msgstr "第一個站點尚未報工"
+
+#~ msgid "Please select the working machine."
+#~ msgstr "請選擇報工機台"
+
+#~ msgid ""
+#~ "Remind that total recorded time {labor_time} already over 10%% of the "
+#~ "standard time({standard_time})."
+#~ msgstr "提醒總工時 {labor_time} 已經超過標準工時10%%({standard_time})"
+
+#~ msgid "This record is existed"
+#~ msgstr "資料已經存在"
+
+#~ msgid "New"
+#~ msgstr "新增"
+
+#~ msgid "total_labor_time"
+#~ msgstr "總人時"
+
+#~ msgid "remain_labor_time"
+#~ msgstr "待報工人時"
+
+#~ msgid "alphanumeric"
+#~ msgstr "專案代碼"
+
+#~ msgid "help_name"
+#~ msgstr "請輸入專案名稱"
+
+#~ msgid "short_name"
+#~ msgstr "專案簡稱"
+
+#~ msgid "help_short"
+#~ msgstr "請輸入專案簡稱"
+
+#~ msgid "help_desc"
+#~ msgstr "請輸入專案描述"
+
+#~ msgid "home"
+#~ msgstr "首頁"
+
+#~ msgid "waiting"
+#~ msgstr "等待中"
+
+#~ msgid "on_going"
+#~ msgstr "處理中"
+
+#~ msgid "pending"
+#~ msgstr "擱置中"
+
+#~ msgid "project_name"
+#~ msgstr "專案名稱"
+
+#~ msgid "project_code"
+#~ msgstr "專案縮寫"
+
+#~ msgid "project_desc"
+#~ msgstr "專案描述"
+
+#~ msgid "project_edit"
+#~ msgstr "編輯專案"
+
+#~ msgid "project_create"
+#~ msgstr "建立專案"
+
+#~ msgid "request"
+#~ msgstr "需求"
+
+#~ msgid "request_create"
+#~ msgstr "建立需求"
+
+#~ msgid "request_no"
+#~ msgstr "需求編號"
+
+#~ msgid "starttime"
+#~ msgstr "預計起始時間"
+
+#~ msgid "Finish"
+#~ msgstr "預計完成"
+
+#~ msgid "finishtime"
+#~ msgstr "預計完成時間"
+
+#, fuzzy
+#~| msgid "rate"
+#~ msgid "Rate"
+#~ msgstr "完成率"
+
+#~ msgid "rate"
+#~ msgstr "完成率"
+
+#~ msgid "Sub"
+#~ msgstr "子需求"
+
+#~ msgid "project_setting"
+#~ msgstr "專案設定"
+
+#~ msgid "project_setting_desc"
+#~ msgstr "說明：設定登入後預設專案"
+
+#~ msgid "upload_selfie"
+#~ msgstr "上傳大頭照"
+
+#, fuzzy
+#~| msgid "There_are_%(results_count)_results."
+#~ msgid "There_are_%(results_count)s_results."
+#~ msgstr "共有%(results_count)筆結果。"
+
+#~ msgid "estimate_time"
+#~ msgstr "預估工時"
+
+#~ msgid "actualtime"
+#~ msgstr "實際完成日期"
+
+#~ msgid "request_edit"
+#~ msgstr "編輯需求"
+
+#~ msgid "request_delete"
+#~ msgstr "刪除需求"
+
+#~ msgid "Share:"
+#~ msgstr "分享網址："
+
+#~ msgid "subrequest"
+#~ msgstr "子需求"
+
+#, fuzzy
+#~| msgid "request_edit"
+#~ msgid "test_edit"
+#~ msgstr "編輯需求"
+
+#, fuzzy
+#~| msgid "request_create"
+#~ msgid "test_create"
+#~ msgstr "建立需求"
+
+#~ msgid "ManagementForm data is missing or has been tampered with"
+#~ msgstr "ManagementForm data is missing or has been tampered with"
+
+#~ msgid "Please submit %d or fewer forms."
+#~ msgid_plural "Please submit %d or fewer forms."
+#~ msgstr[0] "Please submit %d or fewer forms."
+
+#~ msgid "0 minutes"
+#~ msgstr "0 minutes"
+
+#~ msgid "DataHasBeenTransfered"
+#~ msgstr "資料已轉移"
+
+#~ msgid "project"
+#~ msgstr "專案"
+
+#~ msgid "project_delete"
+#~ msgstr "刪除專案"
+
+#~ msgid "question"
+#~ msgstr "問題"
+
+#~ msgid "request_detail"
+#~ msgstr "需求內容"
+
+#~ msgid ""
+#~ "Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."
+#~ msgstr "請少於30個字元，限使用文字、數字以及@/./+/-/_ "
+
+#~ msgid ""
+#~ "Enter a valid username. This value may contain only letters, numbers and "
+#~ "@/./+/-/_ characters."
+#~ msgstr "請輸入有效用戶名，並請使用有效字元。"
+
+#~ msgid "A user with that username already exists."
+#~ msgstr "用戶名已存在"
+
+#~ msgid "Username"
+#~ msgstr "帳號"
+
+#~ msgid "Language"
+#~ msgstr "語言"
+
+#, fuzzy
+#~| msgid "active"
+#~ msgid "receive"
+#~ msgstr "啟用"
+
+#, fuzzy
+#~| msgid "request_create"
+#~ msgid "request_recieve"
+#~ msgstr "建立需求"
+
+#~ msgid "belong"
+#~ msgstr "所屬"
+
+#~ msgid "Welcome to Django"
+#~ msgstr "Welcome to Django"
+
+#~ msgid "It worked!"
+#~ msgstr "It worked!"
+
+#~ msgid "Congratulations on your first Django-powered page."
+#~ msgstr "Congratulations on your first Django-powered page."
+
+#~ msgid ""
+#~ "Next, start your first app by running <code>python manage.py startapp "
+#~ "[app_label]</code>."
+#~ msgstr ""
+#~ "Next, start your first app by running <code>python manage.py startapp "
+#~ "[app_label]</code>."
+
+#~ msgid "BugList"
+#~ msgstr "Bug清單"

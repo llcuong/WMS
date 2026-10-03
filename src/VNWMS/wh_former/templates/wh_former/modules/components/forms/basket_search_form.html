@@ -1,0 +1,88 @@
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+<div class="col-12">
+    <div class="row">
+        <div class="col-12">
+            {{ form.media }}
+            {{ form.non_field_errors }}
+            <div class="row">
+                <div class="col-md-4 col-lg-2" style="padding-top: 12px">
+                    <label for="status_name_input" class="form-label"></label>
+                    <input type="hidden" id="search_filter_key" name="search_filter"
+                            value="{{ request.GET.search_filter|default:form.fields.search_filter.initial }}">
+                    <div class="custom-select-wrapper position-relative">
+                        <input type="text" id="status_name_input" class="select-input form-control"
+                                placeholder="Select or type..." autocomplete="off" readonly>
+                        <div id="status_dropdown" class="select-dropdown"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-2 mt-1">
+                    {{ form.basket_no|as_crispy_field }}
+                </div>
+
+                <div class="col-md-1 col-lg-12 order-lg-last order-sm-last" style="margin-bottom: 0">
+                    {% include 'wh_former/modules/components/buttons/search_button.html' with submit=True %}
+                </div>
+
+                {% if search %}
+                    <div class="col-md-4 col-lg-2 mt-1">
+                        {% include 'wh_former/modules/components/forms/fields/forms_brand_field.html' with form=form is_required=False %}
+                    </div>
+
+                    <div class="col-md-6 col-lg-2 mt-1">
+                        {{ form.basket_receive_date|as_crispy_field }}
+                    </div>
+
+                    <div class="col-md-6 col-lg-2 mt-1">
+                        {{ form.saved_group|as_crispy_field }}
+                    </div>
+                {% endif %}
+
+                 <div class="col-md-6 col-lg-2 mt-1">
+                    {{ form.purchase_order|as_crispy_field }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const statusOptions = [
+            {% for key, label in form.SEARCH_CHOICES %}
+                {value: "{{ key }}", label: "{{ label|escapejs }}"}{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+
+        const labels = statusOptions.map(o => o.label);
+
+        const keyToLabel = statusOptions.reduce((m, o) => {
+            m[o.value] = o.label;
+            return m;
+        }, {});
+
+        initDropdown("status_name_input", "status_dropdown", labels);
+
+        const hidden = document.getElementById("search_filter_key");
+        const display = document.getElementById("status_name_input");
+        const oldKey = hidden.value;
+
+        if (oldKey && keyToLabel[oldKey]) {
+            display.value = keyToLabel[oldKey];
+        } else {
+            hidden.value = statusOptions[0].value;
+            display.value = statusOptions[0].label;
+        }
+        document.getElementById("status_dropdown").addEventListener("click", e => {
+            if (!e.target.classList.contains("item")) return;
+            const chosenLabel = e.target.textContent.trim();
+            const opt = statusOptions.find(o => o.label === chosenLabel);
+            if (opt) {
+                hidden.value = opt.value;
+            }
+        });
+    });
+</script>

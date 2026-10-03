@@ -1,0 +1,155 @@
+{% load i18n %}
+
+<style>
+    .stop-button {
+        background-color: #eaeaec !important;
+        color: #1e1e26 !important;
+    }
+
+    .stop-button.active {
+        color: white !important;
+        background-color: #fe0032 !important;
+    }
+
+    #batch-basket-lost tr {
+        border: 1px solid #DEE2E6;
+        font-weight: bold;
+        font-size: 16px;
+        letter-spacing: 0.08rem;
+        color: #fe0032 !important;
+    }
+</style>
+
+<button type="button"
+        class="button stop-button"
+        id="stop-btn-{{ pid }}"
+        data-pid="{{ pid }}"
+        data-url="{% url 'rfid_stop_reader' rfid_setting_id %}?pid={{ pid }}">
+    <i class="fas fa-pause"></i>
+    <span class="btn-text">{% trans "Stop" %}</span>
+</button>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const CSRF = document.querySelector('meta[name="csrf-token"]')?.content
+            || document.querySelector('[name="csrfmiddlewaretoken"]')?.value;
+        const apiUrl = "{% url 'get_lost_basket_api' %}";
+
+        function getLostEPCList(pid) {
+            return [...new Set(Array.from(
+                document.querySelectorAll(`#epc-table-body-${pid} tr[data-epc]`)
+            ).map(r => r.dataset.epc).filter(x => x))];
+        }
+
+        // Render lost baskets vào stock-new-info-table
+        function renderLostBaskets(list) {
+            const items = (list.length && Array.isArray(list[0])) ? list[0] : list;
+            const infoTable = document.getElementById("batch-basket-lost");
+            if (!infoTable) return;
+
+            let html = "";
+            items.forEach(item => {
+                html += `
+                    <tr style="border: 1px solid #DEE2E6; font-weight: bold; font-size: 16px; letter-spacing: 0.08rem; color: #fe0032;">
+                        <td>${item.basket_no}</td>
+                        <td>${item.former_qty}</td>
+                        <td>${item.bin}</td>
+                        <td colspan="4">LOST BASKET</td>
+                    </tr>
+                `;
+            });
+            infoTable.insertAdjacentHTML('beforeend', html);
+
+            // Update counters
+            const basketCount = items.length;
+            const formerCount = items.reduce((sum, it) => sum + (it.former_qty || 0), 0);
+
+            const basketEl = document.getElementById('lost-basket-count');
+            const formerEl = document.getElementById('lost-former-count');
+            if (basketEl) basketEl.textContent = basketCount;
+            if (formerEl) formerEl.textContent = formerCount;
+        }
+
+        document.querySelectorAll(".stop-button").forEach(btn => {
+            btn.addEventListener("click", () => {
+                if (btn.disabled) return;
+                btn.disabled = true;
+
+                // Lấy data trước khi stop
+                const pid = btn.dataset.pid;
+                const epcList = getLostEPCList(pid);
+                
+                // SỬ DỤNG SAVED BATCH LIST THAY VÌ LẤY TỪ TABLE RỖNG
+                const batchList = window.savedBatchList || [];
+                
+
+                window.shouldShowAlert = true;
+                window.alertShown = {};
+
+                fetch(btn.dataset.url, {method: "POST", headers: {'X-CSRFToken': CSRF}})
+                    .then(res => {
+                        if (!res.ok) throw new Error("Stop failed");
+                        return res.text();
+                    })
+                    .then(() => {
+                        const startBtn = document.getElementById(`start-btn-${btn.dataset.pid}`);
+                        startBtn.classList.remove("active");
+                        startBtn.querySelector(".btn-text").innerText = "Start";
+                        startBtn.disabled = false;
+                        btn.classList.remove("active");
+
+                        // GỌI API để lấy và render lost baskets
+                        console.log('Calling lost basket API with:', {epcList, batchList});
+
+                        fetch(apiUrl, {
+                            method: "POST",
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': CSRF
+                            },
+                            body: JSON.stringify({
+                                epc_list: epcList,
+                                batch_list: batchList
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.lost && data.lost.length > 0) {
+                                renderLostBaskets(data.lost);
+                            } else {
+                                console.log('No lost baskets found, table remains empty');
+                            }
+                        })
+                        .catch(err => console.error("Error fetching lost baskets:", err));
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert("Không thể stop reader");
+                        btn.disabled = false;
+                    });
+            });
+        });
+
+        document.getElementById('stockout-form-select')?.addEventListener('change', function() {
+            const stock_form = this.value.split('(')[0];
+            const machine = document.getElementById('machine-select')?.value;
+
+            {% comment %} if (stock_form && machine) {
+                fetch(`{% url 'update_stockout_form_working_api' %}?machine=${encodeURIComponent(machine)}&stock_form=${encodeURIComponent(this.value)}`)
+                    .then(response => response.json())
+                    .then data => {
+                        console.log(`[Updated] ${data.updated_count} forms set to is_working=False`);
+                    })
+                    .catch(error => {
+                        console.error('Error updating forms:', error);
+                    });
+
+                fetch("{% url 'print_total_former_on_select_api' %}?stock_form=" + encodeURIComponent(stock_form))
+                    .then(response => response.json())
+                    .then(data => {
+                        window.selectedTotalFormer = data.total_former || 0;
+                        console.log(`[Selected] total_former: ${window.selectedTotalFormer}`);
+                    });
+            } {% endcomment %}
+        });
+    });
+</script>

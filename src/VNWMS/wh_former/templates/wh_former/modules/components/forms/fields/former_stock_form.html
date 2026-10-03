@@ -1,0 +1,372 @@
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const mode = urlParams.get('mode');
+        const machineApiUrl = "{% url 'get_machine_by_plant_api' %}";
+        const lineApiUrl = "{% url 'get_line_by_machine_api' %}";
+        const woApiUrl = "{% url 'get_wo_by_line_api' %}";
+        const formsApiUrl = "{% url 'get_stockout_forms_api' %}";
+
+        const stockFormInput = document.querySelector('input[name="stockout_form"]');
+        const stockFormSize = document.querySelector('input[name="params_size"]');
+        const plantSelect = document.getElementById('plant-select');
+        const machineSelect = document.getElementById('machine-select');
+        const lineButtons = document.getElementById('line-buttons');
+        const formSelect = document.getElementById('stockout-form-select');
+        const searchBtn = document.getElementById('search-btn');
+        const Wotable = document.getElementById('wo-result-table');
+
+        let selectedLine = null; // Single line selection
+        let selectedLineColor = null; // Store the color for selected line
+
+        function clearFormOptions() {
+            formSelect.innerHTML = '<option value=""></option>';
+        }
+
+        async function fetchFormsByMachine(machine) {
+            clearFormOptions();
+            if (!machine) return;
+
+            try {
+                const resp = await fetch(`${formsApiUrl}?machine=${encodeURIComponent(machine)}`);
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const data = await resp.json();
+
+                let selectedForm = "{{ form_name|escapejs }}";
+
+                data.forEach(item => {
+                    const opt = document.createElement('option');
+                    opt.value = item;
+                    opt.textContent = item;
+                    if (selectedForm && item === selectedForm) {
+                        opt.selected = true;
+                    }
+                    formSelect.appendChild(opt);
+                });
+
+                 if (!selectedForm && formSelect.options.length > 0) {
+                    formSelect.selectedIndex = 0;
+                }
+            } catch (err) {
+                console.error("Lỗi tải stockout forms:", err);
+                const errOpt = document.createElement('option');
+                errOpt.value = '';
+                errOpt.textContent = 'Error loading forms';
+                formSelect.appendChild(errOpt);
+            }
+        }
+
+        async function fetchMachines(plant) {
+            try {
+                const resp = await fetch(`${machineApiUrl}?plant=${encodeURIComponent(plant)}&mode=${mode}`);
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const data = await resp.json();
+
+                machineSelect.innerHTML = '';
+                let selectedMachine = "{{ selected_machine|escapejs }}";
+
+                data.machines.forEach((m, i) => {
+                    const sel = (selectedMachine && m === selectedMachine) ? 'selected' : '';
+                    machineSelect.insertAdjacentHTML(
+                        'beforeend',
+                        `<option value="${m}" ${sel}>${m}</option>`
+                    );
+                });
+
+                let machineToUse = selectedMachine && data.machines.includes(selectedMachine)
+                    ? selectedMachine
+                    : data.machines[0];
+
+                if (machineToUse) {
+                    if (mode === 'clean' || mode === 'to_lk'){
+                        updateStockFormDefault(machineToUse);
+                    }
+                    fetchLines(machineToUse);
+                    fetchFormsByMachine(machineToUse);
+                }
+            } catch (err) {
+                console.error("Lỗi tải machines:", err);
+            }
+        }
+
+        async function updateStockFormDefault(machine, lineName = '') {
+            if (!stockFormInput) return;
+
+            // Get stock type from hidden select or default to '0'
+            const stockTypeSelect = document.getElementById('stock_type');
+            const currentStockType = stockTypeSelect ? stockTypeSelect.value : '0';
+            const backendStockoutForm = "{{ stockout_form|escapejs }}";
+            
+            // Get additional values
+            const idStockForm = document.getElementById('stockout-form-select')?.value || '';
+            const sizeNameInput = document.getElementById('form_size_input')?.value || 
+                                 document.querySelector('input[name="params_size"]')?.value || 
+                                 "{{ former_size|default:'' }}";
+
+            try {
+                const params = new URLSearchParams({
+                    machine: machine || '',
+                    line_name: lineName,
+                    stock_type: currentStockType,
+                    existing_form: backendStockoutForm || '',
+                    id_stock_form: idStockForm,
+                    size_name_input: sizeNameInput,
+                    fuck: '1'
+                });
+
+                const response = await fetch(`{% url 'generate_stock_form_api' %}?${params}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    stockFormInput.value = data.form_name;
+                    
+                    if (data.button_mode !== undefined) {
+                        if (window.updateButtonAppearance) {
+                            window.updateButtonAppearance(currentStockType, data.button_mode);
+                        } else {
+                            updateButtonAppearance(currentStockType, data.button_mode);
+                        }
+                    }
+                    
+                    if (stockFormSize) {
+                        stockFormSize.value = data.form_size;
+                        if (data.is_size_readonly) {
+                            stockFormSize.readOnly = true;
+                            stockFormSize.style.backgroundColor = '#e9ecef';
+                        } else {
+                            stockFormSize.readOnly = false;
+                            stockFormSize.style.backgroundColor = '';
+                        }
+                    }
+                    
+                    const visibleSizeInput = document.getElementById('form_size_input');
+                    if (visibleSizeInput) {
+                        visibleSizeInput.value = data.form_size;
+                        if (data.is_size_readonly) {
+                            visibleSizeInput.readOnly = true;
+                            visibleSizeInput.style.backgroundColor = '#e9ecef';
+                        } else {
+                            visibleSizeInput.readOnly = false;
+                            visibleSizeInput.style.backgroundColor = '';
+                        }
+                    }
+                } else {
+                    console.error('API Error:', data.error);
+                }
+            } catch (error) {
+                console.error('Network Error:', error);
+            }
+        }
+
+        // Local fallback function
+        function updateButtonAppearance(stockType, buttonMode) {
+            const createNewFormBtn = document.getElementById('create_new_form_btn');
+            if (!createNewFormBtn) return;
+
+            console.log(`Local updateButtonAppearance - Mode: ${buttonMode}`);
+            
+            if (buttonMode === 0) {
+                createNewFormBtn.disabled = true;
+                createNewFormBtn.classList.remove('btn-primary', 'btn-outline-primary');
+                createNewFormBtn.classList.add('btn-secondary');
+                console.log('Local: Button DISABLED');
+            } else {
+                createNewFormBtn.disabled = false;
+                createNewFormBtn.classList.remove('btn-secondary');
+                createNewFormBtn.classList.add('btn-outline-primary');
+                console.log('Local: Button ENABLED');
+            }
+        }
+
+        async function fetchLines(machine) {
+            lineButtons.innerHTML = '';
+            selectedLine = null;
+            selectedLineColor = null;
+            try {
+                const resp = await fetch(`${lineApiUrl}?machine=${encodeURIComponent(machine)}`);
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const data = await resp.json();
+
+                const colorClasses = ['bg-primary', 'bg-success', 'bg-danger', 'bg-warning', 'bg-info', 'bg-dark'];
+
+                data.lines.forEach((line, index) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'btn btn-outline-primary w-100';
+                    btn.style.minWidth = '60px';
+                    btn.setAttribute('data-line', line);
+                    btn.setAttribute('data-color', colorClasses[index % colorClasses.length]);
+                    btn.innerText = line.slice(-2);
+
+                    btn.addEventListener('click', () => {
+                        // Deselect previous line if any
+                        if (selectedLine) {
+                            const prevBtn = document.querySelector(`button[data-line="${selectedLine}"]`);
+                            if (prevBtn) {
+                                prevBtn.classList.replace('btn-primary', 'btn-outline-primary');
+                            }
+                        }
+
+                        // Select new line
+                        selectedLine = line;
+                        selectedLineColor = btn.getAttribute('data-color');
+                        btn.classList.replace('btn-outline-primary', 'btn-primary');
+
+                        // Update form name with line name
+                        const lineName = line.slice(-2);
+                        updateStockFormDefault(machineSelect.value, lineName);
+
+                        console.log(`Selected line: ${line}, Color: ${selectedLineColor}, Form updated with line: ${lineName}`);
+
+                        // Auto submit when line is selected
+                        autoSubmit(line);
+                    });
+
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'col-3';
+                    wrapper.appendChild(btn);
+                    lineButtons.appendChild(wrapper);
+                });
+
+                // Auto-select default line after creating buttons
+                selectDefaultLine();
+            } catch (err) {
+                console.error("Lỗi tải lines:", err);
+            }
+        }
+
+        function selectDefaultLine() {
+            const lineButtonsContainer = document.getElementById('line-buttons');
+            const allLineButtons = lineButtonsContainer.querySelectorAll('button[data-line]');
+
+            let defaultButton = null;
+            
+            // Get selected_line from view - this is the key change
+            const viewSelectedLine = "{{ selected_line|escapejs }}";
+
+            if (viewSelectedLine) {
+                // Try to find the line that matches the view's selected_line
+                for (let btn of allLineButtons) {
+                    const lineValue = btn.getAttribute('data-line');
+                    if (lineValue && lineValue.endsWith(viewSelectedLine)) {
+                        defaultButton = btn;
+                        break;
+                    }
+                }
+            }
+
+            // If no matching line found or no selected_line from view, select first available line
+            if (!defaultButton && allLineButtons.length > 0) {
+                defaultButton = allLineButtons[0];
+            }
+
+            if (defaultButton) {
+                setTimeout(() => {
+                    defaultButton.click();
+                }, 100);
+            }
+        }
+
+        function autoSubmit(line) {
+            Wotable.innerHTML = '';
+            if (!Wotable.querySelector('colgroup')) {
+                Wotable.insertAdjacentHTML('afterbegin', `
+                <colgroup>
+                  <col style="width:15%;"><col style="width:70%;"><col style="width:15%;">
+                </colgroup>
+            `);
+            }
+
+            const label = document.querySelector(`button[data-line="${line}"]`).innerText;
+
+            fetch(`${woApiUrl}?line=${encodeURIComponent(line)}`)
+                .then(r => r.json())
+                .then(data => {
+                    if (data.length) {
+                        data.forEach((row, index) => {
+                            const colorClasses = ['bg-primary', 'bg-success', 'bg-danger', 'bg-warning', 'bg-info', 'bg-dark', 'bg-secondary'];
+                            const woColor = colorClasses[index % colorClasses.length];
+
+                            const tr = document.createElement('tr');
+                            tr.style.border = "1px solid #DEE2E6";
+                            tr.innerHTML = `
+                            <td style="padding:8px 12px;width:15%;">
+                              <span class="badge ${woColor}" style="color:#fff;">${label}</span>
+                            </td>
+                            <td style="padding:8px 12px;width:70%;">${row[0]}</td>
+                            <td style="padding:8px 12px;width:15%;">${row[2]}</td>
+                        `;
+                            Wotable.appendChild(tr);
+                        });
+                    } else {
+                        const tr = document.createElement('tr');
+                        tr.style.border = "1px solid #DEE2E6";
+                        tr.innerHTML = `
+                        <td style="padding:8px 12px;width:15%;">
+                          <span class="badge bg-secondary" style="color:#fff;">${label}</span>
+                        </td>
+                        <td colspan="2" style="padding:8px 12px;width:85%;">Không có dữ liệu</td>
+                    `;
+                        Wotable.appendChild(tr);
+                    }
+                })
+                .catch(err => {
+                    console.error("Lỗi tải WO data:", err);
+                });
+        }
+
+        plantSelect.addEventListener('change', function () {
+            fetchMachines(this.value);
+        });
+
+        machineSelect.addEventListener('change', function () {
+            const m = this.value;
+            //updateStockFormDefault(m);
+            fetchLines(m);
+            fetchFormsByMachine(m);
+        });
+
+        if (plantSelect.value) {
+            fetchMachines(plantSelect.value);
+        }
+
+        // Keep the original search button functionality as backup
+        searchBtn.addEventListener('click', function () {
+            if (selectedLine) {
+                autoSubmit(selectedLine);
+            } else {
+                Wotable.innerHTML = '';
+                if (!Wotable.querySelector('colgroup')) {
+                    Wotable.insertAdjacentHTML('afterbegin', `
+                    <colgroup>
+                      <col style="width:15%;"><col style="width:70%;"><col style="width:15%;">
+                    </colgroup>
+                `);
+                }
+                const tr = document.createElement('tr');
+                tr.style.border = "1px solid #DEE2E6";
+                tr.innerHTML = `<td colspan="3"><p>Vui lòng chọn một line.</p></td>`;
+                Wotable.appendChild(tr);
+            }
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const formSelect = document.getElementById('stockout-form-select');
+        if (formSelect) {
+            formSelect.addEventListener('change', function() {
+                const stock_form = this.value.split('(')[0];
+                fetch("{% url 'print_total_former_on_select_api' %}?stock_form=" + encodeURIComponent(stock_form))
+                    .then(response => response.json())
+                    .then (data => {
+                        window.selectedTotalFormer = data.total_former || 0;
+                    })
+                    .catch(error => {
+                        window.selectedTotalFormer = 0;
+                    });
+            });
+        }
+    });
+</script>

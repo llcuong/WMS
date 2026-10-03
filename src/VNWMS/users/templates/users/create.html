@@ -1,0 +1,22 @@
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    會員新增
+{% endblock %}
+
+{% block js %}
+
+{% endblock js %}
+
+{% block sub_container %}
+<form method="post" action="{% url 'user_create' %}">
+    <div class="pb-4" style="text-align: center;">
+      <h2>新增使用者</h2>
+    </div>
+  {% csrf_token %}
+  {% crispy userForm %}
+    <div class="pb-4" style="text-align: center;">
+      <input class="btn btn-success" type="submit" value="儲存" />
+    </div>
+</form>
+{% endblock %}

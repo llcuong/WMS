@@ -1,0 +1,20 @@
+<script>
+    function checkAllBinSelected() {
+            const activeWrappers = document.querySelectorAll('.table-section-wrapper [id*="rfid-table-wrapper"]');
+            let allSelected = true;
+            let totalRows = 0;
+            activeWrappers.forEach(wrapper => {
+                if (wrapper.style.display !== 'none') {
+                    const rows = wrapper.querySelectorAll('tbody tr');
+                    totalRows += rows.length;
+                    rows.forEach(row => {
+                        const binSpan = row.querySelector('.selected-area-name');
+                        if (!binSpan || !binSpan.textContent.trim()) {
+                            allSelected = false;
+                        }
+                    });
+                }
+            });
+            return allSelected && totalRows > 0;
+        }
+</script>

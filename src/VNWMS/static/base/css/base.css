@@ -1,0 +1,231 @@
+input:required {
+    background: #ffffe7;
+}
+
+select:required {
+    background: #ffffe7;
+}
+
+.django-ckeditor-widget{
+    display: inline !important;
+}
+
+img{
+    max-width:100%;
+}
+th{
+    font-family:arial,sans-serif,Meiryo,Microsoft JhengHei;
+}
+td{
+    font-family:arial,sans-serif,Meiryo,Microsoft JhengHei;
+}
+option{
+    font-family:arial,sans-serif,Meiryo,Microsoft JhengHei;
+}
+a{
+    font-family:arial,sans-serif,Meiryo,Microsoft JhengHei;
+}
+div{
+    font-family:arial,sans-serif,Meiryo,Microsoft JhengHei;
+}
+html {
+    height: 100%;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.box-nav {
+    text-align: center;
+    padding-top: 60px;
+}
+
+.box-nav-btn {
+    margin-top: 5px;
+    height: 50px;
+    display: block;
+}
+
+.box-nav a {
+    color: #CCC;
+}
+
+.box-nav a:hover {
+    color: #000;
+}
+
+.header_title {
+font-size: 1.5em;
+}
+
+.value {
+    color: blue;
+    font-weight: bold;
+    border: 1px;
+    border-color: blue;
+    display: block;
+    float: left;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.sidebar {
+    height: 100%;
+    width: 60px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #333;
+    transition: width 0.3s;
+    overflow-x: hidden;
+}
+
+.sidebar.expanded {
+    width: 200px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    padding: 10px 15px;
+    text-align: left;
+}
+
+.sidebar ul li a {
+    color: #eee;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.sidebar ul li a:hover {
+    background-color: #575757;
+}
+
+.sidebar ul li a i {
+    margin-right: 10px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.sidebar .top-links {
+    margin-top: 20px;
+}
+
+.sidebar .bottom-links {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.sidebar .toggle-btn {
+    text-align: center;
+    cursor: pointer;
+    padding: 10px;
+    background-color: #444;
+    color: white;
+}
+
+.sidebar.collapsed .toggle-btn {
+    width: 60px;
+}
+
+.sidebar.expanded ul li a span {
+    display: inline;
+}
+
+.sidebar ul li a span {
+    display: none;
+}
+
+.sidebar .language-select {
+    display: none;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.sidebar.expanded .language-select {
+    display: block;
+}
+
+.sidebar .user-info {
+    background-color: #555;
+}
+
+.sidebar .user-info ul li {
+    padding: 10px 15px;
+    text-align: left;
+}
+
+.sidebar .user-info ul li {
+    color: #eee;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.sidebar .user-info ul li i {
+    margin-right: 10px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.sidebar .user-info span {
+    display: none;
+}
+
+.sidebar.expanded .user-info span {
+    display: inline;
+}
+
+.content {
+    margin-left: 60px;
+    transition: margin-left 0.3s;
+}
+
+.expanded + .content {
+    margin-left: 200px;
+}
+
+h2:lang(vi),
+h3:lang(vi) {
+    font-family: "Times New Roman", "Be Vietnam Pro", "Merriweather", "Noto Serif", serif;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    line-height: 1.4;
+}
+
+.btn-primary:hover {
+    background-color: #ff6600;
+    border-color: #ff6600;
+}

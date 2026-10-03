@@ -1,0 +1,15 @@
+<script>
+    function enableStartButton() {
+            const startButtons = document.querySelectorAll('.start-button');
+
+            startButtons.forEach(button => {
+                if (checkAllFieldsFilled()) {
+                    button.disabled = false;
+                    button.classList.remove('btn-disabled');
+                } else {
+                    button.disabled = true;
+                    button.classList.add('btn-disabled');
+                }
+            });
+        }
+</script>

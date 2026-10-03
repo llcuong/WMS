@@ -1,0 +1,100 @@
+{% load i18n %}
+
+<style>
+    .add-button {
+        color: white;
+        background-color: #316aff;
+    }
+
+    .change-button{
+        color: white;
+        background-color: #6200ee;
+    }
+
+    .exit-button{
+        color: white;
+        background-color: #6c757d;
+    }
+
+    .clean-button{
+        color: white;
+        background-color: #dc3545;
+    }
+
+    .lk-button{
+        color: white;
+        background-color: #3B82F6;
+    }
+</style>
+
+
+<div id="modal-backdrop" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); z-index: 9988;"></div>
+
+<div class="modal fade show no-copy" id="stockoutModal" tabindex="-1" role="dialog"
+     aria-labelledby="stockoutModalLabel" aria-hidden="true"
+     style="display: block; z-index: 9999;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="border-radius: 20px;">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-dot-circle" style="color: #207244"></i>
+                    <strong>&nbsp;{% trans 'Choose action' %}</strong>
+                </h5>
+            </div>
+            <div class="modal-body text-center">
+                <input type="hidden" id="stockout-choice" name="stockout-choice" value="" />
+                <button id="btn-change" class="button change-button"><i class="fas fa-retweet"></i>{% trans "Production" %}</button>
+                <button id="btn-clean" class="button clean-button"><i class="fas fa-brush"></i>{% trans "Washing" %}</button>
+                <button id="btn-lk" class="button lk-button"><i class="fas fa-truck"></i>{% trans "To LK" %}</button>
+                <button id="btn-exit" class="button exit-button"><i class="fas fa-exchange-alt"></i>{% trans "Exit" %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById('stockoutModal');
+        const backdrop = document.getElementById('modal-backdrop');
+        const userChoice = document.querySelector('#user-choice');
+
+        document.getElementById('btn-change').addEventListener('click', function () {
+            window.location.href = "{% url 'former_out' %}?mode=change";
+            localStorage.setItem('user_choice', 'Thay');
+            document.getElementById('stockout-choice').value = 'change';
+            modal.style.display = 'none';
+            backdrop.style.display = 'none';
+            modal.classList.remove('show');
+
+            document.body.style.overflow = 'auto';
+        });
+
+        document.getElementById('btn-clean').addEventListener('click', function () {
+            window.location.href = "{% url 'former_out' %}?mode=clean";
+            localStorage.setItem('user_choice', 'Rửa');
+            document.getElementById('stockout-choice').value = 'clean';
+            modal.style.display = 'none';
+            backdrop.style.display = 'none';
+            modal.classList.remove('show');
+
+            document.body.style.overflow = 'auto';
+        });
+
+        document.getElementById('btn-lk').addEventListener('click', function () {
+            window.location.href = "{% url 'former_out' %}?mode=to_lk";
+            localStorage.setItem('user_choice', 'Thay');
+            document.getElementById('stockout-choice').value = 'to_lk';
+            modal.style.display = 'none';
+            backdrop.style.display = 'none';
+            modal.classList.remove('show');
+
+            document.body.style.overflow = 'auto';
+        });
+
+        document.getElementById('btn-exit').addEventListener('click', function () {
+            window.location.href = "{% url 'former_search' %}";
+        });
+
+        document.body.style.overflow = 'hidden';
+    });
+</script>

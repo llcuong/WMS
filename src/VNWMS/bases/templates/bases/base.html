@@ -1,0 +1,184 @@
+{% load static %}
+{% load i18n %}
+{% load user_groups %}
+<!DOCTYPE html>
+<html lang="{{ request.LANGUAGE_CODE }}">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ever Global - {% block title %} {% endblock %}</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'jquery-ui/jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap-4.1.3/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'jquery.loading/css/jquery.loading.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome-5.4.2/css/all.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome-6.7.2/css/all.css' %}">
+    <link rel="stylesheet" href="{% static 'base/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'jsgrid-1.5.3/jsgrid.min.css' %}">
+    <link rel="stylesheet" href="{% static 'jsgrid-1.5.3/jsgrid-theme.min.css' %}">
+    {% block link %}
+
+    {% endblock %}
+
+    <!-- JavaScript -->
+    <script src="{% static 'jquery/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'base/js/umd/popper.js' %}" defer></script>
+    <script src="{% static 'bootstrap-4.1.3/js/bootstrap.min.js' %}" defer></script>
+    <script src="{% static 'jquery.loading/js/jquery.loading.min.js' %}" defer></script>
+    <script src="{% static 'base/js/func.js' %}" defer></script>
+    <script src="{% static 'jsgrid-1.5.3/jsgrid.min.js' %}" type="text/javascript" defer></script>
+    <script src="{% static 'bootstrap-5.3.6/dist/js/bootstrap.bundle.min.js' %}" defer></script>
+
+    {% block head %}
+
+    {% endblock %}
+
+    {% block css %}
+
+    {% endblock %}
+    {% block base_js %}
+
+    {% endblock %}
+    {% block js %}
+
+    {% endblock %}
+
+    {% block jquery %}
+    <script>
+        $(document).ready(function() {
+               {% block ready %}
+               {% endblock %}
+        });
+    </script>
+    {% endblock %}
+</head>
+<body>
+    <div class="sidebar collapsed" id="sidebar">
+        <div class="toggle-btn" id="toggle-btn">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="top-links">
+            <ul>
+                <li>
+                    {% include 'bases/lang.html' %}
+                </li>
+            </ul>
+        </div>
+        <ul>
+            {% if user|has_any_group:"wh_setting,developer" %}
+            <li>
+                <a aria-label="Warehouse Setting" href="{% url 'warehouse_list' %}">
+                    <i class="fas fa-warehouse"></i>
+                    <span>{% trans "Warehouse Setting" %}</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if user|has_any_group:"wh_packing_admin,wh_packing_manager,wh_packing_leader,wh_packing_user,developer" %}
+            <li>
+                <a aria-label="Warehouse Management System" href="{% url 'warehouse_dashboard' %}">
+                    <i class="fa fa-truck"></i>
+                    <span>{% trans "GD Packing Warehouse" %}</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if user|has_any_group:"wh_former_admin, wh_former_user, developer" %}
+            <li>
+                <a aria-label="Warehouse Former" href="{% url 'former_search' %}">
+                    <i class="fas fa-hand"></i>
+                    <span>{% trans "Warehouse Former" %}</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+        <div class="bottom-links">
+            <div class="user-info">
+                <ul>
+                    <li>
+                        <i class="fas fa-user"></i>
+                        <span>{{ user.username }}</span>
+                    </li>
+                </ul>
+            </div>
+            <ul>
+                <li>
+                    <a href="{% url 'user_info' %}" aria-label="Personal Setting">
+                        <i class="fas fa-key"></i>
+                        <span>{% trans 'Personal Setting' %}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'logout' %}"
+                       onclick="
+                         localStorage.setItem('logout_vnwms', Date.now());
+                       "
+                       aria-label="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>{% trans 'Logout' %}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="content" id="content" style="position: relative;">
+        <div class="container-fluid" style="padding-left: 0px;padding-right: 0px">
+            {% block container %}
+
+            {% endblock %}
+        </div>
+    </div>
+    {% block footer %} {% endblock %}
+
+    {% block script %} {% endblock %}
+
+    <script>
+        document.getElementById('toggle-btn').addEventListener('click', function () {
+            let sidebar = document.getElementById('sidebar');
+            let content = document.getElementById('content');
+            sidebar.classList.toggle('collapsed');
+            sidebar.classList.toggle('expanded');
+            content.classList.toggle('expanded');
+        });
+    </script>
+    <script>
+      window.addEventListener('storage', function(event) {
+        if (event.key === 'logout_vnwms') {
+         localStorage.removeItem('logout_vnwms');
+          alert("Bạn đã đăng xuất từ tab khác. Trang sẽ tự động chuyển về màn hình đăng nhập.");
+
+          setTimeout(function() {
+                window.location.reload(true);
+          }, 300);
+        }
+      });
+
+    </script>
+    <script>
+        $(function () {
+
+            $('#plantSelect').change(function () {
+               const selectValue = $(this).val();
+
+               $.ajax({
+                   url: "{% url 'update_user_plant' %}",
+                   type: "POST",
+                   data: {plant: selectValue, csrfmiddlewaretoken: '{{ csrf_token }}' },
+                   success: function () {
+                       $("#plantSelect option").prop("selected", false);
+                       $("#plantSelect option[value=selectValue]").prop("selected, true");
+                       location.reload();
+                   },
+                   error: function(xhr, status, error) {
+                        console.error("Có lỗi:", error);
+                   }
+               })
+            });
+
+        });
+    </script>
+    {% block javascript %} {% endblock %}
+
+</body>
+</html>

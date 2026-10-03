@@ -1,0 +1,127 @@
+{% load i18n %}
+<div class="modal fade" id="editBatchModal" tabindex="-1" aria-labelledby="editBatchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editBatchModalLabel">
+                    <i class="fas fa-edit"></i> {% trans "Edit Batch" %}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editBatchForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editBatchNo" class="form-label">{% trans "Batch No" %}</label>
+                                <input type="text" class="form-control" id="editBatchNo" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editReceiveForm" class="form-label">{% trans "Receive Form" %}</label>
+                                <input type="text" class="form-control" id="editReceiveForm" oninput="this.value = this.value.toUpperCase()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <div class="mb-3">
+                                    <label for="editItemNo" class="form-label">{% trans "Item No" %}</label>
+                                    <div class="custom-select-wrapper position-relative">
+                                        <input type="text" id="editItemNo" name="item_no" class="select-input form-control"
+                                               placeholder="{% trans 'Select or Typing' %}..." autocomplete="off"
+                                               value="{{ former_item_no|default:'' }}">
+
+                                        <div id="edit_item_dropdown" class="select-dropdown"></div>
+                                    </div>
+                                    <script>
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            const itemOptions = [
+                                                {% for name in form.item_no_list %}
+                                                    "{{ name|escapejs }}"{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            ];
+                                            initDropdown("editItemNo", "edit_item_dropdown", itemOptions);
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editFormerSize" class="form-label">{% trans "Former Size" %}</label>
+                                <input type="text" class="form-control" id="editFormerSize" readonly style="background-color: #f8f9fa;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editFormerType" class="form-label">{% trans "Former Type" %}</label>
+                                <input type="text" class="form-control" id="editFormerType" readonly style="background-color: #f8f9fa;">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editFormerSurface" class="form-label">{% trans "Former Surface" %}</label>
+                                <input type="text" class="form-control" id="editFormerSurface" readonly style="background-color: #f8f9fa;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editPurchaseOrder" class="form-label">{% trans "Purchase Order" %}</label>
+                                <input type="text" class="form-control" id="editPurchaseOrder" readonly style="background-color: #f8f9fa;">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editFormerAql" class="form-label">{% trans "Former AQL" %}</label>
+                                <input type="number" class="form-control" id="editFormerAql" step="0.1" readonly style="background-color: #f8f9fa;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editFormerVendor" class="form-label">{% trans "Former Vendor" %}</label>
+                                <input type="text" class="form-control" id="editFormerVendor" readonly style="background-color: #f8f9fa;">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editBatchDataDate" class="form-label">{% trans "Batch Data Date" %}</label>
+                                <input type="date" class="form-control" id="editBatchDataDate" readonly style="background-color: #f8f9fa;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editLength" class="form-label">{% trans "Length" %}</label>
+                                <input type="number" class="form-control" id="editLength" step="0.01">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editUsedDay" class="form-label">{% trans "Used Day" %}</label>
+                                <input type="number" class="form-control" id="editUsedDay">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> {% trans "Cancel" %}
+                </button>
+                <button type="button" class="btn btn-primary" id="saveBatchBtn">
+                    <i class="fas fa-save"></i> {% trans "Save Changes" %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

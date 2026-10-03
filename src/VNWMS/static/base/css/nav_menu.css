@@ -1,0 +1,132 @@
+#nav-new {
+  width: 200px;
+}
+
+.nav-new-nav {
+    width: 250px;
+    padding: 3.5 rem;
+  }
+
+#nav-new ul {
+  margin: 0;
+  padding: 0;
+}
+
+#nav-new a {
+    text-decoration: none;
+  }
+
+#nav-new li {
+  list-style: none;
+}
+
+.main-nav {
+  height: 60px;
+  line-height: 60px;
+  cursor: pointer;
+  padding: 0px 20px;
+  font-size: 16px;
+}
+
+ul.subs li a {
+  display: block;
+  padding: 10px 20px;
+  background-color: #F5F5F5;
+  font-size: 12px;
+}
+
+.color_blue .main-nav {
+  background-color: #3FC6F3;
+  color: #fff;
+  border-right: solid 10px #0D9BE5;
+}
+
+.color_blue .open {
+  background: #0D9BE5 no-repeat 28px 52px;
+  background-size: 5%;
+}
+
+.color_blue .rollover {
+  background-color: #0D9BE5;
+}
+
+.color_blue ul.subs li a {
+  border-right: solid 10px #0D9BE5;
+  color: #0D9BE5;
+}
+.color_blue ul.subs li a:hover {
+  background-color: #3FC6F3;
+  color: #fff;
+}
+
+.color_red .main-nav {
+  background-color: #FF625F;
+  color: #fff;
+  border-right: solid 10px #FD2621;
+}
+
+.color_red .open {
+  background: #FD2621 no-repeat 28px 52px;
+  background-size: 5%;
+}
+
+.color_red .rollover {
+  background-color: #FD2621;
+}
+
+.color_red ul.subs li a {
+  border-right: solid 10px #FD2621;
+  color: #FD2621;
+}
+.color_red ul.subs li a:hover {
+  background-color: #FF625F;
+  color: #fff;
+}
+
+.color_yellow .main-nav {
+  background-color: #FEBD01;
+  color: #fff;
+  border-right: solid 10px #FF8D00;
+}
+
+.color_yellow .open {
+  background: #FF8D00 no-repeat 28px 52px;
+  background-size: 5%;
+}
+
+.color_yellow .rollover {
+  background-color: #FF8D00;
+}
+
+.color_yellow ul.subs li a {
+  border-right: solid 10px #FF8D00;
+  color: #FF8D00;
+}
+.color_yellow ul.subs li a:hover {
+  background-color: #FEBD01;
+  color: #fff;
+}
+
+.color_green .main-nav {
+  background-color: #46D7C6;
+  color: #fff;
+  border-right: solid 10px #15B59B;
+}
+
+.color_green .open {
+  background: #15B59B no-repeat 28px 52px;
+  background-size: 5%;
+}
+
+.color_green .rollover {
+  background-color: #15B59B;
+}
+
+.color_green ul.subs li a {
+  border-right: solid 10px #15B59B;
+  color: #15B59B;
+}
+.color_green ul.subs li a:hover {
+  background-color: #46D7C6;
+  color: #fff;
+}

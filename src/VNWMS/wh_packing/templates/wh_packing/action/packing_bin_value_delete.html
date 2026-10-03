@@ -1,0 +1,452 @@
+{% extends 'wh_packing/bases/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Inventory Deletion" %} {% endblock %}
+
+{% block base_js %}
+    {{ block.super }}
+    <style>
+
+        th {
+            text-align: center;
+        }
+
+        input[type="checkbox"] {
+            display: flex;
+            width: 28px;
+            height: 22px;
+            transform: scale(1.5);
+        }
+
+        .jsgrid-cell, .jsgrid-header-cell {
+            padding: 12px 14px;
+            border-color: #eaebef;
+        }
+        .jsgrid-cell {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        .jsgrid-cell.expanded {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            word-wrap: break-word;
+            max-width: none;
+        }
+
+        .jsgrid-pager {
+            display: flex;
+            justify-content: center; /* Căn giữa các nút phân trang */
+            align-items: center; /* Căn giữa theo chiều dọc */
+            width: 100%;
+        }
+
+        body {
+            font-size: 0.875rem;
+        }
+
+        #Search {
+            border-radius: 5px 27px 27px 5px;
+        }
+
+
+
+    </style>
+{% endblock %}
+
+{% block jquery %}{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+
+        <h3 class="text-center">{% trans "Inventory Deletion" %}</h3>
+
+        <form method="GET" id="searchForm" class="mt-4">
+            <div class="row g-2">
+                <div class="col-12 col-md-2">
+                    <label for="warehouse">{% trans "Warehouse" %}</label>
+                    <select id="warehouse" name="warehouse" class="form-control">
+                        <option value="">{% trans "Choose Warehouse" %}</option>
+                        {% for wh in warehouses %}
+                        <option value="{{ wh.wh_code }}">{{ wh.wh_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-12 col-md-2">
+                    <label for="{{ form.area.id_for_label }}">{% trans "Area" %}</label>
+                    {{ form.area }}
+                </div>
+                <div class="col-12 col-md-2">
+                    <label for="{{ form.bin.id_for_label }}">{% trans "Location" %}</label>
+                    {{ form.bin }}
+                </div>
+                <div class="col-12 col-md-2">
+                    <label for="id_po" class="form-label">{% trans "Product Order" %}</label>
+                    {{ form.po }}
+                </div>
+                <div class="col-12 col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary" id="Search">
+                        &nbsp;<i class="fas fa-search"></i>&nbsp;&nbsp;&nbsp;
+                    </button>
+                </div>
+                <div class="col-12 col-md-2 d-flex align-items-end justify-content-end">
+                    <button id="exportExcel" type="button" class="btn btn-outline-success" aria-label="Template">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div id="jsGrid" class="mt-3"></div>
+
+        <hr>
+
+        <div class="row d-flex justify-content-center">
+            <button class="btn btn-danger btn-lg" style="min-width: 80px" id="deleteSelected">{% trans "Delete" %}</button>
+        </div>
+
+        <br>
+
+        <br>
+
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(document).ready(function () {
+            $("#jsGrid").on("click", ".jsgrid-cell", function() {
+                $(this).toggleClass("expanded");
+            });
+            let selectedItems = {};
+
+            const translations = {
+                notFound: "{% trans 'Not found' %}",
+                plant: "{% trans 'Plant' %}",
+                warehouse: "{% trans 'Warehouse' %}",
+                product_order: "{% trans 'Product Order' %}",
+                purchase_order: "{% trans 'Purchase Order' %}",
+                version_no: "{% trans 'Version No' %}",
+                version_seq: "{% trans 'Version Seq' %}",
+                item_type: "{% trans 'Item Type' %}",
+                size: "{% trans 'Size' %}",
+                location: "{% trans 'Location' %}",
+                qty: "{% trans 'Qty' %}",
+                unit: "{% trans 'Unit' %}"
+            };
+
+
+            // Load động danh sách Area khi chọn Warehouse
+            $("#warehouse").change(function () {
+                const warehouseId = $(this).val();
+                $("#id_area").prop("disabled", true).html('<option value="">{% trans "Choose Area" %}</option>');
+                $("#id_bin").prop("disabled", true).html('<option value="">{% trans "Choose Location" %}</option>');
+                if (warehouseId) {
+                    $.getJSON("{% url 'get_areas' %}", { warehouse: warehouseId }, function (data) {
+                        $.each(data, function (index, obj) {
+                            $("#id_area").append('<option value="' + obj.area_id + '">' + obj.area_name + '</option>');
+                        });
+                        $("#id_area").prop("disabled", false);
+                    });
+                }
+            });
+
+            // Load động danh sách Bin khi chọn Area
+            $("#id_area").change(function () {
+                const areaId = $(this).val();
+                $("#id_bin").prop("disabled", true).html('<option value="">{% trans "Choose Location" %}</option>');
+                if (areaId) {
+                    $.getJSON("{% url 'get_bins' %}", { area: areaId }, function (data) {
+                        $.each(data, function (index, obj) {
+                            $("#id_bin").append('<option value="' + obj.bin_id + '">' + obj.bin_name + '</option>');
+                        });
+                        $("#id_bin").prop("disabled", false);
+                    });
+                }
+            });
+
+            $("form").on("submit", function(event) {
+                event.preventDefault();
+            });
+
+            $("#id_po").on("keyup", function (event) {
+
+                if (event.key === 'Enter'){
+                    let warehouseId = $("#warehouse").val();
+                    let areaId = $("#id_area").val();
+                    let binId = $("#id_bin").val();
+                    let poId = $("#id_po").val().trim();
+
+                    if (warehouseId || areaId || binId || poId) {
+                        $.getJSON("{% url 'get_bin_data' %}", {
+                                warehouse: warehouseId,
+                                area: areaId,
+                                bin: binId,
+                                po: poId
+                            }, function (data) {
+                                console.log("Dữ liệu nhận về:", data); // Debug xem dữ liệu đúng chưa
+
+                                $("#jsGrid").jsGrid("option", "data", data);
+                                $("#jsGrid").jsGrid("option", "pageIndex", 1);
+                                $("#jsGrid").jsGrid("refresh");
+                        });
+                    }
+                }
+
+            });
+
+            $("#Search").click(function () {
+                let warehouseId = $("#warehouse").val();
+                let areaId = $("#id_area").val();
+                let binId = $("#id_bin").val();
+                let poId = $("#id_po").val().trim();
+
+                if (warehouseId || areaId || binId || poId) {
+                    $.getJSON("{% url 'get_bin_data' %}", {
+                            warehouse: warehouseId,
+                            area: areaId,
+                            bin: binId,
+                            po: poId
+                        }, function (data) {
+                            $.each($("#jsGrid").jsGrid("option", "data"), function(index, item) {
+                                delete selectedItems[item.id];
+                            });
+                            $('#selectAll').prop('checked', false);
+
+                            console.log("Dữ liệu nhận về:", data); // Debug xem dữ liệu đúng chưa
+
+                            $("#jsGrid").jsGrid("option", "data", data);
+                            $("#jsGrid").jsGrid("option", "pageIndex", 1);
+                            $("#jsGrid").jsGrid("refresh");
+                    });
+                }
+
+            });
+
+
+            $("#jsGrid").jsGrid({
+                width: "100%",
+                height: "68vh",
+                sorting: true,
+                paging: true,
+                pageSize: 50,
+                noDataContent: translations.notFound,
+                pageButtonCount: 5,
+                editing: false,
+                selecting: true,
+                pagerFormat: "{first} {prev} {pages} {next} {last} \u00A0  |\u00A0\u00A0 {pageIndex} of {pageCount}",
+                pagePrevText: "<i class='fas fa-chevron-left'></i>",
+                pageNextText: "<i class='fas fa-chevron-right'></i>",
+                pageFirstText: "<i class='fas fa-angle-double-left'></i>",
+                pageLastText: "<i class='fas fa-angle-double-right'></i>",
+                {#headerRowClass: "table-danger table-bordered",#}
+                data: [],
+                fields: [
+                    {
+                        name: "select",
+                        title: "<input type='checkbox' id='selectAll'>",
+                        itemTemplate: function(_, item) {
+                            let $checkbox = $("<input>").attr("type", "checkbox")
+                                .addClass("rowCheckbox")
+                                .attr("data-id", item.id)
+                                .attr("data-product-order", item.product_order)
+                                .attr("data-purchase-no", item.purchase_no)
+                                .attr("data-version-no", item.version_no)
+                                .attr("data-version-seq", item.version_seq)
+                                .attr("data-item-type", item.item_type)
+                                .attr("data-size", item.size)
+                                .attr("data-bin-id", item.bin_id)
+                                .attr("data-qty", item.qty)
+                                .attr("data-purchase-unit", item.purchase_unit);
+
+                            if (selectedItems[item.id]) {
+                                $checkbox.prop("checked", true);  // Dùng prop thay vì attr
+                            }
+
+                            $checkbox.on("change", function() {
+                                if ($(this).is(":checked")) {
+                                    selectedItems[item.id] = item;
+                                } else {
+                                    delete selectedItems[item.id];
+                                }
+                            });
+
+                            return $checkbox;
+                        },
+                        align: "center",
+                        width: 50,
+                        filtering: false,
+                        sorting: false,
+                    },
+                    { name: "wh_plant", title: translations.plant, type: "text", width: 100, css: "text-center" },
+                    { name: "product_order", title: translations.product_order, type: "text", width: 100, css: "text-center"  },
+                    { name: "purchase_no", title: translations.purchase_order, type: "text", width: 100, css: "text-center"  },
+                    { name: "version_no", title: translations.version_no, type: "text", width: 100, css: "text-center"  },
+                    { name: "version_seq", title: translations.version_seq, type: "text", width: 50, css: "text-center"  },
+                    { name: "item_type", title: translations.item_type, type: "text", width: 120, css: "text-center"  },
+                    { name: "size", title: translations.size, type: "text", width: 50, css: "text-center"  },
+                    { name: "bin_id", title: translations.location, type: "text", width: 100, css: "text-center"  },
+                    { name: "qty", title: translations.qty, type: "number", width: 100 },
+                    { name: "purchase_unit", title: translations.unit, type: "text", width: 50, css: "text-center"  },
+                ],
+
+            });
+
+
+            $("#selectAll").on("change", function () {
+                event.preventDefault();
+                const isChecked = $(this).is(":checked");
+
+                // Lặp toàn bộ dữ liệu (kể cả không hiển thị)
+                $.each($("#jsGrid").jsGrid("option", "data"), function(index, item) {
+                    if (isChecked) {
+                        selectedItems[item.id] = item;
+                    } else {
+                        delete selectedItems[item.id];
+                    }
+                });
+
+                // Cập nhật checkbox trên trang hiện tại
+                $(".rowCheckbox").prop("checked", isChecked);
+            });
+
+            $("#jsGrid").on("change", ".rowCheckbox", function() {
+                {#let id = $(this).attr("data-id");#}
+                let $checkbox = $(this);
+                let rowData = $checkbox.data(); // Lấy toàn bộ data-* của checkbox
+                let id = rowData.id;
+
+                if ($(this).is(":checked")) {
+                    {#selectedItems[id] = true;#}
+                    selectedItems[id] = rowData;
+                } else {
+                    delete selectedItems[id];
+                }
+
+                // Kiểm tra nếu tất cả checkbox con đều được chọn thì tick vào #selectAll
+                let allChecked = $(".rowCheckbox").length === $(".rowCheckbox:checked").length;
+                $("#selectAll").prop("checked", allChecked);
+            });
+
+
+            $("#deleteSelected").click(function () {
+                let selectedIds = Object.keys(selectedItems); // Lấy danh sách ID đã chọn
+                let count = selectedIds.length;
+
+                if (count === 0) {
+                    const select_trans = "{% trans 'Please select at least one row to delete!' %}";
+                    alert(select_trans);
+                    return;
+                }
+
+                const confirm_trans = "[" + count + "] " + "{% trans 'Are you sure you want to delete?' %}";
+                if (!confirm(confirm_trans)) return;
+
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'inventory_delete' %}",
+                    data: JSON.stringify({
+                        ids: selectedIds ,
+                        list_data: selectedItems,
+                    }),
+                    contentType: "application/json",
+                    success: function (response) {
+                        const success_trans = "{% trans 'Deleted successfully' %}!";
+                        alert(success_trans);
+
+                        // Reset danh sách đã chọn
+                        selectedItems = {};
+                        $(".rowCheckbox").prop("checked", false); // Bỏ chọn tất cả checkbox
+                        $("#selectAll").prop("checked", false); // Bỏ chọn "Chọn tất cả"
+
+
+                        let warehouseId = $("#warehouse").val();
+                        let areaId = $("#id_area").val();
+                        let binId = $("#id_bin").val();
+                        let poId = $("#id_po").val().trim();
+
+                        if (warehouseId || areaId || binId || poId) {
+
+                            $.getJSON("{% url 'get_bin_data' %}", {
+                                warehouse: warehouseId,
+                                area: areaId,
+                                bin: binId,
+                                po: poId
+                                }, function (data) {
+                                    console.log("Dữ liệu nhận về:", data); // Debug xem dữ liệu đúng chưa
+
+                                    $("#jsGrid").jsGrid("option", "data", data);
+                                    $("#jsGrid").jsGrid("option", "pageIndex", 1);
+                                    $("#jsGrid").jsGrid("refresh");
+                            });
+                        }
+                    },
+                    error: function (xhr) {
+                        const errorMsg = JSON.parse(xhr.responseText);
+                        alert(errorMsg.message);
+                    }
+                });
+            });
+
+            $("#exportExcel").click(function () {
+                // Lấy dữ liệu từ jsGrid
+                let gridData = $("#jsGrid").jsGrid("option", "data");
+
+                // Lấy các trường từ jsGrid để tạo mảng tiêu đề cho Excel
+                const fields = [
+                    { name: "wh_plant", title: translations.plant, type: "text", width: 100 },
+                    { name: "product_order", title: translations.product_order, type: "text", width: 100 },
+                    { name: "purchase_no", title: translations.purchase_order, type: "text", width: 100 },
+                    { name: "version_no", title: translations.version_no, type: "text", width: 100 },
+                    { name: "version_seq", title: translations.version_seq, type: "text", width: 70 },
+                    { name: "item_type", title: translations.item_type, type: "text", width: 50 },
+                    { name: "size", title: translations.size, type: "text", width: 50 },
+                    { name: "bin_id", title: translations.location, type: "text", width: 80 },
+                    { name: "qty", title: translations.qty, type: "number", width: 100 },
+                    { name: "purchase_unit", title: translations.unit, type: "text", width: 50 },
+                ];
+
+                // Tạo một đối tượng map để ánh xạ từ name sang title
+                let titleMap = {};
+                fields.forEach(function (field) {
+                    titleMap[field.name] = field.title;
+                });
+
+                const transformedData = gridData.map(function (item) {
+                    let transformedItem = {};
+                    fields.forEach(function (field) {
+                        transformedItem[field.title] = item[field.name] || ""; // Giữ đúng thứ tự trong `fields`
+                    });
+                    return transformedItem;
+                });
+
+                // Chuyển đổi dữ liệu thành định dạng SheetJS
+                let ws = XLSX.utils.json_to_sheet(transformedData);
+
+                // Đặt độ rộng cho các cột
+                let colWidths = fields.map(function(field) {
+                    return { wpx: field.width }; // Đặt độ rộng cột theo thuộc tính width trong fields
+                });
+                // Áp dụng độ rộng cho sheet
+                ws['!cols'] = colWidths;
+
+
+                // Tạo workbook và thêm sheet vào
+                let wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Data");
+
+                // Xuất file Excel
+                XLSX.writeFile(wb, "Inventory_Deletion.xlsx");
+            });
+        });
+    </script>
+{% endblock %}

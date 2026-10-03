@@ -1,0 +1,54 @@
+<style>
+    .tab-btn-container {
+        display: flex;
+        border-bottom: 2px solid #d9d9d9;
+        margin-left: 12px;
+        padding: 0px 0px !important;
+    }
+
+    .tab-btn {
+        background: none;
+        border: none;
+        font-weight: 600;
+        color: #333;
+        padding: 4px 20px;
+        text-transform: uppercase;
+        font-size: 15px;
+        border-bottom: 4px solid transparent;
+        transition: all 0.2s ease-in-out;
+        outline: none !important;
+    }
+
+    .tab-btn.active {
+        color: #2196f3;
+        border-bottom: 3px solid #2196f3;
+    }
+
+    .tab-btn:hover {
+        color: #2196f3;
+        cursor: pointer;
+    }
+
+</style>
+
+<div class="col-12 no-margin">
+    <div class="col-3 tab-btn-container">
+        <button type="button" class="tab-btn tab-table-toggle-btn active" onclick="switchTable('device', this)">DEVICE</button>
+        <button type="button" class="tab-btn tab-table-toggle-btn" onclick="switchTable('database', this)">DATABASE</button>
+        <button type="button" class="tab-btn tab-table-toggle-btn" onclick="switchTable('report', this)">REPORT</button>
+    </div>
+</div>
+
+<script>
+    function switchTable(target, btn) {
+        document.getElementById('device-table').style.display = 'none';
+        document.getElementById('database-table').style.display = 'none';
+
+        document.getElementById(target + '-table').style.display = 'block';
+
+        document.querySelectorAll('.tab-table-toggle-btn').forEach(el => {
+            el.classList.remove('active');
+        });
+        btn.classList.add('active');
+    }
+</script>

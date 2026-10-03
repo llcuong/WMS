@@ -1,0 +1,35 @@
+<style>
+    .rfid-table-result-body {
+        overflow-y: auto;
+        min-height: 125px;
+    }
+</style>
+
+
+<div class="rfid-table-result-body" id="epc-table-wrapper-{{ pid }}">
+    <table class="rfid-table-result">
+        <tbody id="epc-table-body-{{ pid }}">
+
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    function adjustResultTableBodyHeight() {
+        const body = document.querySelector('.rfid-table-result-body');
+        if (!body) return;
+
+        const rect = body.getBoundingClientRect();
+        const newHeight = window.innerHeight - rect.top - 16 - 40 - 33 - 16 - 8;
+
+
+        document.querySelectorAll('.rfid-table-result-body, .rfid-table-result-body').forEach(el => {
+            el.style.height = newHeight + 'px';
+            el.style.overflowY = 'auto';
+        });
+    }
+
+    window.addEventListener('load', adjustResultTableBodyHeight);
+    window.addEventListener('resize', adjustResultTableBodyHeight);
+</script>

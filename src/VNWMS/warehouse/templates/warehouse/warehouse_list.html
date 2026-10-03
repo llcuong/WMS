@@ -1,0 +1,143 @@
+{% extends 'warehouse/bases/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Warehouse List" %} {% endblock %}
+{% block base_js %}
+{{ block.super }}
+<!-- Bootstrap CSS -->
+
+<style>
+    .btn-danger, .btn-primary, .btn-success {
+        width: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td {
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    td:hover {
+        color: #ff2b3b;
+    }
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="mb-4" style="font-size: 2em;text-align: center;">{% trans "Warehouse List" %}</h2>
+                <a class="btn btn-success mb-3" style="width: auto" href="{% url 'warehouse_create' %}" role="button">
+                    <i class="fas fa-plus"></i> {% trans "Add" %}
+                </a>
+                <!-- Kiểm tra nếu có dữ liệu -->
+                {% if warehouses %}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Plant" %}</th>
+                            <th>{% trans "Warehouse Id" %}</th>
+                            <th>{% trans "Warehouse Name" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Lặp qua danh sách warehouse -->
+                        {% for warehouse in warehouses %}
+                        <tr>
+                            <td onclick="redirectToPage('{% url 'area_by_warehouse' wh_code=warehouse.wh_code %}')">{{ warehouse.wh_plant|default_if_none:"" }}</td>
+                            <td onclick="redirectToPage('{% url 'area_by_warehouse' wh_code=warehouse.wh_code %}')">{{ warehouse.wh_code }}</td>
+                            <td onclick="redirectToPage('{% url 'area_by_warehouse' wh_code=warehouse.wh_code %}')">{{ warehouse.wh_name }}</td>
+                            <td>
+                                {% if warehouse.wh_code %}
+                                    <a class="btn btn-primary" href="{% url 'warehouse_edit' warehouse_code=warehouse.wh_code %}" role="button">
+                                        <i class="fas fa-edit"></i> {% trans "Edit" %}</a>
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-warehouse-id="{{ warehouse.pk }}" data-warehouse-name="{{ warehouse.wh_name }}">
+                                        <i class="fas fa-trash"></i> {% trans "Delete" %}</button>
+                                {% else %}
+                                    <a class="btn btn-primary" style="width: 70px" href="#" role="button">{% trans "Edit" %}</a>
+                                    <a class="btn btn-primary" style="width: 70px" href="#" role="button">{% trans "Delete" %}</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>{% trans "No warehouses found." %}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {#    Modal#}
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">
+                        <i class="fas fa-exclamation-triangle" style="color: #FFC107; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);"></i>
+                        &nbsp;{% trans "Alert" %}
+                    </h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {% trans "Are you sure you want to delete the warehouse" %} "<strong id="modalWarehouseName"></strong>"?
+                </div>
+                <div class="modal-footer">
+                    <form method="post" id="deleteForm">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-check"></i>&nbsp;{% trans "Yes, Delete" %}
+                        </button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i>&nbsp;{% trans "Cancel" %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block javascript %}
+
+        <script>
+            // Dynamic data injection into modal
+            const deleteModal = document.getElementById('deleteModal');
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget; // Button that triggered the modal
+                const warehouseName = button.getAttribute('data-warehouse-name');
+                const warehouseId = button.getAttribute('data-warehouse-id');
+
+                // Update modal content
+                const modalWarehouseName = document.getElementById('modalWarehouseName');
+                modalWarehouseName.textContent = warehouseName;
+
+                // Update form action dynamically
+                const deleteForm = document.getElementById('deleteForm');
+                deleteForm.action = `/warehouse/warehouse_delete/${warehouseId}/`;
+            });
+        </script>
+        <script>
+        // Hàm chuyển hướng đến trang khác
+        function redirectToPage(url) {
+            window.location.href = url;
+        }
+        </script>
+{% endblock %}
+
+

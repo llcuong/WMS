@@ -1,0 +1,61 @@
+{% load i18n %}
+
+<style>
+    .custom-shake {
+        --fa-animation-duration: 2s;
+        --fa-animation-iteration-count: 1;
+    }
+</style>
+
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="width: 380px;">
+        <div class="modal-content" style="border-radius: 20px;">
+            <div class="modal-body text-center text-danger font-weight-bold fs-18">
+                <div class="mt-4">
+                    <i class="fas fa-times-circle fa-3x mb-2 fa-shake custom-shake"></i>
+                </div>
+                <div class="mt-3">
+                    <p class="text-dark font-weight-bold" style="font-size: 28px">{% trans "Error" %}</p>
+                    <p class="text-black">{{ error_msg }}</p>
+                </div>
+                <div class="mt-3">
+                    <button class="btn btn-danger px-4" onclick="$('#errorModal').modal('hide')">
+                        {% trans "Try again" %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if error_modal %}
+    <script>
+        $(document).ready(function () {
+            if (typeof hideLoadingModal === 'function') {
+                hideLoadingModal();
+            } else {
+                const loadingModalElement = document.getElementById('loadingModal');
+                if (loadingModalElement) {
+                    const loadingModal = bootstrap.Modal.getInstance(loadingModalElement);
+                    if (loadingModal) {
+                        loadingModal.hide();
+                    }
+                }
+            }
+            
+            setTimeout(() => {
+                $('#errorModal').modal('show');
+            }, 200);
+
+            setTimeout(() => {
+                $('#errorModal').modal('hide');
+            }, 2000);
+
+            if (window.history.replaceState) {
+                const url = new URL(window.location.href);
+                url.searchParams.delete('error');
+                window.history.replaceState({}, document.title, url.pathname);
+            }
+        });
+    </script>
+{% endif %}

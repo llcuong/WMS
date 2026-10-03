@@ -1,0 +1,95 @@
+{% load i18n %}
+
+<button type="button" class="pushable" id="rackButton" 
+        data-rfid-reader-ip="{{ rfid_reader_ip|default:'' }}" 
+        data-batch-no="{{ batch_no|default:'' }}"
+        data-action="{{ action|default:'CRTE' }}">
+    <span class="shadow"></span>
+    <span class="edge"></span>
+    <span class="front">{% trans "Rack" %}: <span id="rackScannedValue">0</span></span>
+</button>
+
+<style>
+    .pushable {
+        position: relative;
+        background: transparent;
+        padding: 0;
+        border: none;
+        cursor: pointer;
+        outline-offset: 4px;
+        outline-color: deeppink;
+        transition: filter 250ms;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+
+    .shadow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: hsl(226, 25%, 69%);
+        border-radius: 8px;
+        filter: blur(2px);
+        will-change: transform;
+        transform: translateY(2px);
+        transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+    }
+
+    .edge {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        border-radius: 8px;
+        background: linear-gradient(
+            to left,
+            hsl(0, 0%, 69%) 0%,
+            hsl(0, 0%, 85%) 8%,
+            hsl(0, 0%, 85%) 92%,
+            hsl(0, 0%, 69%) 100%
+        );
+    }
+
+    .front {
+        display: block;
+        position: relative;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-size: 1rem;
+        color: white;
+        background: hsl(345, 100%, 47%);
+        will-change: transform;
+        transform: translateY(-4px);
+        transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+    }
+
+    .pushable:hover {
+        filter: brightness(110%);
+    }
+
+    .pushable:hover .front {
+        transform: translateY(-6px);
+        transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+    }
+
+    .pushable:active .front {
+        transform: translateY(-2px);
+        transition: transform 34ms;
+    }
+
+    .pushable:hover .shadow {
+        transform: translateY(4px);
+        transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+    }
+
+    .pushable:active .shadow {
+        transform: translateY(1px);
+        transition: transform 34ms;
+    }
+
+    .pushable:focus:not(:focus-visible) {
+        outline: none;
+    }
+</style>

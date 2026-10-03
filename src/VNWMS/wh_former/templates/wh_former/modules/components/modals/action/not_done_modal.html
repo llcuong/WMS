@@ -1,0 +1,294 @@
+{% load i18n %}
+
+<div class="modal fade" id="unsavedDataWarningModal" tabindex="-1" aria-labelledby="unsavedDataWarningModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-warning text-dark border-0">
+                <h5 class="modal-title d-flex align-items-center" id="unsavedDataWarningModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    {% trans "Cảnh báo dữ liệu chưa lưu" %}
+                </h5>
+            </div>
+            <div class="modal-body p-4">
+                <div class="text-center mb-3">
+                    <i class="fas fa-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
+                </div>
+                <p class="text-center mb-3">
+                    <strong>{% trans "Bạn có dữ liệu tạm thời trong rack chưa được lưu!" %}</strong>
+                </p>
+                <p class="text-muted text-center mb-0">
+                    {% trans "Nếu thoát trang mà không lưu, có thể xảy ra lỗi khi thực hiện lại. Bạn có chắc chắn muốn thoát không?" %}
+                </p>
+            </div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button type="button" class="btn btn-secondary px-4" id="cancelExitBtn">
+                    <i class="fas fa-times me-1"></i>
+                    {% trans "Hủy" %}
+                </button>
+                <button type="button" class="btn btn-warning px-4" id="confirmExitBtn">
+                    <i class="fas fa-sign-out-alt me-1"></i>
+                    {% trans "Thoát trang" %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .modal-content {
+        border-radius: 15px;
+    }
+
+    .modal-header {
+        border-radius: 15px 15px 0 0;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+
+<script>
+    class UnsavedDataWarning {
+        constructor() {
+            this.pendingNavigation = null;
+            this.modal = null;
+            this.allowNavigation = false;
+            this.init();
+        }
+
+        init() {
+            this.modal = new bootstrap.Modal(document.getElementById('unsavedDataWarningModal'));
+            this.setupEventListeners();
+            this.interceptNavigation();
+        }
+
+        setupEventListeners() {
+            // Cancel button
+            document.getElementById('cancelExitBtn').addEventListener('click', () => {
+                this.modal.hide();
+                this.pendingNavigation = null;
+            });
+
+            // Confirm button
+            document.getElementById('confirmExitBtn').addEventListener('click', () => {
+                this.modal.hide();
+                if (this.pendingNavigation) {
+                    if (this.pendingNavigation.type === 'link') {
+                        this.allowNavigation = true;
+                        window.location.href = this.pendingNavigation.url;
+                    } else if (this.pendingNavigation.type === 'back') {
+                        this.allowNavigation = true;
+                        window.history.back();
+                    } else if (this.pendingNavigation.type === 'beforeunload') {
+                        this.allowNavigation = true;
+                        window.location.reload();
+                    }
+                }
+                this.pendingNavigation = null;
+            });
+        }
+
+        interceptNavigation() {
+            // Intercept navigation links
+            document.addEventListener('click', (e) => {
+                const link = e.target.closest('a[href]');
+                if (link && !link.hasAttribute('data-no-warning') && !link.href.startsWith('#')) {
+                    if (this.hasTempData()) {
+                        e.preventDefault();
+                        this.showWarning('link', link.href);
+                    }
+                }
+            });
+
+            // Intercept form submissions (except current form)
+            document.addEventListener('submit', (e) => {
+                const form = e.target;
+                if (form && form.getAttribute('method') !== 'post' || form.querySelector('[name="form_type"][value="former"]')) {
+                    return; // Allow current form submission
+                }
+
+                if (this.hasTempData()) {
+                    e.preventDefault();
+                    this.showWarning('form', form.action);
+                }
+            });
+
+            // Intercept page unload
+            window.addEventListener('beforeunload', (e) => {
+                if (this.hasTempData() && !this.allowNavigation) {
+                    const message = '{% trans "Bạn có dữ liệu chưa lưu. Thoát trang có thể gây mất dữ liệu." %}';
+                    e.preventDefault();
+                    e.returnValue = message;
+                    return message;
+                }
+            });
+
+            // Handle browser back/forward
+            window.addEventListener('popstate', (e) => {
+                if (this.hasTempData() && !this.allowNavigation) {
+                    window.history.pushState(null, null, window.location.href);
+                    this.showWarning('back');
+                }
+            });
+
+            // Push initial state
+            window.history.pushState(null, null, window.location.href);
+        }
+
+        hasTempData() {
+            try {
+                // Kiểm tra multiple sources của temp data
+
+                // 1. Kiểm tra rack data trong DOM
+                const rackButton = document.getElementById('rackButton');
+                const rackScanned = rackButton ? rackButton.querySelector('.front')?.textContent : '';
+                if (rackScanned && rackScanned.includes(':') && !rackScanned.includes(': 0')) {
+                    return true;
+                }
+
+                // 2. Kiểm tra table data có chưa lưu
+                const tableData = getTableData ? getTableData() : [];
+                if (tableData && tableData.length > 0) {
+                    // Kiểm tra xem có data nào chưa được persist không
+                    const hasUnsavedData = tableData.some(item => {
+                        return item.epc_raw && item.basket_no && !item.is_saved;
+                    });
+                    if (hasUnsavedData) {
+                        console.log('Found unsaved table data:', tableData);
+                        return true;
+                    }
+                }
+
+                // 3. Kiểm tra session storage
+                const tempData = sessionStorage.getItem('rack_temp_data');
+                if (tempData && tempData !== 'null' && tempData !== '[]') {
+                    return true;
+                }
+
+                // 4. Kiểm tra local storage
+                const localTemp = localStorage.getItem('unsaved_rack_data');
+                if (localTemp && localTemp !== 'null' && localTemp !== '[]') {
+                    return true;
+                }
+
+                // 5. Kiểm tra global variables
+                if (window.tempRackData && window.tempRackData.length > 0) {
+                    console.log('Found temp data in global variable:', window.tempRackData);
+                    return true;
+                }
+
+                // 6. Kiểm tra form đã được modify nhưng chưa save
+                if (window.formModified && !window.formSaved) {
+                    return true;
+                }
+
+            } catch (error) {
+                console.error('Error checking temp data:', error);
+            }
+
+            return false;
+        }
+
+        showWarning(type, url = null) {
+            this.pendingNavigation = {type, url};
+            this.modal.show();
+        }
+
+        clearTempData() {
+            // Clear all temp data indicators
+            sessionStorage.removeItem('rack_temp_data');
+            localStorage.removeItem('unsaved_rack_data');
+            if (window.tempRackData) {
+                window.tempRackData = [];
+            }
+            window.formModified = false;
+            window.formSaved = true;
+            this.allowNavigation = true;
+        }
+
+        markDataAsSaved() {
+            this.clearTempData();
+        }
+    }
+
+    // Initialize warning system
+    document.addEventListener('DOMContentLoaded', function () {
+        // Khởi tạo warning system
+        window.unsavedDataWarning = new UnsavedDataWarning();
+
+        // Track form modifications
+        const formFields = document.querySelectorAll('input, select, textarea');
+        formFields.forEach(field => {
+            field.addEventListener('input', () => {
+                window.formModified = true;
+                window.formSaved = false;
+            });
+            field.addEventListener('change', () => {
+                window.formModified = true;
+                window.formSaved = false;
+            });
+        });
+
+        // Override form submission để mark as saved
+        const form = document.querySelector('form');
+        if (form) {
+            const originalSubmit = form.addEventListener;
+            form.addEventListener('submit', function (e) {
+                const formType = e.submitter?.value;
+                if (formType === 'former' || formType === 'done') {
+                    // Mark as saved when submitting
+                    if (window.unsavedDataWarning) {
+                        window.unsavedDataWarning.markDataAsSaved();
+                    }
+                }
+            });
+        }
+    });
+
+    // Global functions
+    window.markDataAsSaved = function () {
+        if (window.unsavedDataWarning) {
+            window.unsavedDataWarning.markDataAsSaved();
+        }
+    };
+
+    window.clearTempRackData = function () {
+        if (window.unsavedDataWarning) {
+            window.unsavedDataWarning.clearTempData();
+        }
+    };
+
+    // Hook vào rack button success callback
+    if (window.rackButton) {
+        const originalRackSuccess = window.rackButton.onSuccess;
+        window.rackButton.onSuccess = function (data) {
+            // Set temp data flag when rack scan successful
+            window.formModified = true;
+            window.formSaved = false;
+            sessionStorage.setItem('rack_temp_data', JSON.stringify(data));
+
+            if (originalRackSuccess) {
+                originalRackSuccess.call(this, data);
+            }
+        };
+    }
+
+    {% if require_form_valid_and_bin_select %}
+        // Override original validation functions để tích hợp với warning system
+        const originalUpdateSubmitButtons = updateSubmitButtons;
+        updateSubmitButtons = function () {
+            const result = originalUpdateSubmitButtons();
+
+            // Check if we have unsaved data when updating buttons
+            if (window.unsavedDataWarning && window.unsavedDataWarning.hasTempData()) {
+                console.log('Detected temp data during button update');
+            }
+
+            return result;
+        };
+    {% endif %}
+</script>

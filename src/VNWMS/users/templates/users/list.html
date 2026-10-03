@@ -1,0 +1,73 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block title %}
+    使用者列表
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'base\js\jquery.redirect.js' %}"></script>
+<script>
+    var member = {
+      'info': function(member_id) {
+          $.redirect('{% url 'user_detail' %}', {'pk': member_id, 'csrfmiddlewaretoken': '{{csrf_token}}'});
+      }
+    };
+</script>
+{% endblock js %}
+
+{% block sub_container %}
+<form method="POST" action="{% url 'user_list' %}">
+    <div class="input-group" style="margin-bottom: 20px;margin-top: 20px;">
+
+        {% csrf_token %}
+        <input type="text" class="form-control" name="user_keyword" id="user_keyword" placeholder="使用者搜尋" value="{{ user_keyword|default:'' }}">
+        <div class="input-group-append">
+            <button class="btn btn-success" type="submit" id="search">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+</form>
+<p id="fit_rowcount_alert" class="lead" style="font-size: 1rem; margin-bottom: 0;">共<b>{{ member_all }}</b>筆會員資料 (管理員：{{ admin_count }}名 / 一般使用者：{{ member_count }}名)</p>
+<div id="member_data" class="table-responsive" style="height:600px; overflow:auto;">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr class="text-center table-active">
+                <th scope="col" class="text-center text-nowrap">序列</th>
+                <th scope="col" class="text-center text-nowrap" style="" data-column="users.emp_no" data-order="desc">工號</th>
+                <th scope="col" class="text-center text-nowrap" style="width: 15%;" data-column="users.username" data-order="desc">名稱</th>
+                <th scope="col" class="text-center text-nowrap" style="width: 15%;" data-column="users.unit" data-order="desc">廠別</th>
+                <th scope="col" class="text-center text-nowrap" style="width: 15%;" data-column="users.manager" data-order="desc">直屬主管</th>
+                <th scope="col" class="text-center text-nowrap" style="width: 15%;" data-column="users.status" data-order="desc">狀態</th>
+                <th scope="col" class="text-center text-nowrap" style="" data-column="users.type" data-order="">分類</th>
+                <th scope="col" class="text-center text-nowrap" style="width: 17%;" data-column="users.last_login" data-order="desc">最後登入</th>
+            </tr>
+        </thead>
+        <tbody>
+            <style>
+                /* 會員清單的標題列要可以點擊排序 */
+                /* #member_data > table > thead > tr > th:not(:nth-child(1)) { */
+                #member_data > table > thead > tr > th {
+                    cursor: pointer;
+                }
+
+                .data-row {
+                    cursor: pointer;
+                }
+            </style>
+            {% for member in members %}
+            <tr class="data-row" onclick="member.info('{{ member.pk }}');">
+                <th scope="row" class="text-center" style="vertical-align: middle;">{{ forloop.counter }}</th>
+                <td class="text-center text-nowrap">{{ member.emp_no }}</td>
+                <td class="text-center text-nowrap">{{ member.username }}</td>
+                <td class="text-center text-nowrap">{{ member.plant }}</td>
+                <td class="text-center text-nowrap">{{ member.manager|default:'' }}</td>
+                <td class="text-center text-nowrap"><span class="badge {{ member.is_active_color }}">{{ member.is_active_text }}</span></td>
+                <td class="text-center text-nowrap">{{ member.user_type|default:'超級管理者' }}</td>
+                <td class="text-center text-nowrap"><span class="badge {{ member.last_login_color }}">{{ member.last_login|default:"無紀錄" }}</span></td>
+            </tr>
+            {% endfor %}
+    </table>
+</div>
+
+{% endblock sub_container %}

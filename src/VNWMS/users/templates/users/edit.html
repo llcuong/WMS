@@ -1,0 +1,92 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    會員編輯
+{% endblock %}
+
+{% block sub_container %}
+<div class="pt-3">
+    <ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="user-data-tab" data-toggle="pill" href="#user-data" role="tab" aria-controls="user-data" aria-selected="true">會員資料</a>
+        </li>
+        {% if user.is_superuser %}
+        <li class="nav-item">
+            <a class="nav-link" id="permission-tab" data-toggle="pill" href="#permission" role="tab" aria-controls="permission" aria-selected="false">權限設定</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="login-record-tab" data-toggle="pill" href="#login-record" role="tab" aria-controls="login-record" aria-selected="false">登入紀錄</a>
+        </li>
+        <li class="nav-item pl-3">
+            <a class="btn btn-light" href="/admin/users/customuser/{{ pk }}/change/" target="_blank">進階設定</a>
+        </li>
+        {% endif %}
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+      <div class="tab-pane fade show active" id="user-data" role="tabpanel" aria-labelledby="user-data-tab">
+          <div class="pt-4">
+              {% include 'users/tab1.html' %}
+          </div>
+      </div>
+      {% if user.is_superuser %}
+      <div class="tab-pane fade" id="permission" role="tabpanel" aria-labelledby="permission-tab">
+          <div class="pt-4">
+              {% include 'users/tab2.html' %}
+          </div>
+      </div>
+      <div class="tab-pane fade" id="login-record" role="tabpanel" aria-labelledby="login-record-tab">
+          {% include 'users/tab3.html' %}
+      </div>
+      {% endif %}
+    </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+            {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block js %}
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+{% endblock js %}
+
+{% block ready %}
+    $('[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+      var target = $(e.target).text() // activated tab
+        //登入紀錄
+        if(e.target.id=='login_record') {
+
+        }
+    });
+
+    //會員權限設定
+    $('#submit_btn').click(function(event){
+         event.preventDefault(); //so that we stop normal form submit.
+         $.ajax({
+             url: '{% url 'user_auth_api' %}', type: 'post',
+             dataType: 'json',
+             data: $('form#auth_form').serialize(),
+             success: function(data) {
+                 alert(data);
+             }
+         });
+    });
+{% endblock ready %}
+
+{% block css %}
+<style>
+input[type='text']:read-only
+{
+    background-color: lightgrey;
+}
+</style>
+{% endblock css %}

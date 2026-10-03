@@ -1,0 +1,800 @@
+{% extends 'wh_former/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Former - Broken Basket Reporting" %} {% endblock %}
+{% block local_css %}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .result-table-body {
+            min-height: 360px !important;
+        }
+
+        table.table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        /* === Updated header color === */
+        table.table thead {
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+            color: #fff;
+        }
+
+        table.table th {
+            text-align: center;
+            vertical-align: middle;
+            padding: 16px 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border: none;
+        }
+
+        table.table td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 14px 12px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        table.table tbody tr {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #fff;
+        }
+
+        table.table tbody tr:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        table.table tbody tr.new-row {
+            background: linear-gradient(90deg, #eef2ff 0%, #fce7f3 100%);
+            border-left: 4px solid #4f46e5;
+        }
+
+        /* Editable cells */
+        table.table tbody td[contenteditable="true"] {
+            background-color: #fff3cd;
+            outline: 2px solid #fbbf24;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: text;
+            transition: all 0.2s ease;
+        }
+
+        table.table tbody td[contenteditable="true"]:focus {
+            background-color: #fff8dc;
+            outline: 2px solid #f59e0b;
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15);
+        }
+
+        table.table tbody td[contenteditable="true"].valid {
+            background-color: #dcfce7;
+            outline: 2px solid #22c55e;
+        }
+
+        table.table tbody td[contenteditable="true"].invalid {
+            background-color: #fee2e2;
+            outline: 2px solid #ef4444;
+        }
+
+        /* Checkbox */
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #4f46e5;
+        }
+
+        /* === Add Row Button (Primary) === */
+        #add-row-btn {
+            background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #add-row-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+        }
+
+        #add-row-btn:active {
+            transform: translateY(0);
+        }
+
+        #add-row-btn i {
+            font-size: 1.1rem;
+        }
+
+        /* === Excel Button (Success) === */
+        #download-excel-btn {
+            background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #download-excel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+        }
+
+        #download-excel-btn:active {
+            transform: translateY(0);
+        }
+
+        #download-excel-btn i {
+            font-size: 1.1rem;
+        }
+
+        /* === Report/Submit Button (Accent) === */
+        #report-btn {
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #report-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5);
+        }
+
+        #report-btn:active {
+            transform: translateY(0);
+        }
+
+        /* === Delete button === */
+        .delete-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+        }
+
+        .delete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+        .delete-btn:active {
+            transform: translateY(0);
+        }
+
+        /* === Toast === */
+        #toastContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .toast {
+            min-width: 320px;
+            border-radius: 12px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+            font-size: 0.95rem;
+            opacity: 0;
+            transform: translateX(400px);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .toast-header {
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: transparent !important;
+            border-bottom: none;
+        }
+
+        .toast-body {
+            padding: 0.75rem 1rem;
+            background: transparent;
+        }
+
+        .toast-success {
+            border-left: 5px solid #22c55e;
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+        }
+
+        .toast-danger {
+            border-left: 5px solid #ef4444;
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        }
+
+        .toast-warning {
+            border-left: 5px solid #f59e0b;
+            background: linear-gradient(135deg, #fef9c3 0%, #fde68a 100%);
+        }
+
+        .toast-info {
+            border-left: 5px solid #3b82f6;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        }
+
+        .close-toast {
+            background: transparent;
+            border: none;
+            font-size: 1.3rem;
+            line-height: 1;
+            color: inherit;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .close-toast:hover {
+            opacity: 1;
+        }
+
+        /* Loader */
+        .fetching-loader {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #4f46e5;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            table.table th,
+            table.table td {
+                padding: 10px 8px;
+                font-size: 0.85rem;
+            }
+
+            #add-row-btn,
+            #download-excel-btn,
+            #report-btn {
+                padding: 10px 18px;
+                font-size: 0.9rem;
+            }
+
+            .toast {
+                min-width: 280px;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .new-row {
+            animation: slideIn 0.4s ease-out;
+        }
+    </style>
+
+{% endblock %}
+{% block content %}
+    <div class="container-fluid no-copy">
+        {% trans "Broken Basket Reporting" as page_title %}
+        {% include 'wh_former/components/page_title.html' with title=page_title icon="fas fa-trash-can" %}
+        <div class="row p-3 main-body">
+            <div class="col-12">
+                {% csrf_token %}
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="select-all"></th>
+                            <th>Basket No</th>
+                            <th>Bin</th>
+                            <th>Date From To Bin Key</th>
+                            <th>Used Days</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="basketTableBody">
+                        {% for row in data %}
+                            <tr>
+                                <td><input type="checkbox" class="row-checkbox" data-basket-no="{{ row.basket_no }}">
+                                </td>
+                                <td>{{ row.basket_no }}</td>
+                                <td>{{ row.bin }}</td>
+                                <td>{{ row.date_from_to_bin_key|date:"Y-m-d" }}</td>
+                                <td>{{ row.used_days }}</td>
+                                <td>-</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <div class="d-flex" style="gap: 16px">
+                        <button id="add-row-btn" class="me-3"><i class="fas fa-plus"></i> Add New Basket</button>
+                        <button id="download-excel-btn" class="btn btn-success"><i class="fas fa-file-excel"></i>
+                            Download Excel
+                        </button>
+                    </div>
+                    <button type="button" id="report-btn">Submit Report</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div aria-live="polite" aria-atomic="true"
+         class="position-fixed"
+         style="top: 1rem; right: 1rem; z-index: 9999;">
+        <div id="toastContainer"></div>
+    </div>
+
+    {% include 'wh_former/modules/components/modals/action/loading_modal.html' %}
+{% endblock %}
+
+{% block js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toastContainer = document.getElementById("toastContainer");
+            const loadingModalEl = document.getElementById("loadingModal");
+            const loadingModal = loadingModalEl ? new bootstrap.Modal(loadingModalEl) : null;
+
+            const basketTableBody = document.getElementById("basketTableBody");
+            const selectAll = document.getElementById("select-all");
+
+            let currentNewRow = null;
+
+            // ===== Toast functions =====
+            function showToast(message, type = "success") {
+                const typeClass = {
+                    success: "toast-success",
+                    danger: "toast-danger",
+                    warning: "toast-warning",
+                    info: "toast-info"
+                }[type] || "bg-secondary";
+
+                const icons = {
+                    success: "✓",
+                    danger: "✕",
+                    warning: "⚠",
+                    info: "ℹ"
+                };
+
+                const toastHTML = `
+            <div class="toast fade ${typeClass}" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="mr-auto">${icons[type]} ${type.toUpperCase()}</strong>
+                    <button type="button" class="close-toast" aria-label="Close">&times;</button>
+                </div>
+                <div class="toast-body">${message}</div>
+            </div>
+        `;
+
+                const tempDiv = document.createElement("div");
+                tempDiv.innerHTML = toastHTML.trim();
+                const toastEl = tempDiv.firstElementChild;
+
+                toastContainer.appendChild(toastEl);
+                setTimeout(() => toastEl.classList.add("show"), 50);
+                setTimeout(() => hideToast(toastEl), 5000);
+
+                toastEl.querySelector(".close-toast").addEventListener("click", () => hideToast(toastEl));
+            }
+
+            function hideToast(toastEl) {
+                toastEl.classList.remove("show");
+                setTimeout(() => toastEl.remove(), 400);
+            }
+
+            // ===== Select All =====
+            selectAll.addEventListener("change", function () {
+                document.querySelectorAll(".row-checkbox").forEach(cb => cb.checked = selectAll.checked);
+            });
+
+            // ===== Helper to validate Basket No =====
+            function isValidBasketNo(basketNo) {
+                return /^\d{16}$/.test(basketNo);
+            }
+
+            // ===== Helper to check for duplicate Basket No =====
+            function isDuplicateBasketNo(basketNo, currentRow = null) {
+                const allBasketNos = Array.from(document.querySelectorAll("#basketTableBody .basket-no"))
+                    .map(cell => cell.innerText.trim());
+                // Exclude current row (during editing)
+                return allBasketNos.some((no, idx) => no === basketNo && cellBelongsToDifferentRow(idx, currentRow));
+
+                function cellBelongsToDifferentRow(idx, currentRow) {
+                    const row = document.querySelectorAll("#basketTableBody tr")[idx];
+                    return row !== currentRow;
+                }
+            }
+
+            // ===== Highlight duplicated rows =====
+            function handleDuplicateRows() {
+                const allRows = Array.from(document.querySelectorAll("#basketTableBody tr"));
+                const basketNos = {};
+
+                allRows.forEach(row => {
+                    const basketNoCell = row.querySelector(".basket-no");
+                    if (!basketNoCell) return;
+                    const basketNo = basketNoCell.innerText.trim();
+
+                    if (!basketNos[basketNo]) basketNos[basketNo] = [];
+                    basketNos[basketNo].push(row);
+                });
+
+                let hasDuplicate = false;
+
+                Object.entries(basketNos).forEach(([basketNo, rows]) => {
+                    if (basketNo && rows.length > 1) {
+                        hasDuplicate = true;
+                        rows.forEach(row => {
+                            const cell = row.querySelector(".basket-no");
+                            const checkbox = row.querySelector(".row-checkbox");
+
+                            cell.classList.add("invalid");
+                            if (checkbox) {
+                                checkbox.disabled = true;
+                                checkbox.checked = false;
+                            }
+                        });
+                    } else {
+                        // Clear duplicate styling
+                        rows.forEach(row => {
+                            const cell = row.querySelector(".basket-no");
+                            const checkbox = row.querySelector(".row-checkbox");
+                            cell.classList.remove("invalid");
+                            if (checkbox) checkbox.disabled = false;
+                        });
+                    }
+                });
+
+                // Disable Add Row button if any duplicate found
+                const addRowBtn = document.getElementById("add-row-btn");
+                addRowBtn.disabled = hasDuplicate;
+                addRowBtn.style.opacity = hasDuplicate ? "0.6" : "1";
+                addRowBtn.style.cursor = hasDuplicate ? "not-allowed" : "pointer";
+
+                if (hasDuplicate) {
+                    showToast("Duplicate basket numbers detected. Please fix them before adding new rows.", "danger");
+                }
+            }
+
+
+            // ===== Add Row with Validation =====
+            document.getElementById("add-row-btn").addEventListener("click", function () {
+                // Check if there's already a new row with invalid basket number
+                if (currentNewRow) {
+                    const basketNoCell = currentNewRow.querySelector(".basket-no");
+                    const basketNo = basketNoCell.innerText.trim();
+
+                    if (!isValidBasketNo(basketNo)) {
+                        showToast("Please complete the current row with a valid 16-digit Basket No before adding a new one.", "warning");
+                        basketNoCell.focus();
+                        document.execCommand("selectAll", false, null);
+                        return;
+                    }
+                }
+
+                const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+                const newRow = document.createElement("tr");
+                newRow.classList.add("new-row");
+                newRow.innerHTML = `
+                    <td><input type="checkbox" class="row-checkbox"></td>
+                    <td contenteditable="true" class="editable basket-no" placeholder="Enter 16 digits"></td>
+                    <td class="bin"><span class="text-muted">-</span></td>
+                    <td class="date"><span class="text-muted">${now}</span></td>
+                    <td class="used-days"><span class="text-muted">0</span></td>
+                    <td><button class="delete-btn" title="Delete this row"><i class="fas fa-trash"></i></button></td>
+                `;
+                basketTableBody.insertBefore(newRow, basketTableBody.firstChild);
+
+                const basketNoCell = newRow.querySelector(".basket-no");
+                currentNewRow = newRow;
+
+                // Focus and select all text
+                setTimeout(() => {
+                    basketNoCell.focus();
+                    document.execCommand("selectAll", false, null);
+                }, 100);
+
+                // Add delete button functionality
+                newRow.querySelector(".delete-btn").addEventListener("click", function () {
+                    if (confirm("Are you sure you want to delete this row?")) {
+                        newRow.remove();
+                        if (currentNewRow === newRow) {
+                            currentNewRow = null;
+                        }
+                        showToast("Row deleted successfully.", "info");
+                        handleDuplicateRows();
+                    }
+                });
+
+                // Listen for basket_no input and validate
+                basketNoCell.addEventListener("input", function () {
+                    const basketNo = this.innerText.trim().replace(/\D/g, ''); // Remove non-digits
+
+                    // Update the cell with only digits
+                    if (this.innerText !== basketNo) {
+                        const selection = window.getSelection();
+                        const range = selection.getRangeAt(0);
+                        const startOffset = range.startOffset;
+
+                        this.innerText = basketNo;
+
+                        // Restore cursor position
+                        if (basketNo.length > 0) {
+                            const newRange = document.createRange();
+                            const textNode = this.firstChild;
+                            if (textNode) {
+                                newRange.setStart(textNode, Math.min(startOffset, basketNo.length));
+                                newRange.collapse(true);
+                                selection.removeAllRanges();
+                                selection.addRange(newRange);
+                            }
+                        }
+                    }
+
+                    handleDuplicateRows();
+
+                    // Visual feedback
+                    if (basketNo.length === 0) {
+                        this.classList.remove("valid", "invalid");
+                    } else if (basketNo.length < 16) {
+                        this.classList.remove("valid");
+                        this.classList.add("invalid");
+                    } else if (basketNo.length === 16) {
+                        // Check for duplicates first
+                        if (isDuplicateBasketNo(basketNo, newRow)) {
+                            {#showToast(`Basket No ${basketNo} already exists in the table.`, "danger");#}
+                            this.classList.remove("valid");
+                            this.classList.add("invalid");
+                            return;
+                        }
+
+                        this.classList.remove("invalid");
+                        this.classList.add("valid");
+
+                        // Auto-fetch when exactly 16 digits and not duplicated
+                        fetchBasketData(basketNo, newRow);
+                    }
+                });
+
+                // Prevent non-numeric input
+                basketNoCell.addEventListener("keypress", function (e) {
+                    if (!/^\d$/.test(e.key) && e.key !== "Backspace" && e.key !== "Delete" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
+                        e.preventDefault();
+                    }
+                });
+
+                showToast("New row added. Please enter a 16-digit Basket No.", "info");
+            });
+
+            // ===== Fetch basket data when basket_no is valid (16 digits) =====
+            async function fetchBasketData(basketNo, row) {
+                const basketNoCell = row.querySelector(".basket-no");
+                const binCell = row.querySelector(".bin");
+                const dateCell = row.querySelector(".date");
+                const usedDaysCell = row.querySelector(".used-days");
+
+                // Add loading indicator
+                binCell.innerHTML = '<span class="fetching-loader"></span>';
+
+                try {
+                    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                    const response = await fetch("{% url 'basket_broken_get_data' %}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": csrftoken
+                        },
+                        body: JSON.stringify({basket_no: basketNo})
+                    });
+
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+                    const data = await response.json();
+
+                    if (data.error) {
+                        showToast(data.error, "danger");
+                        binCell.innerHTML = '<span class="text-danger">Error</span>';
+                        dateCell.innerHTML = '<span class="text-muted">-</span>';
+                        usedDaysCell.innerHTML = '<span class="text-muted">0</span>';
+                        basketNoCell.classList.remove("valid");
+                        basketNoCell.classList.add("invalid");
+                        return;
+                    }
+
+                    // Fill in table data with animation
+                    binCell.innerHTML = `<strong>${data.bin || "-"}</strong>`;
+                    dateCell.innerText = data.date_from_to_bin_key || "-";
+                    usedDaysCell.innerHTML = `<strong>${data.used_days ?? "0"}</strong>`;
+
+                    // Mark as completed
+                    basketNoCell.contentEditable = "false";
+                    basketNoCell.classList.remove("editable");
+                    basketNoCell.style.backgroundColor = "#d4edda";
+                    basketNoCell.style.outline = "none";
+
+                    // Clear current new row tracking
+                    if (currentNewRow === row) {
+                        currentNewRow = null;
+                    }
+
+                    showToast(`Basket ${basketNo} loaded successfully!`, "success");
+
+                } catch (error) {
+                    console.error(error);
+                    showToast("Error fetching basket data. Please try again.", "danger");
+                    binCell.innerHTML = '<span class="text-danger">Failed</span>';
+                    dateCell.innerHTML = '<span class="text-muted">-</span>';
+                    usedDaysCell.innerHTML = '<span class="text-muted">0</span>';
+                    basketNoCell.classList.remove("valid");
+                    basketNoCell.classList.add("invalid");
+                }
+            }
+
+            // ===== Report Button =====
+            document.getElementById("report-btn").addEventListener("click", function () {
+                const checkedBoxes = document.querySelectorAll(".row-checkbox:checked");
+                const basketNos = Array.from(checkedBoxes).map(cb => {
+                    const row = cb.closest("tr");
+                    return row.querySelectorAll("td")[1].innerText.trim(); // basket_no column
+                });
+
+                if (basketNos.length === 0) {
+                    showToast("Please select at least one basket to report.", "warning");
+                    return;
+                }
+
+                // Validate all selected basket numbers
+                const invalidBaskets = basketNos.filter(no => !isValidBasketNo(no));
+                if (invalidBaskets.length > 0) {
+                    showToast(
+                        `Found ${invalidBaskets.length} invalid basket number(s). Please correct them before submitting.`,
+                        "danger"
+                    );
+                    return;
+                }
+
+                if (loadingModal) loadingModal.show();
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                fetch("{% url 'basket_broken_reporting' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrftoken
+                    },
+                    body: JSON.stringify({basket_nos: basketNos}) // only send basket_no list
+                })
+                    .then(response => {
+                        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (loadingModal) loadingModal.hide();
+                        if (data.error) {
+                            showToast(data.error, "danger");
+                        } else {
+                            showToast(data.message || "Report submitted successfully! 🎉", "success");
+                            setTimeout(() => location.reload(), 2000);
+                        }
+                    })
+                    .catch(error => {
+                        if (loadingModal) loadingModal.hide();
+                        console.error(error);
+                        showToast("Error submitting report. Please try again.", "danger");
+                    });
+            });
+
+            // ===== Export to Excel/XLSX Function =====
+            document.getElementById("download-excel-btn").addEventListener("click", function () {
+                // 1. Prepare data structure (Array of Arrays)
+                const table = document.querySelector(".table");
+                const rows = table.querySelectorAll("tr");
+                let data = [];
+
+                // 2. Extract Header Row (th)
+                const headerRow = rows[0];
+                // Exclude the first (Checkbox) and last (Actions) columns
+                let headers = Array.from(headerRow.querySelectorAll("th:not(:first-child):not(:last-child)"))
+                    .map(th => th.innerText.trim());
+                data.push(headers);
+
+                // 3. Extract Data Rows (td)
+                for (let i = 1; i < rows.length; i++) {
+                    const row = rows[i];
+                    // Exclude the first (Checkbox) and last (Actions) columns
+                    const rowData = Array.from(row.querySelectorAll("td:not(:first-child):not(:last-child)"))
+                        .map(td => td.innerText.trim());
+                    data.push(rowData);
+                }
+
+                // 4. Create a new workbook and worksheet using SheetJS
+                const workbook = XLSX.utils.book_new();
+                const worksheet = XLSX.utils.aoa_to_sheet(data); // 'aoa' = Array of Arrays
+
+                // Optional: Auto-size columns for better readability (requires further library features/logic, skipped for simplicity)
+
+                // 5. Add the worksheet to the workbook
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Broken Baskets"); // Sheet name is "Broken Baskets"
+
+                // 6. Generate and trigger download
+                const filename = `Broken_Basket_Report_${new Date().toISOString().slice(0, 10)}.xlsx`;
+
+                try {
+                    // XLSX.writeFile handles the file generation and download prompt
+                    XLSX.writeFile(workbook, filename);
+                    showToast("Table data exported to XLSX successfully.", "success");
+                } catch (e) {
+                    console.error("XLSX Write Error:", e);
+                    showToast("Error generating Excel file. Check browser console.", "danger");
+                }
+            });
+        });
+    </script>
+{% endblock %}

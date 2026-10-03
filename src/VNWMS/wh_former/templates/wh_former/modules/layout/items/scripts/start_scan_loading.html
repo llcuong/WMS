@@ -1,0 +1,88 @@
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.start-button').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const pid = this.closest('.rfid-table-controller').dataset.pid;
+                const overlay = document.getElementById(`rfid-table-loading-overlay-${pid}`);
+                if (overlay) {
+                    overlay.style.display = 'flex';
+
+                    startAllCountdowns();
+
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                        const stopBtn = document.getElementById(`stop-btn-${pid}`);
+                        if (stopBtn && !stopBtn.disabled) {
+                            stopBtn.click();
+                        }
+                    }, 20000);
+                }
+            });
+        });
+    });
+</script>
+
+
+<script>
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.rack-delete-btn')) {
+            const btn = e.target.closest('.rack-delete-btn');
+            const rackTempId = btn.dataset.rackTempId;
+            fetch("{% url 'delete_rack_temp' %}", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: `rack_temp_id=${encodeURIComponent(rackTempId)}`
+            })
+            .then(res => {
+                return res.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    btn.closest('tr').remove();
+                    fetch("{% url 'get_rack_stats' %}?rfid_reader_ip={{ rfid_reader_ip }}&action={{ action }}")
+                        .then(res => res.json())
+                        .then(stats => {
+                            document.getElementById('rackScannedValue').textContent = stats.rack_scanned;
+                            document.getElementById('totalBasketValue').textContent = stats.total_basket;
+                            document.getElementById('totalFormerValue').textContent = stats.total_former;
+                        });
+                } else {
+                    alert(data.error || 'Xóa thất bại!');
+                }
+            })
+            .catch((err) => {
+                console.error('Fetch error:', err);
+                alert('Lỗi kết nối!');
+            });
+        }
+    });
+</script>
+
+<style>
+    .rfid-table-loading-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.7);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 1000;
+        }
+        .loading-spinner {
+            width: 40px; height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+        .loading-text {
+            margin-top: 12px;
+            color: #007bff;
+            font-weight: 500;
+        }
+</style>

@@ -1,0 +1,261 @@
+{% extends 'wh_former/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Former - Search Basket" %} {% endblock %}
+{% block local_css %}
+    <style>
+        .result-table-body {
+            min-height: 360px !important;
+        }
+
+        /* Toast container */
+        #toastContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Toast box styling */
+        .toast {
+            min-width: 280px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            font-size: 0.95rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease-in-out;
+            overflow: hidden;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast-header {
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            background: transparent !important;
+        }
+
+        .toast-body {
+            padding: 0.75rem;
+            background: transparent;
+        }
+
+        .toast-success {
+            border-left: 5px solid #28a745;
+        }
+
+        .toast-danger {
+            border-left: 5px solid #dc3545;
+        }
+
+        .toast-warning {
+            border-left: 5px solid #ffc107;
+        }
+
+        .toast-info {
+            border-left: 5px solid #17a2b8;
+        }
+
+        .close-toast {
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            line-height: 1;
+            color: inherit;
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="container-fluid no-copy">
+        {% trans "Broken Former Reporting" as page_title %}
+        {% include 'wh_former/components/page_title.html' with title=page_title icon="fas fa-trash-can" %}
+        <div class="row p-3 main-body">
+            <div class="col-12">
+                {% csrf_token %}
+                {% include 'wh_former/modules/components/tables/basket/basket_result_table.html' with columns=columns results=data filter=search_filter %}
+                <div class="col-12 d-flex align-items-center justify-content-center" style="gap: 16px">
+                    <button type="button" id="report-btn" class="button btn-primary my-2 me-3">Report</button>
+                    <button type="button" id="download-excel-btn" class="button btn-success my-2"><i
+                            class="fas fa-file-excel"></i> Download Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div aria-live="polite" aria-atomic="true"
+         class="position-fixed"
+         style="top: 1rem; right: 1rem; z-index: 9999;">
+        <div id="toastContainer"></div>
+    </div>
+
+    {% include 'wh_former/modules/components/modals/action/loading_modal.html' %}
+{% endblock %}
+{% block js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const reportBtn = document.getElementById("report-btn");
+            const toastContainer = document.getElementById("toastContainer");
+            const loadingModalEl = document.getElementById("loadingModal");
+            const loadingModal = loadingModalEl ? new bootstrap.Modal(loadingModalEl) : null;
+
+            function showToast(message, type = "success") {
+                const typeClass = {
+                    success: "toast-success bg-success text-white",
+                    danger: "toast-danger bg-danger text-white",
+                    warning: "toast-warning bg-warning text-dark",
+                    info: "toast-info bg-info text-dark"
+                }[type] || "bg-secondary text-white";
+
+                const toastHTML = `
+                    <div class="toast fade ${typeClass}" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header ${typeClass}">
+                            <strong class="mr-auto">${type.toUpperCase()}</strong>
+                            <button type="button" class="close-toast" aria-label="Close">&times;</button>
+                        </div>
+                        <div class="toast-body">${message}</div>
+                    </div>
+                `;
+
+                const tempDiv = document.createElement("div");
+                tempDiv.innerHTML = toastHTML.trim();
+                const toastEl = tempDiv.firstElementChild;
+
+                toastContainer.appendChild(toastEl);
+                setTimeout(() => toastEl.classList.add("show"), 50); // smooth fade-in
+
+                setTimeout(() => hideToast(toastEl), 4000);
+
+                toastEl.querySelector(".close-toast").addEventListener("click", () => hideToast(toastEl));
+            }
+
+            function hideToast(toastEl) {
+                toastEl.classList.remove("show");
+                toastEl.classList.add("hide");
+                setTimeout(() => toastEl.remove(), 300);
+            }
+
+            reportBtn.addEventListener("click", function () {
+                const checkedBoxes = document.querySelectorAll(".row-checkbox:checked");
+                const selectedRows = Array.from(checkedBoxes).map(cb => {
+                    const row = cb.closest("tr");
+                    const tds = row.querySelectorAll("td");
+                    const tdCount = tds.length;
+                    return {
+                        batch_no: cb.dataset.batchNo,
+                        former: tds[tdCount - 2]?.textContent.trim() || "0",
+                        basket: tds[tdCount - 1]?.textContent.trim() || "0"
+                    };
+                });
+
+                if (selectedRows.length === 0) {
+                    showToast("Please select at least one batch to report.", "warning");
+                    return;
+                }
+
+                if (loadingModal) loadingModal.show();
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                fetch("{% url 'former_broken_reporting' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrftoken
+                    },
+                    body: JSON.stringify({rows: selectedRows})
+                })
+                    .then(response => {
+                        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (loadingModal) loadingModal.hide();
+                        if (data.error) {
+                            showToast(data.error, "danger");
+                        } else {
+                            showToast(data.message || "Report submitted successfully!", "success");
+                            setTimeout(() => location.reload(), 2000);
+                        }
+                    })
+                    .catch(error => {
+                        if (loadingModal) loadingModal.hide();
+                        console.error(error);
+                        showToast("Error submitting report. Please try again.", "danger");
+                    });
+            });
+
+            // --- Excel Download Logic ---
+            document.getElementById("download-excel-btn").addEventListener("click", function () {
+                // 1. Target the table elements based on the provided HTML structure
+                const headerTable = document.getElementById("result-table-container");
+                const bodyTable = document.getElementById("table-body");
+
+                if (!headerTable || !bodyTable) {
+                    showToast("Table elements not found for export.", "danger");
+                    return;
+                }
+
+                let data = [];
+
+                // 2. Extract Header Row (from result-table-header)
+                const headerRow = headerTable.querySelector("thead tr");
+                if (headerRow) {
+                    // Exclude the Checkbox column (first column)
+                    const headers = Array.from(headerRow.querySelectorAll("th:not(:first-child)"))
+                        .map(th => th.innerText.trim());
+                    data.push(headers);
+                }
+
+                // 3. Extract Data Rows (from result-table-body)
+                const dataRows = bodyTable.querySelectorAll("tr:not(.no-result-row)"); // Exclude the "No result found!" row
+
+                if (dataRows.length === 0) {
+                    showToast("No data to export.", "warning");
+                    return;
+                }
+
+                dataRows.forEach(row => {
+                    // Get all data cells (td)
+                    const cols = Array.from(row.querySelectorAll("td"));
+
+                    // Exclude the Checkbox column (first column) and map the rest of the text content
+                    const rowData = cols.slice(1).map(td => {
+                        const text = td.textContent.trim();
+                        // Try to parse numbers to ensure they are exported as numbers in Excel
+                        return isNaN(Number(text)) || text === '' ? text : Number(text);
+                    });
+
+                    data.push(rowData);
+                });
+
+                // 4. Create Workbook and Worksheet using SheetJS
+                const workbook = XLSX.utils.book_new();
+                const worksheet = XLSX.utils.aoa_to_sheet(data); // 'aoa' = Array of Arrays
+
+                // 5. Add the worksheet to the workbook
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Broken Former Data");
+
+                // 6. Generate and trigger download
+                const filename = `Broken_Former_Report_${new Date().toISOString().slice(0, 10)}.xlsx`;
+
+                try {
+                    XLSX.writeFile(workbook, filename);
+                    showToast("Table data exported to XLSX successfully.", "success");
+                } catch (e) {
+                    console.error("XLSX Write Error:", e);
+                    showToast("Error generating Excel file. Check browser console.", "danger");
+                }
+            });
+        });
+    </script>
+{% endblock %}

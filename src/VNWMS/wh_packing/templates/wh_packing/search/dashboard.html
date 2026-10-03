@@ -1,0 +1,31 @@
+{% extends 'wh_packing/bases/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Dashboard" %} {% endblock %}
+{% block css %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-4">
+            <div class="alert alert-primary d-flex align-items-start fade show p-4 rounded-3 shadow-sm" role="alert">
+                <div class="me-3">
+                    <i class="fas fa-exclamation-circle fa-2x text-primary"></i>
+                </div>
+                <div>
+                    <h4 class="fw-bold mb-3">&nbsp;{% trans "Welcome to our application!" %}</h4>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> {% trans "Our platform is designed to enhance your experience with optimal functionality." %}</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> {% trans "Please use the menu to navigate through the system’s core features." %}</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> {% trans "If you do not see any menu options, your access permissions might be restricted." %}</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> {% trans "Kindly contact the system administrator for support and proper authorization." %}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% load i18n %}
+<div class="modal fade" id="processWarningModal" tabindex="-1" aria-labelledby="processWarningModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 12px;">
+            <div class="modal-header text-dark" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                <h5 class="modal-title font-weight-bold" id="processWarningModalLabel">
+                    <i class="fas fa-info-circle me-2"></i>
+                    {% trans 'Notification' %}
+                </h5>
+            </div>
+            <div class="modal-body text-center">
+                <div class="mb-3">
+                    <p class="text-danger font-weight-bold mb-3" style="font-size: 1.5rem;">
+                        {% trans 'You have uncompleted action!' %}
+                    </p>
+                    <p class="text-muted font-weight-bold" style="font-size: 18px">
+                        Batch <strong id="warningBatchNo">{{ batch_no }}</strong> {% trans 'is still in process' %}<br>
+                        {% trans 'Please continue to complete or cancel this process.' %}
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    {% if show_process_warning %}
+        const processWarningModal = new bootstrap.Modal(document.getElementById('processWarningModal'));
+        processWarningModal.show();
+
+        document.getElementById('warningBatchNo').textContent = '{{ batch_no|default:"" }}';
+    {% endif %}
+});
+</script>
+
+<style>
+    #processWarningModal .modal-body {
+        padding: 2rem 1.5rem;
+    }
+
+    #processWarningModal .btn {
+        min-width: 100px;
+        font-weight: 600;
+    }
+</style>

@@ -1,0 +1,4447 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-13 15:47+0700\n"
+"PO-Revision-Date: 2025-10-13 15:52+0700\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: vi_VN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.7\n"
+
+#: .\bases\templates\bases\attach_form.html:9
+msgid "attachment"
+msgstr ""
+
+#: .\bases\templates\bases\attach_form.html:12
+#: .\bases\templates\bases\attach_form.html:23
+msgid "file"
+msgstr ""
+
+#: .\bases\templates\bases\attach_form.html:17
+#: .\bases\templates\bases\attach_form.html:27
+msgid "desc"
+msgstr ""
+
+#: .\bases\templates\bases\attach_form.html:33 .\users\forms.py:63
+#: .\users\templates\users\info.html:17
+msgid "save"
+msgstr "lưu trữ"
+
+#: .\bases\templates\bases\base.html:75
+#, fuzzy
+#| msgid "Warehouse Code"
+msgid "Warehouse Setting"
+msgstr "Mã Kho"
+
+#: .\bases\templates\bases\base.html:83
+msgid "GD Packing Warehouse"
+msgstr "Kho đóng gói GĐ"
+
+#: .\bases\templates\bases\base.html:91
+msgid "Warehouse Former"
+msgstr "Kho khuôn"
+
+#: .\bases\templates\bases\base.html:109
+msgid "Personal Setting"
+msgstr "Cài đặt cá nhân"
+
+#: .\bases\templates\bases\base.html:119
+msgid "Logout"
+msgstr "Đăng xuất"
+
+#: .\bases\utils.py:61
+msgid "Update Status"
+msgstr ""
+
+#: .\users\admin.py:29
+msgid "Personal info"
+msgstr "Thông tin cá nhân"
+
+#: .\users\admin.py:31
+msgid "Permissions"
+msgstr ""
+
+#: .\users\admin.py:33
+msgid "Important dates"
+msgstr ""
+
+#: .\users\forms.py:47
+msgid "user_type"
+msgstr "loại người dùng"
+
+#: .\users\forms.py:49 .\users\models.py:120
+msgid "active"
+msgstr "đã kích hoạt"
+
+#: .\users\forms.py:50
+msgid "password"
+msgstr "mật khẩu"
+
+#: .\users\forms.py:50
+msgid "Please type the password"
+msgstr "Vui lòng nhập mật khẩu"
+
+#: .\users\forms.py:51 .\users\forms.py:117
+msgid "confirm_password"
+msgstr "Xác nhận mật khẩu"
+
+#: .\users\forms.py:51
+msgid "Please type the login password again"
+msgstr "Vui lòng nhập lại mật khẩu đăng nhập"
+
+#: .\users\forms.py:52 .\users\models.py:102
+#: .\users\templates\users\login.html:454
+msgid "emp_no"
+msgstr "Số thẻ"
+
+#: .\users\forms.py:53 .\users\models.py:103
+msgid "sap_emp_no"
+msgstr "SAP Mã hiệu công nhân"
+
+#: .\users\forms.py:54
+msgid "name"
+msgstr "Tên"
+
+#: .\users\forms.py:55
+msgid "plant"
+msgstr "Thực vật"
+
+#: .\users\forms.py:107 .\users\forms.py:169
+msgid "The password is not same with the confirm password"
+msgstr "Mật khẩu không giống với mật khẩu xác nhận"
+
+#: .\users\forms.py:112
+msgid "login_account"
+msgstr "đăng nhập tài khoản"
+
+#: .\users\forms.py:113
+msgid "old_password"
+msgstr "Mật khẩu cũ"
+
+#: .\users\forms.py:114
+msgid "Please type the login password"
+msgstr "Vui lòng nhập mật khẩu đăng nhập"
+
+#: .\users\forms.py:115
+msgid "new_password"
+msgstr "mật khẩu mới"
+
+#: .\users\forms.py:116
+msgid "Please type the new password"
+msgstr "Vui lòng nhập mật khẩu mới"
+
+#: .\users\forms.py:118
+msgid "Please type the confirm password"
+msgstr "Vui lòng nhập mật khẩu xác nhận"
+
+#: .\users\forms.py:119
+msgid "Default Homepage"
+msgstr ""
+
+#: .\users\forms.py:134
+msgid "base_information"
+msgstr "thông tin cơ sở"
+
+#: .\users\forms.py:145
+msgid "Change Password"
+msgstr "Đổi mật khẩu"
+
+#: .\users\forms.py:174
+msgid "The password is not correct"
+msgstr "Mật khẩu không chính xác"
+
+#: .\users\models.py:54
+msgid "類別"
+msgstr ""
+
+#: .\users\models.py:104
+msgid "username"
+msgstr "tên tài khoản"
+
+#: .\users\models.py:105
+msgid "email address"
+msgstr "địa chỉ email"
+
+#: .\users\models.py:107
+msgid "first name"
+msgstr "tên đầu tiên"
+
+#: .\users\models.py:108
+msgid "last name"
+msgstr "họ"
+
+#: .\users\models.py:110
+msgid "mobile number"
+msgstr "Số điện thoại"
+
+#: .\users\models.py:112
+msgid "Required. digits and +-() only."
+msgstr ""
+
+#: .\users\models.py:114
+msgid "Enter a valid mobile number."
+msgstr ""
+
+#: .\users\models.py:117
+msgid "staff status"
+msgstr ""
+
+#: .\users\models.py:118
+msgid "Designates whether the user can log into this admin site."
+msgstr ""
+
+#: .\users\models.py:121
+msgid ""
+"Designates whether this user should be treated as active. Unselect this "
+"instead of deleting accounts."
+msgstr ""
+
+#: .\users\models.py:123
+msgid "date joined"
+msgstr ""
+
+#: .\users\models.py:133
+msgid "user"
+msgstr ""
+
+#: .\users\models.py:134
+msgid "users"
+msgstr ""
+
+#: .\users\templates\users\base.html:16
+msgid "Add User"
+msgstr "Thêm người dùng mới"
+
+#: .\users\templates\users\base.html:20
+msgid "User List"
+msgstr "Danh sách người dùng"
+
+#: .\users\templates\users\info.html:5
+msgid "User Information"
+msgstr "Thông tin người dùng"
+
+#: .\users\templates\users\login.html:384
+#: .\venv\Lib\site-packages\django\utils\dates.py:7
+msgid "Sunday"
+msgstr "Chủ nhật"
+
+#: .\users\templates\users\login.html:385
+#: .\venv\Lib\site-packages\django\utils\dates.py:6
+msgid "Monday"
+msgstr "Thứ hai"
+
+#: .\users\templates\users\login.html:386
+#: .\venv\Lib\site-packages\django\utils\dates.py:6
+msgid "Tuesday"
+msgstr "Thứ ba"
+
+#: .\users\templates\users\login.html:387
+#: .\venv\Lib\site-packages\django\utils\dates.py:6
+msgid "Wednesday"
+msgstr "Thứ tư"
+
+#: .\users\templates\users\login.html:388
+#: .\venv\Lib\site-packages\django\utils\dates.py:6
+msgid "Thursday"
+msgstr "Thứ năm"
+
+#: .\users\templates\users\login.html:389
+#: .\venv\Lib\site-packages\django\utils\dates.py:6
+msgid "Friday"
+msgstr "Thứ sáu"
+
+#: .\users\templates\users\login.html:390
+#: .\venv\Lib\site-packages\django\utils\dates.py:7
+msgid "Saturday"
+msgstr "Thứ bảy"
+
+#: .\users\templates\users\login.html:460
+#, fuzzy
+#| msgid "password"
+msgid "Password"
+msgstr "mật khẩu"
+
+#: .\users\templates\users\login.html:467
+#, fuzzy
+#| msgid "Change Password"
+msgid "Remember Password"
+msgstr "Đổi mật khẩu"
+
+#: .\users\templates\users\login.html:480
+msgid "Submit"
+msgstr "Tạo"
+
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_form_helper.py:130
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_form_helper.py:140
+#: .\venv\Lib\site-packages\django\forms\fields.py:54
+msgid "This field is required."
+msgstr ""
+
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_layout.py:392
+msgid "i18n text"
+msgstr ""
+
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_layout.py:394
+msgid "i18n legend"
+msgstr ""
+
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_layout_objects.py:143
+#: .\venv\Lib\site-packages\django\core\validators.py:22
+msgid "Enter a valid value."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\contrib\messages\apps.py:7
+msgid "Messages"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\contrib\sitemaps\apps.py:8
+msgid "Site Maps"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\contrib\staticfiles\apps.py:9
+msgid "Static Files"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\contrib\syndication\apps.py:7
+msgid "Syndication"
+msgstr ""
+
+#. Translators: String used to replace omitted page numbers in elided page
+#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
+#: .\venv\Lib\site-packages\django\core\paginator.py:30
+msgid "…"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:51
+msgid "That page number is not an integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:53
+msgid "That page number is less than 1"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:58
+msgid "That page contains no results"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:93
+#: .\venv\Lib\site-packages\django\forms\fields.py:678
+msgid "Enter a valid URL."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:151
+msgid "Enter a valid integer."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:162
+msgid "Enter a valid email address."
+msgstr ""
+
+#. Translators: "letters" means latin letters: a-z and A-Z.
+#: .\venv\Lib\site-packages\django\core\validators.py:265
+msgid ""
+"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:272
+msgid ""
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
+"hyphens."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:281
+#: .\venv\Lib\site-packages\django\core\validators.py:291
+#: .\venv\Lib\site-packages\django\core\validators.py:314
+msgid "Enter a valid IPv4 address."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:299
+#: .\venv\Lib\site-packages\django\core\validators.py:315
+msgid "Enter a valid IPv6 address."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:309
+#: .\venv\Lib\site-packages\django\core\validators.py:313
+msgid "Enter a valid IPv4 or IPv6 address."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:343
+msgid "Enter only digits separated by commas."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:349
+#, python-format
+msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:382
+#, python-format
+msgid "Ensure this value is less than or equal to %(limit_value)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:391
+#, python-format
+msgid "Ensure this value is greater than or equal to %(limit_value)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:401
+#, python-format
+msgid ""
+"Ensure this value has at least %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at least %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:416
+#, python-format
+msgid ""
+"Ensure this value has at most %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at most %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:435
+#: .\venv\Lib\site-packages\django\forms\fields.py:292
+#: .\venv\Lib\site-packages\django\forms\fields.py:327
+msgid "Enter a number."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:437
+#, python-format
+msgid "Ensure that there are no more than %(max)s digit in total."
+msgid_plural "Ensure that there are no more than %(max)s digits in total."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:442
+#, python-format
+msgid "Ensure that there are no more than %(max)s decimal place."
+msgid_plural "Ensure that there are no more than %(max)s decimal places."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:447
+#, python-format
+msgid ""
+"Ensure that there are no more than %(max)s digit before the decimal point."
+msgid_plural ""
+"Ensure that there are no more than %(max)s digits before the decimal point."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:509
+#, python-format
+msgid ""
+"File extension “%(extension)s” is not allowed. Allowed extensions are: "
+"%(allowed_extensions)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:562
+msgid "Null characters are not allowed."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\base.py:1210
+#: .\venv\Lib\site-packages\django\forms\models.py:768
+msgid "and"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\base.py:1212
+#, python-format
+msgid "%(model_name)s with this %(field_labels)s already exists."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:100
+#, python-format
+msgid "Value %(value)r is not a valid choice."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:101
+msgid "This field cannot be null."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:102
+msgid "This field cannot be blank."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:103
+#, python-format
+msgid "%(model_name)s with this %(field_label)s already exists."
+msgstr ""
+
+#. Translators: The 'lookup_type' is one of 'date', 'year' or 'month'.
+#. Eg: "Title must be unique for pub_date year"
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:107
+#, python-format
+msgid ""
+"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:126
+#, python-format
+msgid "Field of type: %(field_type)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:958
+#, python-format
+msgid "“%(value)s” value must be either True or False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:959
+#, python-format
+msgid "“%(value)s” value must be either True, False, or None."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:961
+msgid "Boolean (Either True or False)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1002
+#, python-format
+msgid "String (up to %(max_length)s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1096
+msgid "Comma-separated integers"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1145
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
+"format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1147
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1290
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
+"date."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1150
+msgid "Date (without time)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1288
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ] format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1292
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+"[TZ]) but it is an invalid date/time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1296
+msgid "Date (with time)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1444
+#, python-format
+msgid "“%(value)s” value must be a decimal number."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1446
+msgid "Decimal number"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1585
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in [DD] "
+"[[HH:]MM:]ss[.uuuuuu] format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1588
+msgid "Duration"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1638
+msgid "Email address"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1661
+msgid "File path"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1727
+#, python-format
+msgid "“%(value)s” value must be a float."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1729
+msgid "Floating point number"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1767
+#, python-format
+msgid "“%(value)s” value must be an integer."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1769
+msgid "Integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1852
+msgid "Big (8 byte) integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1867
+msgid "Small integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1875
+msgid "IPv4 address"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1906
+msgid "IP address"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1986
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1987
+#, python-format
+msgid "“%(value)s” value must be either None, True or False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1989
+msgid "Boolean (Either True, False or None)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2043
+msgid "Positive big integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2056
+msgid "Positive integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2069
+msgid "Positive small integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2083
+#, python-format
+msgid "Slug (up to %(max_length)s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2115
+msgid "Text"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2181
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+"format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2183
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
+"invalid time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2186
+msgid "Time"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2312
+msgid "URL"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2334
+msgid "Raw binary data"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2399
+#, python-format
+msgid "“%(value)s” is not a valid UUID."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2401
+msgid "Universally unique identifier"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\files.py:226
+msgid "File"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\files.py:375
+msgid "Image"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\json.py:18
+msgid "A JSON object"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\json.py:20
+msgid "Value must be valid JSON."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:790
+#, python-format
+msgid "%(model)s instance with %(field)s %(value)r does not exist."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:792
+msgid "Foreign Key (type determined by related field)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1045
+msgid "One-to-one relationship"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1099
+#, python-format
+msgid "%(from)s-%(to)s relationship"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1100
+#, python-format
+msgid "%(from)s-%(to)s relationships"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1142
+msgid "Many-to-many relationship"
+msgstr ""
+
+#. Translators: If found as last label character, these punctuation
+#. characters will prevent the default label_suffix to be appended to the label
+#: .\venv\Lib\site-packages\django\forms\boundfield.py:150
+msgid ":?.!"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:247
+msgid "Enter a whole number."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:402
+#: .\venv\Lib\site-packages\django\forms\fields.py:1146
+msgid "Enter a valid date."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:426
+#: .\venv\Lib\site-packages\django\forms\fields.py:1147
+msgid "Enter a valid time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:454
+msgid "Enter a valid date/time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:488
+msgid "Enter a valid duration."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:489
+#, python-brace-format
+msgid "The number of days must be between {min_days} and {max_days}."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:552
+msgid "No file was submitted. Check the encoding type on the form."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:553
+msgid "No file was submitted."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:554
+msgid "The submitted file is empty."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:556
+#, python-format
+msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid_plural ""
+"Ensure this filename has at most %(max)d characters (it has %(length)d)."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:559
+msgid "Please either submit a file or check the clear checkbox, not both."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:620
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:782
+#: .\venv\Lib\site-packages\django\forms\fields.py:872
+#: .\venv\Lib\site-packages\django\forms\models.py:1309
+#, python-format
+msgid "Select a valid choice. %(value)s is not one of the available choices."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:873
+#: .\venv\Lib\site-packages\django\forms\fields.py:988
+#: .\venv\Lib\site-packages\django\forms\models.py:1308
+msgid "Enter a list of values."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:989
+msgid "Enter a complete value."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1205
+msgid "Enter a valid UUID."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1235
+msgid "Enter a valid JSON."
+msgstr ""
+
+#. Translators: This is the default suffix added to form field labels
+#: .\venv\Lib\site-packages\django\forms\forms.py:76
+msgid ":"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\forms.py:203
+#, python-format
+msgid "(Hidden field %(name)s) %(error)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:61
+#, python-format
+msgid ""
+"ManagementForm data is missing or has been tampered with. Missing fields: "
+"%(field_names)s. You may need to file a bug report if the issue persists."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:370
+#, python-format
+msgid "Please submit at most %d form."
+msgid_plural "Please submit at most %d forms."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:377
+#, python-format
+msgid "Please submit at least %d form."
+msgid_plural "Please submit at least %d forms."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:405
+#: .\venv\Lib\site-packages\django\forms\formsets.py:412
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:8
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:8
+msgid "Order"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:417
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:71
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:76
+#: .\warehouse\templates\warehouse\bin_by_area.html:69
+#: .\warehouse\templates\warehouse\bin_by_area.html:76
+#: .\warehouse\templates\warehouse\warehouse_list.html:63
+#: .\warehouse\templates\warehouse\warehouse_list.html:66
+#: .\wh_former\templates\wh_former\modules\components\buttons\delete_button.html:15
+#: .\wh_former\templates\wh_former\modules\components\buttons\exit_button.html:7
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:110
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:502
+msgid "Delete"
+msgstr "Xóa"
+
+#: .\venv\Lib\site-packages\django\forms\models.py:763
+#, python-format
+msgid "Please correct the duplicate data for %(field)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:767
+#, python-format
+msgid "Please correct the duplicate data for %(field)s, which must be unique."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:773
+#, python-format
+msgid ""
+"Please correct the duplicate data for %(field_name)s which must be unique "
+"for the %(lookup)s in %(date_field)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:782
+msgid "Please correct the duplicate values below."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1109
+msgid "The inline value did not match the parent instance."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1193
+msgid "Select a valid choice. That choice is not one of the available choices."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1311
+#, python-format
+msgid "“%(pk)s” is not a valid value."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\utils.py:172
+#, python-format
+msgid ""
+"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
+"may be ambiguous or it may not exist."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:427
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:42
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:64
+msgid "Clear"
+msgstr "Dọn"
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:428
+msgid "Currently"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:429
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:116
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:163
+msgid "Change"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:738
+#: .\wh_former\forms.py:229 .\wh_former\forms.py:243
+msgid "Unknown"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:739
+#: .\wh_former\templates\wh_former\modules\components\modals\action\cancel_modal.html:35
+msgid "Yes"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:740
+#: .\wh_former\templates\wh_former\modules\components\modals\action\cancel_modal.html:31
+msgid "No"
+msgstr ""
+
+#. Translators: Please do not add spaces around commas.
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:817
+msgid "yes,no,maybe"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:846
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:863
+#, python-format
+msgid "%(size)d byte"
+msgid_plural "%(size)d bytes"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:865
+#, python-format
+msgid "%s KB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:867
+#, python-format
+msgid "%s MB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:869
+#, python-format
+msgid "%s GB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:871
+#, python-format
+msgid "%s TB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:873
+#, python-format
+msgid "%s PB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:66
+msgid "p.m."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:67
+msgid "a.m."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:72
+msgid "PM"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:73
+msgid "AM"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:146
+msgid "midnight"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:148
+msgid "noon"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Mon"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Tue"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Wed"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Thu"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Fri"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:11
+msgid "Sat"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:11
+msgid "Sun"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "January"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "February"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "March"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "April"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "May"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:14
+msgid "June"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:15
+msgid "July"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:15
+msgid "August"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:15
+msgid "September"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:15
+msgid "October"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:15
+msgid "November"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:16
+msgid "December"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "jan"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "feb"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "mar"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "apr"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "may"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "jun"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "jul"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "aug"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "sep"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "oct"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "nov"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "dec"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:23
+msgctxt "abbrev. month"
+msgid "Jan."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:24
+msgctxt "abbrev. month"
+msgid "Feb."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:25
+msgctxt "abbrev. month"
+msgid "March"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:26
+msgctxt "abbrev. month"
+msgid "April"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:27
+msgctxt "abbrev. month"
+msgid "May"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:28
+msgctxt "abbrev. month"
+msgid "June"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:29
+msgctxt "abbrev. month"
+msgid "July"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:30
+msgctxt "abbrev. month"
+msgid "Aug."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:31
+msgctxt "abbrev. month"
+msgid "Sept."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:32
+msgctxt "abbrev. month"
+msgid "Oct."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:33
+msgctxt "abbrev. month"
+msgid "Nov."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:34
+msgctxt "abbrev. month"
+msgid "Dec."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:37
+msgctxt "alt. month"
+msgid "January"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:38
+msgctxt "alt. month"
+msgid "February"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:39
+msgctxt "alt. month"
+msgid "March"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:40
+msgctxt "alt. month"
+msgid "April"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:41
+msgctxt "alt. month"
+msgid "May"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:42
+msgctxt "alt. month"
+msgid "June"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:43
+msgctxt "alt. month"
+msgid "July"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:44
+msgctxt "alt. month"
+msgid "August"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:45
+msgctxt "alt. month"
+msgid "September"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:46
+msgctxt "alt. month"
+msgid "October"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:47
+msgctxt "alt. month"
+msgid "November"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:48
+msgctxt "alt. month"
+msgid "December"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\ipv6.py:8
+msgid "This is not a valid IPv6 address."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\text.py:131
+#, python-format
+msgctxt "String to return when truncating text"
+msgid "%(truncated_text)s…"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\text.py:309
+msgid "or"
+msgstr ""
+
+#. Translators: This string is used as a separator between list elements
+#: .\venv\Lib\site-packages\django\utils\text.py:328
+#: .\venv\Lib\site-packages\django\utils\timesince.py:94
+msgid ", "
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:9
+#, python-format
+msgid "%d year"
+msgid_plural "%d years"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:10
+#, python-format
+msgid "%d month"
+msgid_plural "%d months"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:11
+#, python-format
+msgid "%d week"
+msgid_plural "%d weeks"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:12
+#, python-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:13
+#, python-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:14
+#, python-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:110
+msgid "Forbidden"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:111
+msgid "CSRF verification failed. Request aborted."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:115
+msgid ""
+"You are seeing this message because this HTTPS site requires a “Referer "
+"header” to be sent by your Web browser, but none was sent. This header is "
+"required for security reasons, to ensure that your browser is not being "
+"hijacked by third parties."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:120
+msgid ""
+"If you have configured your browser to disable “Referer” headers, please re-"
+"enable them, at least for this site, or for HTTPS connections, or for “same-"
+"origin” requests."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:124
+msgid ""
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
+"including the “Referrer-Policy: no-referrer” header, please remove them. The "
+"CSRF protection requires the “Referer” header to do strict referer checking. "
+"If you’re concerned about privacy, use alternatives like <a "
+"rel=\"noreferrer\" …> for links to third-party sites."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:132
+msgid ""
+"You are seeing this message because this site requires a CSRF cookie when "
+"submitting forms. This cookie is required for security reasons, to ensure "
+"that your browser is not being hijacked by third parties."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:137
+msgid ""
+"If you have configured your browser to disable cookies, please re-enable "
+"them, at least for this site, or for “same-origin” requests."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:142
+msgid "More information is available with DEBUG=True."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:41
+msgid "No year specified"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:61
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:111
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:208
+msgid "Date out of range"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:90
+msgid "No month specified"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:142
+msgid "No day specified"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:188
+msgid "No week specified"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:338
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:367
+#, python-format
+msgid "No %(verbose_name_plural)s available"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:594
+#, python-format
+msgid ""
+"Future %(verbose_name_plural)s not available because "
+"%(class_name)s.allow_future is False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:628
+#, python-format
+msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\detail.py:54
+#, python-format
+msgid "No %(verbose_name)s found matching the query"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:67
+msgid "Page is not “last”, nor can it be converted to an int."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:72
+#, python-format
+msgid "Invalid page (%(page_number)s): %(message)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:154
+#, python-format
+msgid "Empty list and “%(class_name)s.allow_empty” is False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\static.py:40
+msgid "Directory indexes are not allowed here."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\static.py:42
+#, python-format
+msgid "“%(path)s” does not exist"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\static.py:80
+#, python-format
+msgid "Index of %(directory)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:7
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:221
+msgid "The install worked successfully! Congratulations!"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:207
+#, python-format
+msgid ""
+"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:222
+#, python-format
+msgid ""
+"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
+"%(version)s/ref/settings/#debug\" target=\"_blank\" "
+"rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not "
+"configured any URLs."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:230
+msgid "Django Documentation"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:231
+msgid "Topics, references, &amp; how-to’s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:239
+msgid "Tutorial: A Polling App"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:240
+msgid "Get started with Django"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:248
+msgid "Django Community"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:249
+msgid "Connect, get help, or contribute"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:313
+msgid "usage: "
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:821
+msgid ".__call__() not defined"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1105
+#, python-format
+msgid "unknown parser %r (choices: %s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1146
+#, python-format
+msgid "argument \"-\" with mode %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1349
+#, python-format
+msgid "cannot merge actions - two groups are named %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1387
+msgid "'required' is an invalid argument for positionals"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1407
+#, python-format
+msgid "invalid option string %r: must start with a character %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1428
+#, python-format
+msgid "dest= is required for options like %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1445
+#, python-format
+msgid "invalid conflict_resolution value: %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1463
+#, python-format
+msgid "conflicting option string(s): %s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1526
+msgid "mutually exclusive arguments must be optional"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1596
+msgid "positional arguments"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1597
+msgid "optional arguments"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1615
+msgid "show this help message and exit"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1621
+msgid "show program's version number and exit"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1653
+msgid "cannot have multiple subparser arguments"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1705
+#, python-format
+msgid "unrecognized arguments: %s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1802
+#, python-format
+msgid "not allowed with argument %s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1848
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1862
+#, python-format
+msgid "ignored explicit argument %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1952
+msgid "too few arguments"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1959
+#, python-format
+msgid "argument %s is required"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:1973
+#, python-format
+msgid "one of the arguments %s is required"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2019
+msgid "expected one argument"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2020
+msgid "expected at most one argument"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2021
+msgid "expected at least one argument"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2023
+#, python-format
+msgid "expected %s argument(s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2080
+#, python-format
+msgid "ambiguous option: %s could match %s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2142
+#, python-format
+msgid "unexpected option string: %s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2243
+#, python-format
+msgid "%r is not callable"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2259
+#, python-format
+msgid "invalid %s value: %r"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2269
+#, python-format
+msgid "invalid choice: %r (choose from %s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\gunicorn\argparse_compat.py:2362
+#, python-format
+msgid "%s: error: %s\n"
+msgstr ""
+
+#: .\warehouse\forms.py:82
+msgid "Choose Plant"
+msgstr "Chọn nhà máy"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:5
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:35
+msgid "Area List By Warehouse"
+msgstr "Danh sách khu vực theo kho"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:38
+#: .\warehouse\templates\warehouse\bin_by_area.html:37
+#: .\warehouse\templates\warehouse\warehouse_list.html:39
+#: .\wh_former\templates\wh_former\modules\components\buttons\save_button.html:20
+#: .\wh_packing\forms.py:302
+msgid "Add"
+msgstr "Thêm"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:41
+#: .\warehouse\templates\warehouse\area_edit.html:66
+#: .\warehouse\templates\warehouse\bin_by_area.html:40
+#: .\warehouse\templates\warehouse\bin_edit.html:36
+#: .\warehouse\templates\warehouse\warehouse_edit.html:91
+msgid "Back to List"
+msgstr "Trở về "
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:50
+#: .\warehouse\templates\warehouse\area_create.html:16
+#: .\warehouse\templates\warehouse\area_edit.html:15
+#: .\warehouse\templates\warehouse\bin_by_area.html:51
+#: .\warehouse\templates\warehouse\bin_create.html:25
+#: .\warehouse\templates\warehouse\bin_edit.html:28
+msgid "Area Id"
+msgstr "Mã khu vực"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:51
+#: .\warehouse\templates\warehouse\area_create.html:22
+#: .\warehouse\templates\warehouse\area_edit.html:21
+msgid "Area Name"
+msgstr "Tên khu vực"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:52
+#: .\warehouse\templates\warehouse\area_create.html:52
+#: .\warehouse\templates\warehouse\area_edit.html:57
+#: .\warehouse\templates\warehouse\warehouse_edit.html:31
+#: .\warehouse\templates\warehouse\warehouse_list.html:47
+msgid "Warehouse Id"
+msgstr "Mã Kho"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:67
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:75
+#: .\warehouse\templates\warehouse\bin_by_area.html:65
+#: .\warehouse\templates\warehouse\bin_by_area.html:73
+#: .\warehouse\templates\warehouse\warehouse_list.html:61
+#: .\warehouse\templates\warehouse\warehouse_list.html:65
+#: .\wh_former\templates\wh_former\modules\components\buttons\edit-button-3.html:3
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:301
+msgid "Edit"
+msgstr "Sửa"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:85
+msgid "No area found."
+msgstr "Không tìm thấy khu vực."
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:98
+#: .\warehouse\templates\warehouse\bin_by_area.html:98
+#: .\warehouse\templates\warehouse\warehouse_list.html:87
+msgid "Alert"
+msgstr "Cảnh báo"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:105
+msgid "Are you sure you want to delete the area"
+msgstr "Bạn chắc chắn muốn xoá kho"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:111
+#: .\warehouse\templates\warehouse\bin_by_area.html:111
+#: .\warehouse\templates\warehouse\warehouse_list.html:100
+msgid "Yes, Delete"
+msgstr "Xác nhận"
+
+#: .\warehouse\templates\warehouse\area_by_warehouse.html:115
+#: .\warehouse\templates\warehouse\bin_by_area.html:115
+#: .\warehouse\templates\warehouse\warehouse_list.html:104
+#: .\wh_former\templates\wh_former\components\buttons\save_button.html:241
+#: .\wh_former\templates\wh_former\components\modals\warning_modal.html:26
+#: .\wh_former\templates\wh_former\modules\components\buttons\cancel-button-2.html:2
+#: .\wh_former\templates\wh_former\modules\components\buttons\cancel_button.html:8
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:119
+msgid "Cancel"
+msgstr "Huỷ"
+
+#: .\warehouse\templates\warehouse\area_create.html:5
+#: .\warehouse\templates\warehouse\bin_create.html:5
+#: .\warehouse\templates\warehouse\warehouse_create.html:5
+#: .\warehouse\templates\warehouse\warehouse_create.html:29
+msgid "Create Warehouse"
+msgstr "Thêm mới Kho"
+
+#: .\warehouse\templates\warehouse\area_create.html:14
+msgid "Create Area"
+msgstr "Thêm mới khu vực"
+
+#: .\warehouse\templates\warehouse\area_create.html:28
+#: .\warehouse\templates\warehouse\area_edit.html:27
+msgid "Position X"
+msgstr "Vị trí X"
+
+#: .\warehouse\templates\warehouse\area_create.html:34
+#: .\warehouse\templates\warehouse\area_edit.html:33
+msgid "Position Y"
+msgstr "Vị trí Y"
+
+#: .\warehouse\templates\warehouse\area_create.html:40
+#: .\warehouse\templates\warehouse\area_edit.html:39
+msgid "Area Width"
+msgstr "Mã khu vực"
+
+#: .\warehouse\templates\warehouse\area_create.html:46
+#: .\warehouse\templates\warehouse\area_edit.html:45
+msgid "Area Length"
+msgstr "Chiều cao Khu vực"
+
+#: .\warehouse\templates\warehouse\area_create.html:58
+#: .\warehouse\templates\warehouse\bin_create.html:30
+#: .\warehouse\templates\warehouse\warehouse_create.html:87
+#: .\wh_former\forms.py:402
+#: .\wh_former\templates\wh_former\components\buttons\button\button_save.html:20
+#: .\wh_former\templates\wh_former\components\buttons\save_button.html:231
+#: .\wh_former\templates\wh_former\modules\components\buttons\done_button.html:10
+msgid "Save"
+msgstr "Lưu"
+
+#: .\warehouse\templates\warehouse\area_edit.html:5
+#: .\warehouse\templates\warehouse\area_edit.html:13
+msgid "Edit Area"
+msgstr "Cập nhật (Khu vực)"
+
+#: .\warehouse\templates\warehouse\area_edit.html:51
+msgid "Layer"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\area_edit.html:63
+#: .\warehouse\templates\warehouse\bin_edit.html:33
+#: .\warehouse\templates\warehouse\warehouse_edit.html:88
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:122
+msgid "Save Changes"
+msgstr "Lưu thay đổi"
+
+#: .\warehouse\templates\warehouse\bin_by_area.html:5
+#: .\warehouse\templates\warehouse\bin_by_area.html:34
+msgid "Bin List By Area"
+msgstr "Danh sách Bin theo khu vực"
+
+#: .\warehouse\templates\warehouse\bin_by_area.html:49
+#: .\warehouse\templates\warehouse\bin_create.html:14
+#: .\warehouse\templates\warehouse\bin_edit.html:15
+msgid "Bin Id"
+msgstr "Mã Bin"
+
+#: .\warehouse\templates\warehouse\bin_by_area.html:50
+#: .\warehouse\templates\warehouse\bin_create.html:19
+#: .\warehouse\templates\warehouse\bin_edit.html:22
+msgid "Bin Name"
+msgstr "Tên Bin"
+
+#: .\warehouse\templates\warehouse\bin_by_area.html:85
+msgid "No bins found."
+msgstr "Không tìm thấy bất kỳ Bin nào"
+
+#: .\warehouse\templates\warehouse\bin_by_area.html:105
+msgid "Are you sure you want to delete the bin "
+msgstr "Bạn chắc chắn muốn xoá Bin"
+
+#: .\warehouse\templates\warehouse\bin_create.html:12
+msgid "Create Bin"
+msgstr "Tạo Bin mới"
+
+#: .\warehouse\templates\warehouse\bin_edit.html:5
+#: .\warehouse\templates\warehouse\bin_edit.html:13
+msgid "Edit Bin"
+msgstr "Cập nhật (Vị trí)"
+
+#: .\warehouse\templates\warehouse\index.html:75
+#: .\warehouse\templates\warehouse\warehouse_list.html:74
+msgid "No warehouses found."
+msgstr "Mã Kho"
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:31
+msgid "Warehouse Code"
+msgstr "Mã Kho"
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:36
+#: .\warehouse\templates\warehouse\warehouse_edit.html:37
+#: .\warehouse\templates\warehouse\warehouse_list.html:48
+msgid "Warehouse Name"
+msgstr "Tên Kho"
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:41
+#: .\warehouse\templates\warehouse\warehouse_edit.html:43
+#: .\warehouse\templates\warehouse\warehouse_list.html:46
+#: .\wh_packing\forms.py:63 .\wh_packing\forms.py:427 .\wh_packing\forms.py:457
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:134
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:142
+#: .\wh_packing\templates\wh_packing\admin\sap_query.html:105
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:194
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:237
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:301
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:80
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:192
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:245
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:58
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:118
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:204
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:235
+msgid "Plant"
+msgstr "Nhà máy"
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:47
+#: .\warehouse\templates\warehouse\warehouse_edit.html:49
+#: .\wh_packing\forms.py:231
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:146
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:331
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:87
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:208
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:262
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:79
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:125
+msgid "Comment"
+msgstr "Ghi chú"
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:56
+#: .\warehouse\templates\warehouse\warehouse_edit.html:57
+msgid "For Packing Warehouse Function"
+msgstr "Kho đóng gói"
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:62
+#: .\warehouse\templates\warehouse\warehouse_edit.html:63
+msgid "For Former Warehouse Function"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:68
+#: .\warehouse\templates\warehouse\warehouse_edit.html:69
+msgid "For WIP Warehouse Function"
+msgstr "Kho bán thành phẩm"
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:74
+#: .\warehouse\templates\warehouse\warehouse_edit.html:75
+msgid "For Product Warehouse Function"
+msgstr "Kho thành phẩm"
+
+#: .\warehouse\templates\warehouse\warehouse_create.html:81
+#: .\warehouse\templates\warehouse\warehouse_edit.html:82
+msgid "Background Image"
+msgstr "Hình ảnh"
+
+#: .\warehouse\templates\warehouse\warehouse_edit.html:5
+#: .\warehouse\templates\warehouse\warehouse_edit.html:29
+msgid "Edit Warehouse"
+msgstr "Thêm mới Kho"
+
+#: .\warehouse\templates\warehouse\warehouse_list.html:5
+#: .\warehouse\templates\warehouse\warehouse_list.html:37
+msgid "Warehouse List"
+msgstr "Danh sách Kho"
+
+#: .\warehouse\templates\warehouse\warehouse_list.html:94
+msgid "Are you sure you want to delete the warehouse"
+msgstr "Bạn chắc chắn muốn xoá kho"
+
+#: .\wh_former\forms.py:16
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:284
+msgid "Note"
+msgstr "Ghi chú"
+
+#: .\wh_former\forms.py:17
+#: .\wh_former\templates\wh_former\modules\components\forms\basket_master_data_form.html:19
+msgid "Basket width"
+msgstr "Chiều rộng"
+
+#: .\wh_former\forms.py:17 .\wh_former\forms.py:108 .\wh_former\forms.py:163
+#: .\wh_former\forms.py:297
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_length_field.html:3
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:123
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:104
+#: .\wh_former\templates\wh_former\modules\components\modals\params\length_modal.html:93
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:272
+#: .\wh_former\templates\wh_former\pages\former_search.html:283
+#: .\wh_former\utils\configs\table_configs.py:7
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:9
+msgid "Length"
+msgstr "Chiều dài"
+
+#: .\wh_former\forms.py:24 .\wh_former\forms.py:101 .\wh_former\forms.py:158
+#: .\wh_former\forms.py:233
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_brand_field.html:3
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\parameters_brand_field.html:3
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:73
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:260
+#: .\wh_former\utils\configs\table_configs.py:7
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:7
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:31
+msgid "Brand"
+msgstr "Nhà cung cấp"
+
+#: .\wh_former\forms.py:25
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:8
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:32
+msgid "Capacity"
+msgstr "Số khuôn"
+
+#: .\wh_former\forms.py:26
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:268
+msgid "Receive Qty"
+msgstr "Số lượng"
+
+#: .\wh_former\forms.py:27 .\wh_former\forms.py:234
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\basket_master_edit.html:20
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:276
+msgid "Receive Date"
+msgstr "Ngày nhận"
+
+#: .\wh_former\forms.py:28 .\wh_former\forms.py:237
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\basket_master_edit.html:35
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:76
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:280
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:11
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:26
+#: .\wh_packing\forms.py:203 .\wh_packing\forms.py:320
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:137
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:323
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:337
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:208
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:82
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:195
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:248
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:120
+msgid "Purchase Order"
+msgstr "Chứng từ mua hàng"
+
+#: .\wh_former\forms.py:32
+msgid "Max: 5"
+msgstr ""
+
+#: .\wh_former\forms.py:33
+msgid "Example: 24"
+msgstr "Ví dụ: 24"
+
+#: .\wh_former\forms.py:35 .\wh_former\forms.py:112 .\wh_former\forms.py:116
+#: .\wh_former\forms.py:117 .\wh_former\forms.py:119 .\wh_former\forms.py:121
+#: .\wh_former\forms.py:159 .\wh_former\forms.py:160 .\wh_former\forms.py:161
+#: .\wh_former\forms.py:165 .\wh_former\forms.py:166
+msgid "Type here..."
+msgstr "Nhập..."
+
+#: .\wh_former\forms.py:41
+msgid "Why create if you get 0?"
+msgstr ""
+
+#: .\wh_former\forms.py:47
+msgid "A basket without any mold?"
+msgstr ""
+
+#: .\wh_former\forms.py:53
+#, fuzzy
+#| msgid "Please select at least one row to delete!"
+msgid "Please select a receipt date!"
+msgstr "Vui lòng chọn ít nhất một hàng để xóa!"
+
+#: .\wh_former\forms.py:59
+#, fuzzy
+#| msgid "The quantity must be a positive number!"
+msgid "Length must be a positive number"
+msgstr "(Số lượng) phải là số dương!"
+
+#: .\wh_former\forms.py:65
+#, fuzzy
+#| msgid "Product Order cannot be null!"
+msgid "Product Order cannot exceed 10 characters"
+msgstr "(Đơn hàng) không được để trống !"
+
+#: .\wh_former\forms.py:98
+msgid "DN"
+msgstr ""
+
+#: .\wh_former\forms.py:99 .\wh_former\forms.py:164
+#: .\wh_former\templates\wh_former\components\forms\former_stock_in_form.html:52
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_size_field.html:3
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:111
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:110
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:158
+#: .\wh_former\templates\wh_former\modules\components\modals\params\size_modal.html:94
+#: .\wh_former\utils\configs\table_configs.py:7
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:29
+#: .\wh_packing\forms.py:22 .\wh_packing\forms.py:85 .\wh_packing\forms.py:212
+#: .\wh_packing\forms.py:322
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:65
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:91
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:141
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:151
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:328
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:83
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:14
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:149
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:201
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:242
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:86
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:198
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:251
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:75
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:124
+msgid "Size"
+msgstr "Size"
+
+#: .\wh_former\forms.py:100
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:10
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_batch_field.html:5
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:147
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:16
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:10
+#: .\wh_former\templates\wh_former\pages\batch_history.html:21
+#: .\wh_former\templates\wh_former\pages\former_search.html:279
+#: .\wh_packing\forms.py:526
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:117
+msgid "Batch No"
+msgstr "Mã lô"
+
+#: .\wh_former\forms.py:102 .\wh_former\forms.py:159
+#: .\wh_former\utils\configs\table_configs.py:7
+msgid "Model"
+msgstr "Loại khuôn"
+
+#: .\wh_former\forms.py:103
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:153
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:203
+msgid "Purchase Qty"
+msgstr "Số lượng đặt hàng"
+
+#: .\wh_former\forms.py:104 .\wh_former\utils\configs\table_configs.py:7
+msgid "Data date"
+msgstr "Ngày nhận"
+
+#: .\wh_former\forms.py:105 .\wh_former\forms.py:160 .\wh_former\forms.py:300
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\former_surface_field.html:3
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:99
+#: .\wh_former\templates\wh_former\modules\components\modals\params\surface_modal.html:93
+msgid "Surface"
+msgstr "Bề mặt"
+
+#: .\wh_former\forms.py:106
+msgid "AQL"
+msgstr ""
+
+#: .\wh_former\forms.py:107
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_item_field.html:3
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:26
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:31
+#: .\wh_former\templates\wh_former\pages\former_search.html:282
+msgid "Item No"
+msgstr "Mã hàng"
+
+#: .\wh_former\forms.py:109 .\wh_former\forms.py:162
+#: .\wh_former\templates\wh_former\components\forms\former_stock_in_form.html:53
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:159
+#: .\wh_former\utils\configs\table_configs.py:7
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:28
+msgid "Used day"
+msgstr "Đã sử dụng"
+
+#: .\wh_former\forms.py:161
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:22
+#: .\wh_former\templates\wh_former\pages\former_search.html:281
+msgid "Receive Form"
+msgstr "Đơn nhận hàng"
+
+#: .\wh_former\forms.py:165 .\wh_former\utils\configs\table_configs.py:7
+msgid "Item no"
+msgstr "Mã vật tư"
+
+#: .\wh_former\forms.py:166
+#: .\wh_former\templates\wh_former\components\forms\former_stock_in_form.html:50
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:156
+#: .\wh_former\utils\configs\table_configs.py:7
+msgid "Batch no"
+msgstr "Mã lô"
+
+#: .\wh_former\forms.py:221
+msgid "Nhập đúng định dạng: =10, >=10, <=10, >10, <10"
+msgstr ""
+
+#: .\wh_former\forms.py:229 .\wh_former\forms.py:243
+msgid "All"
+msgstr ""
+
+#: .\wh_former\forms.py:229 .\wh_former\forms.py:243
+msgid "In use"
+msgstr "Đang sử dụng"
+
+#: .\wh_former\forms.py:229 .\wh_former\forms.py:243
+#: .\wh_former\templates\wh_former\modules\components\modals\params\length_modal.html:98
+#: .\wh_former\templates\wh_former\modules\components\modals\params\size_modal.html:99
+#: .\wh_former\templates\wh_former\modules\components\modals\params\surface_modal.html:98
+#: .\wh_former\templates\wh_former\modules\components\modals\params\vendor_modal.html:97
+msgid "Active"
+msgstr "Hoạt động"
+
+#: .\wh_former\forms.py:229 .\wh_former\forms.py:243
+#: .\wh_former\templates\wh_former\modules\components\buttons\scrap-button-2.html:2
+msgid "Scrap"
+msgstr "Phế"
+
+#: .\wh_former\forms.py:229 .\wh_former\forms.py:236 .\wh_former\forms.py:245
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:27
+msgid "Group"
+msgstr "Nhóm"
+
+#: .\wh_former\forms.py:232
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:6
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:25
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:52
+msgid "Basket No"
+msgstr "Mã rổ"
+
+#: .\wh_former\forms.py:232
+msgid "Enter at least 8 characters..."
+msgstr "Nhập ít nhất 8 kí tự..."
+
+#: .\wh_former\forms.py:236
+#, fuzzy
+#| msgid "Enter Product Order"
+msgid "Enter group"
+msgstr "Mã Đơn hàng"
+
+#: .\wh_former\forms.py:237
+#, fuzzy
+#| msgid "Edit Bin"
+msgid "Enter PO"
+msgstr "Cập nhật Bin"
+
+#: .\wh_former\forms.py:282
+#, fuzzy
+#| msgid "Bin Name"
+msgid "Brand name"
+msgstr "Tên Bin"
+
+#: .\wh_former\forms.py:286
+#, fuzzy
+#| msgid "first name"
+msgid "Size name"
+msgstr "tên đầu tiên"
+
+#: .\wh_former\forms.py:290
+msgid "Item name"
+msgstr "Tên hàng"
+
+#: .\wh_former\forms.py:296
+#, fuzzy
+#| msgid "Length"
+msgid "Length code"
+msgstr "Chiều dài"
+
+#: .\wh_former\forms.py:345
+msgid "Giá trị không hợp lệ."
+msgstr ""
+
+#: .\wh_former\forms.py:347
+msgid "Giá trị không được nhỏ hơn 0."
+msgstr ""
+
+#: .\wh_former\forms.py:368
+msgid "Client Device IP"
+msgstr ""
+
+#: .\wh_former\forms.py:369
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:55
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:65
+msgid "RFID Reader IP"
+msgstr ""
+
+#: .\wh_former\forms.py:370
+msgid "RFID Reader Port"
+msgstr ""
+
+#: .\wh_former\forms.py:371
+#, fuzzy
+#| msgid "Location"
+msgid "Location Name"
+msgstr "Vị trí"
+
+#: .\wh_former\forms.py:372
+msgid "RFID Reader Status"
+msgstr ""
+
+#: .\wh_former\forms.py:433
+#, fuzzy
+#| msgid "Size"
+msgid "Size:"
+msgstr "Size"
+
+#: .\wh_former\forms.py:435
+msgid "Select size"
+msgstr "Chọn size"
+
+#: .\wh_former\forms.py:442
+msgid "Stock form"
+msgstr "Biểu mẫu xuất"
+
+#: .\wh_former\forms.py:465
+msgid "Invalid size selected. Please choose a valid size."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\base.html:278
+#: .\wh_former\templates\wh_former\modules\components\tables\former\rfid\table_rfid_footer.html:5
+#: .\wh_former\templates\wh_former\modules\components\tables\former\rfid\table_rfid_result.html:38
+msgid "Basket"
+msgstr "Rổ"
+
+#: .\wh_former\templates\wh_former\base.html:284
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:65
+msgid "Add Basket"
+msgstr "Nhập thông tin rổ"
+
+#: .\wh_former\templates\wh_former\base.html:292
+#: .\wh_former\templates\wh_former\pages\basket_search.html:15
+msgid "Search Basket"
+msgstr "Tìm kiếm rổ"
+
+#: .\wh_former\templates\wh_former\base.html:302
+#: .\wh_former\templates\wh_former\pages\basket_modify.html:42
+msgid "Modify Basket"
+msgstr "Chỉnh sửa thông tin"
+
+#: .\wh_former\templates\wh_former\base.html:312
+#: .\wh_former\templates\wh_former\modules\components\tables\former\rfid\table_rfid_result.html:31
+msgid "Former"
+msgstr "Khuôn"
+
+#: .\wh_former\templates\wh_former\base.html:317
+msgid "Add Former"
+msgstr "Nhập thông tin khuôn"
+
+#: .\wh_former\templates\wh_former\base.html:322
+msgid "Search Former"
+msgstr "Tìm kiếm khuôn"
+
+#: .\wh_former\templates\wh_former\base.html:328
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:57
+msgid "Former Stock In"
+msgstr "Nhập kho khuôn"
+
+#: .\wh_former\templates\wh_former\base.html:333
+#: .\wh_former\templates\wh_former\pages\former_stock_out.html:49
+msgid "Former Stock Out"
+msgstr "Xuất kho khuôn"
+
+#: .\wh_former\templates\wh_former\base.html:341
+msgid "Transaction"
+msgstr "Lịch sử"
+
+#: .\wh_former\templates\wh_former\base.html:347
+msgid "Scrap Report"
+msgstr "Báo cáo khuôn phế"
+
+#: .\wh_former\templates\wh_former\base.html:353
+msgid "Batch Report"
+msgstr "Báo cáo lô khuôn"
+
+#: .\wh_former\templates\wh_former\components\buttons\save_button.html:236
+msgid "Done"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\forms\former_stock_in_form.html:24
+msgid "Choose stockout form"
+msgstr "Chọn biểu mẫu"
+
+#: .\wh_former\templates\wh_former\components\forms\former_stock_in_form.html:29
+msgid "Select form..."
+msgstr "Chọn form..."
+
+#: .\wh_former\templates\wh_former\components\forms\former_stock_in_form.html:51
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\form_type_field.html:3
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:87
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:157
+msgid "Former type"
+msgstr "Loại khuôn"
+
+#: .\wh_former\templates\wh_former\components\forms\former_stock_in_form.html:54
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:160
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:172
+#: .\wh_former\templates\wh_former\pages\former_master_data.html:40
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:78
+msgid "Baskets"
+msgstr "Rổ"
+
+#: .\wh_former\templates\wh_former\components\forms\former_stock_in_form.html:55
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:161
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:175
+#: .\wh_former\templates\wh_former\pages\former_master_data.html:43
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:81
+msgid "Formers"
+msgstr "Khuôn"
+
+#: .\wh_former\templates\wh_former\components\modals\area_modal.html:7
+msgid "Detail Area Infomation"
+msgstr "Thông tin kho"
+
+#: .\wh_former\templates\wh_former\components\modals\area_modal.html:17
+msgid "LEFT"
+msgstr "TRÁI"
+
+#: .\wh_former\templates\wh_former\components\modals\area_modal.html:20
+msgid "CENTER"
+msgstr "GIỮA"
+
+#: .\wh_former\templates\wh_former\components\modals\area_modal.html:23
+msgid "RIGHT"
+msgstr "PHẢI"
+
+#: .\wh_former\templates\wh_former\components\modals\area_modal2.html:8
+msgid "Thông tin chi tiết"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\item_modal.html:8
+msgid "Add Item ..."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\stockin_modal.html:37
+msgid "Nhập mới"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\stockin_modal.html:38
+msgid "Đã sử dụng"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\stockin_modal.html:39
+msgid "Thoát"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\stockout_modal.html:41
+msgid "Choose action"
+msgstr "Chọn vị trí"
+
+#: .\wh_former\templates\wh_former\components\modals\stockout_modal.html:46
+#: .\wh_former\templates\wh_former\components\page_title.html:71
+msgid "Production"
+msgstr "Sản xuất"
+
+#: .\wh_former\templates\wh_former\components\modals\stockout_modal.html:47
+#: .\wh_former\templates\wh_former\components\page_title.html:90
+msgid "Washing"
+msgstr "Rửa khuôn"
+
+#: .\wh_former\templates\wh_former\components\modals\stockout_modal.html:48
+msgid "To LK"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\stockout_modal.html:49
+#: .\wh_former\templates\wh_former\modules\components\buttons\cancel-button-3.html:7
+#: .\wh_former\templates\wh_former\modules\components\buttons\exit-button-2.html:2
+msgid "Exit"
+msgstr "Thoát"
+
+#: .\wh_former\templates\wh_former\components\modals\warning_modal.html:8
+msgid "Bin Selection Required"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\warning_modal.html:14
+msgid "Warning:"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\warning_modal.html:14
+msgid "Some baskets do not have bins selected."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\warning_modal.html:21
+msgid ""
+"Please select bins for all baskets before saving, or click Continue to save "
+"without bin selection."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\modals\warning_modal.html:29
+msgid "Continue Anyway"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\page_title.html:134
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\form_type_field.html:7
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\former_surface_field.html:7
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_size_field.html:7
+msgid "Select..."
+msgstr "Chọn..."
+
+#: .\wh_former\templates\wh_former\components\settings\components\device\settings_device.html:12
+#: .\wh_former\templates\wh_former\components\settings\manage_index.html:27
+#, fuzzy
+#| msgid "Add User"
+msgid "Add new"
+msgstr "Thêm người dùng mới"
+
+#: .\wh_former\templates\wh_former\components\settings\components\device\settings_device_result.html:6
+#: .\wh_former\templates\wh_former\components\settings\manage_index.html:47
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:12
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:12
+msgid "Client IP"
+msgstr "IP thiết bị"
+
+#: .\wh_former\templates\wh_former\components\settings\components\device\settings_device_result.html:7
+#: .\wh_former\templates\wh_former\components\settings\manage_index.html:48
+msgid "Gate"
+msgstr "Cổng"
+
+#: .\wh_former\templates\wh_former\components\settings\components\device\settings_device_result.html:8
+#: .\wh_former\templates\wh_former\components\settings\manage_index.html:49
+msgid "Controller IP"
+msgstr "IP RFID"
+
+#: .\wh_former\templates\wh_former\components\settings\components\device\settings_device_result.html:9
+#: .\wh_former\templates\wh_former\components\settings\manage_index.html:50
+msgid "Port"
+msgstr "Cổng IP"
+
+#: .\wh_former\templates\wh_former\components\settings\components\device\settings_device_result.html:54
+#: .\wh_former\templates\wh_former\components\settings\manage_index.html:95
+msgid "No records yet."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\settings\components\settings_title.html:15
+#, fuzzy
+#| msgid "Searching"
+msgid "Setting"
+msgstr "Cài đặt"
+
+#: .\wh_former\templates\wh_former\components\settings\manage_index.html:5
+msgid "Hand Former - Manage - Settings"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\settings\manage_index.html:22
+msgid "RFID Setting"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\settings\settings.html:5
+msgid "Hand Former - Basket Master Data"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:13
+msgid "PID"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:14
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:13
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:18
+#: .\wh_former\templates\wh_former\pages\batch_history.html:53
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:38
+#, fuzzy
+#| msgid "Location"
+msgid "Action"
+msgstr "Hành động"
+
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:15
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:14
+msgid "From Bin"
+msgstr "Vị trí gốc"
+
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:16
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:15
+msgid "To Bin"
+msgstr "Vị trí đến"
+
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:48
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:58
+msgid "No rack data found for this RFID reader."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:56
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:66
+#, fuzzy
+#| msgid "Filled"
+msgid "Filter"
+msgstr "Lọc"
+
+#: .\wh_former\templates\wh_former\components\tables\rack_temp_table.html:57
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:67
+msgid "Total Records"
+msgstr "Tổng khuôn"
+
+#: .\wh_former\templates\wh_former\modules\components\buttons\confirm-button-2-print.html:2
+#: .\wh_former\templates\wh_former\modules\components\tables\basket\result\result_table_footer.html:175
+msgid "Print"
+msgstr "In"
+
+#: .\wh_former\templates\wh_former\modules\components\buttons\confirm-button-2.html:2
+#: .\wh_former\templates\wh_former\pages\batch_history.html:91
+#: .\wh_packing\forms.py:171 .\wh_packing\forms.py:190
+msgid "Confirm"
+msgstr "Xác nhận"
+
+#: .\wh_former\templates\wh_former\modules\components\buttons\delete-button-2.html:2
+msgid "Delete all"
+msgstr "Xóa"
+
+#: .\wh_former\templates\wh_former\modules\components\buttons\rack_button.html:9
+msgid "Rack"
+msgstr "Lồng"
+
+#: .\wh_former\templates\wh_former\modules\components\buttons\start_button.html:20
+msgid "Start"
+msgstr "Bắt đầu"
+
+#: .\wh_former\templates\wh_former\modules\components\buttons\stop_button.html:29
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:53
+msgid "Stop"
+msgstr "Dừng"
+
+#: .\wh_former\templates\wh_former\modules\components\buttons\update-button-2.html:2
+msgid "Update"
+msgstr "Cập nhật"
+
+#: .\wh_former\templates\wh_former\modules\components\errors\403.html:5
+#: .\wh_former\templates\wh_former\modules\components\errors\404.html:5
+msgid "Hand Former - Access Denied"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\errors\403.html:13
+#: .\wh_former\templates\wh_former\modules\components\errors\404.html:13
+msgid "Access Denied"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\errors\403.html:14
+#: .\wh_former\templates\wh_former\modules\components\errors\404.html:14
+msgid ""
+"Your <b style='color: black;'>IP address</b> is not authorized to access "
+"this page!"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\forms\basket_master_data_form.html:30
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:256
+msgid "Plant code"
+msgstr "Mã xưởng"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_batch_field.html:9
+msgid "Click button to generate..."
+msgstr "Ấn nút để tạo"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_brand_field.html:7
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_item_field.html:7
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_length_field.html:7
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\parameters_brand_field.html:7
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:34
+msgid "Select or Typing"
+msgstr "Chọn hoặc nhập"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_item_field.html:54
+#: .\wh_former\utils\api\item_decode_api.py:21
+#: .\wh_former\utils\modules\helpers\forms\former_form.py:10
+msgid "Standard Fine Surface"
+msgstr "Khuôn tiêu chuẩn – mặt mịn"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_item_field.html:55
+#: .\wh_former\utils\api\item_decode_api.py:22
+#: .\wh_former\utils\modules\helpers\forms\former_form.py:11
+msgid "Standard Coarse Surface"
+msgstr "Khuôn tiêu chuẩn – mặt nhám"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_item_field.html:56
+#: .\wh_former\utils\api\item_decode_api.py:23
+#: .\wh_former\utils\modules\helpers\forms\former_form.py:12
+msgid "Standard Diamond Textured"
+msgstr "Khuôn tiêu chuẩn – vân kim cương"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_item_field.html:57
+#: .\wh_former\utils\api\item_decode_api.py:24
+#: .\wh_former\utils\modules\helpers\forms\former_form.py:13
+msgid "Energy-saving Fine Surface"
+msgstr "Khuôn tiết kiệm năng lượng – mặt mịn"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_item_field.html:60
+#: .\wh_former\utils\api\item_decode_api.py:28
+#: .\wh_former\utils\modules\helpers\forms\former_form.py:17
+msgid "Stainless steel"
+msgstr "Thép không rỉ"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\fields\forms_item_field.html:61
+#: .\wh_former\utils\api\item_decode_api.py:29
+#: .\wh_former\utils\modules\helpers\forms\former_form.py:18
+msgid "Ceramic"
+msgstr "Gốm sứ"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:16
+msgid "Enter form name"
+msgstr "Nhập biểu mẫu"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\former_master_data_form.html:53
+msgid "Enter purchase order"
+msgstr "Số lượng đặt hàng"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:121
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:134
+#, fuzzy
+#| msgid "Create Bin"
+msgid "Create new form"
+msgstr "Tạo Bin mới"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:125
+#, fuzzy
+#| msgid "Create Area"
+msgid "Create New Form"
+msgstr "Thêm mới khu vực"
+
+#: .\wh_former\templates\wh_former\modules\components\forms\former_stock_out_form.html:131
+#, fuzzy
+#| msgid "Continue"
+msgid "Continue with form"
+msgstr "Tiếp tục"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\action_modal.html:10
+msgid "Basket Detail"
+msgstr "Thông tin rổ"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_exit_confirm.html:10
+msgid "Confirm Exit"
+msgstr "Xác nhận thoát"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_exit_confirm.html:18
+msgid "You have basket number that has not been printed."
+msgstr "Nhãn rổ đã tạo nhưng chưa in."
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_exit_confirm.html:21
+msgid "Are you sure you want to exit without printing?"
+msgstr "Bạn có chắc chắn muốn thoát trang?"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:9
+msgid "Confirm Print"
+msgstr "Xác nhận In"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:17
+msgid "Are you sure you want to print?"
+msgstr "Bạn có chắc chắn muốn in không?"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:20
+msgid "Total labels to print"
+msgstr "Tổng nhãn sẽ in"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:40
+#, fuzzy
+#| msgid "Comfirm Printing Quality"
+msgid "Confirm Printing Quality"
+msgstr "Xác nhận số lượng in"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:47
+msgid "Finished"
+msgstr "Đã hoàn tất"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:47
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:48
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:49
+#: .\wh_former\templates\wh_former\modules\components\tables\basket\result\result_table_footer.html:499
+msgid "labels"
+msgstr "nhãn"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:48
+msgid "Still have"
+msgstr "Còn lại"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:49
+#: .\wh_former\templates\wh_former\modules\components\tables\basket\result\result_table_footer.html:499
+msgid "Next will print"
+msgstr "Sẽ in tiếp"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:56
+msgid "Re-print"
+msgstr "In"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\basket_master_data_print_confirm.html:59
+msgid "Continue"
+msgstr "Tiếp tục"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\cancel_confirm_modal.html:9
+msgid "Confirm Delete"
+msgstr "Xác nhận xóa"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\cancel_confirm_modal.html:17
+msgid "Are you sure you want to cancel this operation?"
+msgstr "Bạn có chắc chắn muốn kết thúc hành động?"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\cancel_confirm_modal.html:20
+msgid "This will delete all current data."
+msgstr "Việc này sẽ xóa toàn bộ dữ liệu hiện tại"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\cancel_confirm_modal.html:21
+#: .\wh_former\templates\wh_former\modules\components\modals\action\save_confirm_modal.html:62
+msgid "This action cannot be undone!"
+msgstr "Hành động này không thể khôi phục"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\cancel_modal.html:21
+msgid "Unsaved changes"
+msgstr "Có thay đổi chưa lưu"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\cancel_modal.html:25
+msgid "If you do this, any changes you have made will be lost."
+msgstr "Nếu bạn tiếp tục, tất cả thay đổi sẽ biến mất"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\error_modal.html:18
+#: .\wh_former\templates\wh_former\modules\layout\items\scripts\rack_modal_logic.html:86
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:217
+msgid "Error"
+msgstr "Lỗi"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\error_modal.html:23
+#: .\wh_former\templates\wh_former\pages\former_search.html:266
+msgid "Try again"
+msgstr "Thử lại"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\loading_modal.html:49
+#: .\wh_former\templates\wh_former\modules\components\modals\action\rack_modal.html:15
+#: .\wh_former\templates\wh_former\modules\layout\items\scripts\rack_modal_logic.html:61
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:188
+#: .\wh_packing\templates\wh_packing\admin\bin_upload.html:111
+msgid "Loading..."
+msgstr "Đang tải..."
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\loading_modal.html:50
+msgid "Please wait"
+msgstr "Vui lòng đợi"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\loading_modal3.html:142
+msgid "Scanning data"
+msgstr "Đang quét dữ liệu"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\not_done_modal.html:9
+msgid "Cảnh báo dữ liệu chưa lưu"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\not_done_modal.html:17
+msgid "Bạn có dữ liệu tạm thời trong rack chưa được lưu!"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\not_done_modal.html:20
+msgid ""
+"Nếu thoát trang mà không lưu, có thể xảy ra lỗi khi thực hiện lại. Bạn có "
+"chắc chắn muốn thoát không?"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\not_done_modal.html:26
+msgid "Hủy"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\not_done_modal.html:30
+msgid "Thoát trang"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\not_done_modal.html:123
+msgid "Bạn có dữ liệu chưa lưu. Thoát trang có thể gây mất dữ liệu."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\rack_modal.html:8
+msgid "Rack scanned Information"
+msgstr "Thông tin đã quét"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\rack_modal.html:17
+#: .\wh_former\templates\wh_former\modules\layout\items\scripts\rack_modal_logic.html:63
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:190
+msgid "Loading rack data..."
+msgstr "Đang tải dữ liệu..."
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\save_confirm_modal.html:51
+msgid "Confirm Save"
+msgstr "Lưu"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\save_confirm_modal.html:59
+#, fuzzy
+#| msgid "Are you sure you want to delete the area"
+msgid "Are you sure you want to complete this operation?"
+msgstr "Bạn chắc chắn muốn xoá kho"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\save_confirm_modal.html:61
+msgid "This will finalize all data and move items to final storage."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\success_modal.html:18
+msgid "Success"
+msgstr "Thành công"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\action\success_modal.html:22
+msgid "OK"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\basket_master_data_confirm.html:9
+msgid "Confirm the following basket infomation"
+msgstr "Xác nhận thông tin bạn đã điền"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\basket_master_data_confirm.html:20
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:196
+msgid "Loading form data..."
+msgstr "Đang tải..."
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\basket_master_edit.html:8
+msgid "Edit Basket Information"
+msgstr "Sửa thông tin"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\basket_master_edit.html:47
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:39
+msgid "Description"
+msgstr "Ghi chú"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:7
+msgid "Edit Batch"
+msgstr "Chỉnh sửa"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:54
+msgid "Former Size"
+msgstr "Size"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:62
+msgid "Former Type"
+msgstr "Loại khuôn"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:68
+msgid "Former Surface"
+msgstr "Bề mặt"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:82
+msgid "Former AQL"
+msgstr "AQL"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:90
+#: .\wh_former\templates\wh_former\pages\former_search.html:280
+msgid "Former Vendor"
+msgstr "Nhà cung cấp"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:96
+msgid "Batch Data Date"
+msgstr "Ngày nhận"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\former_search_edit.html:110
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:122
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:164
+#: .\wh_former\templates\wh_former\pages\batch_history.html:62
+#: .\wh_former\templates\wh_former\pages\former_search.html:284
+msgid "Used Day"
+msgstr "Đã sử dụng"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\leave_confirm.html:8
+msgid "Warning"
+msgstr "Cảnh báo"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\leave_confirm.html:16
+msgid "You have unsaved data."
+msgstr "Có dữ liệu chưa lưu"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\leave_confirm.html:17
+msgid " Are you sure you want to leave this page?"
+msgstr "Bạn chắc chắn muốn thoát khỏi trang ?"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\leave_confirm.html:20
+msgid "Saved data may be corrupted!"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\show_noti_modal.html:8
+msgid "Notification"
+msgstr "Thông báo"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\show_noti_modal.html:14
+msgid "You have uncompleted action!"
+msgstr "Phát hiện hành động chưa hoàn tất"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\show_noti_modal.html:17
+msgid "is still in process"
+msgstr "đang được xử lí"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\helpers_modal\show_noti_modal.html:18
+msgid "Please continue to complete or cancel this process."
+msgstr "Hãy hoàn tất hoặc hủy bỏ hành động"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\length_modal.html:8
+msgid "Add Length ..."
+msgstr "A1 Kích cỡ"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\length_modal.html:89
+#: .\wh_former\templates\wh_former\modules\components\modals\params\size_modal.html:90
+#: .\wh_former\templates\wh_former\modules\components\modals\params\surface_modal.html:89
+#: .\wh_former\templates\wh_former\modules\components\modals\params\vendor_modal.html:88
+#, fuzzy
+#| msgid "Model"
+msgid "Code"
+msgstr "Loại khuôn"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\length_modal.html:103
+#: .\wh_former\templates\wh_former\modules\components\modals\params\size_modal.html:104
+#: .\wh_former\templates\wh_former\modules\components\modals\params\surface_modal.html:103
+#: .\wh_former\templates\wh_former\modules\components\modals\params\vendor_modal.html:102
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:80
+msgid "Close"
+msgstr "Đóng"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\length_modal.html:104
+#: .\wh_former\templates\wh_former\modules\components\modals\params\size_modal.html:105
+#: .\wh_former\templates\wh_former\modules\components\modals\params\surface_modal.html:104
+#: .\wh_former\templates\wh_former\modules\components\modals\params\vendor_modal.html:103
+msgid "Save changes"
+msgstr "Lưu thay đổi"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\size_modal.html:8
+#, fuzzy
+#| msgid "A1 Size"
+msgid "Add Size ..."
+msgstr "A1 Kích cỡ"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\size_modal.html:82
+#, fuzzy
+#| msgid "Edit Bin"
+msgid "Edit Size"
+msgstr "Cập nhật"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\surface_modal.html:8
+#, fuzzy
+#| msgid "A1 Size"
+msgid "Add Surface ..."
+msgstr "A1 Kích cỡ"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\vendor_modal.html:8
+#, fuzzy
+#| msgid "A1 Size"
+msgid "Add Brand ..."
+msgstr "A1 Kích cỡ"
+
+#: .\wh_former\templates\wh_former\modules\components\modals\params\vendor_modal.html:92
+#, fuzzy
+#| msgid "name"
+msgid "Name"
+msgstr "Tên"
+
+#: .\wh_former\templates\wh_former\modules\components\tables\basket\result\result_table_body.html:312
+msgid "No result found!"
+msgstr "Không tìm thấy kết quả!"
+
+#: .\wh_former\templates\wh_former\modules\components\tables\basket\result\result_table_footer.html:182
+msgid "Excel"
+msgstr "Xuất Excel"
+
+#: .\wh_former\templates\wh_former\modules\components\tables\basket\result\result_table_footer.html:234
+#: .\wh_former\utils\configs\table_configs.py:7
+msgid "Total basket"
+msgstr "Tổng rổ"
+
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:16
+#: .\wh_former\templates\wh_former\pages\former_search.html:286
+msgid "Total Baskets"
+msgstr "Số rổ"
+
+#: .\wh_former\templates\wh_former\modules\components\tables\rack\rack_temp_table.html:17
+#: .\wh_former\templates\wh_former\pages\former_search.html:287
+msgid "Total Formers"
+msgstr "Số khuôn"
+
+#: .\wh_former\templates\wh_former\modules\layout\items\scripts\rack_modal_logic.html:71
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:198
+msgid "Missing required parameters. Please check RFID Reader IP and Action."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\modules\layout\items\scripts\rack_modal_logic.html:96
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:228
+msgid "Failed to load rack data. Please try again."
+msgstr "Không thể lấy dữ liệu, hãy thử lại"
+
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:5
+msgid "Former - Add Basket"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:264
+msgid "Capacity/1 Basket"
+msgstr "Số khuôn 1 rổ"
+
+#: .\wh_former\templates\wh_former\pages\basket_master_data.html:295
+msgid "Form Validation Errors:"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\basket_modify.html:5
+#, fuzzy
+#| msgid "Former Master Data"
+msgid "Former - Modify Basket"
+msgstr "Nhập thông tin khuôn"
+
+#: .\wh_former\templates\wh_former\pages\basket_modify.html:132
+#: .\wh_former\templates\wh_former\pages\basket_search.html:69
+#, fuzzy
+#| msgid "Are you sure you want to delete the warehouse"
+msgid "Are you sure you want to update all baskets in this group?"
+msgstr "Bạn chắc chắn muốn xoá kho"
+
+#: .\wh_former\templates\wh_former\pages\basket_modify.html:144
+#: .\wh_former\templates\wh_former\pages\basket_search.html:81
+#, fuzzy
+#| msgid "Are you sure you want to delete the warehouse"
+msgid ""
+"Are you sure you want to delete all baskets in this group? This action "
+"cannot be undone."
+msgstr "Bạn chắc chắn muốn xoá kho"
+
+#: .\wh_former\templates\wh_former\pages\basket_search.html:5
+#, fuzzy
+#| msgid "Former Search"
+msgid "Former - Search Basket"
+msgstr "Tìm kiếm khuôn"
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:5
+#: .\wh_former\templates\wh_former\pages\batch_history.html:7
+msgid "Hand Former - Former Batch History"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:9
+#, fuzzy
+#| msgid "Transaction History"
+msgid "Batch Action History"
+msgstr "Lịch sử tìm kiếm"
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:22
+#, fuzzy
+#| msgid "Lot Number"
+msgid "Batch Number"
+msgstr "Lot"
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:29
+msgid "Enter batch number to view complete history..."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:38
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:78
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:104
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:395
+msgid "Search"
+msgstr "Tìm kiếm"
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:56
+msgid "Search Results for"
+msgstr "Tra cứu"
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:63
+msgid "Found"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:63
+#, fuzzy
+#| msgid "Total former"
+msgid "total records"
+msgstr "Tổng khuôn"
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:64
+msgid "including related merge/split batches"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:108
+msgid "Qty Before"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:112
+msgid "Qty After"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:131
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:81
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:68
+msgid "Area"
+msgstr "Khu vực"
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:141
+msgid "Related Batches in this Operation"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_action_history.html:181
+msgid "No history records found for batch number"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:11
+msgid "Batch History"
+msgstr "Lịch sử lô"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:27
+msgid "Enter batch number"
+msgstr "Nhập số lô"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:52
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:34
+msgid "Batch"
+msgstr "Mã lô"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:54
+msgid "Sub Action"
+msgstr "Loại hành động"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:55
+msgid "Basket Qty Change"
+msgstr "Số rổ thay đổi"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:56
+msgid "Basket Qty Stock"
+msgstr "Số rổ nhập/xuất"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:57
+msgid "Basket Qty Total"
+msgstr "Tổng số rổ"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:58
+msgid "Former Qty Change"
+msgstr "Số khuôn thay đổi"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:59
+msgid "Former Qty Stock"
+msgstr "Số khuôn nhập/xuất"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:60
+msgid "Former Qty Total"
+msgstr "Tổng số khuôn"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:61
+msgid "Change Day"
+msgstr "Ngày"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:63
+msgid "Sub Batch No"
+msgstr "Mã lô"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:96
+#: .\wh_former\templates\wh_former\pages\batch_history.html:108
+#, fuzzy
+#| msgid "Confirm"
+msgid "Confirmed"
+msgstr "Xác nhận"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:103
+#, fuzzy
+#| msgid "Confirm"
+msgid "Not Confirm"
+msgstr "Xác nhận"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:123
+msgid "No records found for batch number"
+msgstr "Không tìm thấy dữ liệu của số lô này"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:126
+msgid "Enter a batch number to search"
+msgstr "Nhập số lô để tìm kiếm"
+
+#: .\wh_former\templates\wh_former\pages\batch_history.html:139
+msgid "Total records"
+msgstr "Tổng kết quả"
+
+#: .\wh_former\templates\wh_former\pages\former_master_data.html:5
+msgid "Hand Former - Former Master Data"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\former_master_data.html:19
+msgid "Former Master Data"
+msgstr "Nhập thông tin khuôn"
+
+#: .\wh_former\templates\wh_former\pages\former_master_data.html:31
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:66
+msgid "Full basket"
+msgstr "Rổ đầy"
+
+#: .\wh_former\templates\wh_former\pages\former_master_data.html:34
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:69
+msgid "Filled basket"
+msgstr "Chưa đầy"
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:5
+msgid "Hand Former - Former Search"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:113
+msgid "Former Search"
+msgstr "Tìm kiếm khuôn"
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:133
+msgid "Batch Detail"
+msgstr "Thông tin lô"
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:139
+msgid "Loading"
+msgstr "Đang tải..."
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:141
+#: .\wh_former\templates\wh_former\pages\former_search.html:235
+msgid "Loading data"
+msgstr "Đang tải dữ liệu..."
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:250
+msgid "No detail information"
+msgstr "Không có thông tin"
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:251
+msgid "This batch dont have detail information"
+msgstr "Không có thông tin mã xác nhận này"
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:263
+msgid "Unknown error happended"
+msgstr "Lỗi không xác định"
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:264
+msgid "Can not get detail information. Please try again"
+msgstr "Không thể lấy dữ liệu. Hãy thử lại"
+
+#: .\wh_former\templates\wh_former\pages\former_search.html:285
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:30
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:55
+#: .\wh_packing\forms.py:17
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:66
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:92
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:84
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:150
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:88
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:126
+msgid "Bin"
+msgstr "Vị trí"
+
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:5
+msgid "Hand Former - Former Stock In"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:72
+msgid "Empty basket"
+msgstr "Rổ trống"
+
+#: .\wh_former\templates\wh_former\pages\former_stock_in.html:110
+#: .\wh_former\templates\wh_former\pages\former_stock_out.html:87
+msgid "Hãy điền thông tin trước ..."
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\former_stock_out.html:5
+msgid "Hand Former - Former Stock Out"
+msgstr ""
+
+#: .\wh_former\templates\wh_former\pages\scrap_report.html:7
+#, fuzzy
+#| msgid "Former Search"
+msgid "Former - Transaction"
+msgstr "Tìm kiếm khuôn"
+
+#: .\wh_former\utils\api\former_api.py:23
+#, fuzzy
+#| msgid "Missing"
+msgid "Missing itemno"
+msgstr "Còn thiếu"
+
+#: .\wh_former\utils\api\former_api.py:28
+#, fuzzy
+#| msgid "Not found"
+msgid "Itemno not found"
+msgstr "Không có dữ liệu"
+
+#: .\wh_former\utils\api\former_api.py:33
+msgid "Invalid value for itemno"
+msgstr ""
+
+#: .\wh_former\utils\api\former_api.py:114
+msgid "rfid_reader_ip and action are required parameters"
+msgstr ""
+
+#: .\wh_former\utils\api\former_api.py:189
+#: .\wh_former\utils\api\former_api.py:233
+#, fuzzy
+#| msgid "Missing"
+msgid "Missing batch_no"
+msgstr "Còn thiếu"
+
+#: .\wh_former\utils\api\former_api.py:194
+#, fuzzy
+#| msgid "Batch no"
+msgid "Batch not found"
+msgstr "Mã lô"
+
+#: .\wh_former\utils\api\former_api.py:223
+#, fuzzy
+#| msgid "Deleted successfully"
+msgid "Batch updated successfully"
+msgstr "Xóa thành công"
+
+#: .\wh_former\utils\api\former_api.py:226
+msgid "Invalid JSON data"
+msgstr ""
+
+#: .\wh_former\utils\api\former_api.py:293
+#, python-brace-format
+msgid "Area {new_bin} not found"
+msgstr ""
+
+#: .\wh_former\utils\api\former_api.py:334
+#, python-brace-format
+msgid "Updated records from {old_bin} to {new_bin}"
+msgstr ""
+
+#: .\wh_former\utils\api\former_api.py:336
+msgid "Can not add different sizes on same area !"
+msgstr ""
+
+#: .\wh_former\utils\api\former_api.py:339
+msgid "Uplimit error. Can not move to new location"
+msgstr ""
+
+#: .\wh_former\utils\configs\table_configs.py:7
+msgid "Received Form"
+msgstr "Đơn nhận hàng"
+
+#: .\wh_former\utils\configs\table_configs.py:7
+msgid "Total former"
+msgstr "Tổng khuôn"
+
+#: .\wh_former\utils\modules\helpers\forms\basket_form.py:610
+msgid "Atleast 1 basket in thís group already IN USE, can not edit anymore"
+msgstr ""
+
+#: .\wh_former\utils\modules\helpers\forms\basket_form.py:704
+#: .\wh_former\utils\modules\helpers\forms\basket_form.py:849
+msgid "days"
+msgstr "ngày"
+
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:10
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:33
+msgid "Received Date"
+msgstr "Ngày nhận hàng"
+
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:12
+#, fuzzy
+#| msgid "Create Warehouse"
+msgid "Create Group"
+msgstr "Thêm mới Kho"
+
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:35
+#: .\wh_packing\forms.py:150 .\wh_packing\forms.py:217
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:67
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:93
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:85
+msgid "Quantity"
+msgstr "Số lượng"
+
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:36
+#, fuzzy
+#| msgid "Print"
+msgid "Printed"
+msgstr "In"
+
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:37
+msgid "Status"
+msgstr "Trạng thái"
+
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:53
+msgid "Vendor name"
+msgstr "Nhà cung cấp"
+
+#: .\wh_former\utils\modules\helpers\tables\table_headers.py:54
+msgid "Former Qty"
+msgstr "Số lượng khuôn"
+
+#: .\wh_former\views.py:630 .\wh_former\views.py:636
+#, fuzzy
+#| msgid "The operation quantity cannot over the production order quantity."
+msgid "Return quantity is more than out quantity"
+msgstr "Số lượng hoạt động không thể vượt quá số lượng đặt hàng sản xuất."
+
+#: .\wh_former\views.py:854
+#, fuzzy
+#| msgid "Not found"
+msgid "Not return"
+msgstr "Không có dữ liệu"
+
+#: .\wh_packing\forms.py:21 .\wh_packing\forms.py:75 .\wh_packing\forms.py:197
+#: .\wh_packing\forms.py:319
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:59
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:85
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:89
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:136
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:147
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:323
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:325
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:77
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:13
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:143
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:197
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:239
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:304
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:81
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:76
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:194
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:88
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:247
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:67
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:119
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:239
+msgid "Product Order"
+msgstr "Đơn hàng"
+
+#: .\wh_packing\forms.py:23
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:143
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:160
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:329
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:151
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:202
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:92
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:200
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:253
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:130
+msgid "Qty"
+msgstr "Số lượng"
+
+#: .\wh_packing\forms.py:69 .\wh_packing\forms.py:144 .\wh_packing\forms.py:225
+msgid "Location:"
+msgstr "Vị trí"
+
+#: .\wh_packing\forms.py:80
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:240
+msgid "purchase_order"
+msgstr "Chứng từ mua hàng"
+
+#: .\wh_packing\forms.py:90
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:64
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:90
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:82
+msgid "Lot"
+msgstr "Đăng xuất"
+
+#: .\wh_packing\forms.py:98 .\wh_packing\forms.py:202 .\wh_packing\forms.py:325
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:63
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:89
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:140
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:155
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:323
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:330
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:81
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:147
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:207
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:241
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:85
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:202
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:255
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:123
+msgid "Item Type"
+msgstr "Loại hàng"
+
+#: .\wh_packing\forms.py:103 .\wh_packing\forms.py:199
+#: .\wh_packing\forms.py:324
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:61
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:87
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:138
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:149
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:323
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:326
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:79
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:145
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:198
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:83
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:196
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:249
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:121
+msgid "Version No"
+msgstr "Bản In"
+
+#: .\wh_packing\forms.py:108
+msgid "From"
+msgstr "Từ ngày"
+
+#: .\wh_packing\forms.py:116
+msgid "To"
+msgstr "Đến ngày"
+
+#: .\wh_packing\forms.py:179
+msgid "New Quantity"
+msgstr "Số lượng mới"
+
+#: .\wh_packing\forms.py:198
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:158
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:332
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:196
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:205
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:258
+msgid "Customer"
+msgstr "Tên khách hàng"
+
+#: .\wh_packing\forms.py:200
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:199
+msgid "Version Sequence"
+msgstr "Phiên bản"
+
+#: .\wh_packing\forms.py:201 .\wh_packing\forms.py:323
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:327
+msgid "Lot Number"
+msgstr "Lot"
+
+#: .\wh_packing\forms.py:206
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:335
+msgid "Purchase Quantity"
+msgstr "Số lượng đặt hàng"
+
+#: .\wh_packing\forms.py:213
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:144
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:247
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:201
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:254
+msgid "Unit"
+msgstr "Đơn vị"
+
+#: .\wh_packing\forms.py:214
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:156
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:323
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:333
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:206
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:203
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:256
+msgid "Post Date"
+msgstr "Ngày nhận hàng"
+
+#: .\wh_packing\forms.py:229
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:157
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:334
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:205
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:204
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:257
+msgid "Supplier"
+msgstr "Nhà cung cấp"
+
+#: .\wh_packing\forms.py:230
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:338
+msgid "SAP Material Number"
+msgstr "Chứng từ ghi sổ"
+
+#: .\wh_packing\forms.py:367 .\wh_packing\forms.py:390
+#: .\wh_packing\forms.py:438
+msgid "Choose Excel File"
+msgstr "Chọn file Excel"
+
+#: .\wh_packing\forms.py:386
+#, fuzzy
+#| msgid "Select or Typing"
+msgid "Select Type"
+msgstr "Chọn hoặc nhập"
+
+#: .\wh_packing\forms.py:434 .\wh_packing\forms.py:465
+msgid "Choose Month"
+msgstr "Chọn tháng"
+
+#: .\wh_packing\forms.py:495 .\wh_packing\forms.py:519
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:73
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:61
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:81
+msgid "Choose Warehouse"
+msgstr "Chọn kho"
+
+#: .\wh_packing\forms.py:497 .\wh_packing\forms.py:521
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:151
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:106
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:139
+msgid "Choose Area"
+msgstr "Chọn khu vực"
+
+#: .\wh_packing\forms.py:498 .\wh_packing\forms.py:522
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:152
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:166
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:68
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:107
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:121
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:140
+msgid "Choose Location"
+msgstr "Chọn vị trí"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:5
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:33
+msgid "Quantity Adjust"
+msgstr "Điều chỉnh số lượng"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:58
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:84
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:71
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:135
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:76
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:59
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:193
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:79
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:246
+msgid "Warehouse"
+msgstr "Kho"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:60
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:86
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:148
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:78
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:144
+msgid "Purchase No"
+msgstr "Chứng từ mua hàng"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_adjust.html:62
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:88
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:139
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:150
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:339
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:80
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:84
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:197
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:250
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:122
+msgid "Version Seq"
+msgstr "Phiên bản"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:5
+#: .\wh_packing\templates\wh_packing\action\packing_bin_transfer.html:44
+msgid "Location Transfer"
+msgstr "Luân chuyển hàng hóa"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:4
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:66
+#: .\wh_packing\templates\wh_packing\bases\base.html:80
+msgid "Inventory Deletion"
+msgstr "Xóa dữ liệu kho"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:85
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:142
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:541
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:324
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:195
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:238
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:304
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:72
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:199
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:252
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:71
+msgid "Location"
+msgstr "Vị trí"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:133
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:403
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:218
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:129
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:78
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:191
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:244
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:116
+msgid "Not found"
+msgstr "Không có dữ liệu"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:346
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:373
+msgid "Please select at least one row to delete!"
+msgstr "Vui lòng chọn ít nhất một hàng để xóa!"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:351
+msgid "Are you sure you want to delete?"
+msgstr "Bạn có chắc chắn muốn xóa không?"
+
+#: .\wh_packing\templates\wh_packing\action\packing_bin_value_delete.html:363
+msgid "Deleted successfully"
+msgstr "Xóa thành công"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:5
+msgid "Stock In"
+msgstr "Nhập hàng"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:59
+msgid "Warehouse Stock In Form"
+msgstr "Biểu mẫu nhập kho"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:85
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:87
+msgid "Post"
+msgstr "Gửi"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:152
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:200
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:207
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:261
+msgid "Lot No"
+msgstr "Lot"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:154
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:336
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:204
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:263
+msgid "Purchase Unit"
+msgstr "Đơn vị"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:159
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:209
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:206
+msgid "Mtr No"
+msgstr "Chứng từ ghi sổ"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:211
+msgid "Product Order cannot be null!"
+msgstr "(Đơn hàng) không được để trống !"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:227
+msgid "Purchase Order cannot be null!"
+msgstr "(Chứng từ mua hàng) không được để trống !"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:323
+msgid "are required"
+msgstr "không được để trống!"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:381
+msgid "The checkbox needs to be checked"
+msgstr "Hộp kiểm phải được tích chọn"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:469
+msgid "Copy"
+msgstr "Sao chép"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:488
+msgid "Copy and insert below this row Success!"
+msgstr "Sao chép và chèn bên dưới hàng này Thành công!"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:665
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:358
+msgid "No data in the table! Please enter at least one row."
+msgstr "Không có dữ liệu trong bảng! Vui lòng nhập ít nhất một hàng."
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:677
+msgid "\"(Location) field in row \" + (i + 1) + \" cannot be empty!\""
+msgstr "\"(Vị trí) dòng thứ \" + (i + 1) + \" không được để trống!\""
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:686
+msgid "\"(Order Quantity) field in row \" + (i + 1) + \" cannot be empty!\""
+msgstr "\"(Số lượng) dòng thứ \" + (i + 1) + \" không được để trống!\""
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:691
+#, fuzzy
+#| msgid "\"(Location) field in row \" + (i + 1) + \" cannot be empty!\""
+msgid "(Post Date) field in row \" + (i + 1) + \" cannot be empty!"
+msgstr "\"(Vị trí) dòng thứ \" + (i + 1) + \" không được để trống!\""
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_in.html:716
+msgid "Form submitted successfully!"
+msgstr "Đã gửi biểu mẫu thành công!"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:5
+msgid "Stock Out"
+msgstr "Xuất hàng"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:73
+msgid "Warehouse Stock Out Form"
+msgstr "Biểu mẫu xuất kho"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:379
+msgid "Are you sure you want to stock out?"
+msgstr "Bạn có chắc muốn xuất hàng không?"
+
+#: .\wh_packing\templates\wh_packing\action\packing_material_stock_out.html:391
+msgid "Stock out successful!"
+msgstr "Xuất hàng thành công!"
+
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:5
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:44
+#: .\wh_packing\templates\wh_packing\bases\base.html:70
+#, fuzzy
+#| msgid "Receive Date"
+msgid "Recover Data"
+msgstr "Ngày nhận"
+
+#: .\wh_packing\templates\wh_packing\action\packing_recover_stock.html:159
+#, fuzzy
+#| msgid "Stock out successful!"
+msgid "product recover successfully!"
+msgstr "Xuất hàng thành công!"
+
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:6
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:10
+#: .\wh_packing\templates\wh_packing\bases\base.html:65
+msgid "Quantity Transfer & Adjust Form"
+msgstr "Chuyển hàng & Điều chỉnh"
+
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:148
+msgid "lot_no"
+msgstr "Lot"
+
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:158
+msgid "Transfer"
+msgstr "Chuyển hàng"
+
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:194
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:195
+msgid "Adjust"
+msgstr "Điều chỉnh"
+
+#: .\wh_packing\templates\wh_packing\action\packing_transfer_and_adjust.html:243
+msgid "Product Order, Size cannot all be null!"
+msgstr "(Đơn hàng, Size) không được để trống !"
+
+#: .\wh_packing\templates\wh_packing\admin\bin_upload.html:5
+msgid "Upload Location Excel File"
+msgstr "Cập nhật vị trí"
+
+#: .\wh_packing\templates\wh_packing\admin\bin_upload.html:81
+msgid "Excel Import Tool (Warehouse, Area, Bin)"
+msgstr "Nhập hàng loạt (Kho, Khu, Kệ)"
+
+#: .\wh_packing\templates\wh_packing\admin\bin_upload.html:95
+#: .\wh_packing\templates\wh_packing\admin\sap_import.html:30
+msgid "Upload"
+msgstr "Tải lên"
+
+#: .\wh_packing\templates\wh_packing\admin\bin_upload.html:103
+msgid "Download Template"
+msgstr "Tải xuống bản mẫu"
+
+#: .\wh_packing\templates\wh_packing\admin\open_data_import.html:5
+#: .\wh_packing\templates\wh_packing\admin\sap_query.html:5
+msgid "Open Data Importing"
+msgstr "Nhập dữ liệu mở"
+
+#: .\wh_packing\templates\wh_packing\admin\open_data_import.html:157
+msgid "Database Reset Function"
+msgstr ""
+
+#: .\wh_packing\templates\wh_packing\admin\sap_import.html:5
+#: .\wh_packing\templates\wh_packing\admin\sap_import.html:22
+#: .\wh_packing\templates\wh_packing\bases\base.html:151
+msgid "SAP Inventory Import"
+msgstr "Nhập dữ liệu SAP"
+
+#: .\wh_packing\templates\wh_packing\admin\sap_query.html:75
+msgid "Query"
+msgstr "Truy vấn"
+
+#: .\wh_packing\templates\wh_packing\admin\sap_query.html:105
+#: .\wh_packing\templates\wh_packing\admin\sap_query.html:109
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:301
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:304
+msgid "cannot_be_null"
+msgstr "không được để trống"
+
+#: .\wh_packing\templates\wh_packing\admin\sap_query.html:109
+msgid "Month"
+msgstr ""
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:47
+msgid "Transaction Function"
+msgstr "Giao dịch"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:52
+msgid "Packing Material Stock In"
+msgstr "Nhập hàng"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:57
+msgid "Packing Material Stock Out"
+msgstr "Xuất hàng"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:87
+msgid "Search Function"
+msgstr "Tra cứu"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:93
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:5
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:53
+msgid "Transaction History"
+msgstr "Lịch sử tìm kiếm"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:98
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:4
+msgid "New Transaction History"
+msgstr "Lịch sử gần đây"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:104
+msgid "Inventory Log"
+msgstr "Nhật ký tồn kho"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:110
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:4
+#: .\wh_packing\templates\wh_packing\search\bin_value_search.html:54
+msgid "Inventory Sheet"
+msgstr "Bảng kiểm kê"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:115
+msgid "SAP Query"
+msgstr "Truy vấn dữ liệu SAP"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:125
+msgid "Basic Data"
+msgstr "Cơ sở dữ liệu"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:132
+msgid "Shelf Locations Import"
+msgstr "Nhập vị trí kệ kho"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:140
+msgid "Bulk Stock Import"
+msgstr "Nhập kho hàng loạt"
+
+#: .\wh_packing\templates\wh_packing\bases\base.html:160
+msgid "problem"
+msgstr "Sự cố"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:6
+msgid "Inventory Check"
+msgstr "Hàng kiểm kê"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:187
+msgid "Current Inventory"
+msgstr "Hàng tồn kho hiện tại"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:225
+msgid "History"
+msgstr "Lịch sử bản ghi"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:245
+msgid "Remain Qty"
+msgstr "Số lượng còn lại"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:246
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:89
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:127
+msgid "Mvt"
+msgstr "Trạng thái"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:248
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:93
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:260
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:131
+msgid "Create at"
+msgstr "Ngày tạo"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:249
+#: .\wh_packing\templates\wh_packing\search\bin_history_top100_search.html:94
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:259
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:132
+msgid "Create by"
+msgstr "Tạo bởi"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:260
+msgid "Searching"
+msgstr "Đang tìm kiếm"
+
+#: .\wh_packing\templates\wh_packing\search\bin_history_search.html:385
+msgid "Total Quantity: "
+msgstr "Tổng SL:"
+
+#: .\wh_packing\templates\wh_packing\search\dashboard.html:5
+msgid "Dashboard"
+msgstr "Bảng điều khiển"
+
+#: .\wh_packing\templates\wh_packing\search\dashboard.html:19
+msgid "Welcome to our application!"
+msgstr "Chào mừng bạn đến với ứng dụng của chúng tôi!"
+
+#: .\wh_packing\templates\wh_packing\search\dashboard.html:21
+msgid ""
+"Our platform is designed to enhance your experience with optimal "
+"functionality."
+msgstr ""
+"Nền tảng của chúng tôi được thiết kế để tối ưu hóa trải nghiệm của bạn."
+
+#: .\wh_packing\templates\wh_packing\search\dashboard.html:22
+msgid "Please use the menu to navigate through the system’s core features."
+msgstr "Vui lòng sử dụng menu để truy cập các tính năng chính của hệ thống."
+
+#: .\wh_packing\templates\wh_packing\search\dashboard.html:23
+msgid ""
+"If you do not see any menu options, your access permissions might be "
+"restricted."
+msgstr ""
+"Nếu bạn không thấy bất kỳ tùy chọn menu nào, có thể quyền truy cập của bạn "
+"bị hạn chế."
+
+#: .\wh_packing\templates\wh_packing\search\dashboard.html:24
+msgid ""
+"Kindly contact the system administrator for support and proper authorization."
+msgstr ""
+"Vui lòng liên hệ quản trị viên hệ thống để được hỗ trợ và cấp quyền sử dụng."
+
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:4
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:74
+msgid "Inventory Discrepancy Report"
+msgstr "Báo biểu chênh lệch tồn kho"
+
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:264
+msgid "stockin_form"
+msgstr "Mã lô nhập"
+
+#: .\wh_packing\templates\wh_packing\search\order_problem.html:265
+msgid "stockout_form"
+msgstr "Mã lô xuất"
+
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:204
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:235
+#: .\wh_packing\templates\wh_packing\search\product_order_bin_search.html:239
+msgid "cannot all be null"
+msgstr "không được để trống"
+
+#: .\wh_packing\templates\wh_packing\search\warehouse_map.html:7
+#, fuzzy
+#| msgid "Warehouse Name"
+msgid "Packing Warehouse Map"
+msgstr "Tên Kho"
+
+#: .\wh_packing\views.py:362
+msgid "The quantity must be a positive number!"
+msgstr "(Số lượng) phải là số dương!"
+
+#: .\wh_packing\views.py:419
+msgid "Invalid request method"
+msgstr "Yêu cầu không hợp lệ!"
+
+#: .\wh_packing\views.py:1359
+msgid "import_successful"
+msgstr "Nhập dữ liệu thành công!"
+
+#~ msgid "Created basket no will be delete"
+#~ msgstr "Khi ấn thoát các nhãn này sẽ bị xóa"
+
+#~ msgid "Stock type"
+#~ msgstr "Loại xuất"
+
+#~ msgid "Select type..."
+#~ msgstr "Chọn hoặc nhập"
+
+#~ msgid "in same day"
+#~ msgstr "Xuất (cùng ngày)"
+
+#~ msgid "not same day"
+#~ msgstr "Xuất (khác ngày)"
+
+#~ msgid "IN WH"
+#~ msgstr "KHO"
+
+#~ msgid "Disable"
+#~ msgstr "Ko hoạt động"
+
+#, fuzzy
+#~| msgid "Length"
+#~ msgid "Edit Length"
+#~ msgstr "Chiều dài"
+
+#, fuzzy
+#~| msgid "Surface"
+#~ msgid "Edit Surface"
+#~ msgstr "Bề mặt"
+
+#, fuzzy
+#~| msgid "Edit Bin"
+#~ msgid "Edit Vendor"
+#~ msgstr "Cập nhật (Vị trí)"
+
+#~| msgid "Basket Search"
+#~ msgid "Baske"
+#~ msgstr "Tìm kiếm rổ"
+
+#~ msgid "Type"
+#~ msgstr "Loại"
+
+#, fuzzy
+#~| msgid "Are you sure you want to delete the area"
+#~ msgid "You have unsaved data. Are you sure you want to leave this page?"
+#~ msgstr "Bạn chắc chắn muốn xoá kho"
+
+#, fuzzy
+#~| msgid "Save Changes"
+#~ msgid "Leave Page"
+#~ msgstr "Lưu thay đổi"
+
+#, fuzzy
+#~| msgid "User Information"
+#~ msgid "Rack scanned data"
+#~ msgstr "Thông tin người dùng"
+
+#~ msgid "Key"
+#~ msgstr "Khóa"
+
+#, fuzzy
+#~| msgid "Inventory Log"
+#~ msgid "Order Inventory Problem"
+#~ msgstr "Nhật ký tồn kho"
+
+#~ msgid "Basket Master Data"
+#~ msgstr "Nhập thông tin rổ"
+
+#~ msgid "Filled"
+#~ msgstr "Lẻ"
+
+#~ msgid "Enter former type"
+#~ msgstr "Loại khuôn"
+
+#~ msgid "Vendor code"
+#~ msgstr "Mã nhà cung cấp"
+
+#, fuzzy
+#~| msgid "Size"
+#~ msgid "Size code"
+#~ msgstr "Size"
+
+#~ msgid "Enter surface type"
+#~ msgstr "Nhập loại bề mặt"
+
+#~ msgid "Product Order:"
+#~ msgstr "Đơn hàng"
+
+#, fuzzy
+#~| msgid "Purchase Order"
+#~ msgid "Purchase Order:"
+#~ msgstr "Chứng từ mua hàng"
+
+#, fuzzy
+#~| msgid "Excel Import Tool (Open Data)"
+#~ msgid "Excel Import Tool"
+#~ msgstr "Công cụ nhập Excel (Dữ liệu mở)"
+
+#~ msgid "Location, Product Order, and Size cannot all be null!"
+#~ msgstr "(Vị trí/Đơn hàng/Size) không được để trống!"
+
+#, fuzzy
+#~| msgid "last name"
+#~ msgid "Gate Name"
+#~ msgstr "họ"
+
+#~ msgid "N.o"
+#~ msgstr "Stt"
+
+#, fuzzy
+#~| msgid "step_name"
+#~ msgid "%(gate_name)s"
+#~ msgstr "Tên trang web"
+
+#~ msgid "version_seq"
+#~ msgstr "Phiên bản"
+
+#~ msgid "Transaction History Search"
+#~ msgstr "Tìm kiếm lịch sử giao dịch"
+
+#, fuzzy
+#~| msgid "Location, Product Order, and Size cannot all be null!"
+#~ msgid "(Product Order/Location/Size/Comment) cannot all be null!"
+#~ msgstr "(Vị trí/Đơn hàng/Size) không được để trống!"
+
+#~ msgid "Form submission failed!"
+#~ msgstr "Không thể gửi biểu mẫu!"
+
+#~ msgid "Warehouse Management System"
+#~ msgstr "Hệ thống quản lý kho"
+
+#~ msgid "Stock Location Manager"
+#~ msgstr "Quản lý kệ kho"
+
+#~ msgid "in"
+#~ msgstr "ở"
+
+#~ msgid "row"
+#~ msgstr "hàng"
+
+#~ msgid "cannot be empty"
+#~ msgstr "không thể để trống"
+
+#~ msgid "Warehouse Dashboard"
+#~ msgstr "Bảng điều khiển nhà kho"
+
+#~ msgid "Open Data &nbsp;- Bulk Import"
+#~ msgstr "Mở - Tự động"
+
+#~ msgid "Warehouse - Bulk Import"
+#~ msgstr "Kho - Tự động"
+
+#~ msgid "Storage Data Editor"
+#~ msgstr "Biên tập dữ liệu kho"
+
+#~ msgid "Inventory Search"
+#~ msgstr "Hàng kiểm kê"
+
+#~ msgid "Bulk Import - WAB"
+#~ msgstr "Nhập hàng loạt - WAB"
+
+#~ msgid "Upload Open Data Excel File"
+#~ msgstr "Cập nhật dữ liệu mở"
+
+#~ msgid "Warehouse Data Editor"
+#~ msgstr "Chỉnh sửa dữ liệu kho"
+
+#~ msgid "Delete Item"
+#~ msgstr "Cảnh báo"
+
+#, fuzzy
+#~| msgid "Transaction History"
+#~ msgid "Search Bin Value History"
+#~ msgstr "Lịch sử chuyển hàng"
+
+#, fuzzy
+#~| msgid "Inventory Sheet"
+#~ msgid "Manage Inventory Deletion"
+#~ msgstr "Bảng kiểm kê"
+
+#~ msgid "Customer No"
+#~ msgstr "Tên khách hàng"
+
+#~ msgid "Packing Type"
+#~ msgstr "Phương thức đóng gói"
+
+#~ msgid "Warehouse倉管系統"
+#~ msgstr "Kho"
+
+#, fuzzy
+#~| msgid "Create Warehouse"
+#~ msgid "reate Warehouse"
+#~ msgstr "Thêm mới Kho"
+
+#~ msgid "Key Parameter"
+#~ msgstr "Thông số chính"
+
+#~ msgid "End Date"
+#~ msgstr "Ngày cuối"
+
+#~ msgid "mach_name"
+#~ msgstr "Tên may moc"
+
+#~ msgid "process_type"
+#~ msgstr "Loại quy trình"
+
+#~ msgid "param_define"
+#~ msgstr "Xác định tham số"
+
+#~ msgid "control_high"
+#~ msgstr "Kiểm soát cao"
+
+#~ msgid "control_low"
+#~ msgstr "Kiểm soát mức thấp"
+
+#~ msgid "Product"
+#~ msgstr "Sản xuất"
+
+#~ msgid "param_code"
+#~ msgstr "Loại tham số"
+
+#~ msgid "Record"
+#~ msgstr "Ghi"
+
+#~ msgid "record_date"
+#~ msgstr "Ngày ghi"
+
+#~ msgid "Chlorine Free"
+#~ msgstr "Không chứa clo"
+
+#~ msgid "Polymer Free"
+#~ msgstr "Không sử dụng liệu 2( cấp điện tử)"
+
+#~ msgid "Alkaline Tank pH Test"
+#~ msgstr "Kiểm tra pH bể kiềm"
+
+#~ msgid "Machine Shutdown"
+#~ msgstr "Tắt máy"
+
+#~ msgid "A2 Production"
+#~ msgstr "A2 Sản xuất"
+
+#~ msgid "A2 Size"
+#~ msgstr "A2 Kích cỡ"
+
+#~ msgid "B1 Production"
+#~ msgstr "B1 Sản xuất"
+
+#~ msgid "B1 Size"
+#~ msgstr "B1 Kích cỡ"
+
+#~ msgid "B2 Production"
+#~ msgstr "B2 Sản xuất"
+
+#~ msgid "B2 Size"
+#~ msgstr "B2 Kích cỡ"
+
+#~ msgid "Change Coagulant Time(Hour)"
+#~ msgstr "Thời gian thay đổi coagulant  (Số Giờ)"
+
+#~ msgid "Change Coagulant Time(Minute)"
+#~ msgstr "Thời gian thay đổi coagulant  (Phút)"
+
+#~ msgid "Change Latex Time(Hour)"
+#~ msgstr "Thời gian thay đổi  Cao Su  (Số Giờ)"
+
+#~ msgid "Change Latex Time(Minute)"
+#~ msgstr "Thời gian thay đổi  Cao Su  (Phút)"
+
+#~ msgid "Change Tooling Time(Hour)"
+#~ msgstr "Thời gian thay đổi  khuôn tay  (Số Giờ)"
+
+#~ msgid "Change Tooling Time(Minute)"
+#~ msgstr "Thời gian thay đổi  khuôn tay  (Phút)"
+
+#~ msgid "Machine"
+#~ msgstr "Máy móc"
+
+#~ msgid "Chart"
+#~ msgstr "Đồ thị"
+
+#~ msgid "Production Data"
+#~ msgstr "Dữ liệu sản xuất"
+
+#~ msgid "Line"
+#~ msgstr "Đường kẻ"
+
+#~ msgid "create_at"
+#~ msgstr "Ngày thành lập"
+
+#~ msgid "Are you sure?"
+#~ msgstr "Bạn có chắc không?"
+
+#~ msgid "Completed Rate"
+#~ msgstr "Tỷ lệ hoàn thành"
+
+#~ msgid "dept"
+#~ msgstr "phòng"
+
+#, fuzzy
+#~| msgid "Comment"
+#~ msgid "Commands"
+#~ msgstr "Ghi chú"
+
+#, fuzzy
+#~| msgid "Key Parameter"
+#~ msgid "Missing parameter"
+#~ msgstr "Thông số chính"
+
+#, fuzzy
+#~| msgid "User Information"
+#~ msgid "Repeat for confirmation"
+#~ msgstr "Thông tin người dùng"
+
+#~ msgid "Bin Width"
+#~ msgstr "Chiều rộng Bin"
+
+#~ msgid "Order Bin"
+#~ msgstr "Vị trí"
+
+#~ msgid "Warehouse Receiving Form"
+#~ msgstr "Biểu mẫu tiếp nhận hàng vào kho"
+
+#~ msgid "Search Product Order & Location"
+#~ msgstr "Tìm kiếm theo đơn hàng & vị trí"
+
+#~ msgid "Search By Work Order"
+#~ msgstr "Tìm kiếm theo đơn hàng"
+
+#~ msgid "Work Order Id"
+#~ msgstr "Mã Đơn hàng"
+
+#, fuzzy
+#~| msgid "Version No"
+#~ msgid "Version No."
+#~ msgstr "Bản In"
+
+#, fuzzy
+#~| msgid "Version Seq"
+#~ msgid "Version Seq."
+#~ msgstr "Phiên bản"
+
+#~ msgid "New Qty"
+#~ msgstr "Số lượng mới"
+
+#, fuzzy
+#~| msgid "Purchase No"
+#~ msgid "Purchase"
+#~ msgstr "Chứng từ mua hàng"
+
+#, fuzzy
+#~| msgid "Product Order"
+#~ msgid "Enter Work Order"
+#~ msgstr "Đơn hàng"
+
+#~ msgid "PO:"
+#~ msgstr "Chứng từ mua hàng"
+
+#~ msgid "Finished Product WH"
+#~ msgstr "Kho thành phẩm"
+
+#~ msgid "Semi-finished Product WH"
+#~ msgstr "Kho bán thành phẩm"
+
+#~ msgid "Temokura"
+#~ msgstr "Kho khuôn tay"
+
+#~ msgid "logout"
+#~ msgstr "Đăng xuất"
+
+#~ msgid "Asset Management System"
+#~ msgstr "Hệ thống quản lý tài sản"
+
+#~ msgid "IT Equipment Borrow Application"
+#~ msgstr "Ứng dụng mượn thiết bị CNTT"
+
+#~ msgid "General Supply Application"
+#~ msgstr "Ứng dụng cung cấp chung"
+
+#~ msgid "Authority Management"
+#~ msgstr "Quản lý cơ quan"
+
+#~ msgid "login"
+#~ msgstr "đăng nhập"
+
+#~ msgid "prod_order"
+#~ msgstr "trình tự công việc"
+
+#~ msgid "worked_labor_time"
+#~ msgstr "Số giờ làm việc tích lũy"
+
+#~ msgid "spec"
+#~ msgstr "mô tả vật liệu"
+
+#~ msgid "confirm_code"
+#~ msgstr "mã xác nhận"
+
+#~ msgid "step_code"
+#~ msgstr "mã trang web"
+
+#~ msgid "labor_time"
+#~ msgstr "giờ làm việc"
+
+#~ msgid "mach_time"
+#~ msgstr "giờ máy"
+
+#~ msgid "good_qty"
+#~ msgstr "Sản phẩm tốt"
+
+#~ msgid "ng_qty"
+#~ msgstr "sản phẩm xấu"
+
+#~ msgid "SAP employee number is not correct or no data"
+#~ msgstr "Mã số nhân viên SAP không chính xác hoặc không có dữ liệu"
+
+#~ msgid "The first step has been not finished yet"
+#~ msgstr "Bước đầu tiên vẫn chưa kết thúc"
+
+#~ msgid "Please select the working machine."
+#~ msgstr "vui lòng chọn máy làm việc"
+
+#~ msgid ""
+#~ "Remind that total recorded time {labor_time} already over 10%% of the "
+#~ "standard time({standard_time})."
+#~ msgstr ""
+#~ "Nhắc rằng tổng thời gian ghi lại {labor_time} đã vượt quá 10%% so với "
+#~ "thời gian tiêu chuẩn({standard_time})."
+
+#~ msgid "This record is existed"
+#~ msgstr "dữ liệu đã tồn tại"
+
+#~ msgid "New"
+#~ msgstr "Thêm vào"
+
+#~ msgid "total_labor_time"
+#~ msgstr "tổng thời gian làm việc"
+
+#~ msgid "remain_labor_time"
+#~ msgstr "thời gian chưa hoàn thành"

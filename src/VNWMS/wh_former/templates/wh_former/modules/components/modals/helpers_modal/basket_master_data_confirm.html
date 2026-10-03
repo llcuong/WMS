@@ -1,0 +1,119 @@
+{% load i18n %}
+
+{% load i18n %}
+
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary font-weight-bold" id="confirmationModalLabel">{% trans "Confirm the following basket infomation" %}</h5>
+                <button type="button" class="close" onclick="$('#confirmationModal').modal('hide')" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="confirmationContent">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <p class="mt-2">{% trans "Loading form data..." %}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="cancel-button-2" onclick="$('#confirmationModal').modal('hide')">
+                    {% include 'wh_former/modules/components/buttons/cancel-button-2.html' %}
+                </button>
+                <button type="button" class="confirm-button-2" id="confirmSave" disabled>
+                    {% include 'wh_former/modules/components/buttons/confirm-button-2.html' %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<style>
+    .param-table {
+        width: 100%;
+        margin-bottom: 0;
+    }
+    .param-table th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        padding: 8px 12px;
+        border: 1px solid #dee2e6;
+        width: 35%;
+    }
+    .param-table td {
+        padding: 8px 12px;
+        border: 1px solid #dee2e6;
+    }
+    .param-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+</style>
+
+<style>
+    .param-table {
+        width: 100%;
+        margin-bottom: 0;
+    }
+    .param-table th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        padding: 8px 12px;
+        border: 1px solid #dee2e6;
+        width: 35%;
+    }
+    .param-table td {
+        padding: 8px 12px;
+        border: 1px solid #dee2e6;
+    }
+    .param-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+
+    .epc-preview-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .epc-tag-preview {
+        border: none;
+        border-radius: 4px;
+        padding: 12px 24px;
+        background-color: #fff;
+        text-align: center;
+        font-family: 'Courier New', monospace;
+        width: 290px;
+        height: 125px;
+        box-shadow: 0 6px 14px rgba(31, 31, 31, 0.52);
+    }
+
+    .epc-code {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 15px;
+        letter-spacing: 2px;
+    }
+
+    .epc-details {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #666;
+        padding-top: 0;
+        min-height: 20px;
+    }
+
+    .epc-vendor, .epc-timestamp {
+        font-weight: 500;
+    }
+</style>

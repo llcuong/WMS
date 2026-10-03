@@ -1,0 +1,170 @@
+{% load i18n %}
+
+<style>
+    .start-button{
+        background-color: #0da49f !important;
+        color: white !important;
+    }
+
+    .start-button.active {
+        color: #1e1e26 !important;
+        background-color: #eaeaec  !important;
+    }
+</style>
+
+<button type="button"
+        class="button start-button {% if rfid_read_mode %}active{% endif %}"
+        id="start-btn-{{ pid }}" data-pid="{{ pid }}"
+        data-url="{% url 'rfid_start_reader' rfid_setting_id %}?pid={{ pid }}">
+    <i class="fas fa-play"></i>
+    <span class="btn-text">{% trans "Start" %}</span>
+</button>
+
+<script>
+    // Thay đổi từ let sang kiểm tra tồn tại
+    if (typeof rfidStarted === 'undefined') {
+        var rfidStarted = false;
+    }
+    if (typeof rfidStartUrl === 'undefined') {
+        var rfidStartUrl = null;
+    }
+    if (typeof rfidStopUrl === 'undefined') {
+        var rfidStopUrl = null;
+    }
+    if (typeof rfidPid === 'undefined') {
+        var rfidPid = null;
+    }
+
+    // Lưu batch list trước khi clear
+    window.savedBatchList = [];
+
+    // Hàm clear batch table - di chuyển từ stop_button
+    function clearBatchTable() {
+        const infoTable = document.getElementById("stock-new-info-table");
+        if (infoTable) {
+            infoTable.innerHTML = "";
+        }
+    }
+
+    // Hàm lấy batch list từ table
+    function getBatchList() {
+        return Array.from(
+            document.querySelectorAll('#stock-new-info-table tr')
+        ).map(tr => {
+            const td = tr.querySelector('td:nth-child(1)');
+            return td ? td.textContent.trim() : null;
+        }).filter(x => x);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        window.CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]')?.content ||
+                            document.querySelector('[name="csrfmiddlewaretoken"]')?.value;
+
+        document.querySelectorAll(".start-button").forEach(btn => {
+            btn.addEventListener("click", () => {
+                if (btn.disabled) return;
+
+                // LỮU BATCH LIST TRƯỚC KHI CLEAR
+                window.savedBatchList = getBatchList();
+
+                // Clear các cache và data structures khác
+                const pid = btn.dataset.pid;
+
+                // Lấy giá trị từ form elements trên trang
+                const stockoutFormElement = document.querySelector('input[name="stockout_form"], input[name="stock_form"]');
+                const stockFormInputElement = document.querySelector('input[name="id_stock_form_input"], select[name="id_stock_form_input"]');
+                
+                const stockoutForm = stockoutFormElement ? stockoutFormElement.value : '';
+                const stockFormInput = stockFormInputElement ? stockFormInputElement.value : '';
+                
+                btn.disabled = true;
+                
+                // Gọi API lấy bin từ stockform trước
+                const formData = new FormData();
+                formData.append('csrfmiddlewaretoken', window.CSRF_TOKEN);
+                formData.append('stockform', stockoutForm);
+                
+                fetch("{% url 'get_stockform_bin_api' %}", {
+                    method: "POST",
+                    headers: {
+                        'X-CSRFToken': window.CSRF_TOKEN
+                    },
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(binData => {
+                    // Lưu bin vào global variable để dùng trong get_rfid_epc_api
+                    window.stockformBin = binData.bin;
+
+                    // Reset bin conflict cho phiên quét mới
+                    if (window.resetBinConflictForNewScan) {
+                        window.resetBinConflictForNewScan(pid);
+                    }
+                    
+                    // KIỂM TRA BIN CONFLICT NGAY KHI BẤM START
+                    const tbody = document.getElementById(`epc-table-body-${pid}`);
+                    if (tbody && tbody.rows.length > 0 && window.checkDistinctBinsAndAlert) {
+                        // Check các bin đã có trong table trước khi start
+                        if (Number(pid) === 3){
+                            window.checkDistinctBinsAndAlert(3);
+                        }
+
+                        // Nếu có conflict thì dừng luôn, không start reader
+                        if (window.hasBinConflict) {
+                            btn.disabled = false;
+                            return Promise.reject(new Error("Bin conflict detected"));
+                        }
+                    }
+                    
+                    // Bây giờ mới gọi API start reader
+                    const startFormData = new FormData();
+                    startFormData.append('csrfmiddlewaretoken', window.CSRF_TOKEN);
+                    if (stockoutForm) startFormData.append('id_stockout_form', stockoutForm);
+                    if (stockFormInput) startFormData.append('id_stock_form_input', stockFormInput);
+                    
+                    return fetch(btn.dataset.url, {
+                        method: "POST",
+                        headers: {
+                            'X-CSRFToken': window.CSRF_TOKEN
+                        },
+                        body: startFormData
+                    });
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error("Start failed");
+                    btn.classList.add("active");
+                    btn.querySelector(".btn-text").innerText = "Running..";
+                    document.getElementById(`stop-btn-${btn.dataset.pid}`).disabled = false;
+                    
+                    // Clear cache và reset flags
+                    if (window.epcCache && window.epcCache[pid]) {
+                        window.epcCache[pid].clear();
+                    }
+                    if (window.selectedBinByBatch) {
+                        window.selectedBinByBatch = {};
+                    }
+                    
+                    rfidStarted = true;
+                    rfidStartUrl = btn.dataset.url;
+                    rfidPid = btn.dataset.pid;
+                    const stopBtn = document.getElementById(`stop-btn-${btn.dataset.pid}`);
+                    if (stopBtn) rfidStopUrl = stopBtn.dataset.url;
+                })
+                .catch(err => {
+                    console.error(err);
+                    if (err.message !== "Bin conflict detected") {
+                        alert("Không thể start reader 1");
+                    }
+                    btn.disabled = false;
+                });
+            });
+        });
+        // Auto stop RFID on page unload if started
+        window.addEventListener("beforeunload", function (e) {
+            if (rfidStarted && rfidStopUrl) {
+                navigator.sendBeacon(rfidStopUrl, new URLSearchParams({pid: rfidPid, csrfmiddlewaretoken: window.CSRF_TOKEN}));
+                rfidStarted = false;
+            }
+        });
+    });
+</script>

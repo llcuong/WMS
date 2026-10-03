@@ -1,0 +1,180 @@
+{% load crispy_forms_tags %}
+
+<style>
+    .search-button {
+        bottom: 3px !important;
+    }
+
+    .form-group {
+        margin-bottom: 0 !important;
+    }
+
+    #stockout-form-select {
+        display: none;
+    }
+</style>
+
+{% load i18n %}
+{% csrf_token %}
+<div class="row">
+    <div class="col-lg-4 col-md-8" style="padding: 0 0 2px 32px;">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <label for="stock_form_input" class="custom-select-label">
+                    {% trans 'Choose stockout form' %}<span class="">*</span>
+                </label>
+                <div class="custom-select-wrapper">
+                    <div id="stockout-form-toggle">
+                        <input type="text" id="stock_form_input" name="stock_form"
+                               class="select-input" placeholder="{% trans 'Select form...' %}">
+                        <span class="x-button">×</span>
+                    </div>
+                    <div id="stockout-form-dropdown" class="select-dropdown"></div>
+
+                    <select id="stockout-form-select" class="form-select" style="display:none;">
+                        <option value=""></option>
+                        {% if stock_form %}
+                            <option value="{{ stock_form }}" selected>{{ stock_form }}</option>
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-lg-8 col-md-12">
+        <div class="col-12" style="padding: 12px 0 0 0">
+            <div id="stockin-new-info-header" style="height: 30px !important; text-align: center">
+                <table style="width: 100%; font-weight: bold">
+                    <tr>
+                    <td style="width: 30%;">{% trans "Batch no" %}</td>
+                    <td style="width: 25%;">{% trans "Former type" %}</td>
+                    <td style="width: 11%;">{% trans "Size" %}</td>
+                    <td style="width: 12%;">{% trans "Used day" %}</td>
+                    <td style="width: 12%">{% trans "Baskets" %}</td>
+                    <td style="width: 10%;">{% trans "Formers" %}</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="stock-new-info-body"
+                 style="overflow-y: auto; border-top: 1px solid green; border-left: none; border-right: none;">
+                <table id="stock-new-info-table" style="width: 100%">
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggle = document.getElementById('stockout-form-toggle');
+    const dropdown = document.getElementById('stockout-form-dropdown');
+    const originalSelect = document.getElementById('stockout-form-select');
+    const selectInput = toggle.querySelector('.select-input');
+    const xButton = toggle.querySelector('.x-button');
+
+    function syncDropdownWithSelect() {
+        dropdown.innerHTML = '';
+        
+        Array.from(originalSelect.options).forEach(option => {
+            if (option.value) { // Skip empty option
+                const item = document.createElement('div');
+                item.className = 'item';
+                item.textContent = option.textContent;
+                item.setAttribute('data-value', option.value);
+                
+                if (option.selected) {
+                    selectInput.value = option.textContent;
+                }
+                
+                dropdown.appendChild(item);
+            }
+        });
+    }
+
+    // Thêm function này để sync initial value
+    function syncInitialValue() {
+        const selectedOption = originalSelect.querySelector('option[selected]');
+        if (selectedOption) {
+            selectInput.value = selectedOption.textContent;
+            originalSelect.value = selectedOption.value;
+        }
+    }
+
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList') {
+                syncDropdownWithSelect();
+            }
+        });
+    });
+    observer.observe(originalSelect, { childList: true, subtree: true });
+
+    // Also watch for attribute changes on options
+    originalSelect.addEventListener('change', function() {
+        syncDropdownWithSelect();
+    });
+
+    // Toggle dropdown
+    toggle.addEventListener('click', function(e) {
+        if (e.target === xButton) return; // Don't toggle when clicking X button
+        
+        e.stopPropagation();
+        const isOpen = dropdown.style.display === 'block';
+        
+        // Close all other dropdowns
+        document.querySelectorAll('.select-dropdown').forEach(d => {
+            if (d !== dropdown) d.style.display = 'none';
+        });
+        
+        // Toggle current dropdown
+        dropdown.style.display = isOpen ? 'none' : 'block';
+    });
+
+    // Handle X button click
+    xButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        selectInput.value = '';
+        originalSelect.value = '';
+        dropdown.style.display = 'none';
+        
+        // Trigger change event
+        originalSelect.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+
+    // Handle item selection
+    dropdown.addEventListener('click', function(e) {
+        if (e.target.classList.contains('item')) {
+            // Set selection
+            selectInput.value = e.target.textContent;
+            
+            // Update original select
+            const value = e.target.getAttribute('data-value');
+            originalSelect.value = value;
+
+            // Close dropdown
+            dropdown.style.display = 'none';
+
+            // Trigger change event on original select để existing code hoạt động
+            originalSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+
+    // Initial sync - sửa thành này
+    syncDropdownWithSelect();
+    syncInitialValue(); // Thêm dòng này
+});
+</script>
+
+{% include 'wh_former/modules/components/forms/fields/former_stock_form.html' %}
+
+
+

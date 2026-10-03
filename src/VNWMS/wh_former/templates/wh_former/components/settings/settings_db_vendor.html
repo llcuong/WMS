@@ -1,0 +1,58 @@
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+<div class="modal fade" id="vendorModal" tabindex="-1" aria-labelledby="vendorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 border-0">
+            <div class="modal-header">
+                <h5 class="modal-title" id="vendorModalLabel">Add Venders Master Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div style="padding: 12px 0px">
+                    <h4><b>Venders Master Data</b></h4>
+                </div>
+                {% if vendor_form %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="col-12 card p-4 shadow-sm border rounded bg-white">
+                            <div class="row">
+                                <div class="col-10 g-3 align-items-center">
+                                    {% crispy vendor_form %}
+                                </div>
+                                <div class="col-2 d-flex align-items-end" style="padding-bottom: 16px">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-1"></i> Save
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="form_type" value="vendor">
+                    </form>
+                {% endif %}
+
+                {% if all_vendors %}
+                    <div class="table-responsive mt-4" style="max-height: calc(100vh - 460px); overflow-y: auto; margin-bottom: 10px;">
+                        <table class="table table-bordered table-striped table-hover align-middle">
+                            <tbody>
+                                {% for vendors in all_vendors %}
+                                    <tr>
+                                        {% for item in vendors.values %}
+                                            <td>{{ item }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted mt-3">Nothing was found...</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

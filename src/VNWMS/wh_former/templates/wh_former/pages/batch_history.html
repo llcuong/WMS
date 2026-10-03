@@ -1,0 +1,341 @@
+{% extends 'wh_former/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% load user_groups %}
+
+{% block title %} {% trans "Hand Former - Former Batch History" %} {% endblock %}
+
+{% block content %}
+    <div class="container-fluid no-copy">
+        {% trans "Batch History" as page_title %}
+        {% include 'wh_former/components/page_title.html' with title=page_title icon="fa-history" %}
+        <div class="row main-body pb-0 pt-3 pl-3 pr-3">
+            <div class="col-12 pt-3">
+
+                <form method="post" class="mb-2">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="search_batch_no">{% trans "Batch No" %}:</label>
+                                <input type="text"
+                                       name="search_batch_no"
+                                       id="search_batch_no"
+                                       class="form-control"
+                                       value="{{ search_batch_no }}"
+                                       placeholder="{% trans 'Enter batch number' %}"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            {% include 'wh_former/modules/components/buttons/search_button.html' with submit=True %}
+                        </div>
+{#                        {% if isShowBatchNoSelect %}#}
+{#                            <div class="col-md-2">#}
+{#                                <label for="selectBatchNo" class="form-label">{% trans 'Available Batch No' %}</label>#}
+{#                                <div class="custom-select-wrapper position-relative">#}
+{#                                    <input type="text" id="selectBatchNo" class="select-input form-control"#}
+{#                                           placeholder="Select or type..." autocomplete="off" readonly value="All">#}
+{#                                    <div style="z-index: 9999" id="selectBatchNo_dropdown"#}
+{#                                         class="select-dropdown"></div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        {% endif %}#}
+                    </div>
+                </form>
+
+                <div class="table-responsive" id="table-container" style="overflow-y: auto;">
+                    <table class="table table-hover">
+                        <thead class="thead-dark sticky-top">
+                            <tr>
+                                <th>{% trans "Batch" %}</th>
+                                <th>{% trans "Action" %}</th>
+                                <th>{% trans "Sub Action" %}</th>
+                                <th>{% trans "Basket Qty Change" %}</th>
+                                <th>{% trans "Basket Qty Stock" %}</th>
+                                <th>{% trans "Basket Qty Total" %}</th>
+                                <th>{% trans "Former Qty Change" %}</th>
+                                <th>{% trans "Former Qty Stock" %}</th>
+                                <th>{% trans "Former Qty Total" %}</th>
+                                <th>{% trans "Change Day" %}</th>
+                                <th>{% trans "Used Day" %}</th>
+                                <th>{% trans "Sub Batch No" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if data %}
+                                {% for row in data %}
+                                <tr {% if row.is_summary %}class="summary-row"{% elif row.row_type == 'stockout' %}class="stockout-row"{% elif row.row_type == 'stockin' %}class="stockin-row"{% elif row.row_type == 'washing' %}class="washing-row"{% elif row.row_type == 'create' %}class="create-row"{% endif %}>
+                                    <td>{{ row.batch_no }}</td>
+                                    <td>{{ row.action_name }}</td>
+                                    <td>{{ row.batch_sub_action_name }}</td>
+                                    <td>{{ row.batch_basket_qty_change }}</td>
+                                    <td>{{ row.batch_basket_qty_stock }}</td>
+                                    <td>{{ row.batch_basket_qty_total }}</td>
+                                    <td>{{ row.batch_former_qty_change }}</td>
+                                    <td>{{ row.batch_qty_stock }}</td>
+                                    <td>{{ row.batch_qty_total }}</td>
+                                    <td>{{ row.batch_change_day }}</td>
+                                    <td>{{ row.batch_used_day }}</td>
+                                    <td>
+                                        {% if row.is_summary and not row.is_z_in_batch %}
+                                            {% if user|has_any_group:"wh_former_admin" %}
+                                                {% if not row.is_confirmed %}
+                                                    <button type="button"
+                                                        class="btn btn-sm btn-primary confirm-scrap-btn"
+                                                        data-batch="{{ row.batch_no }}"
+                                                        data-basket="{{ row.batch_basket_qty_stock }}"
+                                                        data-former="{{ row.batch_qty_stock }}"
+                                                        data-key="{{ row.key }}">
+                                                        {% trans "Confirm" %}
+                                                    </button>
+                                                {% elif row.is_confirmed %}
+                                                    <button type="button"
+                                                        class="btn btn-sm btn-seccondary" disabled>
+                                                        {% trans "Confirmed" %}
+                                                    </button>
+                                                {% endif %}
+                                            {% else %}
+                                                {% if not row.is_confirmed %}
+                                                    <button type="button"
+                                                        class="btn btn-sm btn-primary" disabled>
+                                                        {% trans "Not Confirm" %}
+                                                    </button>
+                                                {% elif row.is_confirmed %}
+                                                    <button type="button"
+                                                        class="btn btn-sm btn-seccondary" disabled>
+                                                        {% trans "Confirmed" %}
+                                                    </button>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% else %}
+                                            {{ row.sub_batch_no }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="12" class="text-center text-muted">
+                                        {% if search_batch_no %}
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                            {% trans "No records found for batch number" %}: <strong>{{ search_batch_no }}</strong>
+                                        {% else %}
+                                            <i class="fas fa-search"></i>
+                                            {% trans "Enter a batch number to search" %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div style="display: flex; flex-direction: row; gap: 0.75rem;">
+                    <div style="text-align: left; width: 50%;">
+                        <p style="color: #0dcaf0;">
+                            <i class="fas fa-info-circle"></i>
+                            {% trans "Total records" %}: {{ data|length|default:0 }}
+                        </p>
+                    </div>
+                    <div style="text-align: right; width: 50%;">
+                        {% if batch_current_total_former %}
+                            <p>Total formers: {{ batch_current_total_former }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Summary row - blue text */
+        .summary-row {
+            font-weight: bold;
+            border-top: 2px solid #007bff;
+            border-bottom: 2px solid #007bff;
+        }
+        
+        .summary-row td {
+            color: #0056b3 !important;
+        }
+
+        .stockout-row td {
+            color: #dc3545 !important;
+            font-weight: 500;
+        }
+
+        .stockin-row td {
+            color: #007bff !important;
+            font-weight: 500;
+        }
+
+        .create-row td {
+            color: #6c757d !important;
+            font-weight: bold !important;
+        }
+
+        .washing-row td {
+            color: #007d09 !important;
+            font-weight: 500;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableContainer = document.getElementById('table-container');
+            
+            if (tableContainer) {
+                function setTableHeight() {
+                    const viewportHeight = window.innerHeight;
+                    const containerRect = tableContainer.getBoundingClientRect();
+                    const containerTopOffset = containerRect.top;
+                    const bottomReservedSpace = 80;
+                    const maxHeight = viewportHeight - containerTopOffset - bottomReservedSpace;
+                    
+                    tableContainer.style.height = maxHeight + 'px';
+                }
+                setTableHeight();
+                window.addEventListener('resize', setTableHeight);
+            }
+
+            const selectBatchNo = document.getElementById('selectBatchNo');
+            const rows = document.querySelectorAll('#table-container table tbody tr');
+
+            {% if isShowBatchNoSelect %}
+                // Initialize Batch No Select
+                const batchSet = new Set();
+                rows.forEach(row => {
+                    const batchCell = row.querySelector('td:first-child'); // first column = batch_no
+                    if (batchCell) {
+                        batchSet.add(batchCell.textContent.trim());
+                    }
+                });
+
+                // Elements
+                const selectBatchNoInput = document.getElementById("selectBatchNo");
+                const selectBatchNoDropdown = document.getElementById("selectBatchNo_dropdown");
+
+                // Clear any existing
+                selectBatchNoDropdown.innerHTML = "";
+
+                // Add default "All" option
+                const defaultItem = document.createElement("div");
+                defaultItem.className = "item active";
+                defaultItem.dataset.value = "";
+                defaultItem.textContent = "All";
+                selectBatchNoDropdown.appendChild(defaultItem);
+
+                // Populate items
+                Array.from(batchSet).sort().forEach(batch => {
+                    const item = document.createElement("div");
+                    item.className = "item";
+                    item.dataset.value = batch;
+                    item.textContent = batch;
+                    selectBatchNoDropdown.appendChild(item);
+                });
+
+                // Handle toggle
+                selectBatchNoInput.addEventListener("click", function () {
+                    selectBatchNoDropdown.style.display =
+                        selectBatchNoDropdown.style.display === "block" ? "none" : "block";
+                });
+
+                // Handle selection
+                selectBatchNoDropdown.addEventListener("click", function (e) {
+                    if (e.target.classList.contains("item")) {
+                        const value = e.target.dataset.value;
+
+                        // update input box
+                        selectBatchNoInput.value = value || "All";
+
+                        // update active state
+                        document.querySelectorAll("#selectBatchNo_dropdown .item")
+                            .forEach(i => i.classList.remove("active"));
+                        e.target.classList.add("active");
+
+                        // filter rows
+                        rows.forEach(row => {
+                            const batchCell = row.querySelector("td:first-child");
+                            if (!batchCell) return;
+                            const batchValue = batchCell.textContent.trim();
+
+                            if (value === "" || batchValue === value) {
+                                row.style.display = "";
+                            } else {
+                                row.style.display = "none";
+                            }
+                        });
+
+                        // close dropdown
+                        selectBatchNoDropdown.style.display = "none";
+                    }
+                });
+
+                // Click outside closes dropdown
+                document.addEventListener("click", function (e) {
+                    if (!e.target.closest(".custom-select-wrapper")) {
+                        selectBatchNoDropdown.style.display = "none";
+                    }
+                });
+            {% endif %}
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener('click', async function (e) {
+            const btn = e.target.closest('.confirm-scrap-btn');
+            if (!btn) return;
+            if (btn.disabled || btn.dataset.loading === '1') return;
+
+            btn.dataset.loading = '1';
+
+            const csrf = document.querySelector('[name="csrfmiddlewaretoken"]')?.value;
+            const fd = new FormData();
+            fd.append('batch_no', btn.dataset.batch);
+            fd.append('batch_basket_qty_stock', btn.dataset.basket);
+            fd.append('batch_qty_stock', btn.dataset.former);
+            fd.append('batch_key', btn.dataset.key);
+            if (csrf) fd.append('csrfmiddlewaretoken', csrf);
+
+            try {
+                const res = await fetch("{% url 'batch_data_confirm_scrap' %}", {
+                    method: 'POST',
+                    headers: csrf ? {'X-CSRFToken': csrf} : {},
+                    body: fd
+                });
+                const data = res.ok ? await res.json() : null;
+
+                // Chuẩn hoá điều kiện OK tuỳ API (ok=true | status='ok' | code=200)
+                const isOk = data && (data.ok === true || data.status === 'ok' || data.code === 200);
+
+                if (isOk) {
+                    btn.textContent = 'Confirmed';
+                    btn.classList.remove('btn-primary');
+                    btn.classList.add('btn-seccondary');
+                    btn.disabled = true;
+
+
+                    const targetDiv = document.querySelector('div[style="text-align: right; width: 50%;"]');
+                    if (targetDiv && data.batch_current_total_former) {
+                        targetDiv.textContent = `Total Formers: ${data.batch_current_total_former}`;
+                    }
+
+                } else {
+                    alert((data && (data.message || data.detail)) || 'Xác nhận thất bại');
+                }
+            } catch (err) {
+                alert('Lỗi mạng hoặc máy chủ');
+            } finally {
+                btn.dataset.loading = '';
+            }
+        });
+    </script>
+
+{% endblock %}

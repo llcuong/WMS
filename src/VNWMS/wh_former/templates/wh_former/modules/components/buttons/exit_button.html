@@ -1,0 +1,210 @@
+{% load i18n %}
+
+<button type="button" onclick="handleExitClick()" class="button buttonggg" id="exitButton">
+    <span class="button__icon-wrapper">
+    🗑
+  </span>
+    {% trans "Delete" %}
+</button>
+
+{% include 'wh_former/modules/components/modals/action/basket_master_data_exit_confirm.html' %}
+
+
+<script>
+    let isNavigatingAway = false;
+
+    function handleExitClick() {
+        const exitConfirmCallback = () => {
+            isNavigatingAway = true;
+            deleteAllBasketsAndExit();
+        };
+
+        if (window.checkBeforeExit && typeof window.checkBeforeExit === 'function') {
+            window.checkBeforeExit(exitConfirmCallback);
+        } else {
+            if (shouldShowPrintWarning()) {
+                showExitConfirmModal(exitConfirmCallback);
+            } else {
+                exitConfirmCallback();
+            }
+        }
+    }
+
+    function showExitConfirmModal(callback) {
+        const cb = (typeof callback === 'function') ? callback : () => {};
+        const modal = document.getElementById('exitConfirmModal');
+        const confirmBtn = document.getElementById('confirmExitBtn');
+        const newConfirmBtn = confirmBtn.cloneNode(true);
+        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+        newConfirmBtn.removeAttribute('onclick');
+
+        newConfirmBtn.addEventListener('click', function() {
+            $('#exitConfirmModal').modal('hide');
+            setTimeout(() => {
+                cb();
+            }, 300);
+        });
+
+        $('#exitConfirmModal').modal('show');
+    }
+
+    function shouldShowPrintWarning() {
+        const printButton = document.querySelector('#rfid-print-btn, .result-table-footer-print button, .result-table-footer button[id*="print"]');
+
+        if (!printButton) {
+            return false;
+        }
+
+        const tableBody = document.querySelector('.result-table-body tbody, #table-body');
+        if (!tableBody) {
+            return false;
+        }
+
+        const tableRows = tableBody.querySelectorAll('tr');
+        const hasData = tableRows.length > 0;
+
+        const hasPrinted = localStorage.getItem('hasRecentlyPrinted') === 'true' ||
+                          sessionStorage.getItem('hasRecentlyPrinted') === 'true';
+
+        return hasData && !hasPrinted;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        sessionStorage.removeItem('hasRecentlyPrinted');
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('a[href]');
+            if (link && !isNavigatingAway && shouldShowPrintWarning()
+                && !link.hasAttribute('download')
+                && !link.hasAttribute('data-no-exit-guard')) {
+
+                e.preventDefault();
+
+                showExitConfirmModal(() => {
+                    isNavigatingAway = true;
+                    window.location.href = link.href;
+                });
+            }
+        }, true);
+
+        document.addEventListener('submit', function(e) {
+            if (!isNavigatingAway && shouldShowPrintWarning()) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                showExitConfirmModal(() => {
+                    isNavigatingAway = true;
+                    e.target.submit();
+                });
+                return false;
+            }
+        }, true);
+
+        history.pushState(null, null, window.location.href);
+        window.addEventListener('popstate', function(e) {
+            if (!isNavigatingAway && shouldShowPrintWarning()) {
+                history.pushState(null, null, window.location.href);
+                showExitConfirmModal(() => {
+                    isNavigatingAway = true;
+                    history.go(-1);
+                });
+            }
+        });
+
+        let originalHref = window.location.href;
+        Object.defineProperty(window.location, 'href', {
+            set: function(url) {
+                if (!isNavigatingAway && shouldShowPrintWarning()) {
+                    showExitConfirmModal(() => {
+                        isNavigatingAway = true;
+                        originalHref = url;
+                        window.location.replace(url);
+                    });
+                } else {
+                    originalHref = url;
+                    window.location.replace(url);
+                }
+            },
+            get: function() {
+                return originalHref;
+            }
+        });
+
+        const printButton = document.getElementById('rfid-print-btn');
+        if (printButton) {
+            printButton.addEventListener('click', function() {
+                sessionStorage.setItem('hasRecentlyPrinted', 'true');
+            });
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('#rfid-print-btn, .result-table-footer-print button, button[id*="print"]')) {
+                sessionStorage.setItem('hasRecentlyPrinted', 'true');
+            }
+        });
+    });
+
+    window.addEventListener('beforeunload', function(e) {
+        if (!isNavigatingAway && shouldShowPrintWarning()) {
+            e.returnValue = '';
+            return '';
+        }
+    });
+</script>
+
+<style>
+    .buttonggg {
+        line-height: 1;
+        text-decoration: none;
+        display: inline-flex;
+        border: none;
+        cursor: pointer;
+        align-items: center;
+        gap: 0.75rem;
+        background-color: #dc3545;
+        color: white;
+        border-radius: 0.5em;
+        font-weight: 600;
+        padding: 4px 18px;
+        padding-left: 20px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: background-color 0.3s;
+    }
+
+    .button__icon-wrapper {
+        flex-shrink: 0;
+        width: 25px;
+        height: 25px;
+        position: relative;
+        color: #dc3545;
+        background-color: #fff;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+    }
+
+    .buttonggg:hover {
+        background-color: #6c757d;
+    }
+
+    .buttonggg:hover .button__icon-wrapper {
+        color: #6c757d;
+    }
+
+    .button__icon-svg--copy {
+        position: absolute;
+        transform: translate(-150%, 150%);
+    }
+
+    .buttonggg:hover .button__icon-svg:first-child {
+        transition: transform 0.3s ease-in-out;
+        transform: translate(150%, -150%);
+    }
+
+    .buttonggg:hover .button__icon-svg--copy {
+        transition: transform 0.3s ease-in-out 0.1s;
+        transform: translate(0);
+    }
+</style>

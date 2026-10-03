@@ -1,0 +1,69 @@
+{% load i18n %}
+<span class="text">{% trans 'Print' %}</span>
+<span class="icon">
+    <i class="fas fa-print"></i>
+</span>
+
+<style>
+    .confirm-button-2-print {
+        width: 150px;
+        height: 42px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+        background: #007bff;
+    }
+
+    .confirm-button-2-print, .confirm-button-2-print span {
+        transition: 200ms;
+    }
+
+    .confirm-button-2-print .text {
+        transform: translateX(35px);
+        font-weight: bold;
+        color: white;
+    }
+
+    .confirm-button-2-print .icon {
+        position: absolute;
+        border-left: 1px solid white;
+        transform: translateX(110px);
+        height: 24px;
+        width: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
+    .confirm-button-2-print svg {
+        width: 15px;
+        fill: #eee;
+    }
+
+    .confirm-button-2-print:hover {
+        background: #007bff;
+    }
+
+    .confirm-button-2-print:hover .text {
+        color: transparent;
+    }
+
+    .confirm-button-2-print:hover .icon {
+        width: 150px;
+        border-left: none;
+        transform: translateX(0);
+        color: white;
+    }
+
+    .confirm-button-2-print:focus {
+        outline: none;
+    }
+
+    .confirm-button-2-print:active .icon svg {
+        transform: scale(0.8);
+    }
+</style>

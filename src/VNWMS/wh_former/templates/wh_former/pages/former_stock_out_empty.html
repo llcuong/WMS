@@ -1,0 +1,411 @@
+{% extends 'wh_former/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Hand Former - Former Stock Out" %} {% endblock %}
+{% block local_css %}
+    <style>
+        .rfid-table-result-body {
+        {% if "linux" in request.META.HTTP_USER_AGENT|lower %}
+            min-height: 320px !important;
+        {% endif %}
+        }
+
+        #stock-new-info-body {
+        {% if "linux" in request.META.HTTP_USER_AGENT|lower %}
+            height: 180px !important;
+        {% else %}
+            height: 122px !important;
+        {% endif %}
+        }
+
+        .rfid-table-loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            margin-top: 12px;
+            color: #007bff;
+            font-weight: 500;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="container-fluid no-copy">
+        {% trans "Former Stock Out Empty" as page_title %}
+        <form method="post" id="formerStockOutForm" onsubmit="return handleFormSubmit(event);">
+            {% if mode == 'change' %}
+                {% include 'wh_former/components/page_title.html' with title=page_title icon="fa-sign-out" stockout=True change=True %}
+            {% elif mode == 'clean' %}
+                {% include 'wh_former/components/page_title.html' with title=page_title icon="fa-sign-out" stockout=True clean=True %}
+            {% elif mode == 'to_lk' %}
+                {% include 'wh_former/components/page_title.html' with title=page_title icon="fa-sign-out" stockout=True to_lk=True %}
+            {% else %}
+                {% include 'wh_former/components/page_title.html' with title=page_title icon="fa-sign-out" %}
+            {% endif %}
+
+            <div class="row p-3 main-body">
+                <div class="col-12">
+                    <div class="col-auto d-flex align-items-center" style="gap: 15px;">
+                        <div class="scan-counter-display d-flex align-items-center" style="gap: 10px;">
+                            <div class="counter-item d-flex align-items-center"
+                                 style="background: white; padding: 8px 12px; border-radius: 0; color: black; font-weight: 600;">
+                                <span style="font-size: 15px;">{% trans "Baskets" %}: <span
+                                        id="totalBasketValue">{{ total_basket }}</span></span>
+                            </div>
+                            <div class="counter-item d-flex align-items-center"
+                                 style="background: white; padding: 8px 12px; border-radius: 0; color: black; font-weight: 600;">
+                                <span style="font-size: 15px;">{% trans "Formers" %}: <span
+                                        id="totalFormerValue">{{ total_former }}</span></span>
+                            </div>
+                        </div>
+                        {% include 'wh_former/modules/components/buttons/rack_button.html' %}
+                    </div>
+                    <div style="display: none">
+                        {% include 'wh_former/modules/components/forms/former_stock_out_form.html' with stockout=True bin_codes=bin_codes change=True mode='change' type='empty'%}
+                    </div>
+                    <div class="col-12">
+                        <div class="table-section-wrapper">
+                            <div id="rfid-table-wrapper-3" style="display: block;">
+                                {% include 'wh_former/modules/components/tables/former/table_rfid_5.html' with pid=3 columns=columns epcs=epcs rfid_read_mode=rfid_read_mode rfid_setting_id=rfid_setting_id action_name="stockout" former=0 type="empty" %}
+                            </div>
+                        </div>
+                    </div>
+                    {% if mode == 'change' %}
+                        <div id="lock-overlay"
+                             class="lock-overlay d-flex flex-column justify-content-center align-items-center">
+                            <div>
+                                <i class="fas fa-lock fa-3x"></i>
+                            </div>
+                            <div>
+                                <h5 style="color: white">
+                                    <strong>
+                                        {% trans "Hãy điền thông tin trước ..." %}
+                                    </strong>
+                                </h5>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if mode == 'change' %}
+                        </div>
+                    {% endif %}
+                <div>
+                    <input type="hidden" name="batch_data" id="batch-data-input">
+                    <input type="hidden" name="nobatch_data" id="nobatch-data-input">
+                    <input type="hidden" name="table_data" id="table-data-input">
+                    <input type="hidden" name="table_lost" id="table-lost-input">
+                    <input type="hidden" name="table_wo" id="table-wo-input">
+                    <div class="d-flex justify-content-center mt-2" style="gap: 20px;">
+                        {% include 'wh_former/modules/components/buttons/save_button.html' with type="empty" %}
+                        {% include 'wh_former/modules/components/buttons/done_button.html' %}
+                        {% include 'wh_former/modules/components/buttons/cancel_button.html' %}
+                    </div>
+                </div>
+            </div>
+            {% include 'wh_former/modules/components/modals/action/save_confirm_modal.html' %}
+            {% include 'wh_former/modules/components/modals/action/cancel_confirm_modal.html' %}
+        </form>
+    </div>
+    <div>
+        {% include 'wh_former/modules/layout/modals/groups/former_stock_out_modals.html' with type='empty' %}
+    </div>
+
+
+    <!-- BIN conflict modal -->
+    <div class="modal fade" id="binConflictModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius:14px;">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">Cảnh báo BIN không thống nhất</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="bin-conflict-message" class="mb-0"></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Đã hiểu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block js %}
+
+    {% include 'wh_former/modules/layout/items/scripts/rack_modal_logic.html' %}
+
+    {% include 'wh_former/modules/layout/items/scripts/done_button_state.html' %}
+
+    {% include 'wh_former/modules/layout/items/scripts/start_scan_loading.html' %}
+
+    {% include 'wh_former/modules/layout/items/scripts/fto_check_all_fields.html' with type="empty" %}
+
+    {% include 'wh_former/modules/layout/items/scripts/fto_enable_save_button.html' %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mode = '{{ mode|default:"" }}';
+            ftoenableSaveButton(mode);
+
+            const form = document.querySelector('form');
+            if (form) {
+                const fields = form.querySelectorAll('input, select, textarea');
+                fields.forEach(field => {
+                    field.addEventListener('input', () => {
+                        ftoenableSaveButton(mode);
+                        updateDoneButton();
+                    });
+
+                    field.addEventListener('change', () => {
+                        ftoenableSaveButton(mode);
+                        updateDoneButton();
+                    });
+                });
+            }
+
+            const tableWrappers = document.querySelectorAll('.table-section-wrapper');
+            tableWrappers.forEach(wrapper => {
+                wrapper.addEventListener('input', () => ftoenableSaveButton(mode));
+                wrapper.addEventListener('change', () => ftoenableSaveButton(mode));
+            });
+
+            const tableBody = document.querySelector('.rfid-table-result-body tbody');
+            if (tableBody && mode === 'clean') {
+                const observer = new MutationObserver(() => {
+                    ftoenableSaveButton(mode);
+                });
+
+                observer.observe(tableBody, {
+                    childList: true,
+                    subtree: true
+                });
+            }
+
+            setInterval(() => {
+                ftoenableSaveButton(mode);
+                updateDoneButton();
+            }, 500);
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('lock-overlay').style.display = 'flex';
+
+            const stockoutModal = document.getElementById('stockoutModal');
+            const modalBackdrop = document.getElementById('modal-backdrop');
+
+            let delay = 0;
+
+            if (stockoutModal && modalBackdrop) {
+                stockoutModal.style.display = 'none';
+                modalBackdrop.style.display = 'none';
+                setTimeout(() => {
+                    stockoutModal.style.display = 'block';
+                    modalBackdrop.style.display = 'block';
+                    stockoutModal.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }, delay);
+            }
+
+            if (performance.navigation.type === 1 && (isSuccess || isError)) {
+                setTimeout(function () {
+                    window.location.href = "{% url 'former_out' %}";
+                }, 3000);
+            }
+        });
+    </script>
+
+    <script>
+        function showDoneConfirmModal() {
+            $('#doneConfirmModal').modal('show');
+        }
+
+        function showCancelConfirmModal() {
+            $('#cancelConfirmModal').modal('show');
+        }
+
+        let isFormSubmitting = false;
+        let isReloading = false;
+        let pendingNavigation = null;
+        let beforeUnloadHandler = null;
+
+        function hasUnsavedData() {
+            let rackScanned = 0;
+            const rackElement = document.getElementById('rackScannedValue');
+            if (rackElement) {
+                rackScanned = parseInt(rackElement.textContent) || 0;
+            }
+
+            return rackScanned > 0;
+        }
+
+        function showLeaveConfirmModal() {
+            try {
+                $('#confirmLeaveModal').modal('show');
+            } catch (e) {
+                const modal = new bootstrap.Modal(document.getElementById('confirmLeaveModal'));
+                modal.show();
+            }
+        }
+
+        function removeBeforeUnloadHandler() {
+            if (beforeUnloadHandler) {
+                window.removeEventListener('beforeunload', beforeUnloadHandler);
+                beforeUnloadHandler = null;
+            }
+        }
+
+        // Event handler cho nút confirmLeaveBtn
+        document.addEventListener('DOMContentLoaded', function () {
+            const confirmLeaveBtn = document.getElementById('confirmLeaveBtn');
+            if (confirmLeaveBtn) {
+                confirmLeaveBtn.addEventListener('click', function () {
+                    isFormSubmitting = true;
+                    removeBeforeUnloadHandler();
+
+                    if (pendingNavigation && pendingNavigation.target) {
+                        window.location.href = pendingNavigation.target.href;
+                    } else {
+                        window.location.href = "{% url 'former_out' %}";
+                    }
+                });
+            }
+        });
+
+        function handleFormSubmit(event) {
+            if (event.submitter && event.submitter.id === 'confirmDoneBtn') {
+                isFormSubmitting = true;
+                collectTableData([3], []);
+                collectBatchData();
+                collectNoBatchData();
+                collectLostData();
+                collectWoData();
+                return true;
+            }
+
+            if (event.submitter && event.submitter.id === 'confirmCancelBtn') {
+                isFormSubmitting = true;
+                return true;
+            }
+
+            if (event.submitter &&
+                (event.submitter.classList.contains('done-button') ||
+                    (event.submitter.name === 'form_type' && event.submitter.value === 'done'))) {
+                event.preventDefault();
+                showDoneConfirmModal();
+                return false;
+            }
+
+            if (event.submitter &&
+                (event.submitter.classList.contains('cancel-button') ||
+                    (event.submitter.name === 'form_type' && event.submitter.value === 'cancel'))) {
+                event.preventDefault();
+                showCancelConfirmModal();
+                return false;
+            }
+
+            isFormSubmitting = true;
+            collectTableData([3], []);
+            collectBatchData();
+            collectNoBatchData();
+            collectLostData();
+            collectWoData();
+            return true;
+        }
+
+        beforeUnloadHandler = function (event) {
+            if (isFormSubmitting || isReloading) {
+                return;
+            }
+
+            if (hasUnsavedData()) {
+                event.preventDefault();
+                event.returnValue = '';
+
+                pendingNavigation = event;
+
+                setTimeout(() => {
+                    showLeaveConfirmModal();
+                }, 100);
+
+                return '';
+            }
+        };
+
+        window.addEventListener('beforeunload', beforeUnloadHandler);
+
+        document.addEventListener('click', function (event) {
+            const target = event.target.closest('a[href]');
+
+            if (target && hasUnsavedData() && !isFormSubmitting) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                pendingNavigation = {target: target};
+                showLeaveConfirmModal();
+                return false;
+            }
+        });
+
+        window.addEventListener('unload', function () {
+            removeBeforeUnloadHandler();
+        });
+
+        window.addEventListener('pagehide', function () {
+            removeBeforeUnloadHandler();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const confirmLeaveBtn = document.getElementById('confirmLeaveBtn');
+            if (confirmLeaveBtn) {
+                confirmLeaveBtn.addEventListener('click', function () {
+                    isFormSubmitting = true;
+                    removeBeforeUnloadHandler();
+
+                    if (pendingNavigation && pendingNavigation.target) {
+                        window.location.href = pendingNavigation.target.href;
+                    } else {
+                        window.location.href = "{% url 'former_out' %}";
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}
+
+

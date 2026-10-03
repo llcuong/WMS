@@ -1,0 +1,319 @@
+{% extends 'wh_former/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Hand Former - Former Master Data" %} {% endblock %}
+{% block local_css %}
+    <style>
+        .rfid-table-result-body{
+            {% if "linux" in request.META.HTTP_USER_AGENT|lower %}
+                min-height: 320px !important;
+            {% endif %}
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    {% include 'wh_former/user_guide/former_master_data/former_master_data_guide.html' %}
+    
+    <div class="container-fluid no-copy">
+        {% trans "Former Master Data" as page_title %}
+        {% include 'wh_former/components/page_title.html' with title=page_title icon="fa-keyboard" %}
+        <div class="row p-3 main-body">
+            <div class="col-12">
+                <form method="post" id="formerMasterDataForm" class="light-effect light-effect-padded" onsubmit="return handleFormSubmit(event);">
+                    <input type="hidden" name="form_type" value="former">
+                    <input type="hidden" name="form_token" id="formToken" value="">
+                    {% include 'wh_former/modules/components/forms/former_master_data_form.html' %}
+                    <div class="col-12">
+                        <div class="row align-items-center">
+                            <div class="col button-tab" style="margin-left:14px">
+                                <button type="button" class="rfidBtn active table-toggle-btn" data-pid="1">
+                                    {% trans "Full basket" %}
+                                </button>
+                                <button type="button" class="rfidBtn table-toggle-btn" data-pid="2">
+                                    {% trans "Filled basket" %}
+                                </button>
+                            </div>
+                            <div class="col-auto d-flex align-items-center" style="gap: 15px;">
+                                <div class="scan-counter-display d-flex align-items-center" style="gap: 10px;">
+                                    <div class="counter-item d-flex align-items-center" style="background: white; padding: 8px 12px; border-radius: 0; color: black; font-weight: 600;">
+                                        <span style="font-size: 15px;">{% trans "Baskets" %}: <span id="totalBasketValue">{{ total_basket }}</span></span>
+                                    </div>
+                                    <div class="counter-item d-flex align-items-center" style="background: white; padding: 8px 12px; border-radius: 0; color: black; font-weight: 600;">
+                                        <span style="font-size: 15px;">{% trans "Formers" %}: <span id="totalFormerValue">{{ total_former }}</span></span>
+                                    </div>
+                                </div>
+                                {% include 'wh_former/modules/components/buttons/rack_button.html' %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="table-section-wrapper">
+                            <div id="rfid-table-wrapper-1" style=".display: block;">
+                                {% include 'wh_former/modules/components/tables/former/table_rfid_5.html' with pid=1 columns=columns epcs=epcs rfid_read_mode=rfid_read_mode rfid_setting_id=rfid_setting_id bin_selection=True former=5 %}
+                            </div>
+                            <div id="rfid-table-wrapper-2" style="display: none;">
+                                {% include 'wh_former/modules/components/tables/former/table_rfid_0.html' with pid=2 columns=columns epcs=epcs rfid_read_mode=rfid_read_mode rfid_setting_id=rfid_setting_id bin_selection=True former=1 %}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <input type="hidden" name="table_data" id="table-data-input">
+                        <div class="d-flex justify-content-center mt-2" style="gap: 20px;">
+                            {% include 'wh_former/modules/components/buttons/save_button.html' %}
+                            {% include 'wh_former/modules/components/buttons/done_button.html' %}
+                            {% include 'wh_former/modules/components/buttons/cancel_button.html' %}
+                        </div>
+                    </div>
+                    {% include 'wh_former/modules/components/modals/action/save_confirm_modal.html' %}
+                    {% include 'wh_former/modules/components/modals/action/cancel_confirm_modal.html' %}
+                </form>
+            </div>
+        </div>
+    </div>
+    {% include 'wh_former/modules/layout/modals/groups/former_master_data_modals.html' %}
+{% endblock %}
+
+{% block js %}
+    {% include 'wh_former/modules/layout/items/scripts/start_scan_loading.html' %}
+    {% include 'wh_former/modules/layout/items/scripts/rack_modal_logic.html' %}
+    {% include 'wh_former/modules/layout/items/scripts/done_button_state.html' %}
+    {% include 'wh_former/modules/layout/items/scripts/fmd_check_all_fields.html' %}
+    {% include 'wh_former/modules/layout/items/scripts/check_bin_selected.html' %}
+    {% include 'wh_former/modules/layout/items/scripts/fmd_enable_save_button.html' %}
+    {% include 'wh_former/modules/layout/items/scripts/enable_start_button.html' %}
+    {% include 'wh_former/modules/layout/items/scripts/enable_done_button.html' %}
+    {% include 'wh_former/modules/layout/items/scripts/check_table_tr.html' %}
+    
+    <script>
+        function showDoneConfirmModal() {
+            $('#doneConfirmModal').modal('show');
+        }
+
+        function showCancelConfirmModal() {
+            $('#cancelConfirmModal').modal('show');
+        }
+    </script>
+
+    <script>
+        function generateFormToken() {
+            return 'token_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        let isFormSubmitting = false;
+        let isReloading = false;
+        let pendingNavigation = null;
+        let beforeUnloadHandler = null;
+
+        function hasUnsavedData() {
+            let rackScanned = 0;
+            const rackElement = document.getElementById('rackScannedValue');
+            if (rackElement) {
+                rackScanned = parseInt(rackElement.textContent) || 0;
+            }
+            
+            return rackScanned > 0;
+        }
+
+        function showLeaveConfirmModal() {
+            const modal = new bootstrap.Modal(document.getElementById('confirmLeaveModal'));
+            modal.show();
+        }
+
+        function showLoadingModal() {
+            const loadingModal = document.getElementById('loadingModal');
+            if (loadingModal) {
+                const modal = new bootstrap.Modal(loadingModal);
+                modal.show();
+            }
+        }
+
+        function removeBeforeUnloadHandler() {
+            if (beforeUnloadHandler) {
+                window.removeEventListener('beforeunload', beforeUnloadHandler);
+                beforeUnloadHandler = null;
+            }
+        }
+
+        function handleFormSubmit(event) {
+            if (event.submitter && event.submitter.id === 'confirmDoneBtn') {
+                isFormSubmitting = true;
+                removeBeforeUnloadHandler();
+                collectTableData([1], [2]);
+                return true;
+            }
+
+            if (event.submitter && event.submitter.id === 'confirmCancelBtn') {
+                isFormSubmitting = true;
+                removeBeforeUnloadHandler();
+                return true;
+            }
+
+            if (event.submitter &&
+                (event.submitter.classList.contains('done-button') ||
+                 (event.submitter.name === 'form_type' && event.submitter.value === 'done'))) {
+                event.preventDefault();
+                showDoneConfirmModal();
+                return false;
+            }
+
+            if (event.submitter &&
+                (event.submitter.classList.contains('cancel-button') ||
+                 (event.submitter.name === 'form_type' && event.submitter.value === 'cancel'))) {
+                event.preventDefault();
+                showCancelConfirmModal();
+                return false;
+            }
+
+            isFormSubmitting = true;
+            removeBeforeUnloadHandler();
+            
+            const form = event.target;
+            const currentToken = document.getElementById('formToken').value;
+            const lastSubmittedToken = sessionStorage.getItem('lastFormToken');
+            
+            if (currentToken && currentToken === lastSubmittedToken) {
+                event.preventDefault();
+                return false;
+            }
+            
+            if (!currentToken) {
+                const newToken = generateFormToken();
+                document.getElementById('formToken').value = newToken;
+            }
+            
+            sessionStorage.setItem('lastFormToken', document.getElementById('formToken').value);
+            
+            collectTableData([1], [2]);
+            return true;
+        }
+
+        beforeUnloadHandler = function(event) {
+            if (isFormSubmitting || isReloading) {
+                return;
+            }
+            
+            if (hasUnsavedData()) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                pendingNavigation = event;
+                
+                setTimeout(() => {
+                    showLeaveConfirmModal();
+                }, 10);
+                
+                return false;
+            }
+        };
+
+        window.addEventListener('beforeunload', beforeUnloadHandler);
+
+        window.addEventListener('load', function() {
+            if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+                isReloading = true;
+                console.log('Page was reloaded');
+                sessionStorage.removeItem('lastFormToken');
+                
+                const tokenField = document.getElementById('formToken');
+                if (tokenField) {
+                    tokenField.value = generateFormToken();
+                }
+                
+                setTimeout(() => {
+                    isReloading = false;
+                }, 1000);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const tokenField = document.getElementById('formToken');
+            if (tokenField && !tokenField.value) {
+                tokenField.value = generateFormToken();
+            }
+
+            const confirmLeaveBtn = document.getElementById('confirmLeaveBtn');
+            if (confirmLeaveBtn) {
+                confirmLeaveBtn.addEventListener('click', function() {
+                    removeBeforeUnloadHandler();
+                    
+                    const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmLeaveModal'));
+                    if (confirmModal) {
+                        confirmModal.hide();
+                    }
+                    
+                    showLoadingModal();
+                    
+                    setTimeout(() => {
+                        if (pendingNavigation && pendingNavigation.target && pendingNavigation.target.href) {
+                            window.location.href = pendingNavigation.target.href;
+                        } else {
+                            window.history.back();
+                        }
+                    }, 800);
+                });
+            }
+
+            document.addEventListener('click', function(event) {
+                const target = event.target.closest('a[href]');
+                if (target && hasUnsavedData() && !isFormSubmitting) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    
+                    pendingNavigation = { target: target };
+                    showLeaveConfirmModal();
+                    return false;
+                }
+            });
+
+            const form = document.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', handleFormSubmit);
+                
+                const fields = form.querySelectorAll('input:not(.disabled-field):not([readonly]):not([disabled]), select:not(.disabled-field):not([disabled]), textarea:not(.disabled-field):not([readonly]):not([disabled])');
+                fields.forEach(field => {
+                    field.addEventListener('input', () => {
+                        enableSaveButton();
+                        enableStartButton();
+                        enableDoneButton();
+                    });
+
+                    field.addEventListener('change', () => {
+                        enableSaveButton();
+                        enableStartButton();
+                        enableDoneButton();
+                    });
+                });
+            }
+
+            const tableWrappers = document.querySelectorAll('.table-section-wrapper');
+            tableWrappers.forEach(wrapper => {
+                wrapper.addEventListener('input', enableSaveButton);
+                wrapper.addEventListener('change', enableSaveButton);
+            });
+
+            enableSaveButton();
+            enableStartButton();
+            enableDoneButton();
+
+            setInterval(() => {
+                enableSaveButton();
+                enableStartButton();
+                enableDoneButton();
+            }, 500);
+
+            setInterval(checkAllTablesEmpty, 2000);
+            setTimeout(checkAllTablesEmpty, 1000);
+        });
+
+        window.addEventListener('unload', function() {
+            sessionStorage.removeItem('lastFormToken');
+            removeBeforeUnloadHandler();
+        });
+
+        window.addEventListener('pagehide', function() {
+            sessionStorage.removeItem('lastFormToken');
+            removeBeforeUnloadHandler();
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,11 @@
+<script>
+    function fticheckAllFieldsFilled() {
+            const requiredFields = [
+                'stock_form',
+            ];
+            return requiredFields.every(field => {
+                const el = document.getElementById(field) || document.querySelector(`[name="${field}"]`);
+                return el && el.value && el.value.trim() !== '';
+            });
+        }
+</script>

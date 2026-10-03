@@ -1,0 +1,92 @@
+{% extends 'wh_former/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Former - Search Basket" %} {% endblock %}
+{% block local_css %}
+    <style>
+        .result-table-body{
+            min-height: 360px !important;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="container-fluid no-copy">
+        {% trans "Search Basket" as page_title %}
+        {% include 'wh_former/components/page_title.html' with title=page_title icon="fas fa-search" %}
+        <div class="row p-3 main-body">
+            <div class="col-12 pt-3">
+
+                <form method="get">
+                    <input type="hidden" name="page" value="1"/>
+                    {% include 'wh_former/modules/components/forms/basket_search_form.html' with search=True %}
+                </form>
+
+            </div>
+            <div class="col-12">
+                {% include 'wh_former/modules/components/tables/basket/basket_result_table.html' with columns=columns results=data filter=search_filter print_rfid=True %}
+            </div>
+        </div>
+    </div>
+    {% include 'wh_former/modules/components/modals/action/action_modal.html' %}
+    {% include 'wh_former/modules/components/modals/action/loading_modal.html' %}
+    {% include 'wh_former/modules/components/modals/helpers_modal/basket_master_edit.html' %}
+{% endblock %}
+{% block js %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modalElement = document.getElementById('loadingModal');
+            if (modalElement) {
+                const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+                modal.hide();
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modalElement = document.getElementById('loadingModal');
+            if (modalElement) {
+                const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+                modal.hide();
+            }
+        });
+
+        function openBasketEditModal(basketNo, receiveDate, basketLength, purchaseOrder, description, savedValue) {
+            document.getElementById('edit_basket_no').value = basketNo;
+            document.getElementById('edit_saved_value').value = savedValue;
+            document.getElementById('edit_purchase_order').value = purchaseOrder;
+            document.getElementById('edit_basket_receive_date').value = receiveDate;
+            document.getElementById('length_value_input').value = basketLength;
+            document.getElementById('edit_basket_purchase_order').value = purchaseOrder;
+            document.getElementById('edit_basket_description').value = description;
+
+            const modal = new bootstrap.Modal(document.getElementById('basketEditModal'));
+            modal.show();
+        }
+
+        function updateBasket() {
+            if (confirm('{% trans "Are you sure you want to update all baskets in this group?" %}')) {
+                const form = document.getElementById('basketEditForm');
+                const actionInput = document.createElement('input');
+                actionInput.type = 'hidden';
+                actionInput.name = 'action_type';
+                actionInput.value = 'update';
+                form.appendChild(actionInput);
+                form.submit();
+            }
+        }
+
+        function deleteBasketGroup() {
+            if (confirm('{% trans "Are you sure you want to delete all baskets in this group? This action cannot be undone." %}')) {
+                const form = document.getElementById('basketEditForm');
+                const actionInput = document.createElement('input');
+                actionInput.type = 'hidden';
+                actionInput.name = 'action_type';
+                actionInput.value = 'delete';
+                form.appendChild(actionInput);
+                form.submit();
+            }
+        }
+    </script>
+{% endblock %}

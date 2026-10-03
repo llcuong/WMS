@@ -1,0 +1,46 @@
+<div class="col-md-2 d-flex align-items-end pb-0">
+     <button type="button" class="btn ms-2 d-flex align-items-center justify-content-center text-white"
+             style="height: 44px; background-color: #af52de;"
+             onclick="generateBatchNo()">
+        <i class="fas fa-sync-alt"></i>
+    </button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        window.generateBatchNo = function() {
+            const itemInput = document.getElementById("item_no_input");
+            const itemno = itemInput ? itemInput.value.trim() : "";
+            if (!itemno) {
+                return;
+            }
+            fetch(`{% url 'get_batch_no_api' %}?itemno=${encodeURIComponent(itemno)}`)
+                .then(response => {
+                    if (!response.ok) throw new Error("API trả về lỗi");
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.batch_no) {
+                        const input = document.getElementById("id_batch_no");
+                        if (input) {
+                            input.value = data.batch_no;
+                        }
+                    } else {
+                        alert("Không nhận được batch number từ server.");
+                    }
+                })
+                .catch(error => {
+                    alert("Không thể tạo Batch No. Vui lòng kiểm tra lại Item No hoặc thử lại sau.");
+                });
+        };
+    });
+    
+    function generateBatchNo() {
+        if (window.generateBatchNo && typeof window.generateBatchNo === 'function') {
+            window.generateBatchNo();
+        } else {
+            console.warn('generateBatchNo function not ready yet, retrying...');
+            setTimeout(generateBatchNo, 100);
+        }
+    }
+</script>

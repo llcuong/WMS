@@ -1,0 +1,23 @@
+<script>
+    function updateDoneButton() {
+        const doneButton = document.getElementById('doneButton');
+        const rackElement = document.getElementById('rackScannedValue');
+        const rackScanned = rackElement ? parseInt(rackElement.textContent) || 0 : 0;
+
+        if (doneButton) {
+            const hasTableData = (typeof checkAllTablesEmpty === 'function') ? checkAllTablesEmpty() : false;
+            if (rackScanned > 0 && !hasTableData) {
+                doneButton.disabled = false;
+                doneButton.classList.remove('btn-disabled');
+            } else {
+                doneButton.disabled = true;
+                doneButton.classList.add('btn-disabled');
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        updateDoneButton();
+        setInterval(updateDoneButton, 1000); // 1s check 1 lần
+    });
+</script>

@@ -1,0 +1,102 @@
+{% extends 'wh_packing/bases/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Quantity Adjust" %} {% endblock %}
+{% block css %}
+    <style>
+        #jsGrid {
+            margin-top: 3%;
+            font-size: 16px;
+        }
+        .jsgrid-cell {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        .jsgrid-cell.expanded {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            word-wrap: break-word;
+            max-width: none;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h3 class="text-center">{% trans "Quantity Adjust" %}</h3>
+        <div id="jsGrid"></div>
+        <form method="post">
+            {% crispy form %}
+        </form>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+
+    <script>
+        $(document).ready(function() {
+            $("#jsGrid").on("click", ".jsgrid-cell", function() {
+                $(this).toggleClass("expanded");
+            });
+
+            $("#id_qty").on("input", function () {
+                let value = $(this).val();
+
+                value = value.replace(/[^0-9]/g, '');
+
+                $(this).val(value);
+            });
+
+            const translations = {
+                warehouse: "{% trans "Warehouse" %}",
+                productOrder: "{% trans "Product Order" %}",
+                purchaseNo: "{% trans "Purchase No" %}",
+                versionNo: "{% trans "Version No" %}",
+                versionSeq: "{% trans "Version Seq" %}",
+                itemType: "{% trans "Item Type" %}",
+                lot: "{% trans "Lot" %}",
+                size: "{% trans "Size" %}",
+                bin: "{% trans "Bin" %}",
+                qty: "{% trans "Quantity" %}"
+            };
+
+            $.ajax({
+                url: '{% url "bin_adjust" %}',
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    // Initialize jsGrid with fetched data
+                    $("#jsGrid").jsGrid({
+                        width: "100%",
+                        height: "auto",
+                        data: [data],
+                        fields: [
+                            { name: "wh_name", title: translations.warehouse, type: "text", css: "text-center" },
+                            { name: "product_order", title: translations.productOrder, type: "text", css: "text-center" },
+                            { name: "purchase_no", title: translations.purchaseNo, type: "text", css: "text-center" },
+                            { name: "version_no", title: translations.versionNo, type: "text", css: "text-center" },
+                            { name: "item_type", title: translations.itemType, type: "text", css: "text-center" },
+                            { name: "lot_no", title: translations.lot, type: "text", css: "text-center" },
+                            { name: "size", title: translations.size, type: "text", css: "text-center" },
+                            { name: "bin_id", title: translations.bin, type: "text", css: "text-center" },
+                            { name: "qty", title: translations.qty, type: "number" }
+                        ]
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching data: ", error);
+                }
+            });
+
+        });
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,617 @@
+{% extends 'wh_former/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Hand Former - Former Search" %} {% endblock %}
+{% block local_css %}
+    <style>
+        /* Style for clickable rows */
+        tr[data-batch-no] {
+            cursor: pointer;
+        }
+        
+        tr[data-batch-no]:has(.expand-btn:disabled) {
+            cursor: default;
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(5px); }
+            20% { opacity: 1; transform: translateY(0); }
+            80% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-5px); }
+        }
+        
+        /* Clickable bin styling */
+        .clickable-bin:hover {
+            background-color: #e3f2fd !important;
+            font-weight: bold !important;
+        }
+
+        .not-clickable-bin {
+            font-weight: bold !important;
+        }
+
+        
+        /* Modal styling for area selection */
+        .bin-update-confirm {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1050;
+        }
+        
+        /* Batch Detail Modal Styles */
+        #batchDetailModal .modal-dialog {
+            max-width: 90%;
+        }
+        
+        .batch-detail-table {
+            width: 100%;
+            margin-bottom: 0;
+        }
+        
+        .batch-detail-table thead th {
+            background: #000000 !important;
+            color: #ffffff !important;
+            font-weight: bold !important;
+            text-align: center;
+            padding: 12px 8px;
+            font-size: 16px;
+            border: none;
+            vertical-align: middle;
+        }
+        
+        .batch-detail-table tbody td {
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 16px;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: middle;
+        }
+        
+        .batch-detail-table tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .batch-detail-table tbody tr:hover {
+            background: #e3f2fd;
+        }
+        
+        .batch-detail-table .col-bin {
+            font-weight: 600;
+            color: #007bff;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        
+        .batch-detail-table .col-baskets {
+            font-weight: 600;
+            color: #28a745;
+        }
+        
+        .batch-detail-table .col-formers {
+            font-weight: 600;
+            color: #dc3545;
+        }
+        
+        .batch-detail-loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+        
+        .batch-detail-no-data {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+            background: #f8f9fa;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="container-fluid no-copy">
+        {% trans "Former Search" as page_title %}
+        {% include 'wh_former/components/page_title.html' with title=page_title icon="fas fa-search" %}
+        <div class="row p-3 main-body">
+            <div class="col-12">
+                <form method="get">
+                    {% csrf_token %}
+                    {% include 'wh_former/modules/components/forms/former_search_form.html' %}
+                </form>
+            </div>
+            <div class="col-12">
+                {% include 'wh_former/modules/components/tables/basket/basket_result_table.html' with columns=columns results=results expand=True colspan=11 %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="batchDetailModal" tabindex="-1" aria-labelledby="batchDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="batchDetailModalLabel">
+                        <i class="fas fa-info-circle"></i> {% trans 'Batch Detail' %} - <span id="modalBatchNo" style="font-weight: bold"></span>
+                    </h5>
+                </div>
+                <div class="modal-body" id="batchDetailModalBody">
+                    <div class="batch-detail-loading">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">{% trans 'Loading' %}...</span>
+                        </div>
+                        <div class="mt-2">{% trans 'Loading data' %}...</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="cancel-button-2" data-bs-dismiss="modal">
+                        {% include 'wh_former/modules/components/buttons/cancel-button-2.html' %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% include 'wh_former/modules/components/modals/helpers_modal/former_search_edit.html' %}
+    {% include 'wh_former/components/modals/area_modal.html' %}
+{% endblock %}
+{% block js %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const batchDetailModal = new bootstrap.Modal(document.getElementById('batchDetailModal'));
+            
+            document.querySelectorAll('tr[data-batch-no]').forEach(row => {
+                row.addEventListener('click', function () {
+                    const batchNo = this.dataset.batchNo;
+                    const expandBtn = this.querySelector('.expand-btn');
+
+                    if (expandBtn && expandBtn.disabled) {
+                        return;
+                    }
+
+                    showBatchDetailModal(batchNo);
+                });
+            });
+            
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent row click
+                    const batchNo = this.dataset.batchNo;
+                    loadBatchDataForEdit(batchNo);
+                });
+            });
+            
+            document.getElementById('saveBatchBtn').addEventListener('click', function() {
+                saveBatchData();
+            });
+            
+            setupModalItemDecode();
+
+            window.fillFormField = function(fieldName, value) {
+                if (!value) return;
+
+                let field = null;
+
+                if (fieldName === 'vendor_name') {
+                    field = document.getElementById('editFormerVendor');
+                } else if (fieldName === 'params_size') {
+                    field = document.getElementById('editFormerSize');
+                } else if (fieldName === 'length_value') {
+                    field = document.getElementById('editLength');
+                } else if (fieldName === 'params_surface') {
+                    field = document.getElementById('editFormerSurface');
+                } else if (fieldName === 'params_type') {
+                    field = document.getElementById('editFormerType');
+                } else {
+                    const selectors = [
+                        `input[name="${fieldName}"]`,
+                        `select[name="${fieldName}"]`,
+                        `#${fieldName}`,
+                        `#${fieldName}_input`
+                    ];
+
+                    for (const selector of selectors) {
+                        field = document.querySelector(selector);
+                        if (field) break;
+                    }
+                }
+
+                if (field) {
+                    field.value = value;
+                    field.dispatchEvent(new Event('change'));
+                    field.dispatchEvent(new Event('input'));
+                } else {
+                    console.warn(`Field not found for: ${fieldName}`);
+                }
+            };
+        });
+        
+        function showBatchDetailModal(batchNo) {
+            document.getElementById('modalBatchNo').textContent = batchNo;
+            
+            document.getElementById('batchDetailModalBody').innerHTML = `
+                <div class="batch-detail-loading">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="mt-2">{% trans 'Loading data' %}...</div>
+                </div>
+            `;
+            
+            const modal = bootstrap.Modal.getInstance(document.getElementById('batchDetailModal')) ||
+                         new bootstrap.Modal(document.getElementById('batchDetailModal'));
+            modal.show();
+            
+            fetch(`{% url 'former_batch_detail_api' %}?batch_no=${encodeURIComponent(batchNo)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.detail || !data.detail.length) {
+                        document.getElementById('batchDetailModalBody').innerHTML = `
+                            <div class="batch-detail-no-data">
+                                <i class="fas fa-info-circle fa-3x mb-3"></i>
+                                <h5>{% trans 'No detail information' %}</h5>
+                                <p class="text-muted">{% trans 'This batch dont have detail information' %}</p>
+                            </div>
+                        `;
+                    } else {
+                        renderBatchDetailTable(data.detail);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching batch details:', error);
+                    document.getElementById('batchDetailModalBody').innerHTML = `
+                        <div class="alert alert-danger text-center">
+                            <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                            <h5>{% trans 'Unknown error happended' %}</h5>
+                            <p>{% trans 'Can not get detail information. Please try again' %}</p>
+                            <button class="btn btn-outline-danger btn-sm" onclick="showBatchDetailModal('${batchNo}')">
+                                <i class="fas fa-redo"></i> {% trans 'Try again' %}
+                            </button>
+                        </div>
+                    `;
+                });
+        }
+        
+        function renderBatchDetailTable(details) {
+            const tableHtml = `
+                <div class="table-responsive">
+                    <table class="table table-bordered batch-detail-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 11%;">{% trans 'Batch No' %}</th>
+                                <th style="width: 11%;">{% trans 'Former Vendor' %}</th>
+                                <th style="width: 11%;">{% trans 'Receive Form' %}</th>
+                                <th style="width: 11%;">{% trans 'Item No' %}</th>
+                                <th style="width: 11%;">{% trans 'Length' %}</th>
+                                <th style="width: 11%;">{% trans 'Used Day' %}</th>
+                                <th style="width: 11%;">{% trans 'Bin' %}</th>
+                                <th style="width: 11.5%;">{% trans 'Total Baskets' %}</th>
+                                <th style="width: 11.5%;">{% trans 'Total Formers' %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${details.map((row, index) => {
+                                const isNbrBin =
+                                  (row.bin && row.bin.toUpperCase().startsWith('NBR'))
+                                  ||
+                                  (row.bin && row.bin.toUpperCase().startsWith('CLEAN'));
+
+                                const binClass = isNbrBin ? 'not-clickable-bin' : 'col-bin clickable-bin';
+                                const onclickAttr = isNbrBin ? '' : `onclick="event.stopPropagation(); openAreaModalFromDetail('${row.batch_no || ''}', '${row.bin || ''}')"`;
+
+                                return `
+                                    <tr>
+                                        <td>${row.batch_no || '-'}</td>
+                                        <td>${row.former_vendor || '-'}</td>
+                                        <td>${row.former_receive_form || '-'}</td>
+                                        <td>${row.former_item_no || '-'}</td>
+                                        <td>${row.former_length || '-'}</td>
+                                        <td>${row.former_used_day || 0}</td>
+                                        <td class="${binClass}"
+                                            data-batch-no="${row.batch_no || ''}"
+                                            data-current-bin="${row.bin || ''}"
+                                            ${onclickAttr}>${row.bin || '-'}</td>
+                                        <td class="col-baskets">${row.total_baskets || 0}</td>
+                                        <td class="col-formers">${row.total_formers || 0}</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            document.getElementById('batchDetailModalBody').innerHTML = tableHtml;
+        }
+        
+        function openAreaModalFromDetail(batchNo, currentBin) {
+            if (currentBin && currentBin.toUpperCase().startsWith('NBR')) {
+                return;
+            }
+
+            const batchDetailModal = bootstrap.Modal.getInstance(document.getElementById('batchDetailModal'));
+            if (batchDetailModal) {
+                batchDetailModal.hide();
+            }
+            
+            setTimeout(() => {
+                openAreaModal(batchNo, currentBin);
+            }, 300); // Wait for modal close animation
+        }
+
+        function setupModalItemDecode() {
+            const itemInput = document.getElementById('editItemNo');
+            
+            function autoDecodeItemNumber(itemNo) {
+                if (!itemNo || itemNo.length < 7) return;
+                
+                const originalPlaceholder = itemInput.placeholder;
+                itemInput.placeholder = 'Decoding...';
+                
+                fetch(`{% url "decode_item_number_api" %}?item_no=${encodeURIComponent(itemNo)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success && data.form_data) {
+                            document.getElementById('editFormerVendor').value = data.form_data.former_vendor || '';
+                            document.getElementById('editFormerSize').value = data.form_data.former_size || '';
+                            document.getElementById('editLength').value = data.form_data.former_length || '';
+                            document.getElementById('editFormerSurface').value = data.form_data.former_surface || '';
+                            document.getElementById('editFormerType').value = data.form_data.former_type || '';
+                            
+                            showModalDecodeSuccess(data.decoded);
+                        } else if (data.error) {
+                            console.warn('Decode error:', data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error decoding item number:', error);
+                    })
+                    .finally(() => {
+                        itemInput.placeholder = originalPlaceholder;
+                    });
+            }
+            
+            function showModalDecodeSuccess(decoded) {
+                const indicator = document.createElement('div');
+                indicator.className = 'decode-success-indicator';
+                indicator.style.cssText = `
+                    position: absolute;
+                    top: -25px;
+                    right: 0;
+                    background: #28a745;
+                    color: white;
+                    padding: 2px 8px;
+                    border-radius: 3px;
+                    font-size: 11px;
+                    z-index: 1000;
+                    animation: fadeInOut 2s ease-in-out;
+                `;
+                indicator.textContent = `✓ ${decoded.vendor_code}-${decoded.length_code}-${decoded.surface_code}-${decoded.type_code}-${decoded.size_code}`;
+                
+                const wrapper = itemInput.parentElement;
+                wrapper.style.position = 'relative';
+                wrapper.appendChild(indicator);
+                
+                setTimeout(() => {
+                    if (indicator.parentElement) {
+                        indicator.parentElement.removeChild(indicator);
+                    }
+                }, 2000);
+            }
+            
+            itemInput.addEventListener('blur', function() {
+                const value = this.value.trim().toUpperCase();
+                if (value !== this.value) {
+                    this.value = value;
+                }
+                autoDecodeItemNumber(value);
+            });
+            
+            itemInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const value = this.value.trim().toUpperCase();
+                    this.value = value;
+                    autoDecodeItemNumber(value);
+                }
+            });
+            
+            itemInput.addEventListener('input', function() {
+                const cursorPos = this.selectionStart;
+                const value = this.value.toUpperCase();
+                this.value = value;
+                this.setSelectionRange(cursorPos, cursorPos);
+            });
+        }
+        
+        function loadBatchDataForEdit(batchNo) {
+            document.getElementById('editBatchNo').value = batchNo;
+            
+            fetch(`{% url 'former_batch_detail_api' %}?batch_no=${encodeURIComponent(batchNo)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.detail && data.detail.length > 0) {
+                        const batch = data.detail[0];
+                        document.getElementById('editBatchNo').value = batch.batch_no || '';
+                        document.getElementById('editReceiveForm').value = batch.former_receive_form || '';
+                        document.getElementById('editFormerVendor').value = batch.former_vendor || '';
+                        document.getElementById('editItemNo').value = batch.former_item_no || '';
+                        document.getElementById('editLength').value = batch.former_length || '';
+                        document.getElementById('editUsedDay').value = batch.former_used_day || 0;
+                        
+                        loadAdditionalBatchData(batchNo);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading batch data:', error);
+                    alert('Có lỗi xảy ra khi tải dữ liệu batch');
+                });
+        }
+        
+        function loadAdditionalBatchData(batchNo) {
+            fetch(`{% url 'former_batch_full_detail_api' %}?batch_no=${encodeURIComponent(batchNo)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const batch = data.batch_data;
+                        document.getElementById('editFormerSize').value = batch.former_size || '';
+                        document.getElementById('editFormerType').value = batch.former_type || '';
+                        document.getElementById('editFormerSurface').value = batch.former_surface || '';
+                        document.getElementById('editPurchaseOrder').value = batch.former_purchase_order || '';
+                        document.getElementById('editFormerAql').value = batch.former_aql || 1.0;
+                        document.getElementById('editBatchDataDate').value = batch.batch_data_date || '';
+                    }
+                })
+                .catch(error => {
+                    console.warn('Could not load additional batch data:', error);
+                });
+        }
+        
+        function saveBatchData() {
+            const formData = {
+                batch_no: document.getElementById('editBatchNo').value,
+                former_receive_form: document.getElementById('editReceiveForm').value,
+                former_item_no: document.getElementById('editItemNo').value,
+                former_size: document.getElementById('editFormerSize').value,
+                former_type: document.getElementById('editFormerType').value,
+                former_surface: document.getElementById('editFormerSurface').value,
+                former_purchase_order: document.getElementById('editPurchaseOrder').value,
+                former_vendor: document.getElementById('editFormerVendor').value,
+                batch_data_date: document.getElementById('editBatchDataDate').value,
+                former_length: document.getElementById('editLength').value,
+                former_used_day: document.getElementById('editUsedDay').value
+            };
+            
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+            
+            fetch(`{% url 'former_batch_update_api' %}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken ? csrfToken.value : ''
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Cập nhật thành công!');
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('editBatchModal'));
+                    modal.hide();
+                    location.reload();
+                } else {
+                    alert(data.message || 'Unknown error');
+                }
+            })
+            .catch(error => {
+                console.error('Error saving batch data:', error);
+                alert('Có lỗi xảy ra khi lưu dữ liệu');
+            });
+        }
+        
+        let currentBatchForBinUpdate = '';
+        let currentOldBin = '';
+        let selectedNewBin = '';
+        
+        function openAreaModal(batchNo, currentBin) {
+            currentBatchForBinUpdate = batchNo;
+            currentOldBin = currentBin;
+            selectedNewBin = '';
+            
+            const areaModal = document.querySelector('.custom-modal');
+            if (areaModal) {
+                const modal = new bootstrap.Modal(areaModal);
+                modal.show();
+                
+                addBinUpdateConfirmButton();
+                
+                if (typeof fetchAndRenderAreaData === 'function') {
+                    fetchAndRenderAreaData();
+                }
+            }
+        }
+        
+        function addBinUpdateConfirmButton() {
+            const existingBtn = document.querySelector('.bin-update-confirm');
+            if (existingBtn) {
+                existingBtn.remove();
+            }
+            
+            // Đưa button vào bin-zoom thay vì modal-body
+            const binZoom = document.querySelector('.bin-zoom');
+            if (binZoom) {
+                const confirmBtn = document.createElement('button');
+                confirmBtn.className = 'btn btn-success bin-update-confirm';
+                confirmBtn.innerHTML = '<i class="fas fa-check"></i> Confirm Update';
+                confirmBtn.style.display = 'none';
+                confirmBtn.style.position = 'absolute';
+                confirmBtn.style.top = '50%';
+                confirmBtn.style.left = '50%';
+                confirmBtn.style.transform = 'translate(-50%, -50%)';
+                confirmBtn.style.zIndex = '1000';
+                confirmBtn.style.minWidth = '150px';
+                confirmBtn.style.padding = '10px 15px';
+                confirmBtn.onclick = confirmBinUpdate;
+                
+                // Đảm bảo bin-zoom có position relative để absolute positioning hoạt động
+                binZoom.style.position = 'relative';
+                binZoom.appendChild(confirmBtn);
+            }
+        }
+        
+        function onBinSelected(binCode) {
+            selectedNewBin = binCode;
+            
+            const confirmBtn = document.querySelector('.bin-update-confirm');
+            if (confirmBtn && selectedNewBin && selectedNewBin !== currentOldBin) {
+                confirmBtn.style.display = 'block';
+                confirmBtn.innerHTML = `<i class="fas fa-arrow-right"></i> ${binCode}`;
+            } else if (confirmBtn) {
+                confirmBtn.style.display = 'none';
+            }
+        }
+        
+        function confirmBinUpdate() {
+            if (!currentBatchForBinUpdate || !selectedNewBin) {
+                alert('Thiếu thông tin batch hoặc bin được chọn');
+                return;
+            }
+            
+            const formData = {
+                batch_no: currentBatchForBinUpdate,
+                new_bin: selectedNewBin,
+                old_bin: currentOldBin
+            };
+            
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+            
+            fetch(`{% url 'former_batch_update_bin_api' %}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken ? csrfToken.value : ''
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`Cập nhật bin thành công: ${currentOldBin} → ${selectedNewBin}`);
+                    
+                    const areaModal = document.querySelector('.custom-modal');
+                    const modal = bootstrap.Modal.getInstance(areaModal);
+                    if (modal) {
+                        modal.hide();
+                    }
+                    
+                    location.reload();
+                } else {
+                    alert(data.message || 'Unknown error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating bin:', error);
+                alert('Có lỗi xảy ra khi cập nhật bin');
+            });
+        }
+    </script>
+{% endblock %}
+

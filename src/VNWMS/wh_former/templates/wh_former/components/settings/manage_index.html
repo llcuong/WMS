@@ -1,0 +1,246 @@
+{% extends 'wh_former/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Hand Former - Manage - Settings" %} {% endblock %}
+{% block local_css %}
+    <style>
+        body.modal-open {
+            padding-right: 0 !important;
+            overflow: hidden;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row p-3">
+            <div class="col-12">
+                <div class="row no-margin">
+                    <div class="col-10 no-margin">
+                        <div class="p-3 setting-button-div page-title no-copy">
+                            <i class="fas fa-cog me-2"></i>
+                            <b style="margin-left: 8px;">{% trans "RFID Setting" %}</b>
+                        </div>
+                    </div>
+                    <div class="col-2 no-margin">
+                       <div class="p-3 setting-button-div" id="open-add-new" style="cursor: pointer;">
+                            <b>{% trans "Add new" %}</b>
+                            <i class="fas fa-plus" style="margin-left: 8px;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row p-3">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <div class="col-12 px-0">
+                    <div class="col-md-8 text-start px-0">
+                        <div class="col-12 mb-3">
+                            <div id="ping-result" class="mt-2" style="height: 32px; border: 2px solid #f2f3f5"></div>
+                        </div>
+                        <div class="col-12">
+                            <table class="table table-sm" style="border-collapse: separate; border-spacing: 0 12px;">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>{% trans "Client IP" %}</th>
+                                        <th>{% trans "Gate" %}</th>
+                                        <th>{% trans "Controller IP" %}</th>
+                                        <th>{% trans "Port" %}</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for s in settings_list %}
+                                        <tr>
+                                            <td style="border: none; padding: 0;"><div style="color: #404040; border: 2px solid #007bff; border-top-left-radius: 8px; border-bottom-left-radius: 8px; padding: 2px; height: 31px; text-align: center;">{{ s.client_ip }}</div></td>
+                                            <td style="border: none; padding: 0;"><div style="color: #404040; border: 2px solid #007bff; border-left: none; padding: 2px; height: 31px; text-align: center;">{{ s.gate_name }}</div></td>
+                                            <td style="border: none; padding: 0;"><div style="color: #404040; border: 2px solid #007bff; border-left: none; padding: 2px; height: 31px; text-align: center;">{{ s.rfid_controller_ip }}</div></td>
+                                            <td style="border: none; padding: 0;"><div style="color: #404040; border: 2px solid #007bff; border-left: none; border-top-right-radius: 8px; border-bottom-right-radius: 8px; padding: 2px; height: 31px; text-align: center;">{{ s.port }}</div></td>
+                                            <td style="border: none; padding-top: 0px !important;">
+                                                <a href="{% url 'manage_wh_former_edit_client' s.id %}" class="btn btn-sm btn-outline-primary" style="width: 33px;"><i class="fas fa-edit"></i></a>
+                                                <a href="{% url 'manage_wh_former_delete_client' s.id %}" class="btn btn-sm btn-outline-danger" style="width: 33px;"><i class="fas fa-times"></i></a>
+                                                <a href="{% url 'manage_wh_former_connection_test_client' s.id %}" class="btn btn-sm btn-outline-warning test-connection" style="width: 33px;"><i class="fas fa-sync"></i></a>
+                                                {% with active=s.rfif_setting_active_id %}
+                                                    <form method="post" action="{% url 'manage_wh_former_power_client' s.id %}" style="display:inline;">
+                                                        {% csrf_token %}
+                                                        <button type="submit"
+                                                            class="btn btn-sm {% if s.rfif_setting_active_id.rfid_power_on %}btn-success{% else %}btn-danger{% endif %}" style="width: 33px;">
+                                                            <i class="fas fa-power-off"></i>
+                                                        </button>
+                                                    </form>
+{#                                                    <form method="post" action="{% url 'manage_rfid_power_read' s.id 'read' %}" style="display:inline;">#}
+{#                                                        {% csrf_token %}#}
+{#                                                        <buttons type="submit"#}
+{#                                                            class="btn btn-sm {% if s.rfif_setting_active_id.rfid_read_mode %}btn-success{% else %}btn-danger{% endif %}">#}
+{#                                                            {% if s.rfif_setting_active_id.rfid_read_mode %}Stop&nbsp;{% else %}Read{% endif %}#}
+{#                                                        </buttons>#}
+{#                                                    </form>#}
+{#                                                    <form method="post" action="{% url 'user_rfid_start_button' s.id %}" style="display:inline;">#}
+{#                                                        {% csrf_token %}#}
+{#                                                        <buttons id="start-btn-{{ s.id }}" type="submit"#}
+{#                                                            class="btn btn-sm {% if s.rfif_setting_active_id.rfid_read_mode %}btn-success{% else %}btn-outline-success{% endif %}">Start</buttons>#}
+{#                                                    </form>#}
+{#                                                    <form method="post" action="{% url 'user_rfid_stop_button' s.id %}" style="display:inline;">#}
+{#                                                        {% csrf_token %}#}
+{#                                                        <buttons id="stop-btn-{{ s.id }}" type="submit"#}
+{#                                                            class="btn btn-sm {% if s.rfif_setting_active_id.rfid_read_mode %}btn-danger{% else %}btn-outline-danger{% endif %}">Stop</buttons>#}
+{#                                                    </form>#}
+                                                {% endwith %}
+                                            </td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted">{% trans "No records yet." %}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addNewModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body" id="add-new-content">
+                    <div class="text-center">🔄 Loading...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        let modalInstance = null;
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const openBtn = document.getElementById("open-add-new");
+            if (!openBtn) return;
+
+            openBtn.addEventListener("click", function () {
+                const modalEl = document.getElementById("addNewModal");
+                modalInstance = new bootstrap.Modal(modalEl);
+                modalInstance.show();
+
+                const contentDiv = document.getElementById("add-new-content");
+                contentDiv.innerHTML = '<div class="text-center text-muted">🔄 Loading...</div>';
+
+                fetch("{% url 'manage_wh_former_add_new_client' %}")
+                    .then(res => res.text())
+                    .then(html => {
+                        contentDiv.innerHTML = html;
+
+                        const form = document.getElementById("add-new-form");
+                        if (form) {
+                            form.addEventListener("submit", function (e) {
+                                e.preventDefault();
+                                const formData = new FormData(form);
+
+                                fetch("{% url 'manage_wh_former_add_new_client' %}", {
+                                    method: "POST",
+                                    body: formData,
+                                    headers: {
+                                        'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                                    }
+                                })
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.status === "ok") {
+                                        modalInstance.hide();
+                                        const tbody = document.querySelector("table tbody");
+                                        if (tbody) {
+                                            tbody.insertAdjacentHTML('afterbegin', data.row);
+                                        }
+                                        window.location.href = data.redirect_url;
+                                    } else if (data.status === "duplicate") {
+                                        alert("⚠️ IP + Port đã tồn tại!");
+                                    } else {
+                                        alert("❌ Form không hợp lệ!");
+                                    }
+                                });
+                            });
+                        }
+                    });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll("a.btn-outline-primary").forEach(btn => {
+                btn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const url = this.getAttribute("href");
+                    const modalEl = document.getElementById("addNewModal");
+                    modalInstance = new bootstrap.Modal(modalEl);
+                    modalInstance.show();
+
+                    const contentDiv = document.getElementById("add-new-content");
+                    contentDiv.innerHTML = '<div class="text-center text-muted">🔄 Loading...</div>';
+
+                    fetch(url)
+                        .then(res => res.text())
+                        .then(html => {
+                            contentDiv.innerHTML = html;
+
+                            const form = document.getElementById("add-new-form");
+                            if (form) {
+                                form.addEventListener("submit", function (e) {
+                                    e.preventDefault();
+                                    const formData = new FormData(form);
+
+                                    fetch(url, {
+                                        method: "POST",
+                                        body: formData,
+                                        headers: {
+                                            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                                        }
+                                    })
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if (data.status === "ok") {
+                                            modalInstance.hide();
+                                            window.location.href = data.redirect_url;
+                                        } else if (data.status === "invalid") {
+                                            alert("❌ Form không hợp lệ!");
+                                            console.log(data.errors);
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('a.test-connection').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const resultDiv = document.getElementById("ping-result");
+                    resultDiv.innerText = "🔄 Testing...";
+                    fetch(this.href)
+                        .then(res => res.text())
+                        .then(data => {
+                            resultDiv.innerText = data;
+                            setTimeout(() => {
+                                resultDiv.innerText = "";
+                            }, 3000);
+                        })
+                        .catch(() => {
+                            resultDiv.innerText = "❌ Failed to connect";
+
+                            setTimeout(() => {
+                                resultDiv.innerText = "";
+                            }, 3000);
+                        });
+                });
+            });
+        });
+    </script>
+{% endblock %}
+

@@ -1,0 +1,102 @@
+{% load i18n %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const rackButton = document.getElementById('rackButton');
+        const rackModalEl = document.getElementById('rackModal');   // ✅ Khai báo sớm
+        const modal = rackModalEl ? bootstrap.Modal.getOrCreateInstance(rackModalEl) : null;
+
+        function updateRackScannedCount() {
+            const rfidReaderIp = rackButton?.getAttribute('data-rfid-reader-ip') || '{{ rfid_reader_ip|default:"" }}';
+            const action = rackButton?.getAttribute('data-action') || '{{ action|default:"CRTE" }}';
+            if (!rfidReaderIp || !action) return;
+            fetch(`{% url 'get_rack_stats' %}?rfid_reader_ip=${encodeURIComponent(rfidReaderIp)}&action=${encodeURIComponent(action)}`)
+                .then(r => r.json())
+                .then(data => {
+                    const rackScannedEl = document.getElementById('rackScannedValue');
+                    const totalBasketEl = document.getElementById('totalBasketValue');
+                    const totalFormerEl = document.getElementById('totalFormerValue');
+                    if (rackScannedEl) rackScannedEl.textContent = data.rack_scanned || 0;
+                    if (totalBasketEl) totalBasketEl.textContent = data.total_basket || 0;
+                    if (totalFormerEl) totalFormerEl.textContent = data.total_former || 0;
+                })
+                .catch(err => console.warn('Failed to fetch rack stats:', err));
+        }
+
+        updateRackScannedCount();
+        setInterval(updateRackScannedCount, 5000);
+
+        if (rackModalEl) {
+            rackModalEl.addEventListener('hidden.bs.modal', () => {
+                if (!document.querySelector('.modal.show')) {
+                    document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+                    document.body.classList.remove('modal-open');
+                    document.body.style.removeProperty('overflow');
+                    document.body.style.removeProperty('padding-right');
+                }
+                updateRackScannedCount();
+            });
+
+            rackModalEl.addEventListener('show.bs.modal', () => {
+                setTimeout(() => {
+                    const backs = document.querySelectorAll('.modal-backdrop');
+                    if (backs.length > 1) backs.forEach((b, i) => {
+                        if (i > 0) b.remove();
+                    });
+                }, 0);
+            });
+        }
+
+        if (rackButton && modal) {
+            rackButton.addEventListener('click', function () {
+                const rfidReaderIp = this.getAttribute('data-rfid-reader-ip') || '{{ rfid_reader_ip|default:"" }}';
+                const batchNo = this.getAttribute('data-batch-no') || document.getElementById('batch_no')?.value || '{{ batch_no|default:"" }}';
+                const action = this.getAttribute('data-action') || '{{ action|default:"CRTE" }}';
+
+                modal.show();
+
+                const modalContent = document.getElementById('rackModalContent');
+                modalContent.innerHTML = `
+                                            <div class="text-center">
+                                              <div class="spinner-border" role="status">
+                                                <span class="visually-hidden">{% trans "Loading..." %}</span>
+                                              </div>
+                                              <p class="mt-2">{% trans "Loading rack data..." %}</p>
+                                            </div>
+                                          `;
+
+                if (!rfidReaderIp || !action) {
+                    modalContent.innerHTML = `
+                          <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            {% trans "Missing required parameters. Please check RFID Reader IP and Action." %}
+                            <br><small>RFID IP: ${rfidReaderIp || 'Not found'} | Action: ${action || 'Not found'}</small>
+                          </div>`;
+                    return;
+                }
+
+                let url = `{% url 'get_rack_bin_temp' %}?rfid_reader_ip=${encodeURIComponent(rfidReaderIp)}&action=${encodeURIComponent(action)}`;
+                if (batchNo) url += `&batch_no=${encodeURIComponent(batchNo)}`;
+
+                fetch(url)
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.error) {
+                            modalContent.innerHTML = `
+                              <div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i>
+                                {% trans "Error" %}: ${data.error}
+                              </div>`;
+                        } else {
+                            modalContent.innerHTML = data.html;
+                            setTimeout(updateRackScannedCount, 500);
+                        }
+                    })
+                    .catch(() => {
+                        modalContent.innerHTML = `
+                            <div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i>
+                              {% trans "Failed to load rack data. Please try again." %}
+                            </div>`;
+                    });
+            });
+        }
+    });
+</script>

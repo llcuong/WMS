@@ -1,0 +1,152 @@
+{% load crispy_forms_tags %}
+{% load i18n %}
+<div class="col-12 setting-table-content">
+    <div class="container-fluid">
+        <div class="row no-margin">
+            <div class="col-10">
+                {% include 'wh_former/components/settings/components/device/settings_device_table.html' %}
+                {% include 'wh_former/components/settings/components/device/settings_device_result.html' with settings_list=settings_list  %}
+            </div>
+            <div class="col-2">
+               <div class="p-3" id="open-add-new" style="cursor: pointer;">
+                    <b>{% trans "Add new" %}</b>
+                    <i class="fas fa-plus" style="margin-left: 8px;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'wh_former/components/settings/components/device/settings_device_modal.html' %}
+</div>
+
+
+
+
+
+<script>
+        let modalInstance = null;
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const openBtn = document.getElementById("open-add-new");
+            if (!openBtn) return;
+
+            openBtn.addEventListener("click", function () {
+                const modalEl = document.getElementById("addNewModal");
+                modalInstance = new bootstrap.Modal(modalEl);
+                modalInstance.show();
+
+                const contentDiv = document.getElementById("add-new-content");
+                contentDiv.innerHTML = '<div class="text-center text-muted">🔄 Loading...</div>';
+
+                fetch("{% url 'manage_wh_former_add_new_client' %}")
+                    .then(res => res.text())
+                    .then(html => {
+                        contentDiv.innerHTML = html;
+
+                        const form = document.getElementById("add-new-form");
+                        if (form) {
+                            form.addEventListener("submit", function (e) {
+                                e.preventDefault();
+                                const formData = new FormData(form);
+
+                                fetch("{% url 'manage_wh_former_add_new_client' %}", {
+                                    method: "POST",
+                                    body: formData,
+                                    headers: {
+                                        'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                                    }
+                                })
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.status === "ok") {
+                                        modalInstance.hide();
+                                        const tbody = document.querySelector("table tbody");
+                                        if (tbody) {
+                                            tbody.insertAdjacentHTML('afterbegin', data.row);
+                                        }
+                                        window.location.href = data.redirect_url;
+                                    } else if (data.status === "duplicate") {
+                                        alert("⚠️ IP + Port đã tồn tại!");
+                                    } else {
+                                        alert("❌ Form không hợp lệ!");
+                                    }
+                                });
+                            });
+                        }
+                    });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll("a.btn-outline-primary").forEach(btn => {
+                btn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const url = this.getAttribute("href");
+                    const modalEl = document.getElementById("addNewModal");
+                    modalInstance = new bootstrap.Modal(modalEl);
+                    modalInstance.show();
+
+                    const contentDiv = document.getElementById("add-new-content");
+                    contentDiv.innerHTML = '<div class="text-center text-muted">🔄 Loading...</div>';
+
+                    fetch(url)
+                        .then(res => res.text())
+                        .then(html => {
+                            contentDiv.innerHTML = html;
+
+                            const form = document.getElementById("add-new-form");
+                            if (form) {
+                                form.addEventListener("submit", function (e) {
+                                    e.preventDefault();
+                                    const formData = new FormData(form);
+
+                                    fetch(url, {
+                                        method: "POST",
+                                        body: formData,
+                                        headers: {
+                                            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                                        }
+                                    })
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if (data.status === "ok") {
+                                            modalInstance.hide();
+                                            window.location.href = data.redirect_url;
+                                        } else if (data.status === "invalid") {
+                                            alert("❌ Form không hợp lệ!");
+                                            console.log(data.errors);
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('a.test-connection').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const resultDiv = document.getElementById("ping-result");
+                    resultDiv.innerText = "🔄 Testing...";
+                    fetch(this.href)
+                        .then(res => res.text())
+                        .then(data => {
+                            resultDiv.innerText = data;
+                            setTimeout(() => {
+                                resultDiv.innerText = "";
+                            }, 3000);
+                        })
+                        .catch(() => {
+                            resultDiv.innerText = "❌ Failed to connect";
+
+                            setTimeout(() => {
+                                resultDiv.innerText = "";
+                            }, 3000);
+                        });
+                });
+            });
+        });
+    </script>

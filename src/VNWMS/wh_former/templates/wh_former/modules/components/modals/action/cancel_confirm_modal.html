@@ -1,0 +1,34 @@
+{% load i18n %}
+
+<div class="modal fade" id="cancelConfirmModal" tabindex="-1" role="dialog" aria-labelledby="cancelConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius: 12px;">
+            <div class="modal-header bg-danger text-white" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                <h5 class="modal-title font-weight-bold" id="cancelConfirmModalLabel">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {% trans "Confirm Delete" %}
+                </h5>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-trash text-danger" style="font-size: 3rem;"></i>
+                </div>
+                <p class="text-center mb-3">
+                    <strong>{% trans "Are you sure you want to cancel this operation?" %}</strong>
+                </p>
+                <p class="text-center">
+                    {% trans "This will delete all current data." %}<br>
+                    <span class="text-danger font-weight-bold">{% trans "This action cannot be undone!" %}</span>
+                </p>
+            </div>
+            <div class="modal-footer" style="border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
+                <button type="button" class="cancel-button-2" onclick="$('#cancelConfirmModal').modal('hide')">
+                    {% include 'wh_former/modules/components/buttons/cancel-button-2.html' %}
+                </button>
+                <button type="submit" class="delete-button-2" id="confirmCancelBtn" name="form_type" value="cancel">
+                    {% include 'wh_former/modules/components/buttons/delete-button-2.html' %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

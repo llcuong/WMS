@@ -1,0 +1,987 @@
+{% load i18n %}
+
+<div class="modal fade custom-modal no-copy" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" style="min-width: 820px; max-width: 95vw;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="customModalLabel">{% trans "Detail Area Infomation" %}</h5>
+                <button type="button" class="btn p-0 border-0 bg-transparent button-no-outline" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+            <div class="modal-body d-flex flex-column" style="height: 90vh; min-height: 600px;">
+                <div class="tab-navigation-fixed mb-3">
+                    <div class="d-flex justify-content-center">
+                        <div class="btn-group" role="group" aria-label="Area sections">
+                            <button type="button" class="btn btn-primary area-tab-btn active" data-tab="left">
+                                <i class="fas fa-arrow-left me-2"></i>{% trans 'LEFT' %}
+                            </button>
+                            <button type="button" class="btn btn-outline-primary area-tab-btn" data-tab="center">
+                                <i class="fas fa-arrows-alt-h me-2"></i>{% trans 'CENTER' %}
+                            </button>
+                            <button type="button" class="btn btn-outline-primary area-tab-btn" data-tab="right">
+                                <i class="fas fa-arrow-right me-2"></i>{% trans 'RIGHT' %}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-container-wrapper flex-grow-1 d-flex justify-content-center align-items-start position-relative">
+                    <div class="map-container position-relative border rounded shadow-sm" style="overflow: auto; background-color: #f8f9fa;"></div>
+
+                    <div class="area-info-panel position-absolute" style="min-width: 300px; max-width: 350px; display: none; right: 0; top: 0; z-index: 50;">
+                        <div class="card h-100">
+                            <div class="card-header bg-primary text-white">
+                                <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Area Information</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="area-info-content">
+                                    <div class="text-center py-3">
+                                        <i class="fas fa-mouse-pointer fa-2x text-muted mb-2"></i>
+                                        <p class="text-muted">Click on an area to view details</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .tab-navigation-fixed {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background-color: white;
+        padding: 10px 0;
+        border-bottom: 1px solid #dee2e6;
+        margin-bottom: 0 !important;
+    }
+    
+    .map-container-wrapper {
+        padding-top: 15px;
+        overflow: hidden;
+    }
+    
+    .area-tab-btn {
+        min-width: 120px;
+        padding: 10px 20px;
+        font-weight: 600;
+        border-radius: 0;
+        transition: all 0.3s ease;
+    }
+    
+    .area-tab-btn:first-child {
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+    }
+    
+    .area-tab-btn:last-child {
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+    
+    .area-tab-btn.active {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
+        transform: translateY(-1px);
+    }
+    
+    .area-tab-btn:not(.active):hover {
+        background-color: #e9ecef;
+        border-color: #0d6efd;
+        transform: translateY(-1px);
+    }
+    
+    .map-container {
+        border: 2px solid #dee2e6 !important;
+        max-height: calc(90vh - 150px);
+        flex: 1;
+    }
+    
+    .area-info-panel {
+        transition: all 0.3s ease;
+        animation: slideInRight 0.3s ease;
+    }
+    
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    .area-info-content .info-item {
+        border-bottom: 1px solid #e9ecef;
+        padding: 8px 0;
+    }
+    
+    .area-info-content .info-item:last-child {
+        border-bottom: none;
+    }
+    
+    .area-info-content .info-label {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.9rem;
+    }
+    
+    .area-info-content .info-value {
+        color: #212529;
+        font-size: 0.95rem;
+    }
+    
+    .batches-container {
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+
+    .batches-container::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .batches-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .batches-container::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+    }
+
+    .batches-container::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+
+    .batch-item {
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        margin-bottom: 8px;
+        background: #f8f9fa;
+        transition: all 0.2s ease;
+    }
+
+    .batch-item:hover {
+        background: #e9ecef;
+        cursor: pointer;
+    }
+
+    .batch-item.active {
+        background: #e3f2fd;
+        border-color: #2196f3;
+    }
+
+    .batch-header {
+        padding: 10px 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .batch-number {
+        font-weight: 600;
+        color: #0d6efd;
+        font-size: 0.95rem;
+    }
+
+    .batch-details {
+        display: none;
+        padding: 0 12px 12px 12px;
+        border-top: 1px solid #dee2e6;
+        background: white;
+        border-radius: 0 0 6px 6px;
+        max-height: 250px;
+        overflow-y: auto;
+    }
+
+    .batch-details::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .batch-details::-webkit-scrollbar-track {
+        background: #f8f9fa;
+        border-radius: 2px;
+    }
+
+    .batch-details::-webkit-scrollbar-thumb {
+        background: #dee2e6;
+        border-radius: 2px;
+    }
+
+    .batch-details::-webkit-scrollbar-thumb:hover {
+        background: #adb5bd;
+    }
+
+    .batch-details.show {
+        display: block;
+        animation: slideDown 0.2s ease;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            max-height: 0;
+        }
+        to {
+            opacity: 1;
+            max-height: 250px;
+        }
+    }
+
+    .toggle-icon {
+        transition: transform 0.2s ease;
+    }
+
+    .toggle-icon.rotated {
+        transform: rotate(180deg);
+    }
+
+    .custom-modal .modal-dialog {
+        width: 95vw;
+    }
+
+    @media (max-width: 992px) {
+        .area-tab-btn {
+            min-width: 100px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .area-tab-btn i {
+            display: none;
+        }
+
+        .tab-navigation-fixed {
+            padding: 8px 0;
+        }
+
+        .map-container {
+            max-height: calc(90vh - 120px);
+        }
+
+        .area-info-panel {
+            min-width: 250px;
+            max-width: 280px;
+        }
+
+        .batches-container {
+            max-height: 300px;
+        }
+
+        .batch-details {
+            max-height: 200px;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 200px;
+            }
+        }
+    }
+</style>
+
+<script>
+    let areaData = [];
+    let currentTab = 'left';
+    let activeDropdown = null;
+    
+    function fetchAndRenderAreaData() {
+        fetch("{% url 'get_area_data_api' %}")
+            .then(res => res.json())
+            .then(data => {
+                areaData = data.area_data;
+                renderAreaDivs();
+            });
+    }
+
+    let is_m_code = {% if m_code %}true{% else %}false{% endif %};
+    let stock_mode = "in"; 
+    {% if stock_mode %}
+        stock_mode = "{{ stock_mode }}";
+    {% endif %}
+
+    function getFilteredAreasByTab(tab) {
+        return areaData.filter(area => {
+            switch(tab) {
+                case 'left':
+                    return area.x >= 0 && area.x <= 820;
+                case 'center':
+                    return area.x > 820 && area.x < 1570;
+                case 'right':
+                    return area.x >= 1570 && area.x <= 2400;
+                default:
+                    return true;
+            }
+        });
+    }
+
+    // Function để fetch và hiển thị thông tin area
+    function fetchAndShowAreaInfo(areaId) {
+        const infoPanel = document.querySelector('.area-info-panel');
+        const infoContent = document.querySelector('.area-info-content');
+        
+        // Show panel
+        infoPanel.style.display = 'block';
+        
+        // Show loading state
+        infoContent.innerHTML = `
+            <div class="text-center py-3">
+                <div class="spinner-border spinner-border-sm text-primary mb-2" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="text-muted mb-0">Loading area information...</p>
+            </div>
+        `;
+        
+        // Reset active dropdown
+        activeDropdown = null;
+        
+        // Fetch area batch info
+        fetch("{% url 'get_area_batch_info' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({ area_id: areaId })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                displayAreaInfo(data.area_info, areaId);
+                
+                // Show confirm button after info is loaded (if needed)
+                if (typeof currentBatchForBinUpdate !== 'undefined' && currentBatchForBinUpdate) {
+                    selectedNewBin = areaId;
+                    showAreaConfirmButton(areaId);
+                }
+            } else {
+                showAreaInfoError(data.message || 'Failed to load area information');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching area info:', error);
+            showAreaInfoError('Error loading area information');
+        });
+    }
+
+    function displayAreaInfo(areaInfo, areaId) {
+        const infoContent = document.querySelector('.area-info-content');
+        
+        let batchesHtml = '';
+        
+        if (areaInfo.batches && areaInfo.batches.length > 0) {
+            batchesHtml = areaInfo.batches.map((batch, index) => `
+                <div class="batch-item" data-batch-index="${index}">
+                    <div class="batch-header" onclick="toggleBatchDetails(${index})">
+                        <span class="batch-number">${batch.batch_no || 'N/A'} (${batch.total_qty || 'N/A'})</span>
+                        <i class="fas fa-chevron-down toggle-icon" id="toggle-${index}"></i>
+                    </div>
+                    <div class="batch-details" id="details-${index}">
+                        ${batch.former_type ? `
+                        <div class="info-item">
+                            <div class="info-label">Former Type</div>
+                            <div class="info-value">${batch.former_type}</div>
+                        </div>
+                        ` : ''}
+                        
+                        ${batch.former_size ? `
+                        <div class="info-item">
+                            <div class="info-label">Former Size</div>
+                            <div class="info-value">${batch.former_size}</div>
+                        </div>
+                        ` : ''}
+                        
+                        ${batch.former_vendor ? `
+                        <div class="info-item">
+                            <div class="info-label">Vendor</div>
+                            <div class="info-value">${batch.former_vendor}</div>
+                        </div>
+                        ` : ''}
+                        
+                        ${batch.former_length ? `
+                        <div class="info-item">
+                            <div class="info-label">Length</div>
+                            <div class="info-value">${batch.former_length}</div>
+                        </div>
+                        ` : ''}
+                        
+                        ${batch.former_surface ? `
+                        <div class="info-item">
+                            <div class="info-label">Surface</div>
+                            <div class="info-value">${batch.former_surface}</div>
+                        </div>
+                        ` : ''}
+                        
+                        ${batch.former_used_day ? `
+                        <div class="info-item">
+                            <div class="info-label">Used Days</div>
+                            <div class="info-value">${batch.former_used_day} days</div>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            batchesHtml = `
+                <div class="text-center py-3">
+                    <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
+                    <p class="text-muted mb-0">No batches in this area</p>
+                </div>
+            `;
+        }
+        
+        infoContent.innerHTML = `
+            <div class="info-item">
+                <div class="info-label">Area ID</div>
+                <div class="info-value fw-bold text-primary">${areaId}</div>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-label">Status</div>
+                <div class="info-value">
+                    <span class="badge ${getStatusBadgeClass(areaInfo.status)}">${areaInfo.status || 'Available'}</span>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-label">Batches (${areaInfo.batches ? areaInfo.batches.length : 0})</div>
+            </div>
+            
+            <div class="batches-container">
+                ${batchesHtml}
+            </div>
+        `;
+    }
+
+    function toggleBatchDetails(index) {
+        const details = document.getElementById(`details-${index}`);
+        const toggle = document.getElementById(`toggle-${index}`);
+        const batchItem = document.querySelector(`[data-batch-index="${index}"]`);
+        
+        // If this is already active, close it
+        if (activeDropdown === index) {
+            details.classList.remove('show');
+            toggle.classList.remove('rotated');
+            batchItem.classList.remove('active');
+            activeDropdown = null;
+            return;
+        }
+        
+        // Close previously active dropdown
+        if (activeDropdown !== null) {
+            const prevDetails = document.getElementById(`details-${activeDropdown}`);
+            const prevToggle = document.getElementById(`toggle-${activeDropdown}`);
+            const prevBatchItem = document.querySelector(`[data-batch-index="${activeDropdown}"]`);
+            
+            if (prevDetails) prevDetails.classList.remove('show');
+            if (prevToggle) prevToggle.classList.remove('rotated');
+            if (prevBatchItem) prevBatchItem.classList.remove('active');
+        }
+        
+        // Open current dropdown
+        details.classList.add('show');
+        toggle.classList.add('rotated');
+        batchItem.classList.add('active');
+        activeDropdown = index;
+    }
+
+    function showAreaInfoError(message) {
+        const infoContent = document.querySelector('.area-info-content');
+        infoContent.innerHTML = `
+            <div class="text-center py-3">
+                <i class="fas fa-exclamation-triangle fa-2x text-warning mb-2"></i>
+                <p class="text-muted mb-0">${message}</p>
+            </div>
+        `;
+    }
+
+    function getStatusBadgeClass(status) {
+        switch(status?.toLowerCase()) {
+            case 'occupied': return 'bg-warning';
+            case 'full': return 'bg-danger';
+            case 'available': return 'bg-success';
+            case 'maintenance': return 'bg-secondary';
+            default: return 'bg-primary';
+        }
+    }
+
+    function getProgressBarClass(percentage) {
+        if (percentage >= 90) return 'bg-danger';
+        if (percentage >= 70) return 'bg-warning';
+        return 'bg-success';
+    }
+
+    function formatDateTime(dateString) {
+        try {
+            return new Date(dateString).toLocaleString();
+        } catch {
+            return dateString;
+        }
+    }
+
+    // ...existing renderAreaDivs function...
+    function renderAreaDivs() {
+        const container = document.querySelector(".map-container");
+        if (!container) return;
+        container.innerHTML = '';
+
+        // Lấy data theo tab hiện tại
+        const filteredAreas = getFilteredAreasByTab(currentTab);
+        
+        let maxX = 0, maxY = 0;
+        let minX = Infinity;
+        let minY = Infinity;
+
+        let maxWidth = 710;
+        switch(currentTab) {
+            case 'left':
+                maxWidth = 850;
+                break;
+            case 'center':
+                maxWidth = 710;
+                break;
+            case 'right':
+                maxWidth = 760;
+                break;
+        }
+
+        function getAreaColor(batchNo, maxCapacity) {
+            if (!batchNo || batchNo === 0 || !maxCapacity) {
+                return '#DAE0E6'; // Màu xám nhạt cho empty
+            }
+
+            // Tính phần trăm sử dụng
+            const percentage = (batchNo / maxCapacity) * 100;
+
+            // Chia theo từng đoạn 20%
+            if (percentage <= 20) {
+                return '#d4ead5'; // 0-20%: Màu xanh lá rất nhạt
+            } else if (percentage <= 40) {
+                return '#95d89d'; // 21-40%: Màu xanh lá nhạt
+            } else if (percentage <= 60) {
+                return '#62c15d'; // 41-60%: Màu xanh lá vừa
+            } else if (percentage <= 80) {
+                return '#2ca72d'; // 61-80%: Màu xanh lá đậm
+            } else if (percentage < 100) {
+                return '#06b800'; // 81-99%: Màu xanh lá rất đậm
+            } else {
+                return '#dc3545'; // 100%+: Màu đỏ cho quá tải
+            }
+        }
+
+        // Nhóm các area theo prefix (D1, D2, ...)
+        const areaGroups = {};
+        filteredAreas.forEach((area) => {
+            // Tìm minX và minY để offset
+            minX = Math.min(minX, area.x);
+            minY = Math.min(minY, area.y);
+            
+            // Tách prefix từ area.id: FM-D1-4 -> D1
+            const match = area.id.match(/^FM-([A-Z]\d+)-(\d+)$/);
+            if (match) {
+                const prefix = match[1]; // D1, D2, ...
+                const number = match[2]; // 1, 2, 3, 4, ...
+                
+                if (!areaGroups[prefix]) {
+                    areaGroups[prefix] = {
+                        areas: [],
+                        minX: Infinity,
+                        minY: Infinity,
+                        maxX: -Infinity,
+                        maxY: -Infinity
+                    };
+                }
+                
+                areaGroups[prefix].areas.push({...area, number: parseInt(number)});
+                
+                // Tính bounds của group
+                areaGroups[prefix].minX = Math.min(areaGroups[prefix].minX, area.x);
+                areaGroups[prefix].minY = Math.min(areaGroups[prefix].minY, area.y);
+                areaGroups[prefix].maxX = Math.max(areaGroups[prefix].maxX, area.x + area.w);
+                areaGroups[prefix].maxY = Math.max(areaGroups[prefix].maxY, area.y + area.l);
+            }
+        });
+
+        Object.entries(areaGroups).forEach(([prefix, group]) => {
+            group.areas.sort((a, b) => a.number - b.number);
+            
+            group.areas.forEach((area, index) => {
+                const block = document.createElement("div");
+                block.className = "area-block position-absolute";
+                // Offset X và Y bình thường
+                block.style.left = `${area.x - minX + 20}px`;
+                block.style.top = `${area.y - minY + 20}px`;
+                block.style.width = `${area.w}px`;
+                block.style.height = `${area.l}px`;
+                
+                // Sử dụng màu dựa trên batch_no
+
+                const areaSize = area.w * area.l;
+
+                let maxCapacity;
+
+                if (areaSize === 8100) {
+                    maxCapacity = 1944;
+                } else {
+                    maxCapacity = Math.round((areaSize / 8100) * 1944);
+                }
+
+
+                const fillColor = getAreaColor(area.batch_no, maxCapacity);
+                block.style.backgroundColor = fillColor;
+                
+                block.style.borderRadius = "4px";
+                block.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+                block.style.fontFamily = "sans-serif";
+                block.style.border = "2px solid #fff";
+                block.style.cursor = "pointer";
+                block.style.transition = "all 0.2s ease";
+
+                // Hover effect
+                block.addEventListener('mouseenter', () => {
+                    block.style.transform = 'scale(1.05)';
+                    block.style.zIndex = '20';
+                });
+                
+                block.addEventListener('mouseleave', () => {
+                    block.style.transform = 'scale(1)';
+                    block.style.zIndex = '1';
+                });
+
+                // Số thứ tự ở góc phải trên
+                const numberLabel = document.createElement("div");
+                numberLabel.textContent = area.number;
+                numberLabel.style.position = "absolute";
+                numberLabel.style.top = "5px";
+                numberLabel.style.right = "5px";
+                numberLabel.style.fontSize = "14px";
+                numberLabel.style.fontWeight = "bold";
+                numberLabel.style.color = "#fff";
+                numberLabel.style.backgroundColor = "rgba(0,0,0,0.3)";
+                numberLabel.style.borderRadius = "50%";
+                numberLabel.style.width = "20px";
+                numberLabel.style.height = "20px";
+                numberLabel.style.display = "flex";
+                numberLabel.style.alignItems = "center";
+                numberLabel.style.justifyContent = "center";
+                block.appendChild(numberLabel);
+                
+                if (area.batch_no !== undefined && area.batch_no !== null) {
+
+                    const batchLabel = document.createElement("div");
+
+                    batchLabel.textContent = area.batch_no + "/" + maxCapacity;
+                    batchLabel.style.position = "absolute";
+                    batchLabel.style.top = "50%";
+                    batchLabel.style.left = "12%";
+                    batchLabel.style.transform = "translate(-50%, -50%)";
+                    batchLabel.style.fontSize = "12px";
+                    batchLabel.style.fontWeight = "bold";
+                    batchLabel.style.color = "#000";
+                    batchLabel.style.textShadow = "1px 1px 2px rgba(255,255,255,0.8)";
+                    batchLabel.style.textAlign = "center";
+                    batchLabel.style.pointerEvents = "none";
+                    batchLabel.style.zIndex = "5";
+                    batchLabel.style.maxWidth = "90%";
+                    block.appendChild(batchLabel);
+                }
+
+                // Click event để show info và confirm button
+                block.addEventListener("click", () => {
+                    // Fetch và show area info
+                    fetchAndShowAreaInfo(area.name);
+
+                    // Existing logic cho confirm button
+                    sendAreaSelection(area.name);
+                });
+
+                container.appendChild(block);
+            });
+
+            // Vẽ label tên group ở giữa
+            const centerX = (group.minX + group.maxX) / 2 - minX + 20;
+            const centerY = (group.minY + group.maxY) / 2 - minY + 20;
+
+            const groupLabel = document.createElement("div");
+            groupLabel.textContent = prefix;
+            groupLabel.style.position = "absolute";
+            groupLabel.style.left = `${centerX}px`;
+            groupLabel.style.top = `${centerY}px`;
+            groupLabel.style.transform = "translate(-50%, -50%)";
+            groupLabel.style.fontSize = "32px";
+            groupLabel.style.fontWeight = "bold";
+            groupLabel.style.color = "#fff";
+            groupLabel.style.textShadow = "2px 2px 4px rgba(0,0,0,0.5)";
+            groupLabel.style.pointerEvents = "none";
+            groupLabel.style.zIndex = "10";
+
+            container.appendChild(groupLabel);
+
+            maxX = Math.max(maxX, group.maxX - minX + 20);
+            maxY = Math.max(maxY, group.maxY - minY + 20);
+        });
+
+        // Áp dụng max-width và set kích thước container
+        const finalWidth = Math.min(Math.max(maxX + 20, 400), maxWidth);
+        const finalHeight = Math.max(maxY + 20, 400);
+
+        container.style.width = `${finalWidth}px`;
+        container.style.height = `${finalHeight}px`;
+        container.style.maxWidth = `${maxWidth}px`;
+    }
+
+    // Tab switching functionality with animation
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('area-tab-btn')) {
+            const tab = e.target.getAttribute('data-tab');
+
+            // Update active tab with smooth transition
+            document.querySelectorAll('.area-tab-btn').forEach(btn => {
+                btn.classList.remove('active', 'btn-primary');
+                btn.classList.add('btn-outline-primary');
+            });
+
+            e.target.classList.remove('btn-outline-primary');
+            e.target.classList.add('active', 'btn-primary');
+
+            // Update current tab and re-render with fade effect
+            currentTab = tab;
+
+            // Hide info panel when switching tabs
+            const infoPanel = document.querySelector('.area-info-panel');
+            if (infoPanel) {
+                infoPanel.style.display = 'none';
+            }
+
+            // Reset active dropdown
+            activeDropdown = null;
+
+            // Hide confirm button when switching tabs
+            const existingBtn = document.querySelector('.area-update-confirm');
+            if (existingBtn) {
+                existingBtn.remove();
+            }
+
+            const container = document.querySelector('.map-container');
+            if (container) {
+                container.style.opacity = '0.5';
+                setTimeout(() => {
+                    renderAreaDivs();
+                    container.style.opacity = '1';
+                }, 150);
+            }
+        }
+    });
+
+    function sendAreaSelection(area_id) {
+        // 1) Branches dùng trên trang "former search"
+        if (typeof currentBatchForBinUpdate !== 'undefined' && currentBatchForBinUpdate) {
+            selectedNewBin = area_id;
+            showAreaConfirmButton(area_id);
+            return;
+        }
+        if (typeof onAreaSelected === 'function') {
+            onAreaSelected(area_id);
+            return;
+        }
+
+        // 2) Clear cờ "đang mở modal"
+        const activeBtn = document.querySelector('.open-custom-modal[data-showing="1"]');
+        if (activeBtn) activeBtn.removeAttribute("data-showing");
+
+        // 3) Build payload
+        const requestData = { area_id };
+
+        // totalBasketVal (nếu có)
+        if (typeof window.totalBasketVal !== 'undefined')
+            requestData.total_basket_val = window.totalBasketVal;
+
+        // --- LẤY GIÁ TRỊ size_name_input (có dự phòng) ---
+        // Thử theo ID chuẩn
+        let sizeNameInputEl =
+            document.getElementById('size_name_input')
+            // Alias cũ / khả năng đặt name khác
+            || document.querySelector('input[name="params_size"]')
+            || document.querySelector('input[name="size_name"]')
+            // Thử tìm trong modal nếu phần tử nằm trong đó
+            || (document.querySelector('.custom-modal') && document.querySelector('.custom-modal #size_name_input'));
+
+        if (sizeNameInputEl && sizeNameInputEl.value && sizeNameInputEl.value.trim() !== '') {
+            requestData.size_name = sizeNameInputEl.value.trim();
+        }
+
+
+        // --- LẤY GIÁ TRỊ surface_name_input ---
+        let surfaceNameInputEl =
+            document.getElementById('surface_name_input')
+            || document.querySelector('input[name="params_surface"]')
+            || document.querySelector('input[name="surface_name"]')
+            || (document.querySelector('.custom-modal') && document.querySelector('.custom-modal #surface_name_input'));
+
+        if (surfaceNameInputEl && surfaceNameInputEl.value && surfaceNameInputEl.value.trim() !== '') {
+            requestData.surface_name = surfaceNameInputEl.value.trim();
+        }
+
+
+        // --- LẤY SIZE & SURFACE TRONG BẢNG TÓM TẮT ---
+        // Lưu ý: mình đang đọc cột thứ 3 (Size/Surface), comment cũ ghi nhầm "cột thứ 2"
+        const stockInfoBody = document.getElementById('stock-new-info-body');
+        if (stockInfoBody) {
+            const firstRow = stockInfoBody.querySelector('tr');
+            if (firstRow) {
+                // Size ở cột 3 (nếu bảng của anh đang là: BatchNo | Type | Size/Surface | UsedDay | Baskets | Qty)
+                const sizeTd = firstRow.querySelector('td:nth-child(3)');
+                if (sizeTd && sizeTd.textContent.trim() !== '') {
+                    // Nếu ô này hiển thị "size / surface" thì backend có thể tách sau
+                    requestData.size = sizeTd.textContent.trim();
+                }
+
+                // Surface theo yêu cầu: lấy ở cột 1
+                const surfaceTd = firstRow.querySelector('td:nth-child(2)');
+                if (surfaceTd && surfaceTd.textContent.trim() !== '') {
+                    requestData.surface = surfaceTd.textContent.trim();
+                }
+            }
+        }
+
+        // 4) Gửi server
+        fetch(`{% url 'bin_selection_api' %}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                // Update UI
+                const section = document.querySelector('.table-section-wrapper');
+                if (section) {
+                    section.querySelectorAll('.selected-area-name')
+                           .forEach(span => span.textContent = area_id);
+                }
+                // Close modal
+                const modalEl = document.querySelector('.custom-modal');
+                if (modalEl) {
+                    const modal = bootstrap.Modal.getInstance(modalEl);
+                    if (modal) modal.hide();
+                }
+            } else if (data.status === 'error') {
+                // Reset UI + báo lỗi
+                const section = document.querySelector('.table-section-wrapper');
+                if (section) {
+                    section.querySelectorAll('.selected-area-name')
+                           .forEach(span => span.textContent = '');
+                }
+                alert(data.message || 'Area capacity exceeded!');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const section = document.querySelector('.table-section-wrapper');
+            if (section) {
+                section.querySelectorAll('.selected-area-name')
+                       .forEach(span => span.textContent = '');
+            }
+            alert('An error occurred while selecting the area.');
+        });
+    }
+
+    function showAreaConfirmButton(areaId) {
+        // Remove existing confirm button
+        const existingBtn = document.querySelector('.area-update-confirm');
+        if (existingBtn) {
+            existingBtn.remove();
+        }
+        
+        // Only show button if info panel is visible
+        const infoPanel = document.querySelector('.area-info-panel');
+        if (!infoPanel || infoPanel.style.display === 'none') {
+            return;
+        }
+        
+        // Add confirm button to modal body
+        const modalBody = document.querySelector('.custom-modal .modal-body');
+        if (modalBody) {
+            const confirmBtn = document.createElement('button');
+            confirmBtn.className = 'btn btn-success area-update-confirm';
+            confirmBtn.innerHTML = `<i class="fas fa-check"></i> Move to ${areaId}`;
+            confirmBtn.style.position = 'absolute';
+            confirmBtn.style.top = '10px';
+            confirmBtn.style.right = '10px';
+            confirmBtn.style.zIndex = '1060';
+            confirmBtn.style.minWidth = '200px';
+            confirmBtn.style.padding = '10px 15px';
+            confirmBtn.style.borderRadius = '6px';
+            confirmBtn.style.boxShadow = '0 4px 8px rgba(40, 167, 69, 0.3)';
+            confirmBtn.style.fontWeight = '600';
+            confirmBtn.style.transition = 'all 0.3s ease';
+            
+            // Add hover effect
+            confirmBtn.addEventListener('mouseenter', () => {
+                confirmBtn.style.transform = 'translateY(-2px)';
+                confirmBtn.style.boxShadow = '0 6px 12px rgba(40, 167, 69, 0.4)';
+            });
+            
+            confirmBtn.addEventListener('mouseleave', () => {
+                confirmBtn.style.transform = 'translateY(0)';
+                confirmBtn.style.boxShadow = '0 4px 8px rgba(40, 167, 69, 0.3)';
+            });
+            
+            confirmBtn.onclick = function() {
+                if (typeof confirmBinUpdate === 'function') {
+                    confirmBinUpdate();
+                } else {
+                    console.error('confirmBinUpdate function not found');
+                }
+            };
+            
+            modalBody.appendChild(confirmBtn);
+        }
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.slice(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.open-custom-modal');
+        const modalEl = document.querySelector('.custom-modal');
+
+        if (btn && modalEl) {
+            btn.setAttribute("data-showing", "1");
+            const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.show();
+            setTimeout(fetchAndRenderAreaData, 150);
+        }
+    });
+</script>

@@ -1,0 +1,587 @@
+{% load crispy_forms_tags %}
+
+<style>
+    .search-button {
+        bottom: 3px !important;
+    }
+
+    .form-group {
+        margin-bottom: 0 !important;
+    }
+
+    .wo-result-table-div {
+    {% if "linux" in request.META.HTTP_USER_AGENT|lower %}
+        height: 130px;
+    {% else %}
+        height: 100px;
+    {% endif %}
+    }
+
+    .batch-basket-lost-div {
+    {% if "linux" in request.META.HTTP_USER_AGENT|lower %}
+        height: 130px;
+    {% else %}
+        height: 98px;
+    {% endif %}
+    }
+
+    .custom-select-wrapper {
+        position: relative;
+    }
+
+    .custom-select-toggle {
+        position: relative;
+        width: 100%;
+    }
+
+    .select-input {
+        width: 100%;
+        padding: 8px 30px 8px 12px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        background-color: white;
+        cursor: pointer;
+    }
+
+    .x-button {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #6c757d;
+        font-weight: bold;
+    }
+
+    .select-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #ced4da;
+        border-top: none;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1000;
+        display: none;
+    }
+
+    .select-dropdown .item {
+        padding: 8px 12px;
+        cursor: pointer;
+        border-bottom: 1px solid #f8f9fa;
+    }
+
+    .select-dropdown .item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .select-dropdown .item:last-child {
+        border-bottom: none;
+    }
+
+    .small-checkbox {
+        width: 14px !important;
+        height: 14px !important;
+        margin-top: 1px !important;
+    }
+
+    .small-checkbox-label {
+        font-size: 13px;
+        margin-left: 6px;
+        line-height: 1.2;
+    }
+</style>
+
+{% load i18n %}
+{% csrf_token %}
+<div class="row">
+    <div class="col-lg-8 col-md-12 order-lg-1 order-md-2">
+        {% if mode == 'change' %}
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-lg-3 col-md-5">
+                        {{ form.stockout_form|as_crispy_field }}
+                    </div>
+                    <div class="col-lg-2 col-md-3">
+                        {% if is_form_restored %}
+                            <div class="form-group mb-3">
+                                <label class="form-label">{% trans "Size" %}<span class="">*</span></label>
+                                <input type="text" class="form-control" value="{{ former_size|default:'' }}" readonly>
+                                <input type="hidden" id="params_size" name="params_size"
+                                       value="{{ former_size|default:'' }}">
+                            </div>
+                        {% else %}
+                            {% include "wh_former/modules/components/forms/fields/forms_size_field.html" with is_required=True %}
+                        {% endif %}
+                    </div>
+
+                    <div class="col-lg-2 col-md-4">
+                        <div class="form-group mb-3">
+                            <label for="bin_code" class="form-label">
+                                {% trans 'Bin code' %}<span class="">*</span>
+                            </label>
+
+                            <select id="bin_code" name="bin_code">
+                                {% for code in bin_codes %}
+                                    <option value="{{ code }}">{{ code }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-4">
+                        <div class="form-group mb-3">
+                            <label class="form-label">
+                                {% trans 'Create new form' %}<span class="">*</span>
+                            </label>
+                            <div style="margin-top: 6px;">
+                                <button type="button" id="create_new_form_btn" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-plus"></i> {% trans 'Create New Form' %}
+                                </button>
+                            </div>
+
+                            <select id="stock_type" name="stock_type" class="form-select" style="display:none;">
+                                <option value="0" {% if request.GET.stock_type == '0' %}selected{% endif %}>
+                                    {% trans 'Continue with form' %}
+                                </option>
+                                <option value="1" {% if request.GET.stock_type == '1' %}selected{% endif %}>
+                                    {% trans 'Create new form' %}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if mode == 'clean' %}
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-lg-3 col-md-5">
+                        {{ form.stockout_form|as_crispy_field }}
+                    </div>
+                    <div class="col-lg-2 col-md-4">
+                        <div class="form-group mb-3">
+                            <label for="bin_code" class="form-label">
+                                {% trans 'Bin code' %}<span class="">*</span>
+                            </label>
+
+                            <select id="bin_code" name="bin_code">
+                                {% for code in bin_codes %}
+                                    <option value="{{ code }}">{{ code }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if mode == 'to_lk' %}
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-lg-3 col-md-5">
+                        {{ form.stockout_form|as_crispy_field }}
+                    </div>
+                    <div class="col-lg-2 col-md-4">
+                        <div class="form-group mb-3">
+                            <label for="bin_code" class="form-label">
+                                {% trans 'Bin code' %}<span class="">*</span>
+                            </label>
+
+                            <select id="bin_code" name="bin_code">
+                                {% for code in bin_codes %}
+                                    <option value="{{ code }}">{{ code }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        {% endif %}
+
+        <div class="col-12" style="padding: 12px 0 0 0">
+            <div id="stockout-new-info-header" style="height: 30px !important; text-align: center">
+                <table style="width: 100%; font-weight: bold">
+                    <tr>
+                        <td style="width: 30%;">{% trans "Batch no" %}</td>
+                        <td style="width: 25%;">{% trans "Former type" %}</td>
+                        <td style="width: 11%;">{% trans "Size" %}</td>
+                        <td style="width: 12%;">{% trans "Used day" %}</td>
+                        <td style="width: 12%">{% trans "Baskets" %}</td>
+                        <td style="width: 13%;">{% trans "Formers" %}</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="stock-new-info-body"
+                 style="overflow-y: auto; border-top: 1px solid green; border-left: none; border-right: none;">
+                <table id="stock-new-info-table" style="width: 100%"></table>
+            </div>
+            {% if type != "empty" %}
+                <div class="col-auto d-flex align-items-center" style="gap: 15px;">
+                    <div class="scan-counter-display d-flex align-items-center" style="gap: 10px;">
+                        <div class="counter-item d-flex align-items-center"
+                             style="background: white; padding: 8px 12px; border-radius: 0; color: black; font-weight: 600;">
+                            <span style="font-size: 15px;">{% trans "Baskets" %}: <span
+                                    id="totalBasketValue">{{ total_basket }}</span></span>
+                        </div>
+                        <div class="counter-item d-flex align-items-center"
+                             style="background: white; padding: 8px 12px; border-radius: 0; color: black; font-weight: 600;">
+                            <span style="font-size: 15px;">{% trans "Formers" %}: <span
+                                    id="totalFormerValue">{{ total_former }}</span></span>
+                        </div>
+                    </div>
+                    {% include 'wh_former/modules/components/buttons/rack_button.html' %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 order-lg-2 order-md-1" style="padding: 0 16px 0 0">
+        {% if change %}
+            <div class="row">
+                <div class="col-lg-3 col-md-2 order-md-2 order-lg-1"></div>
+                <div class="col-lg-8 col-md-10 order-md-1 order-lg-2">
+                    <div class="row" style="height: 44px;">
+                        <div class="col-10">
+                            <div class="row" id="line-buttons"></div>
+                        </div>
+                        <div class="col-2">
+                            {% include 'wh_former/components/buttons/search_button.html' %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="padding: 0 0 0 16px;">
+                            <div id="" style="height: 100px; overflow-y: auto; border-top: solid 1px #316AFF">
+                                <table id="wo-result-table" style="width: 100%;">
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize Stock Type dropdown
+        const stockTypeToggle = document.getElementById('stock-type-toggle');
+        const stockTypeDropdown = document.getElementById('stock-type-dropdown');
+        const stockTypeSelect = document.getElementById('stock_type');
+        const stockTypeInput = document.getElementById('stock_type_input');
+        const stockTypeXButton = stockTypeToggle.querySelector('.x-button');
+
+        let isSubmitting = false; // Prevent multiple submissions
+
+        // Set initial value
+        function setInitialStockTypeValue() {
+            const selectedOption = stockTypeSelect.querySelector('option[selected]');
+            if (selectedOption) {
+                stockTypeInput.value = selectedOption.textContent.trim();
+                stockTypeSelect.value = selectedOption.value;
+            } else {
+                // Default to option "2" instead of "1"
+                const defaultOption = stockTypeSelect.querySelector('option[value="2"]');
+                if (defaultOption) {
+                    stockTypeInput.value = defaultOption.textContent.trim();
+                    stockTypeSelect.value = defaultOption.value;
+                }
+            }
+        }
+
+        // Auto submit when stock type is set to default (only once)
+        function autoSubmitStockType() {
+            if (isSubmitting) return; // Prevent multiple calls
+
+            if (stockTypeSelect.value === '2') {
+                isSubmitting = true;
+                setTimeout(() => {
+                    submitStockTypeChange();
+                    setTimeout(() => {
+                        isSubmitting = false; // Reset after submission
+                    }, 2000);
+                }, 100);
+            }
+        }
+
+        // Toggle dropdown
+        stockTypeToggle.addEventListener('click', function (e) {
+            if (e.target === stockTypeXButton) return;
+
+            e.stopPropagation();
+            const isOpen = stockTypeDropdown.style.display === 'block';
+
+            // Close all other dropdowns
+            document.querySelectorAll('.select-dropdown').forEach(d => {
+                if (d !== stockTypeDropdown) d.style.display = 'none';
+            });
+
+            stockTypeDropdown.style.display = isOpen ? 'none' : 'block';
+        });
+
+        // Handle X button click
+        stockTypeXButton.addEventListener('click', function (e) {
+            e.stopPropagation();
+            stockTypeInput.value = '';
+            stockTypeSelect.value = '';
+            stockTypeDropdown.style.display = 'none';
+        });
+
+        // Handle item selection
+        stockTypeDropdown.addEventListener('click', function (e) {
+            if (e.target.classList.contains('item')) {
+                const value = e.target.getAttribute('data-value');
+                const text = e.target.textContent.trim();
+
+                stockTypeInput.value = text;
+                stockTypeSelect.value = value;
+                stockTypeDropdown.style.display = 'none';
+
+                // Trigger change event and submit
+                submitStockTypeChange();
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+            if (!stockTypeToggle.contains(e.target) && !stockTypeDropdown.contains(e.target)) {
+                stockTypeDropdown.style.display = 'none';
+            }
+        });
+
+        // Initialize
+        setInitialStockTypeValue();
+
+        // Only auto submit on initial page load if no stock_type in URL
+        if (!window.location.search.includes('stock_type=')) {
+            autoSubmitStockType();
+        }
+    });
+
+    function submitStockTypeChange() {
+        const stockType = document.getElementById('stock_type').value;
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('stock_type', stockType);
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = window.location.pathname + '?' + currentUrl.searchParams.toString();
+
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrfmiddlewaretoken';
+        csrfInput.value = csrfToken;
+        form.appendChild(csrfInput);
+
+        const formTypeInput = document.createElement('input');
+        formTypeInput.type = 'hidden';
+        formTypeInput.name = 'form_type';
+        formTypeInput.value = 'stock_type_change';
+        form.appendChild(formTypeInput);
+
+        const stockTypeInput = document.createElement('input');
+        stockTypeInput.type = 'hidden';
+        stockTypeInput.name = 'stock_type';
+        stockTypeInput.value = stockType;
+        form.appendChild(stockTypeInput);
+
+        const stockoutFormElement = document.querySelector('[name="stockout_form"]');
+        if (stockoutFormElement && stockoutFormElement.value) {
+            const stockoutFormInput = document.createElement('input');
+            stockoutFormInput.type = 'hidden';
+            stockoutFormInput.name = 'stockout_form';
+            stockoutFormInput.value = stockoutFormElement.value;
+            form.appendChild(stockoutFormInput);
+        }
+
+        const sizeElement = document.querySelector('[name="params_size"]');
+        if (sizeElement && sizeElement.value) {
+            const sizeInput = document.createElement('input');
+            sizeInput.type = 'hidden';
+            sizeInput.name = 'params_size';
+            sizeInput.value = sizeElement.value;
+            form.appendChild(sizeInput);
+        }
+
+        const machineSelect = document.getElementById('machine-select');
+        if (machineSelect && machineSelect.value) {
+            const machineInput = document.createElement('input');
+            machineInput.type = 'hidden';
+            machineInput.name = 'selected_machine';
+            machineInput.value = machineSelect.value;
+            form.appendChild(machineInput);
+        }
+
+        const plantSelect = document.getElementById('plant-select');
+        if (plantSelect && plantSelect.value) {
+            const plantInput = document.createElement('input');
+            plantInput.type = 'hidden';
+            plantInput.name = 'selected_plant';
+            plantInput.value = plantSelect.value;
+            form.appendChild(plantInput);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const createNewFormBtn = document.getElementById('create_new_form_btn');
+        const stockTypeSelect = document.getElementById('stock_type');
+
+        let isSubmitting = false;
+        let currentButtonMode = 1;
+
+        // Set initial button state by fetching from API
+        function setInitialButtonState() {
+            fetchCurrentButtonMode().then(mode => {
+                currentButtonMode = mode;
+                updateButtonAppearance('0', mode); // mặc định stock_type='0'
+            });
+        }
+
+        // Fetch current button_mode from API
+        async function fetchCurrentButtonMode() {
+            try {
+                const r = await fetch(`{% url 'generate_stock_form_api' %}`);
+                const d = await r.json();
+                return (typeof d.button_mode !== 'undefined') ? d.button_mode : 1;
+            } catch (e) {
+                console.error(e);
+                return 1;
+            }
+        }
+
+        async function fetchGenerateStockForm({stockTypeValue, byButton = false}) {
+            const machineSelect = document.getElementById('machine-select');
+            const stockFormInput = document.querySelector('input[name="stockout_form"]');
+            const stockFormSize = document.querySelector('input[name="params_size"]');
+
+            if (!machineSelect || !stockFormInput) return;
+
+            const machine = machineSelect.value;
+
+            let lineName = '';
+            const selectedLineBtn = document.querySelector('button[data-line].btn-primary');
+            if (selectedLineBtn) {
+                const fullLine = selectedLineBtn.getAttribute('data-line');
+                lineName = fullLine ? fullLine.slice(-2) : '';
+            }
+
+            const backendStockoutForm = "{{ stockout_form|escapejs }}";
+            const idStockForm = document.getElementById('stockout-form-select')?.value || '';
+            const sizeNameInput = document.getElementById('form_size_input')?.value ||
+                document.querySelector('input[name="params_size"]')?.value ||
+                "{{ former_size|default:'' }}";
+
+            const params = new URLSearchParams({
+                machine,
+                line_name: lineName,
+                stock_type: String(stockTypeValue),
+                existing_form: backendStockoutForm || '',
+                id_stock_form: idStockForm,
+                size_name_input: sizeNameInput
+            });
+
+
+            if (byButton) {
+                params.append('button_mode', '1');
+                params.append('call_by_button', '1');
+            }
+
+            const resp = await fetch(`{% url 'generate_stock_form_api' %}?${params.toString()}`, {
+                headers: {'X-Requested-With': 'XMLHttpRequest'}
+            });
+            const data = await resp.json();
+
+            if (!data.success) {
+                console.error('API Error:', data.error);
+                return null;
+            }
+
+            stockFormInput.value = data.form_name;
+
+            // cập nhật size (ẩn & hiện)
+            if (stockFormSize) {
+                stockFormSize.value = data.form_size;
+                stockFormSize.readOnly = !!data.is_size_readonly;
+                stockFormSize.style.backgroundColor = data.is_size_readonly ? '#e9ecef' : '';
+            }
+            const visibleSizeInput = document.getElementById('form_size_input');
+            if (visibleSizeInput) {
+                visibleSizeInput.value = data.form_size;
+                visibleSizeInput.readOnly = !!data.is_size_readonly;
+                visibleSizeInput.style.backgroundColor = data.is_size_readonly ? '#e9ecef' : '';
+            }
+
+            // cập nhật trạng thái nút theo button_mode server trả về
+            if (typeof data.button_mode !== 'undefined' && window.updateButtonAppearance) {
+                window.updateButtonAppearance(String(stockTypeValue), data.button_mode);
+            }
+
+            return data;
+        }
+
+        // Update button appearance based on button_mode
+        function updateButtonAppearance(stockType, buttonMode) {
+            console.log(`Updating button - Current disabled: ${createNewFormBtn.disabled}, New mode: ${buttonMode}`);
+
+            if (buttonMode === 0) {
+                // Disabled state
+                createNewFormBtn.disabled = true;
+                createNewFormBtn.classList.remove('btn-primary', 'btn-outline-primary');
+                createNewFormBtn.classList.add('btn-secondary');
+                console.log('Button set to DISABLED (mode 0)');
+            } else {
+                // Enabled state
+                createNewFormBtn.disabled = false;
+                createNewFormBtn.classList.remove('btn-secondary');
+                createNewFormBtn.classList.add('btn-outline-primary');
+                console.log('Button set to ENABLED (mode 1)');
+            }
+
+            currentButtonMode = buttonMode;
+            console.log(`Button updated - Mode: ${buttonMode}, Disabled: ${createNewFormBtn.disabled}`);
+        }
+
+        // Handle button click
+        createNewFormBtn?.addEventListener('click', async function () {
+            if (isSubmitting || currentButtonMode === 0) return;
+            isSubmitting = true;
+
+            const data = await fetchGenerateStockForm({stockTypeValue: 1, byButton: true});
+            if (data) {
+                // đồng bộ UI sang chế độ "Create new form" mà không reload
+                if (stockTypeSelect) stockTypeSelect.value = '1';
+                const url = new URL(window.location.href);
+                url.searchParams.set('stock_type', '1');
+                history.replaceState({}, '', url);
+            }
+
+            setTimeout(() => {
+                isSubmitting = false;
+            }, 600);
+        });
+        {#window.fetchGenerateStockForm = fetchGenerateStockForm;#}
+
+
+        // Make callGenerateStockFormApi available globally for other scripts
+        window.callGenerateStockFormApi = callGenerateStockFormApi;
+        window.updateButtonAppearance = updateButtonAppearance;
+
+        // Initialize button state
+        setInitialButtonState();
+    });
+</script>
+
+{% include 'wh_former/modules/components/forms/fields/former_stock_form.html' %}
+

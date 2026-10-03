@@ -1,0 +1,108 @@
+{% load i18n %}
+
+<style>
+    .page-loading-overlay {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease-in-out;
+        z-index: 200000;
+    }
+
+    .page-loading-overlay.show {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .spinner {
+        width: 56px;
+        height: 56px;
+        border: 6px solid #f3f3f3;
+        border-top: 6px solid #007bff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .loading-text {
+        margin-top: 16px;
+        font-weight: 600;
+        font-size: 18px;
+        color: #f8f9fa;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+</style>
+
+<div class="modal fade" id="doneConfirmModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 12px;">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title font-weight-bold">
+                    <i class="fas fa-check-circle"></i> {% trans "Confirm Save" %} ?
+                </h5>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-save text-success" style="font-size: 3rem;"></i>
+                </div>
+                <p class="text-center mb-3">
+                    <strong>{% trans "Are you sure you want to complete this operation?" %}</strong></p>
+                <p class="text-center">
+                    {% trans "This will finalize all data and move items to final storage." %}<br>
+                    {% trans "This action cannot be undone!" %}
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="cancel-button-2"
+                        onclick="document.getElementById('doneConfirmModal').style.display='none';document.querySelectorAll('.modal-backdrop').forEach(b=>b.remove());">
+                    {% include 'wh_former/modules/components/buttons/cancel-button-2.html' %}
+                </button>
+                <button type="submit" class="confirm-button-2" id="confirmDoneBtn" name="form_type" value="done">
+                    {% include 'wh_former/modules/components/buttons/confirm-button-2.html' %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pageLoadingOverlay" class="page-loading-overlay">
+    <div class="spinner"></div>
+</div>
+
+<script>
+    (function () {
+        function closeConfirmModalFast() {
+            const modal = document.getElementById('doneConfirmModal');
+            if (!modal) return;
+            modal.style.display = 'none';
+            modal.classList.remove('show');
+            document.body.classList.remove('modal-open');
+            document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+        }
+
+        document.addEventListener('submit', function (e) {
+            const overlay = document.getElementById('pageLoadingOverlay');
+            if (e.submitter && e.submitter.id === 'confirmDoneBtn') {
+                closeConfirmModalFast();
+                overlay?.classList.add('show');      // fade-in overlay
+                document.body.setAttribute('aria-busy', 'true');
+                document.body.style.cursor = 'wait';
+                try {
+                    window.isFormSubmitting = true;
+                    window.removeBeforeUnloadHandler?.();
+                } catch (_) {
+                }
+            }
+        }, true);
+    })();
+</script>

@@ -1,0 +1,267 @@
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+<div class="modal fade" id="vendorModal" tabindex="-1" aria-labelledby="vendorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 border-0">
+            <div class="modal-header">
+                <h4 class="modal-title" id="vendorModalLabel"><b>{% trans "Add Brand ..." %}</b></h4>
+                <button type="button" class="btn p-0 border-0 bg-transparent" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                {% if vendor_form %}
+                    <form method="post">
+                        <input type="hidden" name="form_type" value="vendor">
+                        {% csrf_token %}
+                        <div class="col-12 card p-4 shadow-sm border rounded bg-white">
+                            <div class="row no-margin">
+                                <div class="col-9 g-3 align-items-center">
+                                    {% crispy vendor_form %}
+                                </div>
+                                <div class="col-4 d-flex align-items-end pb-3">
+                                     <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-1"></i> Save
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="form_type" value="vendor">
+                    </form>
+                {% endif %}
+
+                {% if all_vendors %}
+                    <div class="table-responsive mt-4" style="max-height: calc(100vh - 460px); overflow-y: auto; margin-bottom: 10px;">
+                        <table class="table table-bordered table-striped table-hover align-middle text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Active</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for vendor in all_vendors %}
+                                    <tr>
+                                        <td>{{ vendor.name }}</td>
+                                        <td>{{ vendor.is_active }}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary me-1" onclick="editParam('{{ vendor.code }}', '{{ vendor.name }}', '{{ vendor.is_active }}')">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                            <button class="btn btn-sm btn-success me-1" onclick="enableParam('{{ vendor.code }}')">
+                                                <i class="fas fa-check"></i> Enable
+                                            </button>
+                                            <button class="btn btn-sm btn-warning me-1" onclick="disableParam('{{ vendor.code }}')">
+                                                <i class="fas fa-ban"></i> Disable
+                                            </button>
+                                            <button class="btn btn-sm btn-danger" onclick="deleteParam('{{ vendor.code }}')">
+                                                <i class="fas fa-trash-alt"></i> Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted mt-3">Nothing was found...</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editVendorModal" tabindex="-1" aria-labelledby="editVendorModalLabel" aria-hidden="true" style="z-index: 1070;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0">
+            <div class="modal-header">
+                <button type="button" class="btn p-0 border-0 bg-transparent" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editVendorForm">
+                    <div class="mb-3 d-none">
+                        <label for="editVendorCode" class="form-label">{% trans "Code" %}</label>
+                        <input type="text" id="editVendorCode" class="form-control bg-light" readonly style="background-color: #f8f9fa !important;">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editVendorName" class="form-label">{% trans "Name" %}</label>
+                        <input type="text" id="editVendorName" class="form-control" placeholder="Enter vendor name" autocomplete="off">
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" id="editVendorActive" class="form-check-input">
+                        <label for="editVendorActive" class="form-check-label">{% trans "Active" %}</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+                <button type="button" class="btn btn-primary" onclick="saveEditParam()">{% trans "Save changes" %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Đảm bảo edit modal luôn hiển thị trên vendor modal */
+#editVendorModal {
+    z-index: 1070 !important;
+}
+
+#editVendorModal .modal-backdrop {
+    z-index: 1069 !important;
+}
+
+/* Điều chỉnh backdrop để không che phủ edit modal */
+.modal-backdrop.show {
+    z-index: 1040;
+}
+
+/* Đảm bảo vendor modal có z-index thấp hơn */
+#vendorModal {
+    z-index: 1050;
+}
+
+/* Đảm bảo input fields có thể edit được */
+#editVendorName {
+    background-color: white !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+#editVendorActive {
+    pointer-events: auto !important;
+}
+
+/* Style cho readonly field */
+#editVendorCode {
+    background-color: #f8f9fa !important;
+    opacity: 0.8;
+}
+</style>
+
+<script>
+    function enableParam(code) {
+        if (confirm(`Enable #${code}?`)) {  // ← Đã sửa lỗi text
+            fetch("{% url 'enable_param_api' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            });
+        }
+    }
+
+    function disableParam(code) {
+        if (confirm(`Disable #${code}?`)) {
+            fetch("{% url 'disable_param_api' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            });
+        }
+    }
+
+    function deleteParam(code) {
+        if (confirm(`Delete #${code}?`)) {
+            fetch("{% url 'delete_param_api' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            });
+        }
+    }
+
+    function editParam(code, name, isActive) {
+        // Hiển thị edit modal trước
+        const editModal = new bootstrap.Modal(document.getElementById('editVendorModal'));
+        editModal.show();
+
+        // Đợi modal hiển thị hoàn toàn rồi mới điền thông tin
+        setTimeout(() => {
+            const codeField = document.getElementById('editVendorCode');
+            const nameField = document.getElementById('editVendorName');
+            const activeField = document.getElementById('editVendorActive');
+
+            // Đảm bảo các field không bị disabled
+            nameField.removeAttribute('disabled');
+            nameField.removeAttribute('readonly');
+            activeField.removeAttribute('disabled');
+
+            // Điền thông tin
+            codeField.value = code;
+            nameField.value = name;
+            activeField.checked = (isActive === 'True' || isActive === true);
+
+            // Focus vào field name để test
+            nameField.focus();
+        }, 300);
+    }
+
+    function saveEditParam() {
+        const code = document.getElementById('editVendorCode').value;
+        const name = document.getElementById('editVendorName').value;
+        const isActive = document.getElementById('editVendorActive').checked;
+
+        fetch("{% url 'edit_param_api' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({ code: code, name: name, is_active: isActive })
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message);
+            // Đóng edit modal trước khi reload
+            const editModal = bootstrap.Modal.getInstance(document.getElementById('editVendorModal'));
+            if (editModal) {
+                editModal.hide();
+            }
+            location.reload();
+        });
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.slice(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>

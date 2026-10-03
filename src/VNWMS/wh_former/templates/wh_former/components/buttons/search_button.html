@@ -1,0 +1,12 @@
+<style>
+    .search-button{
+        bottom: 16px;
+    }
+</style>
+
+
+<div class="position-absolute d-flex align-items-center search-button">
+    <button type="{% if submit %}submit{% else %}button{% endif %}" id="search-btn" class="btn btn-primary" style="height: 44px; width: 44px;">
+        <i class="fas fa-search"></i>
+    </button>
+</div>

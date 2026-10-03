@@ -1,0 +1,261 @@
+<style>
+    /* BỎ HOÀN TOÀN STEP INDICATOR DIV */
+    .step-indicator {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+    }
+
+    .step-toggle-btn {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+    }
+
+    /* CHỈ GIỮ LẠI FIELD HIGHLIGHT */
+    .field-highlight {
+        position: relative;
+    }
+
+    .field-highlight::before {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        border: 2px solid #007bff;
+        border-radius: 8px;
+        opacity: 0;
+        animation: fieldGlow 1.5s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    @keyframes fieldGlow {
+        0%, 100% {
+            opacity: 0;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.8;
+            transform: scale(1.01);
+        }
+    }
+
+    /* Field completed indicator */
+    .field-completed {
+        position: relative;
+    }
+
+    .field-completed::after {
+        content: '✓';
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        width: 20px;
+        height: 20px;
+        background: #28a745;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: bold;
+        z-index: 2;
+        animation: completedBounce 0.6s ease-out;
+    }
+
+    @keyframes completedBounce {
+        0% {
+            transform: scale(0);
+            opacity: 0;
+        }
+        50% {
+            transform: scale(1.2);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+</style>
+
+<script>
+    // Field Step Guide - CHỈ QUẢN LÝ FIELD HIGHLIGHT
+    window.FieldStepGuide = class {
+        constructor(config = {}) {
+            this.fieldMapping = config.fieldMapping || {};
+            this.onFieldComplete = config.onFieldComplete || null;
+            this.autoProgress = config.autoProgress !== false;
+            
+            this.completedFields = new Set();
+            this.currentFieldIndex = 0;
+            this.fieldSelectors = Object.values(this.fieldMapping);
+            
+            this.init();
+        }
+        
+        init() {
+            this.checkExistingValues();
+            this.highlightNextField();
+            if (this.autoProgress) {
+                this.attachFieldListeners();
+            }
+        }
+        
+        checkExistingValues() {
+            // Kiểm tra các field đã có value sẵn
+            this.fieldSelectors.forEach((selector, index) => {
+                const field = document.querySelector(selector);
+                if (field && this.isFieldValid(field)) {
+                    this.markFieldCompleted(selector);
+                }
+            });
+            
+            // Tìm field đầu tiên chưa điền
+            this.findNextIncompleteField();
+        }
+        
+        findNextIncompleteField() {
+            for (let i = 0; i < this.fieldSelectors.length; i++) {
+                const selector = this.fieldSelectors[i];
+                if (!this.completedFields.has(selector)) {
+                    this.currentFieldIndex = i;
+                    return;
+                }
+            }
+            // Nếu tất cả đã hoàn thành
+            this.currentFieldIndex = this.fieldSelectors.length;
+        }
+        
+        highlightNextField() {
+            // Xóa tất cả highlight cũ
+            this.fieldSelectors.forEach(selector => {
+                LightEffect.removeHighlight(selector);
+            });
+            
+            // Highlight field hiện tại nếu chưa hoàn thành
+            if (this.currentFieldIndex < this.fieldSelectors.length) {
+                const currentSelector = this.fieldSelectors[this.currentFieldIndex];
+                if (!this.completedFields.has(currentSelector)) {
+                    LightEffect.highlightField(currentSelector);
+                    
+                    // Auto focus
+                    const field = document.querySelector(currentSelector);
+                    if (field && (field.tagName === 'INPUT' || field.tagName === 'SELECT' || field.tagName === 'TEXTAREA')) {
+                        setTimeout(() => field.focus(), 300);
+                    }
+                }
+            }
+        }
+        
+        attachFieldListeners() {
+            this.fieldSelectors.forEach((selector, index) => {
+                const field = document.querySelector(selector);
+                if (field) {
+                    // Listen for input changes
+                    field.addEventListener('input', () => {
+                        this.checkFieldCompletion(selector, index);
+                    });
+                    
+                    field.addEventListener('change', () => {
+                        this.checkFieldCompletion(selector, index);
+                    });
+                    
+                    field.addEventListener('blur', () => {
+                        setTimeout(() => {
+                            this.checkFieldCompletion(selector, index);
+                        }, 100);
+                    });
+                }
+            });
+        }
+        
+        checkFieldCompletion(selector, index) {
+            const field = document.querySelector(selector);
+            if (field && this.isFieldValid(field)) {
+                if (!this.completedFields.has(selector)) {
+                    this.markFieldCompleted(selector);
+                    
+                    // Callback khi field hoàn thành
+                    if (this.onFieldComplete) {
+                        this.onFieldComplete(selector, index + 1);
+                    }
+                    
+                    // Chuyển sang field tiếp theo
+                    setTimeout(() => {
+                        this.moveToNextField();
+                    }, 500);
+                }
+            } else {
+                // Nếu field không hợp lệ, bỏ completed
+                this.removeFieldCompleted(selector);
+            }
+        }
+        
+        markFieldCompleted(selector) {
+            this.completedFields.add(selector);
+            LightEffect.removeHighlight(selector);
+            LightEffect.markCompleted(selector);
+        }
+        
+        removeFieldCompleted(selector) {
+            this.completedFields.delete(selector);
+            LightEffect.removeCompleted(selector);
+        }
+        
+        moveToNextField() {
+            this.findNextIncompleteField();
+            this.highlightNextField();
+        }
+        
+        isFieldValid(field) {
+            if (!field.value || field.value.trim() === '') {
+                return false;
+            }
+            
+            // Custom validation có thể override
+            return true;
+        }
+        
+        // API methods
+        reset() {
+            this.completedFields.clear();
+            this.currentFieldIndex = 0;
+            this.fieldSelectors.forEach(selector => {
+                LightEffect.removeHighlight(selector);
+                LightEffect.removeCompleted(selector);
+            });
+            this.checkExistingValues();
+            this.highlightNextField();
+        }
+        
+        completeAll() {
+            this.fieldSelectors.forEach(selector => {
+                const field = document.querySelector(selector);
+                if (field && this.isFieldValid(field)) {
+                    this.markFieldCompleted(selector);
+                }
+            });
+            this.currentFieldIndex = this.fieldSelectors.length;
+        }
+        
+        goToField(index) {
+            if (index >= 0 && index < this.fieldSelectors.length) {
+                this.currentFieldIndex = index;
+                this.highlightNextField();
+            }
+        }
+        
+        getProgress() {
+            return {
+                completed: this.completedFields.size,
+                total: this.fieldSelectors.length,
+                percentage: Math.round((this.completedFields.size / this.fieldSelectors.length) * 100)
+            };
+        }
+    };
+</script>

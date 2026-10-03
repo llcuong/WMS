@@ -1,0 +1,181 @@
+{% extends 'wh_packing/bases/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Recover Data" %} {% endblock %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'select2/css/select2.min.css' %}">
+{% endblock %}
+{% block css %}
+    {{ block.super }}
+    <style>
+
+        form {
+            margin-top: 3%;
+        }
+
+        #jsGrid {
+            margin-top: 3%;
+        }
+        .jsgrid-cell {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        .jsgrid-cell.expanded {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            word-wrap: break-word;
+            max-width: none;
+        }
+
+    </style>
+{% endblock %}
+
+{% block jquery %}{% endblock %}
+
+{% block content %}
+
+    <div class="container mt-4">
+        <h3 class="text-center">{% trans "Recover Data" %}</h3>
+        <form method="post">
+            <div class="row">
+                <div class="col-md-10">
+{#                    {% csrf_token %}#}
+                    {% crispy form %}
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" id="search" class="btn btn-primary w-100">Tìm kiếm</button>
+                </div>
+            </div>
+        </form>
+        <div id="jsGrid"></div>
+        <button id="reverse" style="display: none;">Reverse</button>
+
+    </div>
+
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+
+{% block javascript %}
+    <script>
+        $(document).ready(function() {
+            $("#jsGrid").on("click", ".jsgrid-cell", function() {
+                $(this).toggleClass("expanded");
+            });
+
+
+            const translations = {
+                warehouse: "{% trans "Warehouse" %}",
+                productOrder: "{% trans "Product Order" %}",
+                purchaseNo: "{% trans "Purchase No" %}",
+                versionNo: "{% trans "Version No" %}",
+                versionSeq: "{% trans "Version Seq" %}",
+                itemType: "{% trans "Item Type" %}",
+                lot: "{% trans "Lot" %}",
+                size: "{% trans "Size" %}",
+                bin: "{% trans "Bin" %}",
+                qty: "{% trans "Quantity" %}"
+            };
+
+            $("#search").on("click", function() {
+                const batch_no = $("#id_batch").val();
+
+                $.ajax({
+                    url: '{% url "get_hist_data" %}',
+                    method: 'GET',
+                    data: {batch: batch_no},
+                    dataType: 'json',
+                    success: function(data) {
+
+
+                        $("#jsGrid").jsGrid({
+                            width: "100%",
+                            height: "auto",
+                            data: data,
+                            fields: [
+                                { name: "warehouse_id", title: translations.warehouse, type: "text", css: "text-center" },
+                                { name: "product_order", title: translations.productOrder, type: "text", css: "text-center" },
+                                { name: "purchase_no", title: translations.purchaseNo, type: "text", css: "text-center" },
+                                { name: "version_no", title: translations.versionNo, type: "text", css: "text-center" },
+                                { name: "version_seq", title: translations.versionSeq, type: "text", css: "text-center" },
+                                { name: "item_type_id", title: translations.itemType, type: "text", css: "text-center" },
+                                { name: "size", title: translations.size, type: "text", css: "text-center" },
+                                { name: "bin_id", title: translations.bin, type: "text", css: "text-center" },
+                                { name: "remain_qty", title: translations.qty, type: "number" },
+                                { name: "create_at", title: translations.create, type: "text", css: "text-center" },
+                                { name: "purchase_unit", title: translations.unit, type: "text", css: "text-center" },
+                                { name: "comment", title: translations.Cmt, type: "text", css: "text-center" },
+                            ],
+
+                        });
+
+                        if(data.length != 0) {
+                            $("#reverse").show();
+                        }
+                    },
+
+                    error: function (xhr) {
+                        const errorMsg = JSON.parse(xhr.responseText);
+                        alert(errorMsg.message);
+                    }
+                });
+            });
+
+            $('#reverse').click(function(event) {
+                let confirmed = confirm("Bạn có chắc chắn muốn xác nhận không?");
+                if (!confirmed) {
+                    return;
+                }
+
+
+                let gridData = $("#jsGrid").data("JSGrid").data;
+
+                let jsonData = JSON.stringify(gridData);
+
+
+                $.ajax({
+                    url: '{% url 'get_hist_data' %}',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: jsonData,
+                    success: function(response) {
+
+                        //Reset all input
+                        {#$("#jsGrid")[0].reset();#}
+
+                        $("#jsGrid").jsGrid("option", "data", []);
+                        $("#jsGrid").jsGrid("refresh");
+                        $("#reverse").hide();
+
+
+                        alert("{% trans "product recover successfully!" %}");
+                        console.log(response);
+                    },
+                    error: function(xhr) {
+                        const errorMsg = JSON.parse(xhr.responseText);
+                        if (errorMsg.status === "error") {
+                            alert(errorMsg.message);
+                        } else {
+                            alert("An unknown error occurred.");
+                        }
+                    },
+                });
+
+                event.stopPropagation();
+
+            });
+
+
+        });
+
+    </script>
+
+{% endblock %}

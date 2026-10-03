@@ -1,0 +1,96 @@
+{% load i18n %}
+
+<style>
+    .add-button {
+        color: white;
+        background-color: #316aff;
+    }
+
+    .change-button{
+        color: white;
+        background-color: #6200ee;
+    }
+
+    .exit-button{
+        color: white;
+        background-color: #6c757d;
+    }
+</style>
+
+
+<div id="modal-backdrop" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); z-index: 9988;"></div>
+
+<div class="modal fade show no-copy" id="stockinModal" tabindex="-1" role="dialog"
+     aria-labelledby="stockinModalLabel" aria-hidden="true"
+     style="display: block; z-index: 9999;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="border-radius: 20px;">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-dot-circle" style="color: #207244"></i>
+                    <strong>&nbsp;Chọn hành động</strong>
+                </h5>
+            </div>
+            <div class="modal-body text-center">
+{#                <h5><strong>{% trans "Please choose your action..." %}</strong></h5>#}
+                <input type="hidden" id="stockin-choice" name="stockin-choice" value="" />
+                <button id="btn-add" class="button add-button"><i class="fas fa-plus"></i>{% trans "Nhập mới" %}</button>
+                <button id="btn-replace" class="button change-button"><i class="fas fa-retweet"></i>{% trans "Đã sử dụng" %}</button>
+                <button id="btn-exit-out" class="button exit-button"><i class="fas fa-exchange-alt"></i>{% trans "Thoát" %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById('stockinModal');
+        const backdrop = document.getElementById('modal-backdrop');
+        const userChoice = document.querySelector('#user-choice');
+
+        document.getElementById('btn-add').addEventListener('click', function () {
+            window.location.href = "{% url 'former_in' %}?mode=new";
+            localStorage.setItem('user_choice', 'Thêm');
+            document.getElementById('stockin-choice').value = 'add';
+            modal.style.display = 'none';
+            backdrop.style.display = 'none';
+            modal.classList.remove('show');
+            if (userChoice) {
+                userChoice.innerHTML = '';
+                const iconAdd = document.createElement('i');
+                iconAdd.className = 'fas fa-plus';
+                iconAdd.style.marginRight = '6px';
+                userChoice.appendChild(iconAdd);
+                userChoice.appendChild(document.createTextNode('Mới'));
+                userChoice.parentElement.style.backgroundColor = '#316aff';
+            }
+            document.body.style.overflow = 'auto';
+        });
+
+        document.getElementById('btn-replace').addEventListener('click', function () {
+            window.location.href = "{% url 'former_in' %}?mode=old";
+            localStorage.setItem('user_choice', 'Thay');
+            document.getElementById('stockin-choice').value = 'replace';
+            modal.style.display = 'none';
+            backdrop.style.display = 'none';
+            modal.classList.remove('show');
+            if (userChoice) {
+                userChoice.innerHTML = '';
+                const iconReplace = document.createElement('i');
+                iconReplace.className = 'fas fa-retweet';
+                iconReplace.style.marginRight = '6px';
+                userChoice.appendChild(iconReplace);
+                userChoice.appendChild(document.createTextNode('Thay'));
+                userChoice.parentElement.style.backgroundColor = '#6200ee';
+            }
+            document.body.style.overflow = 'auto';
+        });
+
+        document.getElementById('btn-exit-out').addEventListener('click', function () {
+            window.location.href = "{% url 'former_search' %}";
+        });
+
+        document.body.style.overflow = 'hidden';
+    });
+</script>
+

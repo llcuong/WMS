@@ -1,0 +1,58 @@
+{% load i18n %}
+{% csrf_token %}
+
+<div class="modal fade" id="exitConfirmModal" tabindex="-1" role="dialog" aria-labelledby="exitConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius: 12px;">
+            <div class="modal-header bg-warning text-dark" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                <h5 class="modal-title font-weight-bold" id="exitConfirmModalLabel">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {% trans "Confirm Exit" %} ?
+                </h5>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-question-circle text-warning" style="font-size: 3rem;"></i>
+                </div>
+                <p class="text-center mb-3">
+                    <strong>{% trans "You have basket number that has not been printed." %}</strong>
+                </p>
+                <p class="text-center">
+                    {% trans "Are you sure you want to exit without printing?" %}
+                </p>
+            </div>
+            <div class="modal-footer"  style="border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
+                <button type="button" class="cancel-button-2" onclick="$('#exitConfirmModal').modal('hide')">
+                    {% include 'wh_former/modules/components/buttons/cancel-button-2.html' %}
+                </button>
+                <button type="button" class="exit-button-2" id="confirmExitBtn">
+                    {% include 'wh_former/modules/components/buttons/exit-button-2.html' %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function deleteAllBasketsAndExit() {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        fetch('{% url "delete_basket_master_data" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrfToken
+            },
+            body: new URLSearchParams({
+                'action_type': 'delete_all_and_exit',
+                'csrfmiddlewaretoken': csrfToken
+            })
+        })
+        .then(response => {
+            window.location.href = '{% url "basket_insert" %}';
+        })
+        .catch(error => {
+            window.location.href = '{% url "basket_insert" %}';
+        });
+    }
+</script>

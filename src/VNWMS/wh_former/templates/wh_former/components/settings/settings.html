@@ -1,0 +1,22 @@
+{% extends 'wh_former/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Hand Former - Basket Master Data" %} {% endblock %}
+{% block local_css %}
+    <style>
+        body{
+            background-color: #f7f8fa !important;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid no-copy">
+        {% include 'wh_former/components/settings/components/settings_title.html' %}
+        <div class="col-12">
+            {% include 'wh_former/components/settings/components/settings_button.html' %}
+            {% include 'wh_former/components/settings/components/settings_table.html' %}
+        </div>
+    </div>
+{% endblock %}

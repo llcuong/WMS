@@ -1,0 +1,41 @@
+<script>
+    function showLoadingModal() {
+        const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'), {
+            backdrop: 'static',
+            keyboard: false
+        });
+        loadingModal.show();
+    }
+
+    function hideLoadingModal() {
+        const loadingModalElement = document.getElementById('loadingModal');
+        if (loadingModalElement) {
+            const loadingModal = bootstrap.Modal.getInstance(loadingModalElement);
+            if (loadingModal) {
+                loadingModal.hide();
+            }
+        }
+    }
+
+    window.addEventListener('beforeunload', function() {
+        hideLoadingModal();
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        {% if not success_modal and not error_modal %}
+            hideLoadingModal();
+        {% endif %}
+
+        {% if success_modal %}
+            setTimeout(() => {
+                hideLoadingModal();
+            }, 100);
+        {% endif %}
+
+        {% if error_modal %}
+            setTimeout(() => {
+                hideLoadingModal();
+            }, 100);
+        {% endif %}
+    });
+</script>

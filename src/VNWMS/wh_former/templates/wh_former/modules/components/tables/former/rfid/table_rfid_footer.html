@@ -1,0 +1,10 @@
+{% load i18n %}
+
+{% if not manual %}
+    <b>
+        {% trans "Basket" %}
+        &nbsp;<i class="fas fa-hand-point-right"></i>
+        <span id="epc-count-{{ pid }}" style="display: inline-block; min-width: 32px; text-align: right;">0</span>
+    </b>
+{% endif %}
+
